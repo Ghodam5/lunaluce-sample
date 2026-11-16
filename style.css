@@ -525,7 +525,7 @@ input[type=checkbox]:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,169
 .cpx-page{max-width:980px;margin:0 auto;padding:18px 16px 48px}
 .cpx-head{text-align:center;padding:10px 0 4px}
 .cpx-head small{display:inline-block;font-weight:900;font-size:12px;letter-spacing:.14em;color:#fff;background:var(--coral);padding:2px 14px;border-radius:999px}
-.cpx-head h1{font-size:clamp(24px,7vw,34px);font-weight:900;line-height:1.35;margin:10px 0 4px;word-break:keep-all}
+.cpx-head h1{font-size:clamp(24px,7vw,34px);font-weight:900;line-height:1.35;margin:10px 0 4px;word-break:normal;overflow-wrap:anywhere;line-break:strict}
 .cpx-head h1 em{font-style:normal;background:linear-gradient(transparent 62%,#ffe08a 62%)}
 .cpx-head p{font-size:13.5px;color:var(--sub)}
 .cpx-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;margin-top:18px}
@@ -536,7 +536,7 @@ input[type=checkbox]:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,169
 .cpx-bn::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:26%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:cpSweep 3.4s ease-in-out infinite;pointer-events:none}
 .cpx-bn>*{position:relative;z-index:2}
 .cpx-bn .tag{display:inline-block;background:#fff;color:var(--coral-d);font-weight:900;font-size:12px;padding:2px 12px;border-radius:999px;animation:cpxPulse 1.8s ease-in-out infinite}
-.cpx-bn h2{font-size:clamp(20px,6vw,25px);font-weight:900;line-height:1.35;margin:10px 0 6px;text-shadow:0 2px 6px rgba(150,60,30,.35);word-break:keep-all}
+.cpx-bn h2{font-size:clamp(20px,6vw,25px);font-weight:900;line-height:1.35;margin:10px 0 6px;text-shadow:0 2px 6px rgba(150,60,30,.35);word-break:normal;overflow-wrap:anywhere;line-break:strict}
 .cpx-bn h2 b{font-size:1.5em;color:#fff6c2}
 .cpx-bn p{font-size:13px;font-weight:700;max-width:62%;line-height:1.6;text-shadow:0 1px 4px rgba(150,60,30,.4)}
 .cpx-bn .more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:#fff;color:var(--coral-d);font-weight:900;font-size:14px;padding:9px 18px;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
@@ -561,7 +561,7 @@ input[type=checkbox]:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,169
 .cpd .crumb a{color:var(--teal-d);font-weight:700}
 .cpd-hero{border-radius:22px;overflow:hidden;background:linear-gradient(125deg,#ff7a6b,#ff9f43 55%,#ffc83d);color:#fff;padding:26px 20px;text-align:center;position:relative}
 .cpd-hero small{font-weight:900;letter-spacing:.12em;font-size:12px}
-.cpd-hero h1{font-size:clamp(24px,7vw,32px);font-weight:900;line-height:1.35;margin:6px 0;word-break:keep-all;text-shadow:0 2px 6px rgba(150,60,30,.3)}
+.cpd-hero h1{font-size:clamp(24px,7vw,32px);font-weight:900;line-height:1.35;margin:6px 0;word-break:normal;overflow-wrap:anywhere;line-break:strict;text-shadow:0 2px 6px rgba(150,60,30,.3)}
 .cpd-hero p{font-size:14px;font-weight:700}
 .cpd-hero .big{display:inline-block;margin-top:10px;background:#fff;color:var(--coral-d);border-radius:999px;padding:4px 22px;font-weight:900;font-size:15px}
 .cpd-hero .big b{font-size:30px}
@@ -979,3 +979,11 @@ input[type=checkbox]:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,169
 /* 横にだけ動く（上下に動かない） */
 .mtabs,.cats,.chips,.season,.crumb,.gal-track,.rail,.rankrow{overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
 .mtabs,.cats,.chips,.rankrow{touch-action:pan-x}
+
+/* ===== はみ出し防止（どの端末の幅でも横に動かない） ===== */
+html,body{max-width:100%;overflow-x:clip}
+body{overflow-wrap:anywhere}
+img,svg,video,iframe,table{max-width:100%}
+h1,h2,h3,h4,p,li,a,button,label,.chip,.mt{overflow-wrap:anywhere}
+.mt,.chip,.nowrap{overflow-wrap:normal}
+.cpx-head h1 em{white-space:nowrap;overflow-wrap:normal}
