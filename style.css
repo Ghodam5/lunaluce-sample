@@ -997,3 +997,9 @@ h1,h2,h3,h4,p,li,a,button,label,.chip,.mt{overflow-wrap:anywhere}
 .cats.big a.home{border-color:rgba(47,169,163,.45)}
 .cats.big a.home.on{background:var(--teal);border-color:var(--teal);color:#fff}
 .cats.big a.home.on svg{stroke:#fff}
+
+/* ===== iPhoneで入力欄に触れたとき画面が拡大しないように（16px未満だと自動で拡大される） ===== */
+@media (max-width:1023px){
+ input,select,textarea{font-size:16px !important}
+ input::placeholder,textarea::placeholder{font-size:14px}
+}
