@@ -969,3 +969,13 @@ input[type=checkbox]:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,169
 .tabs-bottom .tab{border-radius:12px}
 .side li a{border-radius:8px}
 .sbox button{border-radius:0}.sbox button:hover{outline-offset:-3px;border-radius:0}
+
+/* ===== 中分類タブ：薄い囲み + 横スクロール専用 ===== */
+.mtabs{gap:8px;border-bottom:0;padding:4px 2px 6px;margin:12px 0 0}
+.mt{border:1.5px solid rgba(47,169,163,.38);background:#fff;border-radius:10px;margin-bottom:0;padding:9px 14px}
+.mt.on{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d)}
+@media (hover:hover) and (pointer:fine){.mt:hover{border-radius:10px;background:var(--teal-l)}}
+.chip{border:1.5px solid rgba(47,169,163,.38)}
+/* 横にだけ動く（上下に動かない） */
+.mtabs,.cats,.chips,.season,.crumb,.gal-track,.rail,.rankrow{overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.mtabs,.cats,.chips,.rankrow{touch-action:pan-x}
