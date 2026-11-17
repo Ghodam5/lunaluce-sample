@@ -1868,7 +1868,7 @@ window.FEATURE_CATALOG={
       "groups": [
         "neko"
       ],
-      "image": "images/features/1911.jpg",
+      "image": "images/features/72039.jpg",
       "skus": [
         {
           "code": "1911",
