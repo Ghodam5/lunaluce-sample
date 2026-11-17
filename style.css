@@ -977,8 +977,8 @@ input[type=checkbox]:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,169
 @media (hover:hover) and (pointer:fine){.mt:hover{border-radius:10px;background:var(--teal-l)}}
 .chip{border:1.5px solid rgba(47,169,163,.38)}
 /* 横にだけ動く（上下に動かない） */
-.mtabs,.cats,.chips,.season,.crumb,.gal-track,.rail,.rankrow{overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
-.mtabs,.cats,.chips,.rankrow{touch-action:pan-x}
+.mtabs,.chips,.season,.crumb,.gal-track,.rail,.rankrow{overflow-y:hidden;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.mtabs,.chips,.rankrow{touch-action:pan-x}
 
 /* ===== はみ出し防止（どの端末の幅でも横に動かない） ===== */
 html,body{max-width:100%;overflow-x:clip}
@@ -1002,4 +1002,17 @@ h1,h2,h3,h4,p,li,a,button,label,.chip,.mt{overflow-wrap:anywhere}
 @media (max-width:1023px){
  input,select,textarea{font-size:16px !important}
  input::placeholder,textarea::placeholder{font-size:14px}
+}
+
+/* ===== PC：横に動かせる帯はつかめるカーソルに ===== */
+@media (hover:hover) and (pointer:fine){
+ .rankrow,.mtabs,.season,.chips,.rail,.gal-track{cursor:grab}
+ .rankrow.dragging .rkc,.rail.dragging .prod{pointer-events:none}
+}
+
+/* ===== 横の帯の中でも、マウスを乗せた時の薄い囲み（二重線）が切れないように余白をとる ===== */
+@media (hover:hover) and (pointer:fine){
+ .chips,.season,.rail{padding-top:4px;padding-bottom:6px}
+ .rankrow{padding:6px 4px 6px}
+ .mtabs{padding:4px 4px 6px}
 }
