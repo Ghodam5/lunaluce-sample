@@ -16,6 +16,13 @@ function drawRows(){
  CART.forEach(c=>{const f=document.getElementById('f-'+c.id);if(f)OrderForm.restore(f,'c'+c.id,c.product,c.row.values)});
  renderCart();
 }
+function renderCampaign(){
+ let host=document.getElementById('campaign-cart-line');if(!host){host=document.createElement('div');host.id='campaign-cart-line';document.getElementById('demo-cart-lines').after(host)}
+ const c=DemoCart.campaignSummary();if(!c){host.innerHTML='';return null}
+ const s=c.selection;host.innerHTML='<article class="campaign-cart-item"><h2>5円でご縁キャンペーン GOEN PB</h2><p>デザイン：'+esc(s.design)+'</p><p>'+(s.named?'名入れ：'+esc([s.groom,s.bride,s.date].filter(Boolean).join('／')):'名入れなし')+'</p><p>5円の対象 '+c.discounted+'個'+(c.regular?'／通常価格 '+money(c.regularPrice)+' ×'+c.regular+'個':'')+'</p>'+(!c.valid?'<p class="bad">対象の引出物が20個未満のため、キャンペーンの条件を満たしていません。このままでは注文できません。</p>':c.regular?'<p>対象の引出物を超える分は通常価格です。</p>':'')+'<form id="campaign-cart-quantity"><label for="campaign-cart-qty">数量</label><input type="number" id="campaign-cart-qty" min="1" max="999" step="1" value="'+c.qty+'" required><button type="submit">数量を更新</button><button type="button" id="campaign-cart-remove">削除</button></form><strong>'+(c.valid?money(c.total):'条件未達・キャンペーン代金未計算')+'</strong><a href="campaign-5yen.html#order">デザイン・名入れを変更する</a></article>';
+ host.querySelector('form').addEventListener('submit',e=>{e.preventDefault();try{DemoCart.setCampaignQuantity(host.querySelector('input').value)}catch(err){document.getElementById('cart-feedback').textContent=err.message}});host.querySelector('#campaign-cart-remove').addEventListener('click',()=>DemoCart.removeCampaign());
+ return c;
+}
 function renderCart(){
  let total=0,fees=0,draft=0;const summaries=[];problems=[];
  CART.forEach(c=>{
@@ -31,11 +38,13 @@ function renderCart(){
    summaries.push('<div class="nrow"><b>'+esc(p.title)+' ×'+q+'</b>'+result.summary.map(s=>'<small>'+esc(s.label)+'：'+esc(s.text)+'</small>').join('')+(missing.length?'<small class="bad">未入力・要確認：'+esc(missing.join('／'))+'</small>':'')+(result.fee?'<small class="fee">追加料金 '+money(result.fee)+'</small>':'')+'</div>');
   }else if(r.enabled&&!enough)problems.push(p.title+'：名入れの最低数量を満たしていません。');
  });
+ const campaign=renderCampaign();if(campaign){total+=campaign.total;if(!campaign.valid)problems.push('5円でご縁キャンペーン：対象の引出物が20個に届いていないため、このままでは注文できません。対象商品を追加するかキャンペーン商品を削除してください。')}
  const options=window.optCost?window.optCost():0;total+=fees+draft+options;
  document.getElementById('nfee').innerHTML=(summaries.length?'<h3>名入れ・ご指定の内容</h3>'+summaries.join(''):'')+(fees?'<p>商品ごとの追加料金：'+money(fees)+'</p>':'')+(draft?'<p id="draft-fee">原稿作成手数料：500円（1注文につき1回）</p>':'');
  document.getElementById('tot').textContent=money(total);document.getElementById('tbar').style.width=Math.min(100,total/FREE*100)+'%';
  document.getElementById('tship').innerHTML=total>=FREE?'<b>送料無料</b>になりました':'あと<b>'+money(FREE-total)+'</b>で送料無料';
- document.getElementById('cart-options').hidden=!CART.length;document.getElementById('cart-summary').hidden=!CART.length;
+ document.getElementById('cart-options').hidden=!CART.length&&!campaign;document.getElementById('cart-summary').hidden=!CART.length&&!campaign;
+ const empty=document.querySelector('.empty-cart');if(empty)empty.hidden=!!campaign;
  document.getElementById('order-check').hidden=true;
  if(!hydrating&&typeof OP!=='undefined')saveOrder();
 }
@@ -58,7 +67,7 @@ document.getElementById('check-order').addEventListener('click',()=>{
  box.innerHTML=problems.length?'<h3>入力内容をご確認ください</h3><ul>'+problems.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>':'<h3>試験用の内容確認</h3><p>名入れ・包装の内容は上の合計欄で確認できます。入力内容をこのブラウザに保存しました。注文・決済は行われません。</p>';
  box.scrollIntoView({block:'nearest',behavior:'smooth'});
 });
-window.addEventListener('democartchange',()=>{if(!localChange){drawRows();if(window.optCost){loadEntry();pv()}}});
+window.addEventListener('democartchange',()=>{if(!localChange){restoreExternalOrder();drawRows();if(window.optCost){loadEntry();pv()}}});
 drawRows();
 
 /* 以前の袋・シール・熨斗・包装の見本、選択、料金計算を下に引き継ぐ。 */
@@ -71,7 +80,7 @@ const NOSHIIMG={'A':'opt-noshi-musubikiri.jpg','B':'opt-noshi-chou.jpg','D':'opt
 const PRICE={noshi:20,both:90,wrap:90},MODE={noshi:'熨斗だけ',both:'包装＋熨斗',wrap:'包装だけ'};
 const $=id=>document.getElementById(id);
 const qOf=c=>c.id==='all'?CART.filter(x=>!x.petit).reduce((s,x)=>s+(parseInt(($('q-'+x.id)||{}).value)||0),0):parseInt(($('q-'+c.id)||{}).value)||0;
-function petitQty(){return CART.filter(c=>c.petit).reduce((s,c)=>s+qOf(c),0);}
+function petitQty(){const campaign=DemoCart.campaignSummary();return CART.filter(c=>c.petit).reduce((s,c)=>s+qOf(c),0)+(campaign?campaign.qty:0);}
 function wrapItems(){return CART.filter(c=>!c.petit);}
 function paperItems(){return CART.filter(c=>!c.petit&&c.price>=800);}
 const sumQ=a=>a.reduce((s,c)=>s+qOf(c),0);
@@ -187,7 +196,8 @@ document.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>
 $('wrap-q').addEventListener('input',e=>{if(W()){W().q=Math.max(1,parseInt(e.target.value)||1);renderCart();}});
 
 // 名入れ・オプションは、商品を探しに戻ってもこのブラウザで保持する。
-function saveOrder(){DemoCart.saveOrder({options:OP,sealName:$('seal-n').value,sealDate:$('seal-d').value,memo:$('wbiko').value})}
+function saveOrder(){DemoCart.saveOrder(Object.assign({},DemoCart.readOrder(),{options:OP,sealName:$('seal-n').value,sealDate:$('seal-d').value,memo:$('wbiko').value}))}
+function restoreExternalOrder(){const state=DemoCart.readOrder();if(state.options){Object.assign(OP,state.options);setOn('.onoff[data-o="bag"]',OP.bag.on?'1':'0');setOn('.onoff[data-o="seal"]',OP.seal.on?'1':'0');setOn('.onoff[data-o="paper"]',OP.paper.on?'1':'0');setOn('.pick[data-key="bag"]',OP.bag.d);setOn('.pick[data-key="seal"]',OP.seal.d);$('seal-q').value=OP.seal.q;$('paper-q').value=OP.paper.q;}$('seal-n').value=state.sealName||'';$('seal-d').value=state.sealDate||'';$('wbiko').value=state.memo||'';}
 const saved=DemoCart.readOrder(),savedOptions=saved.options;
 if(savedOptions){
  if(savedOptions.bag&&BAGIMG[savedOptions.bag.d])Object.assign(OP.bag,savedOptions.bag);

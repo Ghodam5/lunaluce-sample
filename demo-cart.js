@@ -12,11 +12,20 @@ function set(id,n,sku){n=qty(n);var rows=read(),r=rows.find(function(r){return r
 function remove(id,sku){save(read().filter(function(r){return !(r.id===id&&(sku===undefined||r.sku===sku))}))}
 function patch(id,sku,change){var rows=read(),r=rows.find(function(r){return r.id===id&&r.sku===sku});if(!r)return;if(change.enabled!==undefined)r.enabled=change.enabled===true;if(change.values)r.values=cleanValues(change.values);save(rows)}
 function price(r){var p=item(r.id);return p.skus[r.sku]?p.skus[r.sku].price:p.price}
-function summary(){return read().reduce(function(s,r){var p=item(r.id);s.total+=price(r)*r.qty;s.pieces+=(p.pack||1)*r.qty;s.units+=r.qty;return s},{total:0,pieces:0,units:0})}
+function summary(){var s=read().reduce(function(s,r){var p=item(r.id);s.total+=price(r)*r.qty;s.pieces+=(p.pack||1)*r.qty;s.units+=r.qty;return s},{total:0,pieces:0,units:0}),c=campaignSummary();if(c){s.total+=c.total;s.pieces+=c.qty;s.units+=c.qty}return s}
 function readOrder(){try{return JSON.parse(localStorage.getItem(ORDER)||'{}')||{}}catch(e){return {}}}
 function saveOrder(value){try{localStorage.setItem(ORDER,JSON.stringify(value))}catch(e){throw Error('入力内容を保存できません。ブラウザの保存設定をご確認ください。')}}
-window.DemoCart={read:read,add:add,set:set,remove:remove,patch:patch,summary:summary,price:price,readOrder:readOrder,saveOrder:saveOrder};
+function campaign(){return CampaignRules.check(read())}
+function campaignSummary(){return CampaignRules.summary(readOrder().campaign,campaign())}
+function addCampaign(selection,options){
+ var state=campaign(),n=qty(selection.qty);if(!state.eligible||n>state.count)throw Error('カートの対象商品が20個以上、かつプチギフトは対象商品の数量までです。');
+ var order=readOrder();order.campaign={qty:n,design:String(selection.design||''),named:selection.named===true,groom:selection.named?String(selection.groom||'').slice(0,100):'',bride:selection.named?String(selection.bride||'').slice(0,100):'',date:selection.named?String(selection.date||'').slice(0,100):''};
+ if(options)Object.assign(order,options);saveOrder(order);updateBadges();window.dispatchEvent(new CustomEvent('democartchange'));
+}
+function removeCampaign(){var order=readOrder();delete order.campaign;saveOrder(order);updateBadges();window.dispatchEvent(new CustomEvent('democartchange'))}
+function setCampaignQuantity(n){n=qty(n);var order=readOrder();if(!order.campaign)return;order.campaign.qty=n;saveOrder(order);updateBadges();window.dispatchEvent(new CustomEvent('democartchange'))}
+window.DemoCart={read:read,add:add,set:set,remove:remove,patch:patch,summary:summary,price:price,readOrder:readOrder,saveOrder:saveOrder,campaign:campaign,campaignSummary:campaignSummary,addCampaign:addCampaign,removeCampaign:removeCampaign,setCampaignQuantity:setCampaignQuantity};
 function updateBadges(){var n=summary().units;document.querySelectorAll('.hd .cnt').forEach(function(e){e.textContent=n});document.querySelectorAll('a.tab.cart').forEach(function(a){a.href='sample-cart.html';Array.from(a.childNodes).filter(function(n){return n.nodeType===3}).forEach(function(t){t.textContent=' カート（'+n+'）'})})}
-function boot(){updateBadges();window.addEventListener('storage',function(e){if(e.key===KEY){updateBadges();window.dispatchEvent(new CustomEvent('democartchange'))}})}
+function boot(){updateBadges();window.addEventListener('storage',function(e){if(e.key===KEY||e.key===ORDER||e.key===null){updateBadges();window.dispatchEvent(new CustomEvent('democartchange'))}})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();

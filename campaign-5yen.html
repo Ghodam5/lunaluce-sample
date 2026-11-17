@@ -1,6 +1,6 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>5円でご縁キャンペーン｜ルナルーチェ（案4サンプル）</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=19">
-<link rel="stylesheet" href="features.css?v=19"></head>
+<title>5円でご縁キャンペーン｜ルナルーチェ（案4サンプル）</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=20">
+<link rel="stylesheet" href="features.css?v=20"></head>
 <body><div class="sample-bar">サンプル（案4デザイン）｜<a href="campaign.html">キャンペーン一覧へ戻る</a></div>
 <main class="cpd">
 <p class="crumb"><a href="top.html">トップ</a> ＞ <a href="campaign.html">キャンペーン</a> ＞ 5円でご縁キャンペーン</p>
@@ -55,10 +55,10 @@
 <section class="cpd-sec" id="order"><h2><i>5</i>このページから、ご注文できます</h2>
 <form class="cpo" onsubmit="return false">
 <div class="row"><label class="t">デザイン（10種類・タップして選びます）</label><div class="dpick"><label><input type="radio" name="o-design" value="リボン" checked><img src="images/goen-design/ribbon.png" alt="" loading="lazy"><span>リボン</span></label><label><input type="radio" name="o-design" value="にゃんこ"><img src="images/goen-design/nyanko.png" alt="" loading="lazy"><span>にゃんこ</span></label><label><input type="radio" name="o-design" value="MR＆MRS"><img src="images/goen-design/mr-and-mrs.png" alt="" loading="lazy"><span>MR＆MRS</span></label><label><input type="radio" name="o-design" value="R＆G"><img src="images/goen-design/r-and-g.png" alt="" loading="lazy"><span>R＆G</span></label><label><input type="radio" name="o-design" value="ミモザ"><img src="images/goen-design/mimosa.png" alt="" loading="lazy"><span>ミモザ</span></label><label><input type="radio" name="o-design" value="FromSea"><img src="images/goen-design/fromsea.png" alt="" loading="lazy"><span>FromSea</span></label><label><input type="radio" name="o-design" value="松竹梅"><img src="images/goen-design/shochikubai.png" alt="" loading="lazy"><span>松竹梅</span></label><label><input type="radio" name="o-design" value="白壁"><img src="images/goen-design/shirakabe.png" alt="" loading="lazy"><span>白壁</span></label><label><input type="radio" name="o-design" value="花結び"><img src="images/goen-design/hanamusubi.png" alt="" loading="lazy"><span>花結び</span></label><label><input type="radio" name="o-design" value="クラシッククラウン"><img src="images/goen-design/classic-crown.png" alt="" loading="lazy"><span>クラシッククラウン</span></label></div></div>
-<div class="row"><label class="t">お名入れ（新郎新婦のお名前・挙式日）</label><div class="two"><input type="text" id="o-n1" placeholder="例：Keiji" aria-label="新郎のお名前"><input type="text" id="o-n2" placeholder="例：Yumi" aria-label="新婦のお名前"></div><input type="text" id="o-date" style="margin-top:8px" placeholder="挙式日 例：2027.04.18" aria-label="挙式日"><p class="hint">入力がなければ、名入れなしでお作りします。</p></div>
+<div class="row"><label class="t">名入れ</label><label class="campaign-name-check" for="o-name-enable"><input type="checkbox" id="o-name-enable" aria-controls="o-name-fields" aria-expanded="false"><span><b>名入れが必要な方はこちらに<wbr><span class="keep-word">チェック</span></b><small>チェックすると、お名前・挙式日の入力欄が開きます。</small></span></label><fieldset id="o-name-fields" hidden disabled><legend>名入れの内容</legend><div class="two"><label for="o-n1">新郎のお名前<input type="text" id="o-n1" placeholder="例：Keiji" aria-label="新郎のお名前"></label><label for="o-n2">新婦のお名前<input type="text" id="o-n2" placeholder="例：Yumi" aria-label="新婦のお名前"></label></div><label for="o-date" class="campaign-date-label">挙式日</label><input type="text" id="o-date" style="margin-top:8px" placeholder="挙式日 例：2027.04.18" aria-label="挙式日"><p class="hint">入力がなければ、名入れなしでお作りします。</p></fieldset></div>
 <div class="row"><label class="t">カートの中の引出物（税別800円以上）</label>
 <div class="cartref" id="o-cart"></div>
-<div class="demo">サンプルで試す：<button type="button" data-cart="30" class="on">引出物30個</button><button type="button" data-cart="15">15個</button><button type="button" data-cart="0">カートが空</button></div></div>
+<a class="campaign-cart-link" href="sample-cart.html">カートの商品・数量を確認する</a><a class="campaign-cart-link" href="category.html?g=food&amp;m=hikigashi">引出物・引菓子を選ぶ</a></div>
 <div class="row"><label class="t" for="o-qty">プチギフトの個数（5円）</label>
 <div class="qtybox" id="o-qbox"><button type="button" class="qb" id="o-minus" aria-label="減らす">−</button><div class="qs" id="o-qs" title="左右にスワイプして数を変えられます"><input type="text" id="o-qty" inputmode="numeric" autocomplete="off" aria-label="プチギフトの個数"><span class="sw" aria-hidden="true">‹ スワイプで変更 ›</span></div><button type="button" class="qb" id="o-plus" aria-label="増やす">＋</button></div>
 <p class="hint">カートの引出物と同じ数が、はじめから入ります。右にスワイプで増え、左にスワイプで減ります（引出物の数まで）。</p>
@@ -72,45 +72,11 @@
 <label class="chk"><input type="checkbox" data-p="50" data-per="h" data-n="ギフト用紙袋"><span>ギフト用紙袋<small>1枚50円（引出物の数だけ）</small></span><a href="option.html#paper">説明 ›</a></label>
 <label class="chk"><input type="checkbox" data-p="90" data-per="h" data-n="包装・熨斗"><span>包装・熨斗<small>熨斗のみ20円／包装あり90円（引出物1つにつき）</small></span><a href="noshi.html">説明 ›</a></label></div>
 <div class="tot"><span>合計（税込）<small id="o-break"></small></span><b id="o-tot">0円</b></div>
-<button class="addbtn" id="o-add" type="button">カートに入れる</button><div class="added" id="o-added" hidden>サンプルのため、実際には注文されません。本番では、条件を満たすとカートに入り、引出物と一緒に注文できます。</div>
+<button class="addbtn" id="o-add" type="button">カートに入れる</button><div class="added" id="o-added" hidden>ダミーカートへ追加しました。<a href="sample-cart.html">カートで内容を確認する</a>（注文・決済は行いません）</div>
 </form></section>
 
 <a class="cpd-cta" href="category.html?g=food&m=hikigashi">対象の引出物を見る</a>
 <a class="cpd-cta2" href="https://www.luna-luce.jp/item/pb-5en.html" target="_blank" rel="noopener">今のサイトのキャンペーン商品ページ（参考）</a>
-<p style="margin-top:12px;font-size:12px;color:var(--sub)">内容は今のサイト（pb-5en）の商品ページから。新サイトでは、カートで条件（引出物の金額・個数）を自動で確かめて、満たさないときはお知らせする形にする案です。</p>
-</main><script>
-(function(){var $=function(i){return document.getElementById(i)},yen=function(n){return n.toLocaleString("ja-JP")+"円"};
-var H=30,q=30,warnT=0;
-function warn(m){var w=$("o-qwarn");w.textContent=m;w.hidden=false;$("o-qbox").classList.remove("shake");void $("o-qbox").offsetWidth;$("o-qbox").classList.add("shake");clearTimeout(warnT);warnT=setTimeout(function(){w.hidden=true},3500)}
-function cartHtml(){if(H<=0)return '<b>カートに引出物が入っていません</b><small>引出物（税別800円以上）をカートに入れると、ここに数が表示されます。</small>';
- return '<div class="cl"><span>メープルシフォン（税別2,300円）</span><b>×'+H+'</b></div><div class="cl off"><span>カラフルドラジェ（税別600円）※800円未満で対象外</span><b>×10</b></div><div class="ct">対象の引出物：<b>'+H+'個</b>（カートを参照）</div>'}
-function setQ(v,fromUser){var max=H;if(v>max){if(fromUser)warn("引出物の数（"+max+"個）以上は注文できません。");v=max}if(v<1&&H>0)v=1;q=v;$("o-qty").value=q}
-function sealPv(){var v=$("o-seal").value,k=v.slice(0,2);$("o-sealimg").src="images/mini-seal/"+k+".png";$("o-bday").hidden=k!="52"}
-function calc(){sealPv();var j=$("o-judge"),inp=$("o-qty"),empty=H<=0,low=!empty&&H<20,ok=!empty&&!low&&q>=1&&q<=H;
- $("o-cart").innerHTML=cartHtml();$("o-cart").className="cartref"+(empty?" empty":"");
- inp.disabled=empty;$("o-minus").disabled=empty;$("o-plus").disabled=empty;$("o-qbox").classList.toggle("empty",empty);
- if(empty){inp.value="";inp.placeholder="カートに引出物が入っていないので注文できません";q=0}else{inp.placeholder="";inp.value=q}
- if(empty){j.className="judge ng";j.textContent="カートに引出物が入っていないので、注文できません。先に引出物をカートに入れてください。"}
- else if(low){j.className="judge ng";j.textContent="引出物が"+H+"個です。20個以上で5円になります（あと"+(20-H)+"個）。"}
- else{j.className="judge ok";j.textContent="条件を満たしています。プチギフト"+q+"個が5円です。"}
- var sum=q*5,br=["プチギフト "+yen(q*5)];
- document.querySelectorAll(".cpo .chk input:checked").forEach(function(c){var p=+c.dataset.p,n=c.dataset.per=="q"?q:c.dataset.per=="h"?H:c.dataset.per=="s"?(+$("o-sq").value||1):1,v=p*n;sum+=v;br.push(c.dataset.n+" "+yen(v))});
- $("o-sh").textContent="プチギフト"+q+"個 → "+Math.max(1,Math.ceil(q/50))+"シートあれば足ります";$("o-tot").textContent=yen(sum);$("o-break").textContent=br.join(" ＋ ");$("o-add").disabled=!ok;$("o-added").hidden=true}
-document.querySelectorAll(".cpo input[data-sub]").forEach(function(c){c.addEventListener("change",function(){$(c.dataset.sub).hidden=!c.checked})});
-document.querySelectorAll(".cpo input:not(#o-qty),.cpo select").forEach(function(e){e.addEventListener("input",calc);e.addEventListener("change",calc)});
-$("o-qty").addEventListener("input",function(){var v=parseInt(this.value.replace(/[０-９]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248)}),10);if(isNaN(v)){return}setQ(v,true);if(String(v)!=this.value)this.value=q;calc()});
-$("o-qty").addEventListener("blur",function(){if(H>0){setQ(parseInt(this.value,10)||1,false)}calc()});
-$("o-minus").addEventListener("click",function(){setQ(q-1,true);calc()});
-$("o-plus").addEventListener("click",function(){setQ(q+1,true);calc()});
-// スワイプで数を変える（右へ＝増える／左へ＝減る・18pxごとに1）
-(function(){var box=$("o-qs"),down=false,sx=0,acc=0,moved=false;
- box.addEventListener("pointerdown",function(e){if(H<=0||e.target===$("o-qty")&&document.activeElement===$("o-qty"))return;down=true;moved=false;sx=e.clientX;acc=0;try{box.setPointerCapture(e.pointerId)}catch(_){}});
- box.addEventListener("pointermove",function(e){if(!down)return;var dx=e.clientX-sx;acc+=dx;sx=e.clientX;
-  var steps=Math.trunc(acc/18);if(steps!==0){moved=true;acc-=steps*18;var n=q+steps;if(n>H){warn("引出物の数（"+H+"個）以上は注文できません。");n=H}setQ(n,false);calc();box.classList.add("swiping")}});
- function end(){down=false;box.classList.remove("swiping")}
- box.addEventListener("pointerup",end);box.addEventListener("pointercancel",end);
- box.addEventListener("click",function(e){if(moved){e.preventDefault();$("o-qty").blur();moved=false}})})();
-document.querySelectorAll(".demo button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".demo button").forEach(function(x){x.classList.remove("on")});b.classList.add("on");H=+b.dataset.cart;q=H;$("o-qwarn").hidden=true;calc()})});
-$("o-add").addEventListener("click",function(){$("o-added").hidden=false});calc()})();
-</script>
-<nav class="tabs-bottom"><a class="tab" href="top.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg>ホーム</a><a class="tab" href="category.html?g=all"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>さがす</a><a class="tab" href="#"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.5-7 10-7 10z"/></svg>お気に入り</a><a class="tab" href="mypage.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>マイページ</a><a class="tab cart" href="sample-cart.html"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.5 11h11L21 7H6.5"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>カート（2）</a></nav><script src="catico.js?v=19"></script><script src="hscroll.js?v=19"></script><script src="data.js?v=19"></script><script src="feature-data.js?v=19"></script><script src="product-data.js?v=19"></script><script src="catalog.js?v=19"></script><script src="demo-cart.js?v=19"></script></body></html>
+<p style="margin-top:12px;font-size:12px;color:var(--sub)">内容は今のサイト（pb-5en）の商品ページから。このサンプルでは、実際のダミーカートの商品・単価・数量から条件を確認します。食品8％・その他10％で税別額を計算しています。</p>
+</main>
+<nav class="tabs-bottom"><a class="tab" href="top.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg>ホーム</a><a class="tab" href="category.html?g=all"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>さがす</a><a class="tab" href="#"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.5-7 10-7 10z"/></svg>お気に入り</a><a class="tab" href="mypage.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>マイページ</a><a class="tab cart" href="sample-cart.html"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.5 11h11L21 7H6.5"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>カート（2）</a></nav><script src="catico.js?v=20"></script><script src="hscroll.js?v=20"></script><script src="data.js?v=20"></script><script src="feature-data.js?v=20"></script><script src="product-data.js?v=20"></script><script src="catalog.js?v=20"></script><script src="campaign-data.js?v=20"></script><script src="campaign-rules.js?v=20"></script><script src="demo-cart.js?v=20"></script><script src="campaign-page.js?v=20"></script></body></html>
