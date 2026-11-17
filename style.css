@@ -513,7 +513,7 @@ input[type=checkbox]:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,169
 @keyframes heroGlint{0%,62%{left:-45%;opacity:0}70%{opacity:1}92%,100%{left:125%;opacity:0}}
 @keyframes heroPetal{0%{transform:translate(0,0) rotate(0);opacity:0}8%{opacity:.95}50%{transform:translate(10px,110px) rotate(160deg)}92%{opacity:.9}100%{transform:translate(-6px,230px) rotate(320deg);opacity:0}}
 @media (min-width:1024px){
-  .main-bn .ph{margin:0;border-radius:0}
+  .main-bn .ph{position:absolute;margin:0;border-radius:0}
   .main-bn .ph .pt.l1,.main-bn .ph .pt.l2,.main-bn .ph .pt.l3{display:none}
   .main-bn .ph .pt{top:-14px}
   .main-bn .ph .pt.r1{left:86%}.main-bn .ph .pt.r2{left:92%}.main-bn .ph .pt.r3{left:97%}
@@ -935,7 +935,7 @@ input[type=checkbox]:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,169
 .mt.on{color:var(--teal-d);border-bottom-color:var(--teal)}
 .subrow{display:flex;gap:10px;align-items:flex-start;padding:12px 0 2px}
 .subrow .lbl{flex:0 0 auto;font-size:12.5px;font-weight:800;padding-top:8px}
-.subrow .chips{flex-wrap:wrap;overflow:visible;margin:0;padding:0}
+.subrow .chips{min-width:0;flex:1;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;margin:0;padding:4px 4px 6px}
 .subrow .chip{font-family:inherit;cursor:pointer}
 
 /* ===== マウスを乗せたとき：薄い囲み＋少し浮く（マウスのある端末だけ） ===== */
@@ -1031,3 +1031,12 @@ a.has-cico>span:not(.cico):last-child{margin-left:auto}
 a.has-cico,.acc>button.has-cico{justify-content:flex-start;text-align:left}
 .acc>button.has-cico::after{margin-left:auto}
 .side li a.has-cico,.drawer li a.has-cico{justify-content:flex-start}
+
+/* v14：小さい補足と操作ラベルの読みやすさ、狭い幅の見出しを調整 */
+.note,.copy,.sb p,.ng-src,.tags span,.chip small,.mt small{font-size:12px}
+.tab:not(.cart){font-size:11.5px}
+.row-h{flex-wrap:wrap}
+.row-h h2{flex:1 1 200px;flex-wrap:wrap;min-width:0;column-gap:8px;row-gap:4px}
+.row-h h2 small{font-size:12px}
+.row-h .all{margin-left:auto}
+@media (min-width:1024px){.main-bn .btns{flex-wrap:wrap}}
