@@ -1,6 +1,6 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>マイページ（クーポン一覧）｜ルナルーチェ（案4サンプル）</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=15">
-</head>
+<title>マイページ（クーポン一覧）｜ルナルーチェ（案4サンプル）</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=16">
+<link rel="stylesheet" href="features.css?v=16"></head>
 <body><div class="sample-bar">サンプル（案4デザイン）｜<a href="campaign.html">キャンペーン一覧へ戻る</a></div>
 <main class="mp">
 <h1>マイページ</h1>
@@ -17,7 +17,7 @@
 </div>
 <div class="mp-pick" id="pick">次のご注文で使うクーポンを、1枚選んでください。</div>
 </main>
-<nav class="tabs-bottom"><a class="tab" href="top.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg>ホーム</a><a class="tab" href="category.html?g=all"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>さがす</a><a class="tab" href="#"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.5-7 10-7 10z"/></svg>お気に入り</a><a class="tab on" href="mypage.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>マイページ</a><a class="tab cart" href="#"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.5 11h11L21 7H6.5"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>カート（2）</a></nav>
+<nav class="tabs-bottom"><a class="tab" href="top.html"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg>ホーム</a><a class="tab" href="category.html?g=all"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>さがす</a><a class="tab" href="#"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.5-7 10-7 10z"/></svg>お気に入り</a><a class="tab on" href="mypage.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>マイページ</a><a class="tab cart" href="sample-cart.html"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.5 11h11L21 7H6.5"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>カート（2）</a></nav>
 <script>
 (function(){var cards=document.querySelectorAll('#cps .cp-card:not(.off)'),pick=document.getElementById('pick');
 function sel(c){var on=c.classList.contains('sel');cards.forEach(function(x){x.classList.remove('sel');x.querySelector('.st').textContent='使えます'});
@@ -25,4 +25,4 @@ function sel(c){var on=c.classList.contains('sel');cards.forEach(function(x){x.c
  c.classList.add('sel');c.querySelector('.st').textContent='使う';
  pick.textContent='「'+c.dataset.n+'」を次のご注文で使います。1回のご注文で使えるのは1枚なので、ほかのクーポンは次回以降にお使いいただけます。'}
 cards.forEach(function(c){c.addEventListener('click',function(){sel(c)});c.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sel(c)}})})})();
-</script><script src="catico.js?v=15"></script><script src="hscroll.js?v=15"></script></body></html>
+</script><script src="catico.js?v=16"></script><script src="hscroll.js?v=16"></script><script src="feature-data.js?v=16"></script><script src="demo-cart.js?v=16"></script></body></html>
