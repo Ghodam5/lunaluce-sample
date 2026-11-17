@@ -1016,3 +1016,18 @@ h1,h2,h3,h4,p,li,a,button,label,.chip,.mt{overflow-wrap:anywhere}
  .rankrow{padding:6px 4px 6px}
  .mtabs{padding:4px 4px 6px}
 }
+
+/* ===== カテゴリのかわいいアイコン（catico.js が付ける） ===== */
+.cico{display:inline-flex;flex:0 0 auto;width:22px;height:22px;margin-right:6px;vertical-align:middle}
+.cico svg{width:100%;height:100%;display:block}
+.mt.has-cico,.chip.has-cico{display:inline-flex;align-items:center}
+.mt .cico{width:24px;height:24px;margin-right:6px}
+.chip .cico{width:22px;height:22px;margin:-3px 5px -3px -4px}
+a.has-cico,.acc>button.has-cico{display:flex;align-items:center}
+a.has-cico>span:not(.cico):last-child{margin-left:auto}
+.acc>button .cico.head{width:26px;height:26px;margin-right:8px}
+.cico.line svg{stroke:var(--teal);fill:none;stroke-width:1.8}
+.cico.line{width:20px;height:20px}
+a.has-cico,.acc>button.has-cico{justify-content:flex-start;text-align:left}
+.acc>button.has-cico::after{margin-left:auto}
+.side li a.has-cico,.drawer li a.has-cico{justify-content:flex-start}
