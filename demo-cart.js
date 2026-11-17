@@ -1,20 +1,22 @@
-/* ブライダルバッグ専用のダミーカート。保存するのは商品IDと数量だけ。 */
+/* 商品と名入れの試験用カート。旧バッグカートのID・数量も引き継ぐ。 */
 (function(){
 'use strict';
-var KEY='lunaluce-demo-cart-v1',catalog=window.FEATURE_CATALOG.products.filter(function(p){return p.canDemo===true||!p.groups});
-function item(id){return catalog.find(function(p){return p.id===id})}
+var KEY='lunaluce-demo-cart-v1',ORDER='lunaluce-demo-order-v2';
+function item(id){return ShopCatalog.get(id)}
 function qty(n){n=Number(n);if(!Number.isInteger(n)||n<1||n>999)throw Error('数量は1〜999の整数で入力してください。');return n}
-function read(){try{var rows=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(rows))return [];var clean=[];rows.forEach(function(r){if(!r||!item(r.id)||!Number.isInteger(r.qty)||r.qty<1||r.qty>999)return;var old=clean.find(function(x){return x.id===r.id});if(old)old.qty=Math.min(999,old.qty+r.qty);else clean.push({id:r.id,qty:r.qty})});return clean}catch(e){return []}}
-function write(rows){try{localStorage.setItem(KEY,JSON.stringify(rows))}catch(e){throw Error('このブラウザではカートを保存できません。ブラウザの保存設定をご確認ください。')}updateBadges();if(document.getElementById('demo-cart-lines'))render()}
-function add(id,n){if(!item(id))throw Error('この商品はダミーカートに追加できません。');n=qty(n);var rows=read(),r=rows.find(function(r){return r.id===id});if(r)r.qty=qty(r.qty+n);else rows.push({id:id,qty:n});write(rows)}
-function set(id,n){n=qty(n);var rows=read(),r=rows.find(function(r){return r.id===id});if(!r)throw Error('商品がカートにありません。');r.qty=n;write(rows)}
-function remove(id){write(read().filter(function(r){return r.id!==id}))}
-function summary(){return read().reduce(function(s,r){var p=item(r.id);s.total+=p.price*r.qty;s.pieces+=p.pack*r.qty;s.units+=r.qty;return s},{total:0,pieces:0,units:0})}
-window.DemoCart={read:read,add:add,set:set,remove:remove,summary:summary};
-function money(n){return n.toLocaleString('ja-JP')+'円'}
-function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function updateBadges(){var n=summary().units;document.querySelectorAll('.hd .cnt').forEach(function(e){e.textContent=n});document.querySelectorAll('a.tab.cart').forEach(function(a){a.setAttribute('href','sample-cart.html');Array.from(a.childNodes).filter(function(n){return n.nodeType===3}).forEach(function(t){t.textContent=' カート（'+n+'）'})})}
-function render(){var host=document.getElementById('demo-cart-lines');if(!host)return;var rows=read(),sum=summary();host.innerHTML=rows.length?rows.map(function(r){var p=item(r.id);return '<article class="demo-line"><img src="'+esc(p.image)+'" alt="'+esc(p.title)+'"><div><h2>'+esc(p.title)+'</h2><p class="product-code">商品番号：'+esc(p.code)+'</p><p>'+money(p.price)+'（税込）／'+(p.pack===50?'50個セット':'1個')+'</p><form data-cart-update="'+p.id+'"><label>数量（'+(p.pack===50?'セット':'個')+'） <input name="quantity" type="number" min="1" max="999" step="1" value="'+r.qty+'" required inputmode="numeric"></label><button type="submit">更新</button><button type="button" data-remove="'+p.id+'">削除</button><p class="cart-error" role="alert"></p></form><strong>'+money(p.price*r.qty)+'</strong>'+(p.pack===50?'<p>バッグ '+(p.pack*r.qty)+'個分</p>':'')+'</div></article>'}).join(''):'<div class="empty-cart"><h2>カートは空です</h2><p>ブライダルバッグを選び、数量を指定して追加してください。</p></div>';document.getElementById('demo-cart-total').innerHTML=rows.length?'<p>バッグ合計 '+sum.pieces+'個分</p><p>商品代金合計（税込）<strong>'+money(sum.total)+'</strong></p><small>送料は含みません。実際の注文は作成されません。</small>':''}
-function boot(){updateBadges();render();document.addEventListener('submit',function(e){var f=e.target.closest('[data-cart-update]');if(!f)return;e.preventDefault();try{set(f.dataset.cartUpdate,f.elements.quantity.value)}catch(err){f.querySelector('.cart-error').textContent=err.message}});document.addEventListener('click',function(e){var b=e.target.closest('[data-remove]');if(b)remove(b.dataset.remove)});window.addEventListener('storage',function(e){if(e.key===KEY){updateBadges();render()}})}
+function cleanValues(values){var out={};if(values&&typeof values==='object')Object.keys(values).forEach(function(k){if(/^f\d+$/.test(k))out[k]=String(values[k]).slice(0,5000)});return out}
+function read(){try{var rows=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(rows))return [];var clean=[];rows.forEach(function(r){var p=r&&item(r.id);if(!p||!Number.isInteger(r.qty)||r.qty<1||r.qty>999)return;var sku=Number.isInteger(r.sku)&&r.sku>=0&&r.sku<p.skus.length?r.sku:0;var old=clean.find(function(x){return x.id===p.id&&x.sku===sku});if(old)old.qty=Math.min(999,old.qty+r.qty);else clean.push({id:p.id,qty:r.qty,sku:sku,enabled:r.enabled===true,values:cleanValues(r.values)})});return clean}catch(e){return []}}
+function save(rows){try{localStorage.setItem(KEY,JSON.stringify(rows))}catch(e){throw Error('このブラウザではカートを保存できません。保存設定をご確認ください。')}updateBadges();window.dispatchEvent(new CustomEvent('democartchange'))}
+function add(id,n,sku){var p=item(id);if(!p)throw Error('この商品はサンプルにありません。');n=qty(n);sku=Number(sku)||0;if(!Number.isInteger(sku)||sku<0||sku>=Math.max(1,p.skus.length))throw Error('商品のタイプを選び直してください。');var rows=read(),r=rows.find(function(r){return r.id===p.id&&r.sku===sku});if(r)r.qty=qty(r.qty+n);else rows.push({id:p.id,qty:n,sku:sku,enabled:false,values:{}});save(rows)}
+function set(id,n,sku){n=qty(n);var rows=read(),r=rows.find(function(r){return r.id===id&&(sku===undefined||r.sku===sku)});if(!r)throw Error('商品がカートにありません。');r.qty=n;save(rows)}
+function remove(id,sku){save(read().filter(function(r){return !(r.id===id&&(sku===undefined||r.sku===sku))}))}
+function patch(id,sku,change){var rows=read(),r=rows.find(function(r){return r.id===id&&r.sku===sku});if(!r)return;if(change.enabled!==undefined)r.enabled=change.enabled===true;if(change.values)r.values=cleanValues(change.values);save(rows)}
+function price(r){var p=item(r.id);return p.skus[r.sku]?p.skus[r.sku].price:p.price}
+function summary(){return read().reduce(function(s,r){var p=item(r.id);s.total+=price(r)*r.qty;s.pieces+=(p.pack||1)*r.qty;s.units+=r.qty;return s},{total:0,pieces:0,units:0})}
+function readOrder(){try{return JSON.parse(localStorage.getItem(ORDER)||'{}')||{}}catch(e){return {}}}
+function saveOrder(value){try{localStorage.setItem(ORDER,JSON.stringify(value))}catch(e){throw Error('入力内容を保存できません。ブラウザの保存設定をご確認ください。')}}
+window.DemoCart={read:read,add:add,set:set,remove:remove,patch:patch,summary:summary,price:price,readOrder:readOrder,saveOrder:saveOrder};
+function updateBadges(){var n=summary().units;document.querySelectorAll('.hd .cnt').forEach(function(e){e.textContent=n});document.querySelectorAll('a.tab.cart').forEach(function(a){a.href='sample-cart.html';Array.from(a.childNodes).filter(function(n){return n.nodeType===3}).forEach(function(t){t.textContent=' カート（'+n+'）'})})}
+function boot(){updateBadges();window.addEventListener('storage',function(e){if(e.key===KEY){updateBadges();window.dispatchEvent(new CustomEvent('democartchange'))}})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();

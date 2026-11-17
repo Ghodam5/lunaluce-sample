@@ -1080,18 +1080,32 @@ a.has-cico,.acc>button.has-cico{justify-content:flex-start;text-align:left}
 
 /* v18：文字の背面で、三日月の輪郭を光の星がたどる共通ロゴ。 */
 .hd .logo{position:relative;isolation:isolate;display:block;min-width:0}
-.hd .logo .brand-orbit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:184px;height:63px;max-width:none;pointer-events:none;z-index:-1}
+.hd .logo .brand-orbit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:124px;height:42px;max-width:none;pointer-events:none;z-index:-1}
 .hd .logo b,.hd .logo small{position:relative}
 @media (hover:hover) and (pointer:fine){
  .hd .logo b{font-size:28px}
- .hd .logo .brand-orbit{width:204px;height:70px}
+ .hd .logo .brand-orbit{width:136px;height:46px}
  .hd-search .sbox{max-width:480px;margin-inline:auto}
 }
 @media (hover:hover) and (pointer:fine) and (min-width:1024px){
  .hd-pc{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,620px) minmax(180px,1fr);gap:20px}
  .hd-pc .logo{justify-self:start;text-align:center}
  .hd-pc .logo b{font-size:34px}
- .hd-pc .logo .brand-orbit{width:230px;height:78px}
+ .hd-pc .logo .brand-orbit{width:150px;height:51px}
  .hd-pc .sbox{width:100%;min-width:0;margin:0}
  .hd-pc .icons{justify-self:end;margin-left:0}
 }
+/* v19：商品ページの購入と、以前の名入れカートをつなぐ。 */
+.sample-product-photo{border-radius:18px;overflow:hidden;background:#fff;display:grid;place-items:center;min-height:240px}
+.sample-product-photo img{display:block;width:100%;max-height:600px;object-fit:contain;aspect-ratio:1}
+.sample-noimage{background:var(--bg);color:var(--sub);padding:20px;text-align:center;font-size:14px;overflow-wrap:anywhere}
+#product-buy select{width:100%;font:inherit;font-size:16px;padding:10px;border:1px solid rgba(47,169,163,.38);border-radius:10px;min-width:0;margin-bottom:14px}
+#product-buy>p{font-size:14px;margin:10px 0}
+#product-buy .cart-feedback a,#sticky-feedback a{border:1px solid rgba(47,169,163,.38);border-radius:6px;padding:4px 8px;text-decoration:underline;display:inline-block}
+#sample-item .pinfo{min-width:0}#sample-item h1{overflow-wrap:anywhere}#sample-item .details h2{font-size:20px;margin:20px 0 8px}#sample-item .product-description{white-space:pre-line;font-size:15px;line-height:1.8;overflow-wrap:anywhere}
+.sample-trial-links{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}.sample-trial-links a{border:1px solid rgba(47,169,163,.38);border-radius:10px;background:#fff;padding:10px 12px;font-size:14px;overflow-wrap:anywhere}
+.sample-trial-links a:hover{background:var(--teal-l)}
+#sticky-feedback{font-size:12px;margin:0;line-height:1.4}#sticky-feedback:empty{display:none}.sticky-buy:has(#sticky-feedback:not(:empty)){flex-wrap:wrap}#sticky-feedback:not(:empty){flex:0 0 100%}
+.feature-product h2 a{border:1px solid rgba(47,169,163,.38);border-radius:6px;display:inline-block;padding:3px 6px}.feature-product h2 a:hover{background:var(--teal-l)}
+/* PCの選択欄も、制作ルールの入力文字16px以上に揃える。 */
+input,select,textarea{font-size:16px!important}
