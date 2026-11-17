@@ -1040,3 +1040,21 @@ a.has-cico,.acc>button.has-cico{justify-content:flex-start;text-align:left}
 .row-h h2 small{font-size:12px}
 .row-h .all{margin-left:auto}
 @media (min-width:1024px){.main-bn .btns{flex-wrap:wrap}}
+
+/* v15：狭い幅で文字が隣とくっつく・切れる・絵に重なるのを直す（2026-11-17） */
+.tabs-bottom .tab:not(.cart){min-width:0;max-width:100%;font-size:clamp(10.5px,3.15vw,11.5px)}
+.crumb{white-space:normal;overflow:visible;line-height:1.7;word-break:keep-all;overflow-wrap:anywhere}
+.cpr-rules b,.page-h h1,.cp-card h3{overflow-wrap:normal;line-break:strict;word-break:keep-all}
+.cpx-bn:not(.line):not(.member):not(.bank) h2{max-width:calc(100% - 132px)}
+.cpx-bn.line p{max-width:calc(100% - 140px)}
+.cpx-bn.line:not(.sns) .tk-in b{white-space:nowrap;font-size:15px;letter-spacing:0}
+.cpx-bn.sns .tk-in b{white-space:nowrap}
+.cpx-bn.sns .bonus{flex-wrap:wrap;row-gap:4px;max-width:calc(100% - 128px)}
+.cpx-bn.sns .bonus em,.cpx-bn.sns .bonus b{white-space:nowrap;overflow-wrap:normal}
+@media (max-width:520px){
+ .cpr-steps{flex-direction:column}
+ .cpr-steps>div{padding:12px 10px}
+ .cpr-steps>i{transform:rotate(90deg)}
+ .cpr-steps span{font-size:15px;overflow-wrap:normal}
+ .cpr-steps small{font-size:12.5px;overflow-wrap:normal}
+}
