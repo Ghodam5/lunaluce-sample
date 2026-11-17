@@ -1058,3 +1058,22 @@ a.has-cico,.acc>button.has-cico{justify-content:flex-start;text-align:left}
  .cpr-steps span{font-size:15px;overflow-wrap:normal}
  .cpr-steps small{font-size:12.5px;overflow-wrap:normal}
 }
+
+/* v17：マウス操作のPCでは検索欄とカテゴリ帯をコンパクトにする。
+   タッチ端末の余白・押しやすさと、スマホ幅の2段構成は保持する。 */
+@media (hover:hover) and (pointer:fine) and (max-width:1023px){
+ .hd-search{padding-bottom:6px}
+ .hd-search .sbox input{padding:7px 10px}
+ .cats.big{gap:4px;padding:6px 10px 8px}
+ .cats.big a:not(.cp-fav){padding:4px 2px;gap:2px;font-size:12px}
+ .cats.big a:not(.cp-fav) svg{width:20px;height:20px}
+ .cats.big a.home svg{width:22px;height:22px}
+}
+@media (hover:hover) and (pointer:fine) and (min-width:1024px){
+ .hd-pc{height:64px;gap:20px}
+ .hd-pc .sbox input{padding:7px 10px;font-size:16px}
+ .cats.big{gap:6px;padding:6px 24px}
+ .cats.big a:not(.cp-fav){padding:5px 12px;gap:5px;font-size:13px}
+ .cats.big a:not(.cp-fav) svg{width:18px;height:18px}
+ .cats.big a.cp-fav{padding-top:5px;padding-bottom:5px}
+}
