@@ -78,7 +78,7 @@ function render(){
  document.getElementById('h1').innerHTML=esc(G.name)+'<small>'+list.length+'件</small>';
  document.getElementById('gd').textContent=G.desc;
  var featureNav=document.getElementById('category-features');if(!featureNav){featureNav=document.createElement('nav');featureNav.id='category-features';featureNav.className='chips feature-links';featureNav.setAttribute('aria-label','関連する特集');document.getElementById('gd').after(featureNav)}
- var featureLinks={food:[['preparedness-gift.html','防災・備蓄ギフト']],goods:[['neko.html','にゃんこモチーフ']],paper:[['bridal-bag.html','ブライダルバッグを選ぶ']],season:[['preparedness-gift.html','防災・備蓄ギフト'],['neko.html','にゃんこモチーフ'],['new-arrivals.html','新着商品'],['sale.html','数量限定・特価商品']]};
+ var featureLinks={food:[['preparedness-gift.html','防災・備蓄ギフト']],goods:[['neko.html','にゃんこモチーフ']],paper:[['bridal-bag.html','ブライダルバッグを選ぶ']],season:[['preparedness-gift.html','防災・備蓄ギフト'],['neko.html','にゃんこモチーフ'],['new-arrivals.html','新着商品'],['sale.html','数量限定・特価商品'],['charity-santa.html','チャリティーサンタ']]};
  featureNav.innerHTML=(featureLinks[G.k]||[]).map(function(a){return '<a class="chip" href="'+a[0]+'">'+a[1]+'</a>'}).join('');featureNav.hidden=!featureNav.innerHTML;
  // 中分類タブ
  var mt=document.getElementById('mtabs');

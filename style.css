@@ -1148,3 +1148,10 @@ input,select,textarea{font-size:16px!important}
 .drawer .feature-menu>a .cico{width:26px;height:26px;margin-right:10px}
 .drawer .dsec>h4>.cico{width:22px;height:22px;margin-right:0}
 #category-features .chip.has-cico,.feature-links .chip.has-cico{flex:0 0 auto;white-space:nowrap}
+
+/* v27：ご提供GIF。文字部分を従来の高さに合わせ、ヘッダーの領域内で表示する。原本は加工しない。 */
+.logo .brand-gif-frame{display:block;position:relative;width:178px;height:35px;overflow:hidden;margin-inline:auto}
+.logo .brand-gif{position:absolute;width:169.35px;height:169.35px;max-width:none;left:50%;top:50%;transform:translate(-50%,-50%)}
+.hd .logo .brand-gif-frame{height:35px}
+@media(hover:hover) and (pointer:fine){.hd .logo .brand-gif-frame{height:40px}.hd .logo .brand-gif{width:193.55px;height:193.55px}}
+@media(hover:hover) and (pointer:fine) and (min-width:1024px){.hd .logo .brand-gif-frame{height:46px}.hd .logo .brand-gif{width:222.58px;height:222.58px}}
