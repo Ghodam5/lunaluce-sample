@@ -1123,3 +1123,21 @@ input,select,textarea{font-size:16px!important}
 
 /* v21：luna-qaで検出された下部「さがす」の小さい文字を調整。長い隣接ラベルの幅は保つ。 */
 .tabs-bottom button.tab:not(.cart){font-size:12px}
+
+/* v24：スマホの2段は保ち、アイコンと余白を詰める。全ボタンは44px以上。 */
+@media(max-width:1023px){
+ .cats.big{gap:4px;padding:4px 10px 6px;max-height:var(--category-height,240px);transition:max-height .22s ease,padding .22s ease,border-width .22s ease}
+ .cats.big a:not(.cp-fav){height:44px;min-height:44px;padding:3px 2px;gap:1px;font-size:12px;line-height:1.25}
+ .cats.big a:not(.cp-fav) svg{width:18px;height:18px}
+ .cats.big a.home{height:auto;min-height:92px}
+ .cats.big a.home svg{width:22px;height:22px}
+ .cats.big a.cp-fav{min-height:44px;height:44px;padding-top:4px;padding-bottom:4px;margin-top:0;font-size:12px;line-height:1.25}
+ header.hd.min .cats.big{max-height:0;padding-top:0;padding-bottom:0;border-top-width:0;overflow:hidden;pointer-events:none}
+ html.category-scroll-hold,html.category-scroll-hold body{overflow-anchor:none!important;scroll-behavior:auto!important;overscroll-behavior-y:none}
+ /* 帯自身は縦に動かさず、縦スワイプはページへ渡す。収納後の続きも妨げない。 */
+ .mtabs,.chips,.rankrow{touch-action:pan-x pan-y pinch-zoom}
+}
+@media(prefers-reduced-motion:reduce){.cats.big{transition:none!important}}
+
+/* 今回補った共通ヘッダーは、依頼どおりスマホ版だけに表示。 */
+@media(min-width:1024px){[data-mobile-header],[data-mobile-strip],[data-mobile-drawer]{display:none!important}}
