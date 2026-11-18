@@ -53,7 +53,10 @@ document.addEventListener('pointerdown',function(e){if(e.pointerType!=='touch')r
 document.addEventListener('keydown',function(e){if(['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' ','Tab'].indexOf(e.key)>=0)release()},true);
 document.addEventListener('focusin',release);
 function reset(){release();gesture=null;if(!mobile.matches)fold(false);measure()}
-addEventListener('resize',reset);addEventListener('pagehide',release);addEventListener('pageshow',reset);
+// 初回pageshow（画像読込後）やアドレスバーによる高さ変更で、進行中の指操作を解除しない。
+var layoutWidth=innerWidth;
+addEventListener('resize',function(){if(innerWidth!==layoutWidth){layoutWidth=innerWidth;reset()}});
+addEventListener('pagehide',release);addEventListener('pageshow',function(e){if(e.persisted)reset()});
 if(window.visualViewport)visualViewport.addEventListener('resize',function(){if(zoomed())release()});
 if(mobile.addEventListener)mobile.addEventListener('change',reset);
 // これまでヘッダーがなかったページに付けた共通メニュー。
