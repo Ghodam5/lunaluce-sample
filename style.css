@@ -1141,3 +1141,10 @@ input,select,textarea{font-size:16px!important}
 
 /* 今回補った共通ヘッダーは、依頼どおりスマホ版だけに表示。 */
 @media(min-width:1024px){[data-mobile-header],[data-mobile-strip],[data-mobile-drawer]{display:none!important}}
+
+/* v26：メニューの直接リンクと特集にも、既存と同じカラーアイコン。 */
+.drawer .feature-menu>a.has-cico{display:flex;align-items:center}
+.drawer .acc>a.has-cico .cico{width:26px;height:26px;margin-right:8px}
+.drawer .feature-menu>a .cico{width:26px;height:26px;margin-right:10px}
+.drawer .dsec>h4>.cico{width:22px;height:22px;margin-right:0}
+#category-features .chip.has-cico,.feature-links .chip.has-cico{flex:0 0 auto;white-space:nowrap}
