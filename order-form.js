@@ -48,6 +48,7 @@ function evaluate(p,row){
   if(v!==null&&v!==''){
    const o=f.opts?f.opts[v]:null,text=o?(o.full||o.t):String(v);
    out.summary.push({label:f.label,text:text});
+   if(window.PilotInputs){const error=PilotInputs.dateError(p,f,text);if(error)out.bad.push(error)}
    if(f.role==='n')out.names.push(text);if(f.role==='d'||f.role==='w'||f.role==='h')out.dates.push(text+(f.role==='w'?'g':f.role==='h'?'cm':''));if(f.role==='m')out.messages.push(text);if(f.role==='s')out.design.push(text);
    if(o&&o.fee){
     const drafting=o.fee.amt===500&&o.fee.per==='order'&&/文字数超過/.test(o.t);

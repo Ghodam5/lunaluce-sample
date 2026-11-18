@@ -14,7 +14,7 @@ if(detail){
  host.querySelector('.crumb').outerHTML=ProductDetail.crumbs(p,detail);
  host.querySelector('.gal').innerHTML=ProductDetail.gallery(p,detail);
  host.querySelector('.pinfo .details').remove();
- host.querySelector('.pdp').insertAdjacentHTML('afterend',ProductDetail.backLink(detail)+ProductDetail.content(detail)+ProductDetail.related(detail));
+ host.querySelector('.pdp').insertAdjacentHTML('afterend',ProductDetail.backLink(detail)+ProductDetail.content(detail,p)+ProductDetail.help(p)+ProductDetail.related(detail));
  ProductDetail.bind(host,p,detail);
 }
 var q=document.getElementById('qq'),select=document.getElementById('product-sku');
