@@ -29,10 +29,10 @@ if(!fine.matches)return;
 var tip=document.createElement('div');tip.className='hhint';tip.setAttribute('aria-hidden','true');
 tip.innerHTML='<svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v3"/></svg><span><b class="t1">ホイールで横にスクロール</b><small class="t2">ドラッグでも動きます</small></span>';
 document.body.appendChild(tip);var t1=tip.querySelector('.t1'),t2=tip.querySelector('.t2'),cur=null,hideT=0,isBusy=false;
-function hide(){tip.classList.remove('on')}
+function hide(){if(tip)tip.classList.remove('on')}
 function text(r){var atEnd=r.scrollLeft>=r.scrollWidth-r.clientWidth-2;
  t1.textContent=atEnd?'ここが最後です':'ホイールで横にスクロール';t2.textContent=atEnd?'上に回すと戻ります':'ドラッグでも動きます'}
-function busy(r){hide();isBusy=true;clearTimeout(hideT);hideT=setTimeout(function(){isBusy=false;if(cur){text(cur);tip.classList.add('on')}},700)}
+function busy(r){if(!tip)return;hide();isBusy=true;clearTimeout(hideT);hideT=setTimeout(function(){isBusy=false;if(cur){text(cur);tip.classList.add('on')}},700)}
 document.addEventListener('mousemove',function(e){var r=scroller(e.target);
  if(!r||dr||e.buttons){if(!r)cur=null;hide();return}
  cur=r;text(r);var w=tip.offsetWidth,h=tip.offsetHeight,x=e.clientX+18,y=e.clientY+20;
