@@ -13,7 +13,7 @@ function fold(value){
  if(!value)setTimeout(measure,330);
 }
 function excluded(target){
- if(!target.closest||target.closest('input,textarea,select,[contenteditable=true],dialog,.drawer,.qty,.picker-wheel,.viewer-viewport'))return true;
+ if(!target.closest||target.closest('input,textarea,select,.notes-resize-handle,[contenteditable=true],dialog,.drawer,.qty,.picker-wheel,.viewer-viewport'))return true;
  if(document.body.classList.contains('menu-open')||document.querySelector('dialog[open]'))return true;
  for(var el=target;el&&el!==document.body&&el!==root;el=el.parentElement){var s=getComputedStyle(el);if(/auto|scroll/.test(s.overflowY)&&el.scrollHeight>el.clientHeight+2&&el.clientHeight>0)return true}
  return false;
