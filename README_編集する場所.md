@@ -126,3 +126,7 @@ services-head／services-scriptは全ページ必須の共通部品。通常の�
 お問い合わせ・ログイン・会員登録・アンケート・お仕立て入力・購入手続きは送信停止。sendingEnabled:false、serviceEndpoint:nullをビルドで必須にしている。単にフラグを変更して本番化しない。本番連携の制作条件.mdと本番接続_引継ぎ.mdを読み、WordPress/Welcartとサーバー側で認証・検証・料金再計算を実装してから切り替える。
 
 検査：node --test tools/*.test.cjs、node tools/build-site.cjs --check。その後5幅のluna-qaとvisual-check。通常の商品作業では対象IDのcommerceだけ読み、記事や全体テンプレートを再調査しない。
+
+
+## サンプル一覧のスマホ見本（v39）
+一覧専用の編集元はsite-src/pages/index.htmlとphone-preview.js。iframeは390px幅を保ちmax-width:noneとし、枠の内寸に応じて1回だけ縮小する。全体のiframe向けmax-width:100%を変更して解決しない。ResizeObserverでウィンドウ幅の変更にも追従。実サイトのレイアウトは変更しない。
