@@ -1,0 +1,60 @@
+{
+  "active": true,
+  "product": {
+    "id": "21034",
+    "code": "w-bag-r00",
+    "title": "【ブライダルバッグ】レギュラー ML",
+    "price": 220,
+    "image": "images/features/21034.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/w-bag-r00.html",
+    "description": "マット加工を施した、どんなシーンにもマッチするブライダルバッグ。 袋の内側にはおめでたい紅白カラーで市松模様がプリントされており、内側のオシャレにもこだわったバッグです。 ※レギュラータイプのみ薄手の仕様です。 内容量が1kgを超える場合はエクセレント・ゴールドからお選び下さい。",
+    "size": "",
+    "material": "紙(マット加工)、紐",
+    "contents": "",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "ブライダルバッグ",
+    "categories": [
+      "bag"
+    ],
+    "subs": [
+      "single"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "w-bag-r00",
+        "t": "【ブライダルバッグ】レギュラー サイズ:ML 1個",
+        "price": 220
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  },
+  "listing": {
+    "image": "images/features/w-bag-r00.jpg"
+  },
+  "feature": {
+    "id": "21034",
+    "name": "【ブライダルバッグ】レギュラー サイズ:ML",
+    "title": "レギュラー サイズ:ML",
+    "url": "https://www.luna-luce.jp/item/w-bag-r00.html",
+    "groups": [
+      "bag"
+    ],
+    "image": "images/features/21034.jpg",
+    "description": "マット加工を施した、どんなシーンにもマッチするブライダルバッグ。 袋の内側にはおめでたい紅白カラーで市松模様がプリントされており、内側のオシャレにもこだわったバッグです。 ※レギュラータイプのみ薄手の仕様です。 内容量が1kgを超える場合はエクセレント・ゴールドからお選び下さい。",
+    "size": "",
+    "material": "紙(マット加工)、紐",
+    "pack": 1,
+    "canDemo": true,
+    "updated": "2022-09-07"
+  }
+}

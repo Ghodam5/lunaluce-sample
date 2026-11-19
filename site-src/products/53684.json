@@ -1,0 +1,42 @@
+{
+  "active": true,
+  "product": {
+    "id": "53684",
+    "code": "pb-santagift",
+    "title": "サンタのギフトバッグ(中身お任せのお菓子入り)",
+    "price": 250,
+    "image": "images/pb-santagift.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/pb-santagift.html",
+    "description": "聖なる夜にささやかなプレゼントを贈るならこんなプチギフトはいかが? サンタが背負った白い袋の中にはいろんなお菓子の詰め合わせた心躍るクリスマスプレゼント! ※中に入るお菓子の組み合わせはお任せになります",
+    "size": "サイズ:約15×16×5cm",
+    "material": "",
+    "contents": "ミニチョコブラウニー、またはミニロールケーキ(ミルク・チョコ・ストロベリー)1個、ハートチョコ1個、こんぺいとう5gなど中身はお任せ",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit",
+      "season"
+    ],
+    "subs": [
+      "other"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "pb-santagift",
+        "t": "サンタのギフトバッグ(中身お任せのお菓子入り)",
+        "price": 250
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "54246",
+    "code": "a182",
+    "title": "極バウムセットD",
+    "price": 2700,
+    "image": "images/a182.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/a182.html",
+    "description": "本格的な味わいのバウムクーヘン。 ひとくち味わうだけで、「極」の意味を感じられます。 黒蜜をかけると、より一層美味しくお召し上がりいただけます。",
+    "size": "275×238×71mm",
+    "material": "",
+    "contents": "黄粉バウム×3、黒糖バウム×3、シナモンバウム×2、さつま芋バウム×2、和栗バウム×3、黒蜜10g×2",
+    "expiry": "製造日より4か月",
+    "allergens": "",
+    "storage": "常温保存",
+    "notice": "",
+    "category": "引き菓子",
+    "categories": [
+      "hikigashi"
+    ],
+    "subs": [
+      "sweets"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "a182",
+        "t": "極バウムセットD A182",
+        "price": 2700
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

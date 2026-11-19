@@ -9,3 +9,8 @@
 - 版はsite-src/version.jsonを上げる。生成してから5幅luna-qaとvisual-checkを行う。共通部分を編集しない作業でも表示確認は続ける。
 - 元DB・元シート・バックアップを変更しない。既存カートと名入れの条件を保つ。274商品への詳細展開は保留中。
 - 詳細な作業記録とAI間の引き継ぎは第二の脳20_Projects/Luna-Luche_HPへ残す。
+
+## 商品編集の最短経路（v36）
+- 商品1件の変更はtools/products.cjs find→show ID→site-src/products/ID.jsonだけを編集→build/check。全件バンドルproduct-data.js／product-detail-data.jsは読まない・直接編集しない。
+- 商品の増減はadd／archive／restore。IDと名入れ条件を保ち、元DBを書き換えない。型の変更がない限りitem.html・ヘッダー・フッターを読み直さない。必要箇所だけ調べ、保護チェックと公開前QAで影響を確認する。
+- SNSは全ページ共通の必須部品。商品作業では触らない。詳しくはREADME_編集する場所.md。

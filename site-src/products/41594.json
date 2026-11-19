@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "41594",
+    "code": "pb-rabbitbear",
+    "title": "PB-ラビットベア 単品",
+    "price": 388,
+    "image": "images/pb-rabbitbear.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/pb-rabbitbear.html",
+    "description": "タキシードとウェディングドレスに身を包んだ、クマとウサギのちょっとリッチな可愛いプチギフト! 一つのパッケージの中に、こんぺいとうとクッキーが入った小箱がそれぞれ1つずつ入っており、2種類のお菓子が楽しめます。 結婚式・二次会・発表会などでお配りするのにオススメです。",
+    "size": "5×5×10cm",
+    "material": "",
+    "contents": "ハートクッキー5枚(ストロベリー×3、バニラ×2)、こんぺいとう10g",
+    "expiry": "賞味期限:三か月",
+    "allergens": "",
+    "storage": "常温保存",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit"
+    ],
+    "subs": [
+      "other"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "pb-rabbitbear",
+        "t": "PB-ラビットベア",
+        "price": 388
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

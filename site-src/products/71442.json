@@ -1,0 +1,90 @@
+{
+  "active": true,
+  "product": {
+    "id": "71442",
+    "code": "lunaddhand",
+    "title": "ディズニー ミッキーハンド・ミニーハンド 寄せ書きミトン 油性ペン4本付【送料込】",
+    "price": 3780,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/油性ペン-4本付　リニューアル-大人気-disney-寄せ書きも.html",
+    "description": "大人気のプレゼントアイテム、ミッキーハンド・ミニーハンドがついに登場!! 寄せ書きや手にはめてフォトラウンドの小物としても使える、ディズニーハンドを右手・左手をセットにして寄せ書き用のペンとセットでの販売開始。白い生地のハンドは、寄せ書きをしてもらうのにピッタリのアイテム! 受付や披露宴、二次会でゲストの皆様からメッセージを書き込んでいただけます。 また、引っ越しや卒業、退職などでのお別れの際にも寄せ書きとして使えば、色紙とは異なる印象的な思い出の品になる事間違いなしのオススメアイテムです★",
+    "size": "ミッキーマウス約27cm×25×7cm ミニーマウス約27cm×25×10cm",
+    "material": "",
+    "contents": "",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "演出用品",
+    "categories": [
+      "enshutsu"
+    ],
+    "subs": [
+      "other"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "luna-d-hand-mm",
+        "t": "寄せ書きもできる!! ミッキーハンド",
+        "price": 3780
+      },
+      {
+        "code": "luna-d-hand-mn",
+        "t": "寄せ書きもできる!! ミニーハンド",
+        "price": 3880
+      }
+    ],
+    "spec": {
+      "code": "lunaddhand",
+      "pid": "71442",
+      "fields": [
+        {
+          "k": "同意・確認",
+          "part": "agree",
+          "role": "",
+          "label": "油性ペンのお色のリクエストはお受けできません",
+          "req": true,
+          "form": "選択（1つ）",
+          "lim": null,
+          "ph": "",
+          "opts": [
+            {
+              "t": "確認した",
+              "fee": null,
+              "over": null
+            }
+          ]
+        },
+        {
+          "k": "配送・お届け日",
+          "part": "common",
+          "role": "",
+          "label": "お届け先地域は",
+          "req": true,
+          "form": "選択（1つ）",
+          "lim": null,
+          "ph": ""
+        }
+      ],
+      "skus": [
+        {
+          "t": "寄せ書きもできる!! ミッキーハンド",
+          "price": 3780
+        },
+        {
+          "t": "寄せ書きもできる!! ミニーハンド",
+          "price": 3880
+        }
+      ],
+      "minq": null,
+      "notes": []
+    },
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "active": true,
+  "product": {
+    "id": "38759",
+    "code": "w-bag-gs00",
+    "title": "【ブライダルバッグ】ゴールド S",
+    "price": 220,
+    "image": "images/features/38759.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/w-bag-gs00.html",
+    "description": "シックさを感じさせる、ゴールドカラーにブラウンの紐。 袋の内側にはブラウンのストライプ模様がプリントされており、内側のオシャレにもこだわったバッグです。",
+    "size": "h250mm×w300mm×d200mm",
+    "material": "紙(光沢紙)、紐",
+    "contents": "",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "ブライダルバッグ",
+    "categories": [
+      "bag"
+    ],
+    "subs": [
+      "single"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "w-bag-gs00",
+        "t": "【ブライダルバッグ】ゴールド サイズ:S 1個",
+        "price": 220
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  },
+  "listing": {
+    "image": "images/features/w-bag-gs00.jpg"
+  },
+  "feature": {
+    "id": "38759",
+    "name": "【ブライダルバッグ】ゴールド サイズ:S",
+    "title": "ゴールド サイズ:S",
+    "url": "https://www.luna-luce.jp/item/w-bag-gs00.html",
+    "groups": [
+      "bag"
+    ],
+    "image": "images/features/38759.jpg",
+    "description": "シックさを感じさせる、ゴールドカラーにブラウンの紐。 袋の内側にはブラウンのストライプ模様がプリントされており、内側のオシャレにもこだわったバッグです。",
+    "size": "h250mm×w300mm×d200mm",
+    "material": "紙(光沢紙)、紐",
+    "pack": 1,
+    "canDemo": true,
+    "updated": "2021-04-28"
+  }
+}

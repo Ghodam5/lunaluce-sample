@@ -1,0 +1,68 @@
+{
+  "active": true,
+  "product": {
+    "id": "43388",
+    "code": "hf60904",
+    "title": "スノー・ジュエル(ドラジェ) 1個",
+    "price": 273,
+    "image": "images/hf60904.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf60904.html",
+    "description": "",
+    "size": "サイズ:4.5×8×10cm",
+    "material": "",
+    "contents": "ドラジェ5個、サンクスカード1枚",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit",
+      "season"
+    ],
+    "subs": [
+      "candy",
+      "welcome"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf60904",
+        "t": "スノー・ジュエル(ドラジェ) 1個",
+        "price": 273
+      }
+    ],
+    "spec": {
+      "code": "hf60904",
+      "pid": "43388",
+      "fields": [
+        {
+          "k": "同意・確認",
+          "part": "agree",
+          "role": "",
+          "label": "20個以上でご注文ください。※19個迄は自動キャンセル（セット商品との同時購入時はのぞく）",
+          "req": true,
+          "form": "選択（1つ）",
+          "lim": null,
+          "ph": "",
+          "opts": [
+            {
+              "t": "確認した",
+              "fee": null,
+              "over": null
+            }
+          ]
+        }
+      ],
+      "skus": [],
+      "minq": 20,
+      "notes": []
+    },
+    "minq": 20,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

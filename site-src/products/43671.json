@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "43671",
+    "code": "hf63006",
+    "title": "ラブリーシャワー（ライスシャワー・フラワーシャワー）",
+    "price": 3850,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf63006.html",
+    "description": "",
+    "size": "",
+    "material": "",
+    "contents": "造花・花びら(3色)約500枚入り",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "演出用品",
+    "categories": [
+      "enshutsu"
+    ],
+    "subs": [
+      "shower"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf63006",
+        "t": "ラブリーシャワー",
+        "price": 3850
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "69281",
+    "code": "1834",
+    "title": "【演出用品】ゲストブック グリーン",
+    "price": 3256,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/1834.html",
+    "description": "幸せな時間を予感させる素敵なレセプションを お二人のウエディングセレモニーは受付からすでに始まっています。 その先にある素敵な時間を予感させ、二人らしさを感じさせるおしゃれなゲストブックで大切なゲストをお迎えしましょう。",
+    "size": "商品サイズ:19.5×28.5×1.5cm",
+    "material": "",
+    "contents": "商品内容:記入欄200名分(1枚5名×40枚)、用紙取り外し可",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "演出用品",
+    "categories": [
+      "enshutsu"
+    ],
+    "subs": [
+      "guest"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "1834",
+        "t": "ゲストブック グリーン 1834",
+        "price": 3256
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

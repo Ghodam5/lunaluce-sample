@@ -1,0 +1,39 @@
+{
+  "active": true,
+  "product": {
+    "id": "47696",
+    "code": "a3frame",
+    "title": "【A3ミラー対応】A3アンティークフレーム",
+    "price": 3000,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/a3frame.html",
+    "description": "A3サイズの大きなミラーが入るアンティーク調のホワイトフレーム。 A3ミラーを入れるだけでなく、写真を撮るときに枠の中にお顔を入れてフォトフレームとしてもお使いいただけます。",
+    "size": "",
+    "material": "",
+    "contents": "46×53cm",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "※A3フレームのみの販売となります。A3サイズのミラーは別売りとなります。",
+    "category": "DIY用品",
+    "categories": [
+      "diy"
+    ],
+    "subs": [],
+    "tags": [],
+    "skus": [
+      {
+        "code": "a3frame",
+        "t": "A3アンティークフレーム",
+        "price": 3000
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

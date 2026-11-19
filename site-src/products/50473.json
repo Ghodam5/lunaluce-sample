@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "50473",
+    "code": "con1135",
+    "title": "【20％OFF】追加用記帳式カード5名様分用（5枚）",
+    "price": 160,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/con1135.html",
+    "description": "連名で記入できる高級感あふれるゲストブックの追加用カードです。",
+    "size": "サイズ:168×125mm",
+    "material": "",
+    "contents": "ゲストカード5枚(25名様分)",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "演出用品",
+    "categories": [
+      "enshutsu"
+    ],
+    "subs": [
+      "guest"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "con1135",
+        "t": "追加用記帳式カード5名様分用(5枚)",
+        "price": 160
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

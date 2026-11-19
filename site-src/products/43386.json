@@ -1,0 +1,69 @@
+{
+  "active": true,
+  "product": {
+    "id": "43386",
+    "code": "hf60902",
+    "title": "スノー・ジュエル(ハートクッキー&紅茶) 1個",
+    "price": 273,
+    "image": "images/hf60902.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf60902.html",
+    "description": "",
+    "size": "サイズ:4.5×8×10cm",
+    "material": "",
+    "contents": "ハートクッキー6枚、紅茶1包、サンクスカード1枚",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit",
+      "season"
+    ],
+    "subs": [
+      "cookie",
+      "tea",
+      "welcome"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf60902",
+        "t": "スノー・ジュエル(ハートクッキー&紅茶) 1個",
+        "price": 273
+      }
+    ],
+    "spec": {
+      "code": "hf60902",
+      "pid": "43386",
+      "fields": [
+        {
+          "k": "同意・確認",
+          "part": "agree",
+          "role": "",
+          "label": "20個以上でご注文ください。※19個迄は自動キャンセル（セット商品との同時購入時はのぞく）",
+          "req": true,
+          "form": "選択（1つ）",
+          "lim": null,
+          "ph": "",
+          "opts": [
+            {
+              "t": "確認した",
+              "fee": null,
+              "over": null
+            }
+          ]
+        }
+      ],
+      "skus": [],
+      "minq": 20,
+      "notes": []
+    },
+    "minq": 20,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

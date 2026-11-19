@@ -1,0 +1,42 @@
+{
+  "active": true,
+  "product": {
+    "id": "71115",
+    "code": "a664",
+    "title": "【引き出物】北海道 野菜スープMONAK セットF",
+    "price": 2268,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/a664.html",
+    "description": "自然の味わいと最中の食感を楽しめる野菜スープ。",
+    "size": "商品サイズ:228×154×46mm",
+    "material": "",
+    "contents": "商品内容:北海道産かぼちゃスープ最中×1、 北海道産玉ねぎスープ最中×1、 北海道産男爵いもスープ最中×2、 北海道産スイートコーンスープ最中×1、 北海道産アスパラスープ最中×1",
+    "expiry": "賞味期限:6ヶ月",
+    "allergens": "アレルゲン:小麦・乳成分",
+    "storage": "常温保存",
+    "notice": "",
+    "category": "引出物・ギフト",
+    "categories": [
+      "hikidemono",
+      "hikigashi"
+    ],
+    "subs": [
+      "gourmet"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "a664",
+        "t": "北海道 野菜スープMONAK A セットF A664",
+        "price": 2268
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

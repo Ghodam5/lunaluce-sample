@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "72063",
+    "code": "1891",
+    "title": "祝かるた(ハートせんべい)",
+    "price": 259,
+    "image": "images/1891.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/1891.html",
+    "description": "古くから人々に愛された花札柄のギフトは趣のある和婚にぴったりな存在。 鶴や猪、蝶など縁起の良いものたちがおふたりの門出を後押ししてくれる。",
+    "size": "プチギフトサイズ:100×60×18mm",
+    "material": "",
+    "contents": "商品内容:ハートせんべい5枚入(しょうゆ味)",
+    "expiry": "",
+    "allergens": "アレルゲン:小麦",
+    "storage": "保存方法:常温保存",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit"
+    ],
+    "subs": [
+      "wafu"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "1891",
+        "t": "祝かるた(ハートせんべい) 1891",
+        "price": 259
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

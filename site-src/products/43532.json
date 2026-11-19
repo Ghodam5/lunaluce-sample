@@ -1,0 +1,42 @@
+{
+  "active": true,
+  "product": {
+    "id": "43532",
+    "code": "hf61901",
+    "title": "華らんまん 20個セット(バスケット付)",
+    "price": 7000,
+    "image": "images/hf61901.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf61901.html",
+    "description": "",
+    "size": "本体サイズ:30×24×22cm",
+    "material": "",
+    "contents": "ドラジェ2個×20個",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit"
+    ],
+    "subs": [
+      "welcome",
+      "set"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf61901",
+        "t": "華らんまん 20個セット(バスケット付)",
+        "price": 7000
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

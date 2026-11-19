@@ -1,0 +1,42 @@
+{
+  "active": true,
+  "product": {
+    "id": "71125",
+    "code": "a608",
+    "title": "【引き出物】北海道Premium 海鮮パスタセットE",
+    "price": 2916,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/a608.html",
+    "description": "まるでイタリアのトラットリアで、食べているような錯覚。 そんな贅沢な時間をお楽しみください。",
+    "size": "商品サイズ:356×277×75mm",
+    "material": "",
+    "contents": "商品内容:北海道産サケとキャベツクリームパスタソース×4、 北海道産トマトとズワイガニクリームパスタソース×2、 アビッシーネ・リガーテ70g×2、 ロングパスタ タリアテッレ50g×2、フジッリ・ブロンズ70g×2",
+    "expiry": "賞味期限:6ヶ月",
+    "allergens": "アレルゲン:小麦・乳成分・かに",
+    "storage": "常温保存",
+    "notice": "",
+    "category": "引出物・ギフト",
+    "categories": [
+      "hikidemono",
+      "hikigashi"
+    ],
+    "subs": [
+      "gourmet"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "a608",
+        "t": "北海道Premium 海鮮パスタセットE A608",
+        "price": 2916
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

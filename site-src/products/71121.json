@@ -1,0 +1,42 @@
+{
+  "active": true,
+  "product": {
+    "id": "71121",
+    "code": "a696",
+    "title": "【引き出物】フリーズドライスープ最中セットB",
+    "price": 3240,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/【引き出物】フリーズドライスープ最中セットa　a.html",
+    "description": "具沢山のフリーズドライスープを最中と共に。 最中の変わりゆく食感を楽しめる一品です。",
+    "size": "商品サイズ:230×228×46mm",
+    "material": "",
+    "contents": "商品内容:たまごとわかめのスープ最中×3、 濃厚たまねぎのスープ最中×2、 きのこと生姜のスープ最中×3",
+    "expiry": "賞味期限:6ヶ月",
+    "allergens": "アレルゲン:小麦・乳成分・卵",
+    "storage": "常温保存",
+    "notice": "",
+    "category": "引出物・ギフト",
+    "categories": [
+      "hikidemono",
+      "hikigashi"
+    ],
+    "subs": [
+      "gourmet"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "a696",
+        "t": "フリーズドライスープ最中セットB A696",
+        "price": 3240
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "49967",
+    "code": "conf049",
+    "title": "ボヌールガトー 夢の贈り物B",
+    "price": 800,
+    "image": "images/conf049.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/conf049.html",
+    "description": "フェアリーボックスの奥に隠された、とっておきのギフト。 まるで物語のワンシーン。 立体的なパッケージで感謝の気持ちを伝えるだけでなく、セレクトされたpatisserieをBOX内に詰め合わせて、サプライズも一緒にプレゼント。",
+    "size": "BOXサイズ:105×195×125mm",
+    "material": "",
+    "contents": "ワッフル(プレーン×1、チョコ×1)、ミニバウムクーヘン(キャラメル&ミルク×1、ストロベリー&ミルク×1、抹茶&ミルク×1)",
+    "expiry": "約20日",
+    "allergens": "小麦・卵・乳",
+    "storage": "",
+    "notice": "ギフトパッケージで仕上げておりますので、のし紙・包装は省かせていただきます。 ご注文は納品日の2週間前までにお願い致します。",
+    "category": "引き菓子",
+    "categories": [
+      "hikigashi"
+    ],
+    "subs": [
+      "sweets"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "conf049",
+        "t": "ボヌールガトー 夢の贈り物B",
+        "price": 800
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

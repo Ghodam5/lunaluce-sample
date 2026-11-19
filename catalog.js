@@ -5,8 +5,10 @@ var data=window.SAMPLE_CATALOG,products=data.products;
 function get(id){id=String(id);id=data.featureMap[id]||id;return products.find(function(p){return p.id===id||p.code.toLowerCase()===id.toLowerCase()})}
 function link(p){return 'item.html?id='+encodeURIComponent(typeof p==='object'?p.id:p)}
 window.ShopCatalog={products:products,get:get,link:link};
+if(window.FEATURE_CATALOG&&data.featureProducts)FEATURE_CATALOG.products=data.featureProducts;
 if(window.ITEMS){
- ITEMS.forEach(function(it){var p=get(data.itemMap[it.o]);if(p){it.id=p.id;it.url=link(p)}});
- products.forEach(function(p,i){if(ITEMS.some(function(it){return it.id===p.id}))return;ITEMS.push({id:p.id,url:link(p),t:p.title,p:p.price,pt:p.price.toLocaleString('ja-JP')+'円'+(p.skus.some(function(s){return s.price!==p.price})?'〜':''),i:p.image,g:p.hasName?['名入れ']:[],o:2000+i,c:p.categories,s:p.subs})});
+ window.ITEMS=ITEMS.filter(function(it){return !(data.inactiveIds||[]).includes(String(data.itemMap[it.o]||it.id))});
+ ITEMS.forEach(function(it){var p=get(data.itemMap[it.o]);if(p){var l=(data.listing||{})[p.id]||{};it.id=p.id;it.url=link(p);it.t=l.title||p.title;it.p=p.price;it.pt=p.price.toLocaleString('ja-JP')+'円'+(p.skus.some(function(s){return s.price!==p.price})?'〜':'');it.i=l.image===undefined?p.image:l.image;it.c=l.categories||p.categories;it.s=l.subs||p.subs;}});
+ products.forEach(function(p,i){if(ITEMS.some(function(it){return it.id===p.id}))return;var l=(data.listing||{})[p.id]||{};ITEMS.push({id:p.id,url:link(p),t:l.title||p.title,p:p.price,pt:p.price.toLocaleString('ja-JP')+'円'+(p.skus.some(function(s){return s.price!==p.price})?'〜':''),i:l.image===undefined?p.image:l.image,g:p.hasName?['名入れ']:[],o:2000+i,c:l.categories||p.categories,s:l.subs||p.subs})});
 }
 })();

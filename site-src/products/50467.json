@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "50467",
+    "code": "con1132",
+    "title": "【20％OFF】追加用ゲストカード（10枚）",
+    "price": 160,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/con1132.html",
+    "description": "1枚に1名様記入していただく芳名帳追加用カード。",
+    "size": "サイズ:100×148mm",
+    "material": "",
+    "contents": "ゲストカード10名様分、2穴式(1枚で1名)",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "演出用品",
+    "categories": [
+      "enshutsu"
+    ],
+    "subs": [
+      "guest"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "con1132",
+        "t": "追加用ゲストカード(10枚)",
+        "price": 160
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

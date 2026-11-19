@@ -1,0 +1,67 @@
+{
+  "active": true,
+  "product": {
+    "id": "70767",
+    "code": "hf-1244",
+    "title": "ハロウィンクッキー",
+    "price": 224,
+    "image": "images/hf-1244.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf-1244.html",
+    "description": "オレンジ・黒・紫のハロウィンカラーがかわいいハロウィンパーティにぴったりのギフトです",
+    "size": "商品サイズ:10×13cm",
+    "material": "",
+    "contents": "商品内容:クッキー6枚",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit",
+      "season"
+    ],
+    "subs": [
+      "cookie"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf-1244",
+        "t": "ハロウィンクッキー 1244",
+        "price": 224
+      }
+    ],
+    "spec": {
+      "code": "hf-1244",
+      "pid": "70767",
+      "fields": [
+        {
+          "k": "同意・確認",
+          "part": "agree",
+          "role": "",
+          "label": "20個以上でご注文ください。※19個迄は自動キャンセル",
+          "req": true,
+          "form": "選択（1つ）",
+          "lim": null,
+          "ph": "",
+          "opts": [
+            {
+              "t": "確認した",
+              "fee": null,
+              "over": null
+            }
+          ]
+        }
+      ],
+      "skus": [],
+      "minq": 20,
+      "notes": []
+    },
+    "minq": 20,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

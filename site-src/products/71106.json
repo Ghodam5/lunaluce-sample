@@ -1,0 +1,42 @@
+{
+  "active": true,
+  "product": {
+    "id": "71106",
+    "code": "a610",
+    "title": "【引き出物】北海道 野菜ドレッシングセットE",
+    "price": 1512,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/a610.html",
+    "description": "北海道の美味しい野菜で作ったドレッシング。",
+    "size": "商品サイズ:145×160×45mm",
+    "material": "",
+    "contents": "商品内容:野菜ドレッシングオニオン120ml ×1、 野菜ドレッシングスイートコーン120ml ×1",
+    "expiry": "賞味期限:6ヶ月",
+    "allergens": "アレルゲン:小麦・乳成分",
+    "storage": "常温保存",
+    "notice": "",
+    "category": "引出物・ギフト",
+    "categories": [
+      "hikidemono",
+      "hikigashi"
+    ],
+    "subs": [
+      "gourmet"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "a610",
+        "t": "北海道 野菜ドレッシングセットE A610",
+        "price": 1512
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

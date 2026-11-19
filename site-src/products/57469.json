@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "57469",
+    "code": "1597",
+    "title": "海乃福おかき 1個",
+    "price": 276,
+    "image": "images/1597.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/1597.html",
+    "description": "乾燥珍味のエビやホタテ、カニがそのまま入ってます",
+    "size": "プチギフトサイズ:50×70×72mm",
+    "material": "",
+    "contents": "商品内容:おかき約25g入り(えび・かに・ほたて)",
+    "expiry": "",
+    "allergens": "アレルゲン:小麦・えび・かに",
+    "storage": "",
+    "notice": "※種類の指定はできません ※単品でのご購入は5個単位のご注文でお願い致します。",
+    "category": "プチギフト",
+    "categories": [
+      "petit"
+    ],
+    "subs": [
+      "wafu"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "1597",
+        "t": "海乃福おかき 1個 1597",
+        "price": 276
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

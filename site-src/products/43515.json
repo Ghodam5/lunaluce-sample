@@ -1,0 +1,43 @@
+{
+  "active": true,
+  "product": {
+    "id": "43515",
+    "code": "hf61801",
+    "title": "パステルローズドラジェ40本セット(バスケット付)",
+    "price": 11550,
+    "image": "images/hf61801.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf61801.html",
+    "description": "",
+    "size": "本体サイズ:φ30×30cm",
+    "material": "",
+    "contents": "ドラジェ1個入りフラワースティック×40本",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "※この商品は納品日の14日前までにお申し込み下さい。",
+    "category": "プチギフト",
+    "categories": [
+      "petit"
+    ],
+    "subs": [
+      "candy",
+      "welcome",
+      "set"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf61801",
+        "t": "パステルローズドラジェ40本セット(バスケット付) 1457",
+        "price": 11550
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

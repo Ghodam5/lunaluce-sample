@@ -1,4 +1,4 @@
-/* トップと商品ページ専用。SNSロゴは形を変えず、白地の小さな操作領域で表示。 */
+/* 全ページ共通の独立した共有枠。特別な指示がある場合だけ変更する。 */
 .page-share{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;margin:12px 0 18px;padding:10px 0;border-top:1px solid #dbe7e6;border-bottom:1px solid #dbe7e6;color:var(--sub);min-width:0}
 .page-share .share-label{flex-basis:100%;display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px;font-weight:500;line-height:1.6;margin:0;min-width:0}
 .page-share .share-caption{display:flex;align-items:center;gap:6px;white-space:nowrap}
@@ -14,4 +14,14 @@
 .page-share .share-instagram-help{flex-basis:100%;padding:10px 12px;border:1px solid #dbe7e6;border-radius:9px;background:#fff;font-size:13px;line-height:1.8;min-width:0}
 .page-share .share-instagram-help p{margin:0 0 8px;font-size:13px;line-height:1.8}.page-share .share-instagram-help a,.page-share .share-help-close{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 10px;border:1px solid #b6d8d4;border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:13px;cursor:pointer;margin:0 6px 0 0;text-decoration:none}
 @media(min-width:768px){.page-share .share-label{flex:0 1 auto;gap:14px}.page-share .share-actions{margin-left:0}}
+@media print{.page-share{display:none!important}}
+
+.page-share{display:grid;grid-template-columns:1fr;justify-items:center;gap:8px;padding:10px 12px;border:1px solid #dbe7e6;border-radius:12px;background:#fff;box-sizing:border-box;width:100%}
+.page-share .share-label{width:100%;justify-content:center;gap:14px;font-size:13px;color:var(--ink)}
+.page-share .share-caption{font-weight:700}
+.page-share .share-platforms{justify-content:center;gap:8px}
+.page-share .share-tools{padding-left:12px;border-left:1px solid #dbe7e6}
+.page-share .share-copy{width:auto;gap:5px;padding:8px;font-size:12px}
+.page-share .share-status,.page-share .share-manual,.page-share .share-instagram-help{width:100%;justify-self:stretch}
+@media(min-width:768px){.page-share{grid-template-columns:auto auto;justify-content:center;gap:8px 20px}.page-share .share-status,.page-share .share-manual,.page-share .share-instagram-help{grid-column:1/-1}}
 @media print{.page-share{display:none!important}}

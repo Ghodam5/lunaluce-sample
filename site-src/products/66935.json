@@ -1,0 +1,43 @@
+{
+  "active": true,
+  "product": {
+    "id": "66935",
+    "code": "1810",
+    "title": "福招きだるま(だるまキャンディ)1個",
+    "price": 224,
+    "image": "images/1810.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/1810.html",
+    "description": "愛嬌のある表情におもわず笑顔がこぼれる縁起の良いだるまさん。",
+    "size": "プチギフトサイズ:53×60×68mm",
+    "material": "",
+    "contents": "商品内容:だるまキャンディ3粒入り(アップル味)",
+    "expiry": "",
+    "allergens": "アレルゲン:なし",
+    "storage": "",
+    "notice": "※色の指定はできません ※単品でのご購入は5個単位のご注文でお願い致します。",
+    "category": "プチギフト",
+    "categories": [
+      "petit",
+      "season"
+    ],
+    "subs": [
+      "candy",
+      "wafu"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "1810",
+        "t": "福招きだるま(だるまキャンディ)1個 1810",
+        "price": 224
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

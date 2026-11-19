@@ -1,0 +1,67 @@
+{
+  "active": true,
+  "product": {
+    "id": "70777",
+    "code": "hf-1473",
+    "title": "ハロウィンブラウンBOX",
+    "price": 216,
+    "image": "images/hf-1473.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf-1473.html",
+    "description": "ブラウンのパッケージにおばけやかぼちゃのシールがかわいいプチギフトです。",
+    "size": "商品サイズ:4.5×5.5×5cm",
+    "material": "",
+    "contents": "商品内容:ハートパイ",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit",
+      "season"
+    ],
+    "subs": [
+      "other"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf-1473",
+        "t": "ハロウィンブラウンBOX 1473",
+        "price": 216
+      }
+    ],
+    "spec": {
+      "code": "hf-1473",
+      "pid": "70777",
+      "fields": [
+        {
+          "k": "同意・確認",
+          "part": "agree",
+          "role": "",
+          "label": "20個以上でご注文ください。※19個迄は自動キャンセル",
+          "req": true,
+          "form": "選択（1つ）",
+          "lim": null,
+          "ph": "",
+          "opts": [
+            {
+              "t": "確認した",
+              "fee": null,
+              "over": null
+            }
+          ]
+        }
+      ],
+      "skus": [],
+      "minq": 20,
+      "notes": []
+    },
+    "minq": 20,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

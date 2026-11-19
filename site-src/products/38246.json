@@ -1,0 +1,55 @@
+{
+  "active": true,
+  "product": {
+    "id": "38246",
+    "code": "010ds-2410",
+    "title": "ディズニー ミッキー&ミニー ラブラブタイム ウォッシュタオル2P10個セット",
+    "price": 7678,
+    "image": "images/features/010ds-2410.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/010ds-2410.html",
+    "description": "ミッキーマウスのギフトなら誰もが最高の笑顔に 世界中のみんなに愛され続けている永遠の人気者「ミッキーマウス」。 色あいがすてきなタオルセット。ミッキーマウスファンにはたまらないギフトアイテムです",
+    "size": "箱21.0×30.0×4.0cm",
+    "material": "綿100%",
+    "contents": "ウォッシュタオル(約34×36cm)×2 10個セット",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "引出物・ギフト",
+    "categories": [
+      "hikidemono"
+    ],
+    "subs": [],
+    "tags": [],
+    "skus": [
+      {
+        "code": "010ds-2410",
+        "t": "ミッキー&ミニー ラブラブタイム ウォッシュタオル2P10個セット",
+        "price": 7678
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  },
+  "feature": {
+    "id": "38246",
+    "name": "【数量限定】Disney ディズニー ミッキー&ミニー ラブラブタイム ウォッシュタオル2P10個セット DS-2410【Disney 結婚式 内祝 挨拶 お返し】",
+    "title": "ディズニー ミッキー&ミニー ラブラブタイム ウォッシュタオル2P10個セット",
+    "url": "https://www.luna-luce.jp/item/010ds-2410.html",
+    "groups": [
+      "sale"
+    ],
+    "image": "images/features/010ds-2410.jpg",
+    "description": "ミッキーマウスのギフトなら誰もが最高の笑顔に 世界中のみんなに愛され続けている永遠の人気者「ミッキーマウス」。 色あいがすてきなタオルセット。ミッキーマウスファンにはたまらないギフトアイテムです",
+    "size": "箱21.0×30.0×4.0cm",
+    "material": "綿100%",
+    "pack": 1,
+    "canDemo": false,
+    "updated": "2025-07-10"
+  }
+}

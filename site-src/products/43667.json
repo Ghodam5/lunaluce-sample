@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "product": {
+    "id": "43667",
+    "code": "hf63004",
+    "title": "リボンワンズ・パステル 10本セット",
+    "price": 1750,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf63004.html",
+    "description": "",
+    "size": "スティック30cm、リボン58cm",
+    "material": "",
+    "contents": "鈴付きリボンワンズ10本",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "演出用品",
+    "categories": [
+      "enshutsu"
+    ],
+    "subs": [
+      "shower"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf63004",
+        "t": "リボンワンズ・パステル 10本セット",
+        "price": 1750
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

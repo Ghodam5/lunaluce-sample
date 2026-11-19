@@ -1,0 +1,42 @@
+{
+  "active": true,
+  "product": {
+    "id": "71093",
+    "code": "a657",
+    "title": "【引き出物】TSUTSUMI 瑞穂の恵みB",
+    "price": 3024,
+    "image": "",
+    "sourceUrl": "https://www.luna-luce.jp/item/a657.html",
+    "description": "日本人の体に深く染み渡る瑞穂の恵みの豊かで繊細な優しい風味を、おもてなしの心で包みました。",
+    "size": "商品サイズ:244×198×63mm",
+    "material": "",
+    "contents": "商品内容:京都丹後産 こしひかり30 0g ×1、 山形産 つや姫30 0g ×1、 風呂敷(360×360mm)×2(材質:ポリエステル)",
+    "expiry": "",
+    "allergens": "",
+    "storage": "常温保存",
+    "notice": "",
+    "category": "引出物・ギフト",
+    "categories": [
+      "hikidemono",
+      "hikigashi"
+    ],
+    "subs": [
+      "gohan"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "a657",
+        "t": "TSUTSUMI 瑞穂の恵みB A657",
+        "price": 3024
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  }
+}

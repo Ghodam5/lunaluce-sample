@@ -1,0 +1,42 @@
+{
+  "active": true,
+  "product": {
+    "id": "43538",
+    "code": "hf61905",
+    "title": "リボンスティック 50本セット(バスケット付)",
+    "price": 12600,
+    "image": "images/hf61905.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/hf61905.html",
+    "description": "",
+    "size": "本体サイズ:30×24×22cm",
+    "material": "",
+    "contents": "箸×50本",
+    "expiry": "",
+    "allergens": "",
+    "storage": "",
+    "notice": "",
+    "category": "プチギフト",
+    "categories": [
+      "petit"
+    ],
+    "subs": [
+      "welcome",
+      "set"
+    ],
+    "tags": [],
+    "skus": [
+      {
+        "code": "hf61905",
+        "t": "リボンスティック 50本セット(バスケット付)",
+        "price": 12600
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": true,
+    "seal": false,
+    "pack": 1
+  }
+}

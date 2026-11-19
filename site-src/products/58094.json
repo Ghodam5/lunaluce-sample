@@ -1,0 +1,56 @@
+{
+  "active": true,
+  "product": {
+    "id": "58094",
+    "code": "pb-lunacatgift2025",
+    "title": "ルナさん家の ネコパンギフト (タオル&パンの缶詰)/ 保存食・マスコットタオル・非常食・かわいい・卵不使用・ギフト",
+    "price": 2480,
+    "image": "images/features/pb-lunacatgift2025.jpg",
+    "sourceUrl": "https://www.luna-luce.jp/item/pb-lunacatgift.html",
+    "description": "長期保存可能なパンの缶詰とぬいぐるみ風にアレンジされた広げればタオルとしても使えるベーカリーの看板ネコを一緒にお届け。 こだわりの卵不使用のパンは長期保存食として嬉しい一品。 2種類いる看板ネコはどちらのデザインが届くか箱を開けるまでお楽しみ☆",
+    "size": "商品サイズ:約25×17×9cm",
+    "material": "",
+    "contents": "ハンドタオル×1枚(サイズ:約25×25cm)、パンの缶詰(100g)×3個",
+    "expiry": "",
+    "allergens": "",
+    "storage": "直射日光を避け、常温で保管して下さい。",
+    "notice": "",
+    "category": "引出物・ギフト",
+    "categories": [
+      "hikidemono",
+      "season"
+    ],
+    "subs": [],
+    "tags": [],
+    "skus": [
+      {
+        "code": "pb-lunacatgift",
+        "t": "ルナさん家の ネコパンギフト (タオル&パンの缶詰)",
+        "price": 2480
+      }
+    ],
+    "spec": null,
+    "minq": 1,
+    "minnote": "",
+    "hasName": false,
+    "petit": false,
+    "seal": false,
+    "pack": 1
+  },
+  "feature": {
+    "id": "58094",
+    "name": "ルナさん家の ネコパンギフト (タオル&パンの缶詰)/ 保存食・マスコットタオル・非常食・かわいい・卵不使用・ギフト",
+    "title": "ルナさん家の ネコパンギフト (タオル&パンの缶詰)/ 保存食・マスコットタオル・非常食・かわいい・卵不使用・ギフト",
+    "url": "https://www.luna-luce.jp/item/pb-lunacatgift.html",
+    "groups": [
+      "neko"
+    ],
+    "image": "images/features/pb-lunacatgift2025.jpg",
+    "description": "長期保存可能なパンの缶詰とぬいぐるみ風にアレンジされた広げればタオルとしても使えるベーカリーの看板ネコを一緒にお届け。 こだわりの卵不使用のパンは長期保存食として嬉しい一品。 2種類いる看板ネコはどちらのデザインが届くか箱を開けるまでお楽しみ☆",
+    "size": "商品サイズ:約25×17×9cm",
+    "material": "",
+    "pack": 1,
+    "canDemo": false,
+    "updated": "2026-03-16"
+  }
+}
