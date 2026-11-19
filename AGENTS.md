@@ -14,3 +14,5 @@
 - 商品1件の変更はtools/products.cjs find→show ID→site-src/products/ID.jsonだけを編集→build/check。全件バンドルproduct-data.js／product-detail-data.jsは読まない・直接編集しない。
 - 商品の増減はadd／archive／restore。IDと名入れ条件を保ち、元DBを書き換えない。型の変更がない限りitem.html・ヘッダー・フッターを読み直さない。必要箇所だけ調べ、保護チェックと公開前QAで影響を確認する。
 - SNSは全ページ共通の必須部品。商品作業では触らない。詳しくはREADME_編集する場所.md。
+
+- 本番公開は受注管理・印刷・在庫連動との併用を前提。名入れ／SKU／入数／オプションの仕様変更時は本番連携の制作条件.mdを読む。f番号・選択肢番号・localStorageを本番受注のキーにせず、サーバー保存・固定ID・明細関連・注文版を設計する。連携未実装を完了と案内しない。通常の商品価格・文章だけの作業ではこのために全テンプレートを読み直さない。
