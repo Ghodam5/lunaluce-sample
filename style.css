@@ -1155,3 +1155,7 @@ input,select,textarea{font-size:16px!important}
 .hd .logo .brand-gif-frame{height:35px}
 @media(hover:hover) and (pointer:fine){.hd .logo .brand-gif-frame{height:40px}.hd .logo .brand-gif{width:193.55px;height:193.55px}}
 @media(hover:hover) and (pointer:fine) and (min-width:1024px){.hd .logo .brand-gif-frame{height:46px}.hd .logo .brand-gif{width:222.58px;height:222.58px}}
+
+/* v29：フッターのロゴ文字を会社名の左端にそろえる。GIFの透明余白も補正。 */
+.ft .logo .brand-gif-frame{margin-inline:0}
+.ft .logo .brand-gif{left:0;transform:translate(-12.666667%,-50%)}
