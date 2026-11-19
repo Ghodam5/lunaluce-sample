@@ -113,7 +113,7 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-m],[
  if(t.dataset.m!==undefined){S.m=t.dataset.m;S.s='';}
  else if(t.dataset.s!==undefined)S.s=t.dataset.s;else if(t.dataset.pr!==undefined)S.pr=t.dataset.pr;else if(t.dataset.tg)S[t.dataset.tg]=!S[t.dataset.tg];
  else if(t.dataset.x){var x=t.dataset.x;if(x==='all'){S.pr='';S.q='';S.n=false;S.f=false;fq.value=''}else if(x==='q'){S.q='';fq.value=''}else if(x==='n'||x==='f')S[x]=false;else S[x]='';}
- shown=PAGE;render()});
+ shown=PAGE;render();if(t.dataset.m!==undefined||t.dataset.s!==undefined)window.dispatchEvent(new Event('luna:category-navigation'));});
 var tm;fq.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(function(){S.q=fq.value.trim();shown=PAGE;render()},180)});
 ss.addEventListener('change',function(){S.o=ss.value;shown=PAGE;render()});
 if(S.pr||S.q||S.n||S.f)fp.classList.add('open');
