@@ -1,0 +1,13 @@
+/* トップと商品ページ専用。共通ヘッダーや固定購入ボタンとは独立する。 */
+.page-share{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:14px 0 22px;padding:12px 0;border-top:1px solid #dbe7e6;border-bottom:1px solid #dbe7e6;color:var(--sub);min-width:0}
+.page-share .share-label{font-size:12px;font-weight:500;line-height:1.6;margin:0;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.page-share .share-actions,.page-share .share-platforms{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0}
+.page-share .share-control{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:9px 10px;border:1px solid #b6d8d4;border-radius:9px;background:#fff;color:var(--ink);font:inherit;font-size:13px;line-height:1.4;text-decoration:none;cursor:pointer;transition:background-color .2s,border-color .2s,box-shadow .2s}
+.page-share .share-control:hover{background:var(--teal-l,#edf8f6);border-color:var(--teal);box-shadow:0 0 0 1px var(--teal)}
+.page-share .share-control:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.page-share svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;flex-shrink:0;stroke-linecap:round;stroke-linejoin:round}
+.page-share .share-status{flex-basis:100%;font-size:12px;line-height:1.6;margin:0;color:var(--teal-d)}.page-share .share-status:empty{display:none}
+.page-share .share-manual{width:100%;font-size:16px;padding:10px;border:1px solid #b6d8d4;border-radius:8px;box-sizing:border-box;min-width:0}
+.page-share [hidden]{display:none!important}.page-share .share-control:disabled{opacity:.6;cursor:wait}
+@media(max-width:767px){.page-share{gap:7px 10px;padding:10px 0;margin:12px 0 18px}.page-share .share-label{flex-basis:100%}.page-share .share-actions{gap:6px}.page-share .share-control{padding-inline:9px}}
+@media print{.page-share{display:none!important}}
