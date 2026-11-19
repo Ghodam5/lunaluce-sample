@@ -53,3 +53,6 @@ GitHubへの送信時にも「共通部品と公開HTMLの一致確認」が生�
 ## 印刷と備考欄（v31）
 印刷ページの記入例・印刷準備はsupport-ui.jsとsupport.cssで統一する。記入例と実入力を区別し、beforeprint/afterprintで記入例を除外・復帰する。印刷のために元データを消さない。
 全ページの備考・複数行欄はnotes-resize.js／notes-resize.cssが担当し、site-src/shared/notes-head.htmlとnotes-script.htmlから読み込む。後から表示される欄も自動で対象になる。共通部品として保護するため、全体変更が依頼された場合だけ変更する。
+
+## トップの案内カード（v32）
+9項目のリンクと文言はsite-src/pages/top.htmlの#home-guides、専用の見た目はhome-guides.css。既存のimages/guides/のアイコンを使う。Q&Aだけ濃い背景にせず、白地・細枠と従来の印象を保つ。
