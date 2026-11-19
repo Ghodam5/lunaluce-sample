@@ -62,3 +62,6 @@ navigation-position.jsを共通navigation-head.htmlから早期に読み込み�
 
 ## SNS共有（v34）
 トップの配置はsite-src/pages/top.htmlのdata-share-page、商品の配置はpage-share.jsが購入欄の直後へ追加する。見た目はpage-share.css。商品・トップ以外では読み込まない。共有URLは現在のサンプル公開先を基準とし、商品IDだけを付ける。本番移行時は公開先と商品ごとのOGPを整備する。SNSへ自動投稿せず、共有画面を開く機能。
+
+
+v35：5つのSNSロゴはimages/social/。Font Awesome Brands由来、同フォルダのREADME・LICENSEを保持する。スマホでも5ロゴを常時表示。Threadsは投稿画面へ、Instagramは端末共有またはコピーと案内。専用のURL投稿機能を装わず、自動投稿しない。
