@@ -236,5 +236,24 @@
     "sourceUrl": "https://www.luna-luce.jp/item/flavor-104-101.html",
     "sourceDate": "2026-11-18",
     "photoPolicy": "本店ギャラリーに掲載された商品の原本。異なる商品の画像や共通バナーは含めない。"
+  },
+  "commerce": {
+    "sourceDate": "2026-11-12",
+    "source": "バックアップ商品CSV",
+    "brands": [
+      "FLAVOR"
+    ],
+    "speed": false,
+    "skus": {
+      "ecoflavor-104-101": {
+        "code": "0",
+        "quantity": null
+      }
+    },
+    "tiers": [],
+    "tiersVerified": false,
+    "shippingClass": "0",
+    "deliveryMethodsRaw": "a:1:{i:0;s:1:\"0\";}",
+    "tierNote": "数量別価格は本番設定の確認後に登録。未登録時は通常単価。"
   }
 }

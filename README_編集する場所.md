@@ -105,3 +105,24 @@ Luna-Luche直下のREADME_新サイトの編集場所.md、リニューアル設
 会員ページの配置はsite-src/pages/mypage.html、専用表示はpurchase-history.css、読取専用の表示・状態判定はpurchase-history.js。purchase-history-data.jsはすべて架空の注文と販売状態で、実在商品の実際の在庫を示さない。購入時のsnapshotと現在状態を分離。商品／SKU不明は確認中にし、売切れ・終了・不明へ再購入リンクを出さない。カート・注文・商品マスタへ書き込まない。本番の本人確認・Welcart標準履歴・実在庫の参照は未接続。
 
 現在の購入可否はSKU単位で参照し、商品全体の販売終了は明示状態として扱う。別SKUの在庫を使って再購入可能と判定しない。
+
+## 案内・会員保存・購入手続き（v38）
+
+| 変更内容 | 編集する場所 |
+|---|---|
+| 地域別送料・手数料・営業カレンダー | site-src/site-settings.json |
+| 商品の在庫状態・ブランド・スピード・数量別価格 | site-src/products/ID.json の commerce |
+| 読みもの・お知らせ1件 | site-src/editorial/entry-ID.json |
+| 各案内／フォーム本文 | site-src/pages/該当ページ.html |
+| 記事一覧・本文の型 | reading-page.js |
+| お気に入り・閲覧履歴・販売状態・価格の共通計算 | site-services-core.js |
+| 保存一覧・営業カレンダー・フォーム確認などの表示 | site-services-ui.js、site-services.css |
+| 購入手続きの型と確認表示 | site-src/pages/checkout.html、checkout-page.js |
+
+services-head／services-scriptは全ページ必須の共通部品。通常の商品編集で読み直さない。生成物site-settings.js・product-services-data.js・editorial-data.jsは直接変更しない。共通サービスの型は保護対象。今回の共通ヘッダー変更はリンク接続のみで、ロゴ・検索・大カテゴリの配置は保持。
+
+送料はverified:falseとfee:nullで未確定を表す。0円で代用しない。数量別価格はtiersVerified:trueと検証済みtiersを登録した商品だけ適用する。今回279商品の標準割引欄に有効値はなく、特別価格は未登録。WCEX Multi Price独自設定は未確認のため補完していない。在庫は2026-11-12のバックアップ状態であり現在の確約ではない。営業日は2026-11-20取得の本店公開設定で、毎年自動更新されるわけではない。
+
+お問い合わせ・ログイン・会員登録・アンケート・お仕立て入力・購入手続きは送信停止。sendingEnabled:false、serviceEndpoint:nullをビルドで必須にしている。単にフラグを変更して本番化しない。本番連携の制作条件.mdと本番接続_引継ぎ.mdを読み、WordPress/Welcartとサーバー側で認証・検証・料金再計算を実装してから切り替える。
+
+検査：node --test tools/*.test.cjs、node tools/build-site.cjs --check。その後5幅のluna-qaとvisual-check。通常の商品作業では対象IDのcommerceだけ読み、記事や全体テンプレートを再調査しない。

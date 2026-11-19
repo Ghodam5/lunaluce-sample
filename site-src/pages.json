@@ -306,5 +306,181 @@
     "bottomMyActive": "",
     "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
     "searchClose": "</button>"
+  },
+  "company.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "legal.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "privacy.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "survey.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "tailor-input.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "email-help.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "shipping.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "bulk-pricing.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "columns.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "news.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "article.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "brands.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "speed.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "login.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "register.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
+  },
+  "checkout.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>"
   }
 }

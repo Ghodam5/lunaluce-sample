@@ -104,5 +104,28 @@
     "pack": 1,
     "canDemo": false,
     "updated": "2026-05-07"
+  },
+  "commerce": {
+    "sourceDate": "2026-11-12",
+    "source": "バックアップ商品CSV",
+    "brands": [
+      "FLAVOR"
+    ],
+    "speed": false,
+    "skus": {
+      "fla505hanayaka2026": {
+        "code": "2",
+        "quantity": null
+      },
+      "fla505hanayaka2026-rito": {
+        "code": "2",
+        "quantity": null
+      }
+    },
+    "tiers": [],
+    "tiersVerified": false,
+    "shippingClass": "2",
+    "deliveryMethodsRaw": "a:1:{i:0;s:1:\"0\";}",
+    "tierNote": "数量別価格は本番設定の確認後に登録。未登録時は通常単価。"
   }
 }

@@ -414,5 +414,30 @@
     "sourceUrl": "https://www.luna-luce.jp/item/d-5as.html",
     "sourceDate": "2026-11-18",
     "photoPolicy": "本店ギャラリーに掲載された商品の原本。異なる商品の画像や共通バナーは含めない。"
+  },
+  "commerce": {
+    "sourceDate": "2026-11-12",
+    "source": "バックアップ商品CSV",
+    "brands": [],
+    "speed": false,
+    "skus": {
+      "asd5-a": {
+        "code": "0",
+        "quantity": null
+      },
+      "asd5-b": {
+        "code": "0",
+        "quantity": null
+      },
+      "asd5-c": {
+        "code": "0",
+        "quantity": null
+      }
+    },
+    "tiers": [],
+    "tiersVerified": false,
+    "shippingClass": "2",
+    "deliveryMethodsRaw": "a:2:{i:0;s:1:\"0\";i:1;s:1:\"1\";}",
+    "tierNote": "数量別価格は本番設定の確認後に登録。未登録時は通常単価。"
   }
 }

@@ -13,9 +13,10 @@ if(!bar){
  const anchor=heading.closest('.page-h,.guide-hero,.feature-heading')||heading;
  bar=document.createElement('div');bar.className='page-share';bar.dataset.sharePage='page';anchor.after(bar);
 }
-const privatePage=['sample-cart.html','mypage.html','index.html'].includes(file);
+const privatePage=['sample-cart.html','mypage.html','index.html','checkout.html','login.html','register.html','contact.html','survey.html','tailor-input.html'].includes(file);
 const url=new URL(product?'item.html':privatePage?'top.html':file,base);
 if(product)url.searchParams.set('id',String(product.id));
+if(file==='article.html'&&/^entry-\d+$/.test(query.get('id')||''))url.searchParams.set('id',query.get('id'));
 if(file==='category.html')for(const key of ['g','m','s']){const val=query.get(key);if(val&&/^[a-z0-9-]+$/i.test(val))url.searchParams.set(key,val);}
 const title=privatePage?'ルナルーチェ｜名入れギフト・ブライダルグッズ':(document.querySelector('main h1,.review-wrap h1,h1')?.textContent.trim()||document.title)+'｜ルナルーチェ';
 bar.setAttribute('role','group');bar.setAttribute('aria-label',product?'この商品をシェア':'このページをシェア');

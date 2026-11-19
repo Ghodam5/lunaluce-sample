@@ -46,7 +46,7 @@ function renderCart(){
  document.getElementById('cart-options').hidden=!CART.length&&!campaign;document.getElementById('cart-summary').hidden=!CART.length&&!campaign;
  const empty=document.querySelector('.empty-cart');if(empty)empty.hidden=!!campaign;
  document.getElementById('order-check').hidden=true;
- if(!hydrating&&typeof OP!=='undefined')saveOrder();
+ if(!hydrating&&typeof OP!=='undefined'){saveOrder();if(window.ShopServices){const state=DemoCart.readOrder();DemoCart.saveOrder(Object.assign({},state,{previewQuote:{total:total,valid:problems.length===0,fingerprint:ShopServices.signature(DemoCart.read(),state.options)}}));}}
 }
 function lineFor(el){const node=el.closest('.ci');return node&&CART.find(c=>c.id===node.dataset.id)}
 function updateQty(c,value){

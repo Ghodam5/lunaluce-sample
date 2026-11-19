@@ -4,10 +4,11 @@ const read=p=>fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n');
 const digest=p=>crypto.createHash('sha256').update(read(p)).digest('hex');
 const args=new Set(process.argv.slice(2));
 require('./products.cjs').build(args.has('--check'));
+require('./site-content.cjs').build(args.has('--check'));
 const version=JSON.parse(read(path.join(src,'version.json'))).version;
 if(!Number.isSafeInteger(version)||version<1)throw Error('Invalid version');
 const pages=JSON.parse(read(path.join(src,'pages.json')));
-const sharedFiles=fs.readdirSync(path.join(src,'shared')).filter(f=>f.endsWith('.html')).map(f=>'site-src/shared/'+f).concat(['style.css','header-scroll.js','hscroll.js','catico.js','notes-resize.css','notes-resize.js','navigation-position.js','page-share.css','page-share.js']).concat(fs.readdirSync(path.join(root,'images/social')).filter(f=>f.endsWith('.svg')).map(f=>'images/social/'+f));
+const sharedFiles=fs.readdirSync(path.join(src,'shared')).filter(f=>f.endsWith('.html')).map(f=>'site-src/shared/'+f).concat(['style.css','header-scroll.js','hscroll.js','catico.js','notes-resize.css','notes-resize.js','navigation-position.js','page-share.css','page-share.js','site-services.css','site-services-core.js','site-services-ui.js']).concat(fs.readdirSync(path.join(root,'images/social')).filter(f=>f.endsWith('.svg')).map(f=>'images/social/'+f));
 const hashes=Object.fromEntries(sharedFiles.sort().map(f=>[f,digest(path.join(root,f))]));
 const lock=path.join(src,'shared.lock.json');
 if(args.has('--update-shared-lock'))fs.writeFileSync(lock,JSON.stringify(hashes,null,2)+'\n');
@@ -24,6 +25,7 @@ function render(text,vars,stack=[]){
 let stale=[];for(const [file,settings] of Object.entries(pages)){
  if(path.basename(file)!==file||!file.endsWith('.html'))throw Error('Invalid page path');
  const source=read(path.join(src,'pages',file));
+ if(!source.includes('{{> services-head}}')||!source.includes('{{> services-script}}'))throw Error('サイト共通サービスが不足しています: '+file);
  if(!source.includes('{{> share-head}}')||!source.includes('{{> share-script}}'))throw Error('SNS共通パーツが不足しています: '+file);
  const out=render(source,{...settings,version});
  const dest=path.join(root,file);

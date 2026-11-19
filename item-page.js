@@ -18,7 +18,7 @@ if(detail){
  ProductDetail.bind(host,p,detail);
 }
 var q=document.getElementById('qq'),select=document.getElementById('product-sku');
-function unit(){return p.skus[select?Number(select.value):0]?p.skus[select?Number(select.value):0].price:p.price}
+function unit(){return window.ShopServices?ShopServices.unit(p,select?Number(select.value):0,Number(q.value)||1):p.price}
 function update(){var n=Number(q.value),valid=Number.isInteger(n)&&n>0&&n<=999,total=valid?n*unit():0;document.getElementById('product-price').innerHTML=money(unit())+'<small> 税込'+(p.pack===50?'／50個セット':'')+'</small>';document.getElementById('sum2').textContent=valid?money(total):'数量を確認してください';document.getElementById('bar2').style.width=Math.min(100,total/20000*100)+'%';document.getElementById('ship2').textContent=total>=20000?'送料無料になりました':'あと'+money(20000-total)+'で送料無料';document.getElementById('spp').innerHTML=valid?money(total)+'<small>税込・'+n+(p.pack===50?'セット':'個')+'</small>':'数量を確認してください'}
 host.querySelectorAll('[data-q]').forEach(function(b){b.addEventListener('click',function(){q.value=Math.max(1,Math.min(999,(Number(q.value)||1)+Number(b.dataset.q)));update()})});q.addEventListener('input',update);if(select)select.addEventListener('change',update);
 var minimum=document.getElementById('use-minimum');if(minimum)minimum.addEventListener('click',function(){q.value=p.minq;update()});
