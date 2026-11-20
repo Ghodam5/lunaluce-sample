@@ -142,3 +142,7 @@ services-head／services-scriptは全ページ必須の共通部品。通常の�
 
 ## スクロール量と同じ速度の収納（v42）
 header-scroll.jsはヘッダー直前の高さ0マーカーを文書位置の基準とし、移動距離をロゴ高・カテゴリー高へ順番に割り当てる。各クリップ枠と中身を同じpx数だけ上へ動かす。固定時間の補間は行わない。スペーサーで文書高を保持し、同じscrollYで同じ見え方となる。復帰は同じ関数の逆。CSSのmobile-logo-slot／mobile-category-slotで管理し、PCはdisplay:contents。
+
+
+## トップの縦長特集カードとログイン（v43）
+1枚目の写真・コピー・説明・既存CTAはsite-src/pages/top.htmlのmain-bn。続く3枚の画像・文言・一覧リンク・4商品IDはsite-src/home-promos.jsonで個別変更する。商品名・画像はShopCatalogから参照し複製しない。home-promos-data.jsは自動生成、直接編集しない。型はhome-promos.js／home-promos.css。自動送りなし、ネイティブ横スクロール・矢印・キーボード対応。ユーザー別のおすすめや実際の割引を装わない。スマホのログイン入口はshared/header.htmlとstyle.cssのv43節（共通保護対象）。実会員認証は引き続き未接続。
