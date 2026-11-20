@@ -1,6 +1,8 @@
-/* 先行5商品の入力見本。確定時だけ元の入力欄へ値を渡し、既存カートの保存を使う。 */
+/* 全ページ共通の数量ホイール。確定時だけ既存入力へ渡す。日付は従来の対象条件を保持。 */
 (function(){
 'use strict';
+if(window.PilotInputs)return;
+var quantitySelector='input[data-quantity-picker],.qty input:not([type=checkbox]):not([type=radio]),input[name=quantity]';
 var ids=['47484','58190','42902','21013','72349'],active=null,dialog=null,wheels=[],oldOverflow='';
 function target(id){return ids.indexOf(String(id))>=0}
 function parseDate(value){
@@ -42,7 +44,7 @@ function open(input,trigger,kind){
  oldOverflow=document.documentElement.style.overflow;document.documentElement.style.overflow='hidden';dialog.showModal();
  if(kind==='quantity'){
   var min=Number(input.min)||1,max=Number(input.max)||999,n=Math.max(min,Math.min(max,Number(input.value)||min));
-  var direct=dialog.querySelector('.picker-direct');direct.innerHTML='<label for="picker-number">直接入力（'+min+'〜'+max+'）</label><input id="picker-number" type="number" inputmode="numeric" min="'+min+'" max="'+max+'" step="1" value="'+n+'"><div class="picker-quick" aria-label="よく使う数量">'+[10,20,30,50,100].filter(function(v){return v>=min&&v<=max}).map(function(v){return '<button type="button" data-number="'+v+'">'+v+'</button>'}).join('')+'</div>';
+  var direct=dialog.querySelector('.picker-direct');direct.innerHTML='<details class="picker-keyboard"><summary>キーボードで直接入力する</summary><label for="picker-number">直接入力（'+min+'〜'+max+'）</label><input id="picker-number" type="number" inputmode="numeric" min="'+min+'" max="'+max+'" step="1" value="'+n+'"></details><div class="picker-quick" aria-label="よく使う数量">'+[10,20,30,50,100].filter(function(v){return v>=min&&v<=max}).map(function(v){return '<button type="button" data-number="'+v+'">'+v+'</button>'}).join('')+'</div>';
   var number=direct.querySelector('input'),q=wheel('個数',range(min,max),n,function(v){number.value=v});
   number.addEventListener('input',function(){var v=Number(number.value);if(Number.isInteger(v)&&v>=min&&v<=max)q.go(v)});
   direct.querySelectorAll('button').forEach(function(b){b.onclick=function(){number.value=b.dataset.number;q.go(+b.dataset.number)}});
@@ -68,8 +70,8 @@ function commit(){
  active.input.value=value;active.input.dispatchEvent(new Event('input',{bubbles:true}));active.input.dispatchEvent(new Event('change',{bubbles:true}));dialog.close();scan();
 }
 function enhanceQuantity(input){
- if(input.dataset.pilotInput)return;input.dataset.pilotInput='quantity';var box=input.closest('.qty');box.classList.add('pilot-qty');
- var button=document.createElement('button');button.type='button';button.className='pilot-quantity-button';button.setAttribute('aria-haspopup','dialog');input.before(button);button.onclick=function(){open(input,button,'quantity')};
+ if(input.dataset.pilotInput)return;input.dataset.pilotInput='quantity';var box=input.closest('.qty');if(!box){box=document.createElement('span');box.className='quantity-picker-slot';input.before(box);box.appendChild(input);}box.classList.add('pilot-qty');
+ var button=document.createElement('button');button.type='button';button.className='pilot-quantity-button';button.setAttribute('aria-haspopup','dialog');input.before(button);input._quantityTrigger=button;button.onclick=function(){open(input,button,'quantity')};
  function sync(){button.textContent=(input.value||'1')+' ▾';button.setAttribute('aria-label','数量 '+(input.value||'1')+'。上下に回して選ぶ')}
  input.addEventListener('input',sync);input.addEventListener('change',sync);box.addEventListener('click',function(){setTimeout(sync,0)});var minimum=document.getElementById('use-minimum');if(minimum)minimum.addEventListener('click',sync);sync();
 }
@@ -79,9 +81,17 @@ function enhanceDate(input){
  function validate(){var bad=input.value&&!parseDate(input.value);input.setCustomValidity(bad?'実在する年月日を入力してください。':'');input.setAttribute('aria-invalid',String(!!bad));note.textContent=bad?'日付を確認してください。例：2027.04.18':'例：2027.04.18 または 20270418。印字・刺繍する日付です。';note.classList.toggle('invalid',!!bad)}input.addEventListener('input',validate);validate();
 }
 function scan(){
- var p=new URLSearchParams(location.search).get('id');if(document.getElementById('product-buy')){var q=document.getElementById('qq');if(q)enhanceQuantity(q)}
+ document.querySelectorAll(quantitySelector).forEach(enhanceQuantity);if(!window.ShopCatalog)return;
  document.querySelectorAll('.ci[data-product]').forEach(function(row){var p=ShopCatalog.get(row.dataset.product);row.querySelectorAll('.qty input[type=number]').forEach(enhanceQuantity);if(!target(row.dataset.product)||!p?.spec)return;row.querySelectorAll('.ff[data-i]').forEach(function(field){var f=p.spec.fields[Number(field.dataset.i)],input=field.querySelector('input:not([type=checkbox]):not([type=radio])');if(f&&f.role==='d'&&f.part==='text'&&input)enhanceDate(input)})});
 }
 window.PilotInputs={parseDate:parseDate,dateError:dateError};
-scan();var scheduled=false;new MutationObserver(function(){if(!scheduled){scheduled=true;requestAnimationFrame(function(){scheduled=false;scan()})}}).observe(document.getElementById('sample-item')||document.getElementById('cart-items')||document.querySelector('main')||document.body,{childList:true,subtree:true});
+function tappedQuantity(e){
+ if(!matchMedia('(max-width:1023px)').matches)return;
+ var input=e.target.matches?.(quantitySelector)?e.target:null,label=e.target.closest?.('label');
+ if(!input&&label){var candidate=label.htmlFor?document.getElementById(label.htmlFor):label.querySelector(quantitySelector);if(candidate?.matches(quantitySelector))input=candidate;}
+ if(!input||input.disabled)return;e.preventDefault();enhanceQuantity(input);if(!dialog?.open)open(input,input._quantityTrigger,'quantity');
+}
+document.addEventListener('pointerdown',tappedQuantity,{capture:true,passive:false});
+document.addEventListener('touchstart',tappedQuantity,{capture:true,passive:false});
+scan();document.addEventListener('DOMContentLoaded',scan,{once:true});var scheduled=false;new MutationObserver(function(){if(!scheduled){scheduled=true;requestAnimationFrame(function(){scheduled=false;scan()})}}).observe(document.documentElement,{childList:true,subtree:true});
 })();

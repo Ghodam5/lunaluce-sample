@@ -214,3 +214,6 @@ walking-cat.js/cssを差替え、site-announcements.jsが帯のannouncement-bar�
 
 ## 猫の方向・同速・非重複（v54・現在の方式）
 猫はannouncement-track内の専用96px枠へ戻す。文字と親の移動を共用するので速度差が生じない。SVGを左右反転し左向き。catPathのXは80で固定し、枠内の上下動だけ残す。v53のabsolute重ね配置と画面横断は撤回。新規の告知も同じ型で猫のための余白を確保する。
+
+## 全ページの数量ホイール（v55）
+node tools/components.cjs show quantity-picker。先行商品／詳細／特集という分岐で部品を読み分けない。services-headがCSSとJSを先読みし、documentElementを監視。新しい数量はdata-quantity-pickerを付ける。name=quantityと既存qty入力も同じ部品に入る。モバイルのpointerdown／touchstartでnative focusを止め、ラベルタップも同じホイールを開く。直接入力はdetailsを開いてから。動的な並べ替え後も自動適用する。

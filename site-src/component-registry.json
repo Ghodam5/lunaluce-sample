@@ -162,6 +162,16 @@
         "walking-cat.css"
       ],
       "edit": "v54：猫専用96×44pxの枠を文字の間に置き、文字と同じannouncement-trackで左向き・同速移動。重ね配置と独立した横移動を撤回。提供SVGの形と局所動作、停止・減動作は保持。"
+    },
+    "quantity-picker": {
+      "resources": [
+        "pilot-inputs.js",
+        "pilot-inputs.css",
+        "feature-page.js",
+        "cart-page.js",
+        "site-src/shared/services-head.html"
+      ],
+      "edit": "全ページ共通のスマホ数量ホイール。data-quantity-pickerを数量だけに付ける。headで先に読み、描画直後のpointer/touchを捕捉し数値欄へfocusさせない。直接キーボード入力は明示的に開く。出生体重・郵便番号・金額・年は対象外。"
     }
   }
 }
