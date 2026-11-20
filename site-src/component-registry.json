@@ -59,7 +59,7 @@
         "rail-controls.css",
         "rail-controls.js"
       ],
-      "edit": "48×60pxの角丸四角。SVG中央、淡い緑のぼかし、左右中央へ重ねる。商品編集では触らない。 共通の操作後減光：動作中は明瞭、静止1.2秒で18%（端10%）。ホバーで静止しても薄く、再操作で復帰。キーボードfocus-visibleは明瞭。"
+      "edit": "48×60pxの角丸四角。SVG中央、淡い緑のぼかし、左右中央へ重ねる。商品編集では触らない。 共通の操作後減光：動作中は明瞭、静止1.2秒で18%（端10%）。ホバーで静止しても薄く、再操作で復帰。キーボードfocus-visibleは明瞭。 連続タップ拡大をtouch-action:manipulationで抑制。"
     },
     "header": {
       "resources": [
@@ -113,6 +113,13 @@
         "notes-resize.css"
       ],
       "edit": "記入例は赤字・印刷しない。実入力は保持、右下の拡大つまみを使う。同じ型を再利用。"
+    },
+    "touch": {
+      "resources": [
+        "style.css",
+        "rail-controls.css"
+      ],
+      "edit": "共通のタッチ操作。htmlと標準操作部品はmanipulationでダブルタップ拡大を抑え、縦横スクロール・ピンチを保持。user-scalable=noや全touchendキャンセルは使わない。商品写真ビューアと数量ホイールは個別の操作を保持。"
     }
   }
 }

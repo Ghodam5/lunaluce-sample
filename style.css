@@ -1205,3 +1205,7 @@ input,select,textarea{font-size:16px!important}
 }
 @keyframes member-glint{0%,12%{left:-75%;opacity:0}16%{opacity:1}30%{left:135%;opacity:1}31%,100%{left:135%;opacity:0}}
 @media(prefers-reduced-motion:reduce){.mobile-login::after{animation:none;display:none}}
+
+/* v48：連続タップによるページ拡大だけを抑制。縦横パンと2本指拡大は保持。 */
+html{touch-action:manipulation}
+:where(button,a,summary,[role="button"]){touch-action:manipulation}

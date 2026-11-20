@@ -26,3 +26,6 @@
 .rail-controls-active .round-arrow:disabled,.rail-controls-active.at-start .rail-nav.prev,.rail-controls-active.at-end .rail-nav.next{opacity:.3}
 .round-arrow:focus-visible{opacity:1;outline:3px solid var(--teal);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.round-arrow{transition:none}}
+
+/* 矢印を続けてタップしてもページ拡大に解釈させない。 */
+.round-arrow{touch-action:manipulation}

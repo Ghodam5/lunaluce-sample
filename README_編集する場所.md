@@ -186,3 +186,6 @@ rail-controls.js/cssがSVGを円の中央へ配置し、商品列・特集の上
 
 ## 矢印の操作後減光（v47・共通仕様）
 rail-controls.css/jsに一元化。操作中100%、静止1.2秒で18%、端は静止10%／操作中30%。静止したホバーでも薄くなる。キーボード選択はfocus-visibleで100%、reduced-motionは即時切替。今後も既存のrail-wrap／home-promosと矢印部品を呼び出す。部品ごとに別のタイマーやCSSを追加しない。
+
+## スマホの連続タップ拡大（v48）
+style.cssのhtmlと標準ボタン／リンク等、rail-controls.cssの矢印をtouch-action:manipulationに統一。ダブルタップ拡大だけ抑え、パンとピンチを保持。ビューアのtouch-action:noneや数量ホイールのpan-yは独立した操作仕様。入力欄は既存のスマホ16px以上を保持。実機Safariの版による差はエミュレーションだけで保証しない。部品台帳show touchで参照する。
