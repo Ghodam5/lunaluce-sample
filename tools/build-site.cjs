@@ -8,7 +8,7 @@ require('./site-content.cjs').build(args.has('--check'));
 const version=JSON.parse(read(path.join(src,'version.json'))).version;
 if(!Number.isSafeInteger(version)||version<1)throw Error('Invalid version');
 const pages=JSON.parse(read(path.join(src,'pages.json')));
-const sharedFiles=fs.readdirSync(path.join(src,'shared')).filter(f=>f.endsWith('.html')).map(f=>'site-src/shared/'+f).concat(['style.css','header-scroll.js','hscroll.js','catico.js','notes-resize.css','notes-resize.js','navigation-position.js','page-share.css','page-share.js','site-services.css','site-services-core.js','site-services-ui.js']).concat(fs.readdirSync(path.join(root,'images/social')).filter(f=>f.endsWith('.svg')).map(f=>'images/social/'+f));
+const sharedFiles=fs.readdirSync(path.join(src,'shared')).filter(f=>f.endsWith('.html')).map(f=>'site-src/shared/'+f).concat(['style.css','header-scroll.js','hscroll.js','catico.js','notes-resize.css','notes-resize.js','navigation-position.js','page-share.css','page-share.js','site-services.css','site-services-core.js','site-services-ui.js','rail-controls.css','rail-controls.js']).concat(fs.readdirSync(path.join(root,'images/social')).filter(f=>f.endsWith('.svg')).map(f=>'images/social/'+f));
 const hashes=Object.fromEntries(sharedFiles.sort().map(f=>[f,digest(path.join(root,f))]));
 const lock=path.join(src,'shared.lock.json');
 if(args.has('--update-shared-lock'))fs.writeFileSync(lock,JSON.stringify(hashes,null,2)+'\n');

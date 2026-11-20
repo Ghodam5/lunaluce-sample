@@ -150,3 +150,16 @@ header-scroll.jsはヘッダー直前の高さ0マーカーを文書位置の基
 
 ## ログインの光とカード色（v44）
 検索とログインの距離はstyle.cssのmobile-loginのmargin-leftで確保。キランはmobile-login::afterのmember-glintのみ、6秒に1回。prefers-reduced-motionでは停止。カードのthemeはhome-promos.json（rose／mint／lavender）、1枚目はcream。home-promos.cssで淡色と細い上枠を管理する。スマホはカード幅を画面内の幅より58px小さくし、隣を46pxほど見せる。写真原本と商品リンクは変更しない。
+
+
+## 特集を1枚ずつ追加する（v45・こちらが現在の方式）
+- 3つの特集はsite-src/home-promos/<ID>.jsonの独立した部品。旧home-promos.jsonの配列方式は分割済み。
+- 最初の写真・コピー・2ボタンはsite-src/shared/home-promo-intro.htmlの独立部品。外枠や共通ヘッダーを読み直さず、この部品だけ編集する。
+- node tools/promos.cjs list／show IDで必要な特集だけ確認する。
+- tools/templates/promo.jsonを新規ファイルへコピーし、固有ID・文言・画像・一覧リンク・4商品ID・themeを設定。初期値active:falseなので勝手に公開されない。
+- node tools/promos.cjs add 新規JSONで追加。内容を確認してactive:trueへ変更してから全体ビルド。
+- 並び順はsite-src/home-promos/manifest.jsonの順（先頭の案内カードは別）。archive IDで停止、restore IDで復帰。元JSONは削除しない。
+- 最後にnode tools/build-site.cjsで生成。重複ID、4商品でない設定、無効な商品や画像／リンクを拒否する。商品マスタや元DBを変更しない。実施していないセールや値引きを記載しない。
+
+## 丸い矢印の共通部品（v45）
+rail-controls.js/cssがSVGを円の中央へ配置し、商品列・特集の上下左右の矢印で共用する。文字の＜＞を直接調整しない。共通保護対象で、商品・特集の追加時に編集しない。home-promos.jsはPCのマウスドラッグと離した後のスライド、左右ボタン、タッチ・キー操作を担当。動きを減らす設定を尊重する。左右矢印にはPC専用の余白を確保して本文を覆わない。

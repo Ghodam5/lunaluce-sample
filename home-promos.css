@@ -16,3 +16,6 @@
 @media(min-width:1024px){.home-promo-rail{grid-auto-columns:calc((100% - 64px)/2)}}
 
 .home-promo-rail>.main-bn{border-top:4px solid #e5c58c}.home-promo-card[data-theme="rose"]{border-top:4px solid #e6adb9}.home-promo-card[data-theme="mint"]{border-top:4px solid #9bc9ac}.home-promo-card[data-theme="lavender"]{border-top:4px solid #bfafd9}
+
+.home-promo-card[data-theme="cream"]{background:#fff5e8;border-color:#ead7ba;--promo-accent:#85622f;border-top:4px solid #e5c58c}.home-promo-card:hover,.home-promo-rail>.main-bn:hover{box-shadow:inset 0 0 0 1px rgba(47,169,163,.2)}
+@media(min-width:1024px){.home-promo-controls>span:first-child::after{content:"ドラッグ・矢印で切り替え"}}
