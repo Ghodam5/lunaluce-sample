@@ -510,5 +510,19 @@
     "pageTitle": "おすすめ特集",
     "pageStyles": "<link rel=\"stylesheet\" href=\"home-promos.css?v={{version}}\">",
     "pageScripts": "<script src=\"home-promos-data.js?v={{version}}\"></script><script src=\"ranking-data.js?v={{version}}\"></script><script src=\"home-collections.js?v={{version}}\"></script>"
+  },
+  "name-preview.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header data-shared-menu class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>",
+    "pageTitle": "名入れのお試し",
+    "pageStyles": "<link rel=\"stylesheet\" href=\"name-preview.css?v={{version}}\">",
+    "pageScripts": "<script src=\"name-preview.js?v={{version}}\"></script>"
   }
 }

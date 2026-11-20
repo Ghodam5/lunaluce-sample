@@ -192,3 +192,6 @@ style.cssのhtmlと標準ボタン／リンク等、rail-controls.cssの矢印�
 
 ## 名入れプレビューお試し（v49）
 node tools/components.cjs show name-preview。本文はsite-src/sections/top/name-preview.html、見本の見え方はname-preview.css、切替と入力反映はname-preview.js。top.htmlへ章として差し込む。入力はDOM内のtextContentだけで表示し、カート・保存・送信と接続しない。4つのdata-preview-typeとpanelのIDを一致させる。席次表は架空の固定レイアウトで編集／印刷機能ではない。共通ヘッダーや商品データを編集しない。
+
+## 名入れお試しの専用ページと背景（v50・現在の配置）
+トップ本文には表示せず、site-src/shared/home-promo-intro.htmlのCTAからname-preview.htmlへ。共通ページテンプレートで生成、本文枠はsite-src/sections/pages/name-preview.html、共用プレビュー本文はsite-src/shared/name-preview.html。背景SVG3点はimages/name-preview/、CSSのdata-preview-backgroundとJSの許可IDを一致させる。SVGは装飾だけの編集可能な見本。上下の戻るリンクはtop.htmlを指定し、履歴がない直リンクでも機能する。入力／背景はこのページ内だけ保持、保存・カート連携しない。旧v49のトップ章の配置は今回の専用ページ方式に置換。

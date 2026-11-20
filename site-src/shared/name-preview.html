@@ -10,8 +10,8 @@
  <div class="namer">
   <div class="pv preview-stage">
    <h3 data-preview-heading>ミニシールの見本</h3>
-   <div class="preview-art preview-seal" data-preview-panel="seal" aria-label="ミニシールの見本">
-    <span class="preview-flower" aria-hidden="true">✧</span><p class="preview-message" data-preview-value="message">Thank you</p><p class="preview-names" data-preview-value="names">Taro &amp; Hanako</p><p class="preview-date" data-preview-value="date">2027.04.18</p>
+   <div class="preview-art preview-seal" data-preview-panel="seal" data-preview-background="simple" aria-label="ミニシールの見本">
+    <p class="preview-message" data-preview-value="message">Thank you</p><p class="preview-names" data-preview-value="names">Taro &amp; Hanako</p><p class="preview-date" data-preview-value="date">2027.04.18</p>
    </div>
    <div class="preview-art preview-thanks" data-preview-panel="thanks" aria-label="サンクスカードの見本" hidden>
     <span class="preview-kicker">WITH OUR THANKS</span><p class="preview-message" data-preview-value="message">Thank you</p><p class="preview-copy">大切な一日を、ともに過ごしてくださる皆さまへ。</p><p class="preview-names" data-preview-value="names">Taro &amp; Hanako</p><p class="preview-date" data-preview-value="date">2027.04.18</p>
@@ -30,6 +30,11 @@
   <div class="form">
    <h3>見本を選んで、<br>名入れを試してみませんか。</h3>
    <p class="lead" data-preview-description>メッセージとお名前を、小さなシールの見本に入れてみましょう。</p>
+   <fieldset class="preview-backgrounds" data-preview-background-field><legend>ミニシールの背景</legend><div class="preview-background-options">
+    <button type="button" data-preview-bg="simple" aria-pressed="true"><img src="images/name-preview/seal-simple.svg" alt="" width="48" height="48"><span>シンプル</span></button>
+    <button type="button" data-preview-bg="floral" aria-pressed="false"><img src="images/name-preview/seal-floral.svg" alt="" width="48" height="48"><span>フラワー</span></button>
+    <button type="button" data-preview-bg="stars" aria-pressed="false"><img src="images/name-preview/seal-stars.svg" alt="" width="48" height="48"><span>星あかり</span></button>
+   </div><small>お試し用の背景イメージです。</small></fieldset>
    <div class="field" data-preview-message-field><label for="preview-message">メッセージ</label><select id="preview-message" data-preview-input="message"><option>Thank you</option><option>Happy Wedding</option><option>With Love</option><option>ありがとう</option></select></div>
    <div class="field"><label for="preview-names">新郎新婦のお名前・贈り主名</label><input id="preview-names" data-preview-input="names" value="Taro &amp; Hanako" maxlength="40" autocomplete="off" spellcheck="false"></div>
    <div class="field" data-preview-guest-field hidden><label for="preview-guest">ゲストのお名前（敬称なし）</label><input id="preview-guest" data-preview-input="guest" value="山田 花子" maxlength="30" autocomplete="off"><small>「様」は見本に自動で付けます。</small></div>

@@ -1,5 +1,5 @@
 <!doctype html><html lang="ja"><head>{{> navigation-head}}<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>トップ｜ルナルーチェ（案4サンプル）</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Cormorant+Garamond:wght@500;600&family=Great+Vibes&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v={{version}}"><link rel="stylesheet" href="features.css?v={{version}}">{{> notes-head}}<link rel="stylesheet" href="home-guides.css?v={{version}}">{{> share-head}}{{> services-head}}<link rel="stylesheet" href="home-promos.css?v={{version}}"><link rel="stylesheet" href="name-preview.css?v={{version}}"></head>
+<title>トップ｜ルナルーチェ（案4サンプル）</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Cormorant+Garamond:wght@500;600&family=Great+Vibes&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v={{version}}"><link rel="stylesheet" href="features.css?v={{version}}">{{> notes-head}}<link rel="stylesheet" href="home-guides.css?v={{version}}">{{> share-head}}{{> services-head}}<link rel="stylesheet" href="home-promos.css?v={{version}}"></head>
 <body class=""><div class="sample-bar">サンプル（案4デザイン・スマホが基本）｜<a href="index.html">説明と見比べ</a></div>
 {{> shipping}}
 {{> header}}
@@ -38,7 +38,6 @@ rail.querySelectorAll('.prod').forEach(function(e){e.hidden=true;});
 show.forEach(function(k){var e=rail.querySelector('.prod[data-i="'+k+'"]');if(e){e.hidden=false;rail.insertBefore(e,more);}});
 var m=now.getUTCMonth()+1,dd=now.getUTCDate(),s=r.querySelector('.pd-date');if(s)s.textContent=m+'月'+dd+'日のおすすめ';})();</script>
 {{@ top/flavor}}
-{{@ top/name-preview}}
 {{@ top/parents}}
 <section class="sec recommended-features" hidden data-placement-id="legacy-recommendations"><div class="sh"><h2>おすすめ特集</h2></div><div class="recommended-grid"><a href="bridal-bag.html"><img src="images/bridal-bag-intro.png" alt="" loading="lazy"><b>ブライダルバッグ</b></a><a href="preparedness-gift.html"><img src="images/feature-emergency.jpg" alt="" loading="lazy"><b>防災・備蓄ギフト</b></a><a href="neko.html"><img src="images/feature-neko.png" alt="" loading="lazy"><b>にゃんこモチーフ</b></a><a href="new-arrivals.html"><img src="images/feature-new.png" alt="" loading="lazy"><b>新着商品</b></a><a href="sale.html"><img src="images/feature-sale.png" alt="" loading="lazy"><b>数量限定・特価商品</b></a></div></section><section class="sec" hidden data-placement-id="legacy-season-strip"><div class="sh"><h2>季節の特集</h2><a href="category.html?g=season">特集一覧 →</a></div><div class="season">
  <a class="ss" href="category.html?g=season"><div class="ph"><img src="images/kashi-xmas.jpg" alt="" loading="lazy"></div><div class="t">クリスマスのプチギフト<small>12月の会・差し入れに</small></div></a>
@@ -140,5 +139,5 @@ function fit(){const show=tb&&getComputedStyle(tb).display!=='none';
  if(bb)R.style.setProperty('--buyh',bb.getBoundingClientRect().height+'px');}
 fit();window.addEventListener('load',fit);window.addEventListener('resize',fit);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);})();
-</script><script src="name-preview.js?v={{version}}"></script><script>
+</script><script>
 </script><script src="catico.js?v={{version}}"></script><script src="hscroll.js?v={{version}}"></script><script src="data.js?v={{version}}"></script><script src="feature-data.js?v={{version}}"></script><script src="product-data.js?v={{version}}"></script><script src="catalog.js?v={{version}}"></script><script src="campaign-data.js?v={{version}}"></script><script src="campaign-rules.js?v={{version}}"></script><script src="demo-cart.js?v={{version}}"></script><script src="header-scroll.js?v={{version}}"></script>{{> notes-script}}{{> share-script}}{{> services-script}}<script src="ranking-data.js?v={{version}}"></script><script src="home-collections.js?v={{version}}"></script><script src="home-promos-data.js?v={{version}}"></script><script src="home-promos.js?v={{version}}"></script></body></html>
