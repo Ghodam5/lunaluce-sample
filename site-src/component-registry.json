@@ -117,9 +117,10 @@
     "touch": {
       "resources": [
         "style.css",
-        "rail-controls.css"
+        "rail-controls.css",
+        "touch-guard.js"
       ],
-      "edit": "共通のタッチ操作。htmlと標準操作部品はmanipulationでダブルタップ拡大を抑え、縦横スクロール・ピンチを保持。user-scalable=noや全touchendキャンセルは使わない。商品写真ビューアと数量ホイールは個別の操作を保持。"
+      "edit": "共通のタッチ操作。htmlと標準操作部品はmanipulationでダブルタップ拡大を抑え、縦横スクロール・ピンチを保持。user-scalable=noや全touchendキャンセルは使わない。商品写真ビューアと数量ホイールは個別の操作を保持。 旧iOS対策の単指連続タップガード。静止短タップのみ二度目のブラウザ既定処理を抑え、ボタンの二度目のclickは1回再現。ピンチ・長押し・スクロール・商品写真ビューアは妨げない。"
     },
     "name-preview": {
       "resources": [
@@ -128,9 +129,30 @@
         "site-src/sections/pages/name-preview.html",
         "name-preview.css",
         "name-preview.js",
-        "images/name-preview"
+        "images/name-preview",
+        "site-src/seal-preview-choices.json",
+        "site-src/paper-preview-evidence.json",
+        "images/seal-originals"
       ],
-      "edit": "専用name-preview.html。トップカードから開く。4種類のお試しとシール背景3種。共通プレビュー本文・CSS・JSのみ編集、注文／保存／送信なし。新規背景はSVGを独立資産にし既存商品写真と区別する。"
+      "edit": "サンクスカードは提供終了のため見本から除外。ミニシールはカートと同じ59図柄。元画像の印字と入力内容の別枠を区別、元解像度以上の細部を保証しない。席札／席次表はバックアップの手作りテンプレート方式を根拠にした無地の配置見本。"
+    },
+    "saved-products": {
+      "resources": [
+        "saved-products-rail.js",
+        "saved-products-rail.css",
+        "site-services-core.js"
+      ],
+      "edit": "トップと商品ページの共通タブ。ブラウザのlocalStorage内のIDだけ保持し会員登録不要。スマホ3列、共通矢印と横操作。"
+    },
+    "announcements": {
+      "resources": [
+        "site-src/site-notices.json",
+        "site-announcements.js",
+        "site-announcements.css",
+        "site-src/shared/shipping.html",
+        "images/malls"
+      ],
+      "edit": "上部告知はID・文言・内部リンク・日本時間の掲載期間をJSONで編集しbuild。猫とスクロールは停止可能、動きを減らす設定で静止。OMSからの公開接続は未実装。"
     }
   }
 }

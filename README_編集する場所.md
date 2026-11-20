@@ -195,3 +195,13 @@ node tools/components.cjs show name-preview。本文はsite-src/sections/top/nam
 
 ## 名入れお試しの専用ページと背景（v50・現在の配置）
 トップ本文には表示せず、site-src/shared/home-promo-intro.htmlのCTAからname-preview.htmlへ。共通ページテンプレートで生成、本文枠はsite-src/sections/pages/name-preview.html、共用プレビュー本文はsite-src/shared/name-preview.html。背景SVG3点はimages/name-preview/、CSSのdata-preview-backgroundとJSの許可IDを一致させる。SVGは装飾だけの編集可能な見本。上下の戻るリンクはtop.htmlを指定し、履歴がない直リンクでも機能する。入力／背景はこのページ内だけ保持、保存・カート連携しない。旧v49のトップ章の配置は今回の専用ページ方式に置換。
+
+## v51：保存商品・告知・実図柄・共通操作
+- saved-products-rail.js/css：トップと商品ページの小型タブ、既存ShopServicesのlocalStorageキーを共用。会員ページの一覧は保持。
+- site-src/site-notices.json：トップ帯の文言・リンク・active・時差付き開始終了。tools/site-content.cjsで生成し、DOMはtextContentで反映。価格や休日を推測して書かない。OMSとの自動公開接続は提案のみ。
+- site-src/seal-preview-choices.json：カートと同じ59図柄、previewImageと原画像寸法を持つ。カート図柄名との照合をビルドで検証。低画質の図柄を高精細に復元できたと説明しない。元図柄の印字は固定例、ユーザー入力は別枠の文字で表示。
+- paper-preview-evidence.json：商品CSVから抜き出した公開商品だけの根拠。本番データを変更しない。
+- pilot-inputs.js：全商品の数量に同じ数量ホイール。日付の対象判定は別。
+- touch-guard.js：旧iOSでの静止連続タップ用。全touchmoveやgesturestartを禁止する方式へ戻さない。
+
+お気に入りは24件で押し出す旧上限を解消し、現行279商品すべてを保持できる安全上限1000件へ。期限では消去しない。最近見た商品は直近12件。検査のannouncement-windowは幅内で切り抜く表示窓なので、内部を横移動する文字だけは既存railと同様にluna-qaの対象外とし、ページ幅と表示窓の範囲は別途検査する。

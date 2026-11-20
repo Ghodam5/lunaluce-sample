@@ -523,6 +523,6 @@
     "searchClose": "</button>",
     "pageTitle": "名入れのお試し",
     "pageStyles": "<link rel=\"stylesheet\" href=\"name-preview.css?v={{version}}\">",
-    "pageScripts": "<script src=\"name-preview.js?v={{version}}\"></script>"
+    "pageScripts": "<script src=\"seal-preview-data.js?v={{version}}\"></script><script src=\"name-preview.js?v={{version}}\"></script>"
   }
 }

@@ -1,0 +1,2 @@
+/* 編集元site-src/site-notices.json */
+window.SITE_NOTICES={"schemaVersion":1,"timeZone":"Asia/Tokyo","notices":[{"id":"name-preview","active":true,"text":"名入れの見え方は、お試しページでご確認いただけます。","href":"name-preview.html"},{"id":"consultation","active":true,"text":"ご使用日や数量のご相談は、お問い合わせからお気軽にどうぞ。","href":"contact.html"}]};

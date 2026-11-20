@@ -79,8 +79,8 @@ function enhanceDate(input){
  function validate(){var bad=input.value&&!parseDate(input.value);input.setCustomValidity(bad?'実在する年月日を入力してください。':'');input.setAttribute('aria-invalid',String(!!bad));note.textContent=bad?'日付を確認してください。例：2027.04.18':'例：2027.04.18 または 20270418。印字・刺繍する日付です。';note.classList.toggle('invalid',!!bad)}input.addEventListener('input',validate);validate();
 }
 function scan(){
- var p=new URLSearchParams(location.search).get('id');if(document.body.classList.contains('rich-product')&&target(p)){var q=document.getElementById('qq');if(q)enhanceQuantity(q)}
- document.querySelectorAll('.ci[data-product]').forEach(function(row){if(!target(row.dataset.product))return;var p=ShopCatalog.get(row.dataset.product);row.querySelectorAll('.qty input[type=number]').forEach(enhanceQuantity);if(!p.spec)return;row.querySelectorAll('.ff[data-i]').forEach(function(field){var f=p.spec.fields[Number(field.dataset.i)],input=field.querySelector('input:not([type=checkbox]):not([type=radio])');if(f&&f.role==='d'&&f.part==='text'&&input)enhanceDate(input)})});
+ var p=new URLSearchParams(location.search).get('id');if(document.getElementById('product-buy')){var q=document.getElementById('qq');if(q)enhanceQuantity(q)}
+ document.querySelectorAll('.ci[data-product]').forEach(function(row){var p=ShopCatalog.get(row.dataset.product);row.querySelectorAll('.qty input[type=number]').forEach(enhanceQuantity);if(!target(row.dataset.product)||!p?.spec)return;row.querySelectorAll('.ff[data-i]').forEach(function(field){var f=p.spec.fields[Number(field.dataset.i)],input=field.querySelector('input:not([type=checkbox]):not([type=radio])');if(f&&f.role==='d'&&f.part==='text'&&input)enhanceDate(input)})});
 }
 window.PilotInputs={parseDate:parseDate,dateError:dateError};
 scan();var scheduled=false;new MutationObserver(function(){if(!scheduled){scheduled=true;requestAnimationFrame(function(){scheduled=false;scan()})}}).observe(document.getElementById('sample-item')||document.getElementById('cart-items')||document.querySelector('main')||document.body,{childList:true,subtree:true});
