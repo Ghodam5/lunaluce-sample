@@ -1159,3 +1159,24 @@ input,select,textarea{font-size:16px!important}
 /* v29：フッターのロゴ文字を会社名の左端にそろえる。GIFの透明余白も補正。 */
 .ft .logo .brand-gif-frame{margin-inline:0}
 .ft .logo .brand-gif{left:0;transform:translate(-12.666667%,-50%)}
+
+/* v41：スマホは検索とメニューを残して商品を見る範囲を広げる。 */
+@media(max-width:1023px){
+ .hd-in{display:flex;justify-content:center;height:58px}
+ .hd-search{display:flex;align-items:center;gap:6px;padding:4px 10px 8px}
+ .hd-search>.icon-btn{flex:0 0 44px}
+ .hd-search .sbox{flex:1;min-width:0;max-width:none;margin:0;height:44px}
+ .hd-search .sbox input{font-size:16px;padding:7px 9px}
+ .hd-search .sbox button{padding-inline:12px}
+ .mobile-header-space{display:none}
+ header.hd.min{position:fixed;left:0;right:0;top:0;background:rgba(250,253,252,.93);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 2px 10px rgba(38,48,58,.07)}
+ header.hd.min .hd-in,header.hd.min .cats{display:none}
+ header.hd.min .hd-search{padding-top:calc(4px + env(safe-area-inset-top,0px))}
+ header.hd.min+.mobile-header-space{display:block}
+ .tabs-bottom{transition:transform .22s ease,opacity .22s ease}
+ .mobile-nav-away .tabs-bottom{transform:translateY(110%);opacity:0;pointer-events:none}
+ .mobile-nav-away .sticky-buy{bottom:env(safe-area-inset-bottom,0px)}
+ .menu-open .tabs-bottom{transform:none;opacity:1}
+}
+@media(min-width:1024px){.mobile-header-space{display:none!important}}
+@media(prefers-reduced-motion:reduce){.tabs-bottom{transition:none!important}}
