@@ -46,7 +46,7 @@ closeOrderDrawer, onEditInput, saveDrawerEdits, toggleRushTicket,
 markProofSent, markProofApproved, confirmOrderStock, triggerSingleAction,
 openManualOrderModal, closeManualOrderModal, submitManualOrder,
 selectSchemaTable, copySqlDdl, goToSimulatorWithSelected,
-downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
+downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSort
 
 料金の式は feeNumbers だけ。1注文につき1回、¥500＋¥20×文字数。のし¥20。ラッピング¥90。
 キャンペーンは名前の表示だけ。例: 5円ご縁。
@@ -560,6 +560,24 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
       font-weight: 600;
     }
     [data-part="order-list"] .empty { margin: 0; padding: 20px 12px; color: var(--taupe); }
+    [data-part="order-list"] .sort {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      flex: 1 1 100%;
+    }
+    [data-part="order-list"] .sort .cap { font-size: 14px; font-weight: 600; color: var(--taupe); }
+    [data-part="order-list"] .sort button {
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 0;
+      background: var(--ivory-warm);
+      color: var(--taupe);
+      font-size: 14px;
+    }
+    [data-part="order-list"] .sort button.is-on { background: var(--forest); color: #fff; }
     @media (min-width: 834px) {
       [data-part="order-list"] .list-head { padding: 14px 16px; }
       [data-part="order-list"] h2 { flex: 1 1 280px; }
@@ -1395,7 +1413,8 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
       draft: null,
       activeTab: 'dashboard',
       schemaIndex: 0,
-      lastSync: TODAY + ' 10:15:00'
+      lastSync: TODAY + ' 10:15:00',
+      orderSort: 'due'
     };
 
     function emit(name, detail) {
@@ -1570,10 +1589,36 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
       ]}
     ];
 
+    function dateValue(value) {
+      if (value == null || String(value).trim() === '') return null;
+      const text = String(value).trim();
+      const iso = text.indexOf(' ') >= 0 ? text.replace(' ', 'T') : (text.length === 10 ? text + 'T00:00:00' : text);
+      const time = new Date(iso).getTime();
+      if (isNaN(time)) return null;
+      return { time: time, label: text.slice(0, 10) };
+    }
+    function dueInfo(order) {
+      const explicit = dateValue(order.dueDate) || dateValue(order.deliveryDate) || dateValue(order.requestedDelivery);
+      if (explicit) return { missing: false, time: explicit.time, label: explicit.label };
+      const held = dateValue(order.weddingDate);
+      if (held) return { missing: false, time: held.time, label: held.label };
+      return { missing: true, time: Infinity, label: '' };
+    }
+    function orderSortTime(order) {
+      if (state.orderSort === 'ordered') {
+        const parsed = dateValue(order.orderDate);
+        return parsed ? parsed.time : Infinity;
+      }
+      if (state.orderSort === 'wedding') {
+        const parsed = dateValue(order.weddingDate);
+        return parsed ? parsed.time : Infinity;
+      }
+      return dueInfo(order).time;
+    }
     function visibleOrders() {
       const query = state.query.trim().toLowerCase();
       return state.orders.slice().sort(function (a, b) {
-        return new Date(a.weddingDate) - new Date(b.weddingDate);
+        return orderSortTime(a) - orderSortTime(b);
       }).filter(function (order) {
         if (state.activeChannel !== 'ALL' && order.channel !== state.activeChannel) return false;
         if (state.activeStatus !== 'ALL' && order.status !== state.activeStatus) return false;
@@ -1712,19 +1757,23 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
     }
     function renderOrderList(host) {
       function card(order) {
-        const days = daysUntil(order.weddingDate);
+        const days = order.weddingDate ? daysUntil(order.weddingDate) : null;
         const clock = orderClock(order);
         const fees = feeNumbers(order);
         const counts = partCounts(order);
-        let when = '<span class="mini calm">あと' + days + '日</span>';
+        let when = days == null ? '' : '<span class="mini calm">あと' + days + '日</span>';
         if (order.status === '梱包・出荷済') when = '<span class="mini done">出荷完了</span>';
-        else if (days <= 7) when = '<span class="mini hot">挙式まであと' + days + '日</span>';
-        else if (days <= 16) when = '<span class="mini soon">あと' + days + '日</span>';
+        else if (days != null && days <= 7) when = '<span class="mini hot">挙式まであと' + days + '日</span>';
+        else if (days != null && days <= 16) when = '<span class="mini soon">あと' + days + '日</span>';
         const extra = fees.extraTotal > 0
           ? '超過 ' + formatYen(fees.extraBase) + '+' + formatYen(fees.extraPer) + '×' + fees.extraCount + '=' + formatYen(fees.extraTotal)
           : '超過 ' + formatYen(0);
+        const due = dueInfo(order);
+        const dueNote = due.missing
+          ? '<br><span class="mini soon">納期の日付はありません</span>'
+          : '<br>納期 ' + escapeHtml(due.label);
         const fields = [
-          ['挙式日 / 残日数', escapeHtml(order.weddingDate) + '<br>' + when + (order.rushTicket ? ' <span class="mini rush">特急チケット</span>' : '')],
+          ['挙式日 / 残日数', escapeHtml(order.weddingDate || '—') + (when ? '<br>' + when : '') + dueNote + (order.rushTicket ? ' <span class="mini rush">特急チケット</span>' : '')],
           ['販路 / 注文番号', '<span class="badge ch-' + order.channel + '">' + escapeHtml(order.channelLabel) + '</span><br>' + escapeHtml(order.id)],
           ['注文者 / 配送先', escapeHtml(order.customerName) + ' 様<br>' + escapeHtml(order.shippingTo)],
           ['商品・数量・金額', escapeHtml(order.productName) + '<br>' + escapeHtml(order.sku) + ' × ' + order.qty + '点 ' + formatYen(order.amount) + '<br>内訳 ' + PART_KEYS.map(function (part) { return part.short + counts[part.key]; }).join('・')],
@@ -1741,7 +1790,17 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
         const rows = visibleOrders();
         const selected = state.orders.filter(function (order) { return order.selected; }).length;
         const allOn = state.orders.length > 0 && selected === state.orders.length;
-        host.innerHTML = '<div class="list-head"><h2>受注一覧（挙式日・納期が近い順に自動ソート）</h2><p class="hint">行を開くと、内訳・プリントサンプル・受注管理表・実寸プレビューが出ます</p><label class="select-all"><input id="select-all" type="checkbox" data-action="toggle-all"' + (allOn ? ' checked' : '') + '>すべて選択</label><p class="count">表示: ' + rows.length + '件 / 全' + state.orders.length + '件</p><p class="count">選択中: ' + selected + '件</p><button type="button" class="batch" data-action="open-simulator">選択注文の加工・送り状CSVを生成</button></div>' + (rows.length ? rows.map(card).join('') : '<p class="empty">該当する注文はありません</p>');
+        const sortKey = state.orderSort === 'wedding' || state.orderSort === 'ordered' ? state.orderSort : 'due';
+        const sortTitle = sortKey === 'wedding' ? '受注一覧（挙式日が近い順）' : (sortKey === 'ordered' ? '受注一覧（受注日が近い順）' : '受注一覧（納品日順）');
+        const sorts = [
+          ['due', '納期'],
+          ['wedding', '挙式日'],
+          ['ordered', '受注日']
+        ].map(function (item) {
+          const onSort = sortKey === item[0];
+          return '<button type="button" data-action="sort-orders" data-sort="' + item[0] + '" class="' + (onSort ? 'is-on' : '') + '" aria-pressed="' + (onSort ? 'true' : 'false') + '">' + item[1] + '</button>';
+        }).join('');
+        host.innerHTML = '<div class="list-head"><h2>' + sortTitle + '</h2><div class="sort" role="group" aria-label="並び順"><span class="cap">並び:</span>' + sorts + '</div><p class="hint">近い日付が上です。行を開くと、内訳・プリントサンプル・受注管理表・実寸プレビューが出ます</p><label class="select-all"><input id="select-all" type="checkbox" data-action="toggle-all"' + (allOn ? ' checked' : '') + '>すべて選択</label><p class="count">表示: ' + rows.length + '件 / 全' + state.orders.length + '件</p><p class="count">選択中: ' + selected + '件</p><button type="button" class="batch" data-action="open-simulator">選択注文の加工・送り状CSVを生成</button></div>' + (rows.length ? rows.map(card).join('') : '<p class="empty">該当する注文はありません</p>');
       }
       paint();
       on('oms:list', paint);
@@ -2277,6 +2336,11 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
       state.query = el.value;
       emit('oms:list');
     }
+    function setOrderSort(sort) {
+      if (sort !== 'due' && sort !== 'wedding' && sort !== 'ordered') return;
+      state.orderSort = sort;
+      emit('oms:list');
+    }
     function toggleSelectAll(el) {
       state.orders.forEach(function (order) { order.selected = el.checked; });
       emit('oms:list');
@@ -2517,6 +2581,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
       else if (name === 'download') downloadSimulatedCsv(el.dataset.kind);
       else if (name === 'product-query') onProductQuery(el);
       else if (name === 'product-pick') pickCatalogProduct(el);
+      else if (name === 'sort-orders') setOrderSort(el.dataset.sort);
     }
     document.addEventListener('click', function (event) {
       const interactive = event.target.closest('button, a, input, select, textarea, label');
