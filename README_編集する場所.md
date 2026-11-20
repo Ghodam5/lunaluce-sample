@@ -208,3 +208,6 @@ node tools/components.cjs show name-preview。本文はsite-src/sections/top/nam
 
 ## 歩く白猫（v52）
 node tools/components.cjs show walking-cat。形はwalking-cat.jsのSVG、歩行はwalking-cat.css。4本の脚の位相差、体の小さい上下動、しっぽと瞬きを独立管理。site-announcements.jsから同じ部品を使う。帯を高くしない。脚などの子要素も停止し、reduced-motionでは全て静止。
+
+## Gemini案の重ねる猫（v53試用）
+walking-cat.js/cssを差替え、site-announcements.jsが帯のannouncement-barへ1匹だけ配置。cat-banner-wrapはabsolute/inset:0/height:100%/z1、文字z2・停止z3、pointer-eventsなし。元SVGの猫・蝶・12秒の位相を保ち、移動距離だけ画面幅へ対応。描画は帯に収めるため等比90%。停止とreduced-motionは全要素に適用。v52へは履歴から戻せる。

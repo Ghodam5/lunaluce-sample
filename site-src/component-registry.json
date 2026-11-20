@@ -161,7 +161,7 @@
         "walking-cat.js",
         "walking-cat.css"
       ],
-      "edit": "白猫の歩行部品。顔・耳・ひげ・しっぽ・4本の脚を分離したSVG。4拍の歩行、停止／再生とreduced-motionを共通CSSで管理。お知らせ帯は44pxのまま。"
+      "edit": "林さん提供のGemini案を試用。cat-banner-wrapをposition:absolute/inset:0/height:100%/z-index:1で帯に重ね、文字z2・停止ボタンz3、pointer-events:none。12秒で歩く／蝶にじゃれる／3回ジャンプ。帯44px維持、移動幅はResizeObserverで合わせる。原文は第二の脳へ保存。"
     }
   }
 }

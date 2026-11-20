@@ -1,17 +1,62 @@
-/* 白猫の歩行部品。4本の脚・しっぽ・顔を別要素で編集する。 */
-(()=>{'use strict';window.LunaWalkingCat=Object.freeze({markup:()=>`<svg class="announcement-cat walking-cat" viewBox="0 0 112 60" aria-hidden="true" focusable="false">
- <g class="cat-leg cat-front-far"><path d="M43 34Q44 43 37 51L31 52"/></g>
- <g class="cat-leg cat-back-far"><path d="M79 36Q73 44 81 51L87 52"/></g>
- <g class="cat-upper">
-  <g class="cat-tail"><path d="M87 30C100 30 109 22 103 11Q100 6 103 4"/></g>
-  <path class="cat-body" d="M35 24Q43 16 60 17C77 16 91 22 91 34Q91 44 75 45H48Q34 44 34 35Z"/>
-  <path class="cat-head" d="M15 19L16 5Q16 2 20 5L29 12L38 5Q42 2 42 7L42 20Q47 27 40 34Q33 42 22 37L12 30Q6 26 15 19Z"/>
-  <path class="cat-inner-ear" d="M18 8L25 14L18 17ZM38 9L39 19L32 15Z"/>
-  <g class="cat-eyes"><ellipse cx="21" cy="24" rx="1.6" ry="2.2"/><ellipse cx="33" cy="24" rx="1.6" ry="2.2"/></g>
-  <path class="cat-nose" d="M24 29Q27 27 29 29L26.5 31Z"/>
-  <path class="cat-mouth" d="M26.5 31V33M26.5 33Q23 35 21 33M26.5 33Q29 35 31 33"/>
-  <path class="cat-whiskers" d="M18 29L5 27M18 32L4 34M35 29L47 27M35 32L47 35"/>
- </g>
- <g class="cat-leg cat-front-near"><path d="M44 36Q45 45 39 53L32 54"/><path class="cat-toes" d="M33 52V54M36 52V54"/></g>
- <g class="cat-leg cat-back-near"><path d="M80 37Q76 45 84 53L91 54"/><path class="cat-toes" d="M86 52V54M89 52V54"/></g>
-</svg>`});})();
+/* ご提供SVGの猫と蝶々。位置だけ帯の幅に合わせる共通部品。 */
+(()=>{'use strict';window.LunaWalkingCat=Object.freeze({markup:()=>`<div class="cat-banner-wrap"><svg class="gemini-cat" viewBox="0 0 1000 80" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+
+
+    <!-- 蝶々 -->
+    <g class="butterfly">
+      <g class="wing-l">
+        <ellipse cx="-4" cy="-3" rx="5" ry="3.5" fill="#fff59d" transform="rotate(-25 -4 -3)"/>
+        <ellipse cx="-3" cy="2" rx="3.5" ry="2.5" fill="#ffe082" transform="rotate(20 -3 2)"/>
+      </g>
+      <g class="wing-r">
+        <ellipse cx="4" cy="-3" rx="5" ry="3.5" fill="#fff59d" transform="rotate(25 4 -3)"/>
+        <ellipse cx="3" cy="2" rx="3.5" ry="2.5" fill="#ffe082" transform="rotate(-20 3 2)"/>
+      </g>
+      <ellipse cx="0" cy="0" rx="1.2" ry="4" fill="#5d4037"/>
+    </g>
+
+    <!-- 猫本体 -->
+    <g class="cat-mover">
+      <g class="cat-size" transform="scale(.9)"><g class="cat-pose">
+        <!-- 奥側の足 -->
+        <rect class="leg-br" x="-18" y="-16" width="5.5" height="16" rx="2.75" fill="#e8e2d5"/>
+        <rect class="leg-fr" x="9" y="-16" width="5.5" height="16" rx="2.75" fill="#e8e2d5"/>
+
+        <!-- しっぽ -->
+        <path class="cat-tail" d="M -20 -19 C -32 -22, -36 -36, -27 -40" fill="none" stroke="#fffdf7" stroke-width="5" stroke-linecap="round"/>
+
+        <!-- 胴体 -->
+        <ellipse cx="-2" cy="-19" rx="20" ry="11" fill="#fffdf7"/>
+        <!-- 背中のワンポイント模様（不要なら削除可） -->
+        <ellipse cx="-5" cy="-25" rx="7" ry="4" fill="#f3dfc1" opacity="0.8"/>
+
+        <!-- 手前側の足 -->
+        <rect class="leg-bl" x="-13" y="-16" width="6" height="16" rx="3" fill="#fffdf7"/>
+        <rect class="leg-fl" x="13" y="-16" width="6" height="16" rx="3" fill="#fffdf7"/>
+
+        <!-- 頭 -->
+        <g class="cat-head">
+          <!-- 耳（左・右） -->
+          <polygon points="11,-36 9,-48 19,-40" fill="#fffdf7"/>
+          <polygon points="12,-37 11,-44 17,-40" fill="#ffb7c5"/>
+          <polygon points="21,-40 28,-48 29,-35" fill="#fffdf7"/>
+          <polygon points="22,-39 27,-44 27,-36" fill="#ffb7c5"/>
+          <!-- 顔の輪郭 -->
+          <circle cx="20" cy="-30" r="11.5" fill="#fffdf7"/>
+          <!-- 目 -->
+          <circle cx="17.5" cy="-31" r="1.6" fill="#333333"/>
+          <circle cx="25.5" cy="-31" r="1.6" fill="#333333"/>
+          <circle cx="18" cy="-31.5" r="0.5" fill="#ffffff"/>
+          <circle cx="26" cy="-31.5" r="0.5" fill="#ffffff"/>
+          <!-- 鼻と口 -->
+          <polygon points="21.5,-28.5 23.5,-28.5 22.5,-27.2" fill="#ff9eb5"/>
+          <path d="M 20.5 -26.5 Q 21.5 -25.2 22.5 -26.5 Q 23.5 -25.2 24.5 -26.5" fill="none" stroke="#555555" stroke-width="0.9" stroke-linecap="round"/>
+          <!-- ひげ -->
+          <line x1="11" y1="-29" x2="6" y2="-30" stroke="#bdbdbd" stroke-width="0.8"/>
+          <line x1="11" y1="-27" x2="6" y2="-26.5" stroke="#bdbdbd" stroke-width="0.8"/>
+          <line x1="29" y1="-29" x2="34" y2="-30" stroke="#bdbdbd" stroke-width="0.8"/>
+          <line x1="29" y1="-27" x2="34" y2="-26.5" stroke="#bdbdbd" stroke-width="0.8"/>
+        </g>
+      </g>
+    </g>
+</g>  </svg></div>`});})();
