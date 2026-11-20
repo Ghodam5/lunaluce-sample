@@ -30,7 +30,8 @@
     "bottomHomeActive": "",
     "bottomMyActive": "",
     "searchOpen": "<a class=\"tab\" href=\"category.html?g=all\">",
-    "searchClose": "</a>"
+    "searchClose": "</a>",
+    "stripAttributes": " data-mobile-strip"
   },
   "campaign.html": {
     "campaign": true,
@@ -41,7 +42,8 @@
     "bottomHomeActive": "",
     "bottomMyActive": "",
     "searchOpen": "<a class=\"tab\" href=\"category.html?g=all\">",
-    "searchClose": "</a>"
+    "searchClose": "</a>",
+    "stripAttributes": " data-mobile-strip"
   },
   "category.html": {
     "campaign": true,
@@ -107,7 +109,8 @@
     "bottomHomeActive": " on",
     "bottomMyActive": "",
     "searchOpen": "<button class=\"tab\" type=\"button\" data-open-menu>",
-    "searchClose": "</button>"
+    "searchClose": "</button>",
+    "stripAttributes": " data-mobile-strip"
   },
   "item.html": {
     "campaign": true,
@@ -140,7 +143,8 @@
     "bottomHomeActive": "",
     "bottomMyActive": " on",
     "searchOpen": "<a class=\"tab\" href=\"category.html?g=all\">",
-    "searchClose": "</a>"
+    "searchClose": "</a>",
+    "stripAttributes": " data-mobile-strip"
   },
   "naire.html": {
     "campaign": true,
@@ -195,7 +199,8 @@
     "bottomHomeActive": "",
     "bottomMyActive": "",
     "searchOpen": "<a class=\"tab\" href=\"category.html?g=all\">",
-    "searchClose": "</a>"
+    "searchClose": "</a>",
+    "stripAttributes": " data-mobile-strip"
   },
   "overseas-shipping.html": {
     "campaign": false,

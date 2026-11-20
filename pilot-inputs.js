@@ -81,7 +81,7 @@ function enhanceDate(input){
  function validate(){var bad=input.value&&!parseDate(input.value);input.setCustomValidity(bad?'実在する年月日を入力してください。':'');input.setAttribute('aria-invalid',String(!!bad));note.textContent=bad?'日付を確認してください。例：2027.04.18':'例：2027.04.18 または 20270418。印字・刺繍する日付です。';note.classList.toggle('invalid',!!bad)}input.addEventListener('input',validate);validate();
 }
 function scan(){
- document.querySelectorAll(quantitySelector).forEach(enhanceQuantity);if(!window.ShopCatalog)return;
+ document.querySelectorAll(quantitySelector).forEach(enhanceQuantity);document.querySelectorAll('input[data-date-picker]').forEach(enhanceDate);if(!window.ShopCatalog)return;
  document.querySelectorAll('.ci[data-product]').forEach(function(row){var p=ShopCatalog.get(row.dataset.product);row.querySelectorAll('.qty input[type=number]').forEach(enhanceQuantity);if(!target(row.dataset.product)||!p?.spec)return;row.querySelectorAll('.ff[data-i]').forEach(function(field){var f=p.spec.fields[Number(field.dataset.i)],input=field.querySelector('input:not([type=checkbox]):not([type=radio])');if(f&&f.role==='d'&&f.part==='text'&&input)enhanceDate(input)})});
 }
 window.PilotInputs={parseDate:parseDate,dateError:dateError};

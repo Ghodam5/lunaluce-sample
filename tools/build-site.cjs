@@ -3,13 +3,16 @@ const root=path.resolve(__dirname,'..'),src=path.join(root,'site-src');
 const read=p=>fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n');
 const digest=p=>crypto.createHash('sha256').update(read(p)).digest('hex');
 const args=new Set(process.argv.slice(2));
+const styleFiles=require('./styles.cjs').build(args.has('--check'));
+const pageContract=require('./page-contract.cjs'),contract=pageContract.load(root);
 require('./components.cjs').check();
 require('./products.cjs').build(args.has('--check'));
 require('./site-content.cjs').build(args.has('--check'));
+pageContract.checkScripts(root);
 const version=JSON.parse(read(path.join(src,'version.json'))).version;
 if(!Number.isSafeInteger(version)||version<1)throw Error('Invalid version');
 const pages=JSON.parse(read(path.join(src,'pages.json')));
-const sharedFiles=fs.readdirSync(path.join(src,'shared')).filter(f=>f.endsWith('.html')).map(f=>'site-src/shared/'+f).concat(['style.css','header-scroll.js','hscroll.js','catico.js','notes-resize.css','notes-resize.js','navigation-position.js','page-share.css','page-share.js','site-services.css','site-services-core.js','site-services-ui.js','rail-controls.css','rail-controls.js','placement-visibility.js']).concat(fs.readdirSync(path.join(root,'images/social')).filter(f=>f.endsWith('.svg')).map(f=>'images/social/'+f));
+const sharedFiles=[...new Set(fs.readdirSync(path.join(src,'shared')).filter(f=>f.endsWith('.html')).map(f=>'site-src/shared/'+f).concat(['header-scroll.js','hscroll.js','catico.js','notes-resize.js','navigation-position.js','page-share.js','site-services-core.js','site-services-ui.js','rail-controls.js','placement-visibility.js','pilot-inputs.js','touch-guard.js','site-src/styles/manifest.json','site-src/page-contract.json'],styleFiles).concat(fs.readdirSync(path.join(root,'images/social')).filter(f=>f.endsWith('.svg')).map(f=>'images/social/'+f)))];
 const hashes=Object.fromEntries(sharedFiles.sort().map(f=>[f,digest(path.join(root,f))]));
 const lock=path.join(src,'shared.lock.json');
 if(args.has('--update-shared-lock'))fs.writeFileSync(lock,JSON.stringify(hashes,null,2)+'\n');
@@ -28,9 +31,11 @@ function render(text,vars,stack=[]){
 let stale=[];for(const [file,settings] of Object.entries(pages)){
  if(path.basename(file)!==file||!file.endsWith('.html'))throw Error('Invalid page path');
  const source=read(path.join(src,'pages',file));
+ pageContract.checkSource(file,source,contract);
  if(!source.includes('{{> services-head}}')||!source.includes('{{> services-script}}'))throw Error('サイト共通サービスが不足しています: '+file);
  if(!source.includes('{{> share-head}}')||!source.includes('{{> share-script}}'))throw Error('SNS共通パーツが不足しています: '+file);
- const out=render(source,{...settings,version});
+ const out=render(source,{stripAttributes:'',...settings,version});
+ pageContract.checkRendered(file,out,contract,root);
  const dest=path.join(root,file);
  if(args.has('--check')){if(!fs.existsSync(dest)||read(dest)!==out)stale.push(file);}
  else if(!fs.existsSync(dest)||read(dest)!==out)fs.writeFileSync(dest,out);

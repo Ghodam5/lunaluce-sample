@@ -8,7 +8,7 @@ var fine=window.matchMedia('(hover:hover) and (pointer:fine)');
 var SEL='.rail,.season,.chips,.cats,.rankrow,.mtabs,.gal-track,.subrow .chips,.toolbar';
 document.querySelectorAll('.rail,.season,.chips,.cats').forEach(function(r){r.dataset.hsOld='1'});
 function scroller(t){var r=t&&t.closest?t.closest(SEL):null;
- while(r){if(!r.dataset.hsOld&&r.scrollWidth>r.clientWidth+1)return r;r=r.parentElement?r.parentElement.closest(SEL):null}return null}
+ while(r){if((!r.dataset.hsOld||r.hasAttribute('data-standard-rail'))&&r.scrollWidth>r.clientWidth+1)return r;r=r.parentElement?r.parentElement.closest(SEL):null}return null}
 /* ホイール */
 document.addEventListener('wheel',function(e){if(!fine.matches||e.defaultPrevented||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
  var r=scroller(e.target);if(!r)return;var max=r.scrollWidth-r.clientWidth,d=e.deltaY*(e.deltaMode===1?40:1);
