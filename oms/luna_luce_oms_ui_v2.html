@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.2
+Luna Luce OMS 2.3
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
@@ -18,6 +18,7 @@ order-list             renderOrderList
 tab-architecture       renderArchitectureTab
 tab-schema             renderSchemaTab
 tab-simulator          renderSimulatorTab
+tab-carrier            renderCarrierTab
 tab-site               renderSiteTab
 site-notices           renderSiteNotices
 site-calendar          renderSiteCalendar
@@ -52,17 +53,19 @@ markProofSent, markProofApproved, confirmOrderStock, triggerSingleAction,
 openManualOrderModal, closeManualOrderModal, submitManualOrder,
 selectSchemaTable, copySqlDdl, goToSimulatorWithSelected,
 downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSort, loadSiteFile,
-exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
+exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow,
+setCarrierMode, setCarrierZone, setCarrierSize
 
 料金の式は feeNumbers だけ。1注文につき1回、¥500＋¥20×文字数。のし¥20。ラッピング¥90。
 キャンペーンは名前の表示だけ。例: 5円ご縁。
+ヤマト契約送料は yamatoContractCost だけ。お客様の送料には入れない。ネコポスは280円で、サイズ表の行ではない。
 商品検索は product-search だけ。同じフォルダの oms-products.json を読む。キャンペーンの計算はしない。
 -->
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.2｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.3｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -875,6 +878,100 @@ exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
       [data-part="tab-simulator"] .grid { grid-template-columns: 1fr 1fr; }
     }
 
+    /* owner: renderCarrierTab */
+    [data-part="tab-carrier"] .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    [data-part="tab-carrier"] h2 {
+      margin: 4px 0 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: 22px;
+      color: var(--forest);
+      line-height: 1.35;
+    }
+    [data-part="tab-carrier"] .kicker { color: var(--champagne); letter-spacing: 0.14em; font-size: 13px; font-family: "Cormorant Garamond", serif; }
+    [data-part="tab-carrier"] .lead { color: var(--taupe); font-size: 14px; }
+    [data-part="tab-carrier"] .modes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    [data-part="tab-carrier"] .modes button {
+      flex: 1 1 140px;
+      min-height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-weight: 700;
+    }
+    [data-part="tab-carrier"] .modes button[aria-pressed="true"] {
+      background: var(--forest);
+      color: #fff;
+      border-color: var(--forest);
+    }
+    [data-part="tab-carrier"] .pick { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+    [data-part="tab-carrier"] .pick label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--taupe); }
+    [data-part="tab-carrier"] .pick select {
+      min-height: 44px;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px 10px;
+    }
+    [data-part="tab-carrier"] .result {
+      margin: 12px 0 0;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--champagne-soft);
+      border: 1px solid var(--champagne-light);
+    }
+    [data-part="tab-carrier"] .result .tag { display: block; font-size: 13px; letter-spacing: 0.04em; color: var(--taupe); }
+    [data-part="tab-carrier"] .result strong {
+      display: block;
+      margin-top: 2px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 28px;
+      color: var(--forest);
+    }
+    [data-part="tab-carrier"] .result p { margin: 6px 0 0; font-size: 14px; }
+    [data-part="tab-carrier"] .scroll { margin-top: 14px; max-width: 100%; overflow-x: auto; }
+    [data-part="tab-carrier"] table { border-collapse: separate; border-spacing: 0; min-width: 640px; width: 100%; font-size: 13px; }
+    [data-part="tab-carrier"] caption { caption-side: bottom; text-align: left; padding-top: 8px; color: var(--taupe); font-size: 13px; }
+    [data-part="tab-carrier"] th, [data-part="tab-carrier"] td {
+      padding: 8px;
+      border-bottom: 1px solid var(--line);
+      text-align: right;
+      white-space: nowrap;
+      background: #fff;
+    }
+    [data-part="tab-carrier"] th:first-child, [data-part="tab-carrier"] td:first-child {
+      position: sticky;
+      left: 0;
+      text-align: left;
+      font-weight: 700;
+      background: var(--ivory);
+      z-index: 1;
+    }
+    [data-part="tab-carrier"] thead th { background: var(--ivory-warm); }
+    [data-part="tab-carrier"] td.is-on { background: var(--champagne-soft); font-weight: 700; color: var(--forest); }
+    [data-part="tab-carrier"] .nekopos {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px dashed var(--sage);
+      background: #f3faf8;
+    }
+    [data-part="tab-carrier"] .nekopos h3 { margin: 0; font-size: 16px; color: var(--forest); }
+    [data-part="tab-carrier"] .nekopos p { margin: 6px 0 0; font-size: 14px; }
+    @media (min-width: 834px) {
+      [data-part="tab-carrier"] .panel { padding: 18px; }
+      [data-part="tab-carrier"] .pick { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1280px) {
+      [data-part="tab-carrier"] .panel { padding: 22px; }
+    }
+
     /* owner: renderDrawer */
     [data-part="drawer"] .drawer-backdrop {
       position: fixed;
@@ -1524,7 +1621,8 @@ exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
       { id: 'architecture', label: '2 システム' },
       { id: 'schema', label: '3 DBスキーマ' },
       { id: 'simulator', label: '4 加工・CSV' },
-      { id: 'site', label: '5 サイト掲載' }
+      { id: 'site', label: '5 サイト掲載' },
+      { id: 'carrier', label: '6 契約送料' }
     ];
     const CHANNELS = [
       { id: 'ALL', label: 'すべて' },
@@ -1547,6 +1645,9 @@ exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
       draft: null,
       activeTab: 'dashboard',
       schemaIndex: 0,
+      carrierMode: 'size',
+      carrierZone: '',
+      carrierSize: '',
       lastSync: TODAY + ' 10:15:00',
       orderSort: 'due'
     };
@@ -1582,6 +1683,29 @@ exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
     }
     function dotted(iso) {
       return String(iso || '').replace(/-/g, '.');
+    }
+
+    const YAMATO_SIZES = [60, 80, 100, 120, 140, 160, 180, 200];
+    const YAMATO_CONTRACT = [
+      { zone: '北海道', rates: [790, 930, 1080, 1370, 1690, 1870, 3170, 3940] },
+      { zone: '北東北', rates: [590, 730, 880, 1140, 1440, 1630, 2400, 3050] },
+      { zone: '南東北', rates: [520, 670, 810, 1070, 1370, 1550, 2200, 2650] },
+      { zone: '関東', rates: [460, 610, 750, 1000, 1290, 1480, 1810, 2190] },
+      { zone: '信越', rates: [460, 610, 750, 1000, 1290, 1480, 1810, 2190] },
+      { zone: '北陸', rates: [460, 610, 750, 1000, 1290, 1480, 1810, 2190] },
+      { zone: '中部', rates: [460, 610, 750, 1000, 1290, 1480, 1810, 2190] },
+      { zone: '関西', rates: [460, 610, 750, 1000, 1290, 1480, 1810, 2190] },
+      { zone: '中国', rates: [520, 670, 810, 1070, 1370, 1550, 2200, 2650] },
+      { zone: '四国', rates: [520, 670, 810, 1070, 1370, 1550, 2200, 2650] },
+      { zone: '九州', rates: [590, 730, 880, 1140, 1440, 1630, 2400, 3050] },
+      { zone: '沖縄', rates: [720, 1020, 1330, 1650, 1980, 2300, 3530, 4340] }
+    ];
+    const NEKOPOS_CONTRACT = 280;
+    function yamatoContractCost(zone, size) {
+      const row = YAMATO_CONTRACT.find(function (item) { return item.zone === zone; });
+      const index = YAMATO_SIZES.indexOf(Number(size));
+      if (!row || index < 0) return null;
+      return row.rates[index];
     }
 
     function feeNumbers(order) {
@@ -1825,7 +1949,7 @@ exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
     }
 
     function renderHeaderBrand(host) {
-      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.2</span></h1></div>';
+      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.3</span></h1></div>';
     }
     function renderHeaderStatus(host) {
       function paint() {
@@ -2966,14 +3090,71 @@ exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
       on('oms:simulator', paint);
     }
 
+    function setCarrierMode(mode) {
+      if (mode !== 'size' && mode !== 'nekopos') return;
+      state.carrierMode = mode;
+      emit('oms:carrier');
+    }
+    function setCarrierZone(el) {
+      const zone = el.value;
+      if (zone && !YAMATO_CONTRACT.some(function (item) { return item.zone === zone; })) return;
+      state.carrierZone = zone;
+      emit('oms:carrier');
+    }
+    function setCarrierSize(el) {
+      if (el.value === '') {
+        state.carrierSize = '';
+        emit('oms:carrier');
+        return;
+      }
+      const size = Number(el.value);
+      if (YAMATO_SIZES.indexOf(size) < 0) return;
+      state.carrierSize = size;
+      emit('oms:carrier');
+    }
+    function renderCarrierTab(host) {
+      function paint() {
+        const sizeMode = state.carrierMode === 'size';
+        const yen = sizeMode ? yamatoContractCost(state.carrierZone, state.carrierSize) : NEKOPOS_CONTRACT;
+        const zoneOptions = '<option value="">区分を選ぶ</option>' + YAMATO_CONTRACT.map(function (item) {
+          return '<option value="' + escapeHtml(item.zone) + '"' + (item.zone === state.carrierZone ? ' selected' : '') + '>' + escapeHtml(item.zone) + '</option>';
+        }).join('');
+        const sizeOptions = '<option value="">サイズを選ぶ</option>' + YAMATO_SIZES.map(function (size) {
+          return '<option value="' + size + '"' + (size === state.carrierSize ? ' selected' : '') + '>' + size + '</option>';
+        }).join('');
+        const head = '<tr><th scope="col">区分</th>' + YAMATO_SIZES.map(function (size) {
+          return '<th scope="col">' + size + '</th>';
+        }).join('') + '</tr>';
+        const body = YAMATO_CONTRACT.map(function (item) {
+          const cells = item.rates.map(function (rate, index) {
+            const on = sizeMode && item.zone === state.carrierZone && YAMATO_SIZES[index] === state.carrierSize;
+            return '<td' + (on ? ' class="is-on"' : '') + '>' + rate.toLocaleString('ja-JP') + '</td>';
+          }).join('');
+          return '<tr><th scope="row">' + escapeHtml(item.zone) + '</th>' + cells + '</tr>';
+        }).join('');
+        let result;
+        if (!sizeMode) {
+          result = '<span class="tag">ネコポス 280円</span><strong data-carrier-yen="' + NEKOPOS_CONTRACT + '">' + formatYen(NEKOPOS_CONTRACT) + '</strong><p>定額です。サイズ表の行ではありません。ルナルーチェがヤマトに払う金額です。</p>';
+        } else if (yen == null) {
+          result = '<span class="tag">ヤマト契約送料</span><strong data-carrier-yen="">未選択</strong><p>区分とサイズを選ぶと、契約送料が出ます。</p>';
+        } else {
+          result = '<span class="tag">ヤマト契約送料</span><strong data-carrier-yen="' + yen + '">' + formatYen(yen) + '</strong><p>' + escapeHtml(state.carrierZone) + '・サイズ' + state.carrierSize + '。ルナルーチェがヤマトに払う金額です。</p>';
+        }
+        host.innerHTML = '<section class="panel"><p class="kicker">Carrier cost</p><h2>ヤマト契約送料</h2><p class="lead">黒猫ヤマトの契約運賃です。お客様が払う送料には入れません。名入れ・のし・包装はこの計算の外です。</p><div class="modes"><button type="button" data-action="carrier-mode" data-mode="size" aria-pressed="' + (sizeMode ? 'true' : 'false') + '">宅急便サイズ</button><button type="button" data-action="carrier-mode" data-mode="nekopos" aria-pressed="' + (sizeMode ? 'false' : 'true') + '">ネコポス</button></div><div class="pick"' + (sizeMode ? '' : ' hidden') + '><label>区分<select data-action="carrier-zone">' + zoneOptions + '</select></label><label>サイズ<select data-action="carrier-size">' + sizeOptions + '</select></label></div><div class="result" data-carrier-result>' + result + '<p>お客様への請求送料ではありません。</p></div><div class="scroll"><table><thead>' + head + '</thead><tbody>' + body + '</tbody><caption>単位は円。サイズ60から200は契約表の列です。商品の箱サイズとは結びつけていません。</caption></table></div><aside class="nekopos"><h3>ネコポス 280円</h3><p>定額です。上のサイズ表の行ではありません。お客様への請求送料ではありません。</p></aside></section>';
+      }
+      paint();
+      on('oms:carrier', paint);
+    }
+
     function renderMain(host) {
       host.setAttribute('role', 'main');
-      host.innerHTML = '<div data-tab-panel="dashboard"></div><div data-tab-panel="architecture" hidden></div><div data-tab-panel="schema" hidden></div><div data-tab-panel="simulator" hidden></div><div data-tab-panel="site" hidden></div>';
+      host.innerHTML = '<div data-tab-panel="dashboard"></div><div data-tab-panel="architecture" hidden></div><div data-tab-panel="schema" hidden></div><div data-tab-panel="simulator" hidden></div><div data-tab-panel="site" hidden></div><div data-tab-panel="carrier" hidden></div>';
       mountOrdered(host.querySelector('[data-tab-panel="dashboard"]'), [{ name: 'tab-dashboard', render: renderDashboard }]);
       mountOrdered(host.querySelector('[data-tab-panel="architecture"]'), [{ name: 'tab-architecture', render: renderArchitectureTab }]);
       mountOrdered(host.querySelector('[data-tab-panel="schema"]'), [{ name: 'tab-schema', render: renderSchemaTab }]);
       mountOrdered(host.querySelector('[data-tab-panel="simulator"]'), [{ name: 'tab-simulator', render: renderSimulatorTab }]);
       mountOrdered(host.querySelector('[data-tab-panel="site"]'), [{ name: 'tab-site', render: renderSiteTab }]);
+      mountOrdered(host.querySelector('[data-tab-panel="carrier"]'), [{ name: 'tab-carrier', render: renderCarrierTab }]);
     }
 
     function renderDrawerHead(host) {
@@ -3311,6 +3492,7 @@ exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
       emit('oms:tab', tabName);
       if (tabName === 'simulator') emit('oms:simulator');
       if (tabName === 'schema') emit('oms:schema');
+      if (tabName === 'carrier') emit('oms:carrier');
     }
     function triggerManualSync() {
       const now = new Date();
@@ -3609,6 +3791,9 @@ exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
       else if (name === 'site-move') moveSitePromo(el);
       else if (name === 'site-add') addSiteRow(el);
       else if (name === 'site-remove') removeSiteRow(el);
+      else if (name === 'carrier-mode') setCarrierMode(el.dataset.mode);
+      else if (name === 'carrier-zone') setCarrierZone(el);
+      else if (name === 'carrier-size') setCarrierSize(el);
     }
     document.addEventListener('click', function (event) {
       const interactive = event.target.closest('button, a, input, select, textarea, label');
