@@ -1,8 +1,8 @@
 /* ご提供のGemini案を帯の大きさ・既存操作へ適合。原文は第二の脳へ保存。 */
 
       .cat-banner-wrap {
-        position:absolute;inset:0;width:100%;height:100%;z-index:1;
-        overflow:hidden;pointer-events:none;
+        position:relative;inset:auto;flex:0 0 96px;width:96px;height:44px;z-index:auto;
+        display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;
       }
       .cat-banner-wrap svg {
         width: 100%;
@@ -10,7 +10,7 @@
         display: block;
       }
 
-      /* 猫全体の横移動・ジャンプ軌道（12秒ループ） */
+      /* 枠内の上下動（12秒ループ）。横移動は親の文字レールだけで行う */
       .cat-banner-wrap .cat-mover {
         animation: ll-catPath 12s linear infinite;
       }
@@ -61,23 +61,23 @@
 
       /* 0-25%: 歩く / 25-46%: じゃれる / 46-78%: 3回跳ねる / 78-100%: 歩いて退場 */
       @keyframes ll-catPath {
-        0%   { transform: translate(-70px, 74px); }
-        25%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.29), 74px); }
-        31%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.295), 74px); }
-        35%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.31), 66px); } /* 軽くじゃれ跳ね */
-        39%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.315), 74px); }
-        46%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.315), 74px); }
+        0%   { transform: translate(80px, 74px); }
+        25%  { transform: translate(80px, 74px); }
+        31%  { transform: translate(80px, 74px); }
+        35%  { transform: translate(80px, 66px); } /* 軽くじゃれ跳ね */
+        39%  { transform: translate(80px, 74px); }
+        46%  { transform: translate(80px, 74px); }
         /* ジャンプ1回目 */
-        51%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.4), 50px); }
-        56%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.48), 74px); }
+        51%  { transform: translate(80px, 50px); }
+        56%  { transform: translate(80px, 74px); }
         /* ジャンプ2回目 */
-        61%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.565), 46px); }
-        66%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.645), 74px); }
+        61%  { transform: translate(80px, 46px); }
+        66%  { transform: translate(80px, 74px); }
         /* ジャンプ3回目 */
-        71%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.73), 50px); }
-        76%  { transform: translate(calc(var(--cat-stage-width,1000px) * 0.81), 74px); }
+        71%  { transform: translate(80px, 50px); }
+        76%  { transform: translate(80px, 74px); }
         /* 歩いて退場 */
-        100% { transform: translate(calc(var(--cat-stage-width,1000px) + 70px), 74px); }
+        100% { transform: translate(80px, 74px); }
       }
 
       @keyframes ll-catPose {
@@ -161,14 +161,14 @@
 
       /* 蝶々の軌道 */
       @keyframes ll-butterflyPath {
-0%,15%{transform:translate(calc(var(--cat-stage-width,1000px)*.29 + 65px),-15px);opacity:0}
-24%{transform:translate(calc(var(--cat-stage-width,1000px)*.29 + 60px),28px);opacity:1}
-32%{transform:translate(calc(var(--cat-stage-width,1000px)*.295 + 47px),22px);opacity:1}
-38%{transform:translate(calc(var(--cat-stage-width,1000px)*.315 + 43px),30px);opacity:1}
-46%{transform:translate(calc(var(--cat-stage-width,1000px)*.315 + 105px),20px);opacity:1}
-60%{transform:translate(calc(var(--cat-stage-width,1000px)*.565 + 65px),16px);opacity:1}
-76%{transform:translate(calc(var(--cat-stage-width,1000px)*.81 + 70px),22px);opacity:1}
-90%,100%{transform:translate(calc(var(--cat-stage-width,1000px) + 60px),-10px);opacity:0}
+0%,15%{transform:translate(140px, -15px);opacity:0}
+24%{transform:translate(140px, 28px);opacity:1}
+32%{transform:translate(140px, 22px);opacity:1}
+38%{transform:translate(140px, 30px);opacity:1}
+46%{transform:translate(140px, 20px);opacity:1}
+60%{transform:translate(140px, 16px);opacity:1}
+76%{transform:translate(140px, 22px);opacity:1}
+90%,100%{transform:translate(140px, -10px);opacity:0}
 }
 @keyframes ll-wingFlap {
         0%   { transform: scaleY(1); }
@@ -182,7 +182,12 @@
 .announcement-track a{text-shadow:0 1px 2px #1f8781,0 0 3px #1f8781}
 .strip [data-notice-pause]{position:relative;z-index:3;background:var(--teal)}
 /* 静止時も猫が画面内に残る。SVGのローカル座標は元コードを保つ。 */
-.cat-banner-wrap .cat-mover{transform:translate(calc(var(--cat-stage-width,1000px)*.72),74px)}
-.cat-banner-wrap .butterfly{transform:translate(calc(var(--cat-stage-width,1000px)*.72 + 55px),28px)}
+.cat-banner-wrap .cat-mover{transform:translate(80px, 74px)}
+.cat-banner-wrap .butterfly{transform:translate(80px, 28px)}
 .strip.is-paused .cat-banner-wrap *{animation-play-state:paused!important}
 @media(prefers-reduced-motion:reduce){.cat-banner-wrap *{animation:none!important}}
+
+/* v54：文字と同じレールで左へ進む。猫専用枠を確保し重ねない。 */
+.cat-banner-wrap svg{width:88px;height:44px;flex:none;transform:scaleX(-1);transform-origin:50% 50%}
+.cat-banner-wrap .cat-mover{transform:translate(80px,74px)}
+.cat-banner-wrap .butterfly{transform:translate(140px,28px)}

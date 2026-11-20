@@ -211,3 +211,6 @@ node tools/components.cjs show walking-cat。形はwalking-cat.jsのSVG、歩行
 
 ## Gemini案の重ねる猫（v53試用）
 walking-cat.js/cssを差替え、site-announcements.jsが帯のannouncement-barへ1匹だけ配置。cat-banner-wrapはabsolute/inset:0/height:100%/z1、文字z2・停止z3、pointer-eventsなし。元SVGの猫・蝶・12秒の位相を保ち、移動距離だけ画面幅へ対応。描画は帯に収めるため等比90%。停止とreduced-motionは全要素に適用。v52へは履歴から戻せる。
+
+## 猫の方向・同速・非重複（v54・現在の方式）
+猫はannouncement-track内の専用96px枠へ戻す。文字と親の移動を共用するので速度差が生じない。SVGを左右反転し左向き。catPathのXは80で固定し、枠内の上下動だけ残す。v53のabsolute重ね配置と画面横断は撤回。新規の告知も同じ型で猫のための余白を確保する。

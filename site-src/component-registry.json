@@ -161,7 +161,7 @@
         "walking-cat.js",
         "walking-cat.css"
       ],
-      "edit": "林さん提供のGemini案を試用。cat-banner-wrapをposition:absolute/inset:0/height:100%/z-index:1で帯に重ね、文字z2・停止ボタンz3、pointer-events:none。12秒で歩く／蝶にじゃれる／3回ジャンプ。帯44px維持、移動幅はResizeObserverで合わせる。原文は第二の脳へ保存。"
+      "edit": "v54：猫専用96×44pxの枠を文字の間に置き、文字と同じannouncement-trackで左向き・同速移動。重ね配置と独立した横移動を撤回。提供SVGの形と局所動作、停止・減動作は保持。"
     }
   }
 }
