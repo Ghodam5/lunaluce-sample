@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.4
+Luna Luce OMS 2.5
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
@@ -29,6 +29,7 @@ drawer-head            renderDrawerHead
 drawer-warning         renderDrawerWarning
 drawer-preview         renderDrawerPreview
 drawer-samples         renderDrawerSamples
+drawer-miniseal        renderDrawerMiniseal
 drawer-parts           renderDrawerParts
 drawer-fees            renderDrawerFees
 drawer-campaign        renderDrawerCampaign
@@ -55,19 +56,20 @@ openManualOrderModal, closeManualOrderModal, submitManualOrder,
 selectSchemaTable, copySqlDdl, goToSimulatorWithSelected,
 downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, onMatchQuery, setOrderSort, loadSiteFile,
 exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow,
-setCarrierMode, setCarrierZone, setCarrierSize
+setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 
 料金の式は feeNumbers だけ。1注文につき1回、¥500＋¥20×文字数。のし¥20。ラッピング¥90。
 キャンペーンは名前の表示だけ。例: 5円ご縁。
 ヤマト契約送料は yamatoContractCost だけ。お客様の送料には入れない。ネコポスは280円で、サイズ表の行ではない。
 商品検索は product-search だけ。同じフォルダの oms-products.json を読む。キャンペーンの計算はしない。
 販路の突き合わせは channel-match だけ。同じフォルダの oms-channel-match.json を読む。価格は上書きしない。
+ミニシールの図柄選択は drawer-miniseal だけ。画像は miniseal/。枠は角丸スクエアで、円形の見本は使わない。
 -->
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.4｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.5｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -1210,21 +1212,22 @@ setCarrierMode, setCarrierZone, setCarrierSize
     [data-part="drawer-realsize"] .thanks .name { margin: 1mm 0 0; font-family: "Noto Serif JP", serif; font-size: 14pt; line-height: 1.2; color: var(--forest); overflow-wrap: anywhere; }
     [data-part="drawer-realsize"] .thanks .date { margin: 1mm 0 0; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10pt; color: var(--champagne); }
     [data-part="drawer-realsize"] .seal {
-      width: 30mm;
-      min-width: 30mm;
-      height: 30mm;
-      border-radius: 50%;
+      width: 35mm;
+      min-width: 35mm;
+      height: 25mm;
+      border-radius: 3mm;
       background: #fff;
       border: 1px solid var(--champagne);
       overflow: hidden;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 2mm;
+      padding: 0;
     }
-    [data-part="drawer-realsize"] .seal .name { margin: 0; font-size: 7pt; line-height: 1.15; color: var(--forest); overflow-wrap: anywhere; }
-    [data-part="drawer-realsize"] .seal .date { margin: 0.5mm 0 0; font-size: 6pt; font-family: "JetBrains Mono", ui-monospace, monospace; color: var(--champagne); }
+    [data-part="drawer-realsize"] .seal img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    [data-part="drawer-realsize"] .seal .miss { margin: 0; font-size: 8pt; line-height: 1.3; color: var(--taupe); }
     [data-part="drawer-realsize"] .caption { margin: 4px 0 0; font-size: 12px; color: var(--taupe); }
 
     /* owner: renderDrawerStock */
@@ -1660,6 +1663,45 @@ setCarrierMode, setCarrierZone, setCarrierSize
     /* owner: renderDrawerSamples */
     [data-part="drawer-samples"] .note { margin: 0 0 8px; color: #92400e; font-size: 13px; }
 
+    /* owner: renderDrawerMiniseal */
+    [data-part="drawer-miniseal"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; align-items: end; margin-bottom: 8px; }
+    [data-part="drawer-miniseal"] .note { margin: 0 0 8px; color: var(--taupe); font-size: 13px; }
+    [data-part="drawer-miniseal"] .chosen { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 10px; }
+    [data-part="drawer-miniseal"] .chosen .seal-frame { width: min(168px, 46vw); }
+    [data-part="drawer-miniseal"] .chosen .cap { margin: 0; font-size: 13px; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="drawer-miniseal"] .seal-frame {
+      aspect-ratio: 1;
+      border-radius: 18%;
+      background: #fff;
+      border: 1px solid var(--champagne);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    [data-part="drawer-miniseal"] .seal-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    [data-part="drawer-miniseal"] .miss { margin: 0; padding: 4px; font-size: 12px; line-height: 1.3; color: var(--taupe); }
+    [data-part="drawer-miniseal"] .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    [data-part="drawer-miniseal"] button {
+      min-height: 44px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--forest);
+      text-align: center;
+    }
+    [data-part="drawer-miniseal"] button.is-on { border-color: var(--forest); box-shadow: inset 0 0 0 1px var(--forest); }
+    [data-part="drawer-miniseal"] .nm { display: block; margin-top: 4px; font-size: 12px; line-height: 1.3; overflow-wrap: anywhere; }
+    @media (min-width: 834px) {
+      [data-part="drawer-miniseal"] .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1280px) {
+      [data-part="drawer-miniseal"] .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    }
+
     /* owner: renderDrawerRealSize */
     [data-part="drawer-realsize"] .limit { margin: 8px 0 0; color: var(--taupe); font-size: 13px; }
 
@@ -1692,11 +1734,27 @@ setCarrierMode, setCarrierZone, setCarrierSize
       '41.オータム', '42.クローバー', '43.リボン', '44.エアメール', '45.キスマーク', '46.クラシッククラウン', '47.クラシックバタフライ', '48.チェリーブロッサム', '49.ホワイトローズ', '50.ストライプ（オレンジ）',
       '51.ストライプ（ブルー）', '52.バースデイ', '53.ハロウィンB（ハロウィン仕様）', '54.ドライウッド', '55.クマちゃん', '56.幼稚園・保育園', '57.小学校', '58.中学校', '59.高校'
     ];
+    function miniSealFile(label) {
+      const id = label.slice(0, 2);
+      const ext = Number(id) >= 33 ? '.png' : '.jpg';
+      return id + '-' + label.slice(3) + ext;
+    }
     const SEAL_BY_ID = {};
     SEAL_LABELS.forEach(function (label) {
       const id = label.slice(0, 2);
-      SEAL_BY_ID[id] = { id: id, label: label, cartValue: label };
+      SEAL_BY_ID[id] = { id: id, label: label, cartValue: label, file: miniSealFile(label) };
     });
+    function sealSrc(file) {
+      return 'miniseal/' + encodeURIComponent(file);
+    }
+    function currentSeal() {
+      return state.sealPickId && SEAL_BY_ID[state.sealPickId] ? SEAL_BY_ID[state.sealPickId] : null;
+    }
+    function sealFrameInner(seal) {
+      if (!seal) return '<p class="miss">未選択</p>';
+      if (!seal.file) return '<p class="miss">' + escapeHtml(seal.label) + '</p><p class="miss">画像なし</p>';
+      return '<img data-seal-img src="' + sealSrc(seal.file) + '" alt="' + escapeHtml(seal.label) + '">';
+    }
     const DESIGN_TEMPLATES = [
       {
         templateId: 'mini-seal-d30',
@@ -1704,7 +1762,7 @@ setCarrierMode, setCarrierZone, setCarrierSize
         productIds: [],
         skus: ['LL-PG-082-EARL'],
         kind: 'miniSeal',
-        printAreaMm: { diameter: 30 },
+        printAreaMm: null,
         paper: 'ミニシール',
         sides: 1,
         fonts: FONT_OPTIONS,
@@ -1763,7 +1821,8 @@ setCarrierMode, setCarrierZone, setCarrierSize
       carrierZone: '',
       carrierSize: '',
       lastSync: TODAY + ' 10:15:00',
-      orderSort: 'due'
+      orderSort: 'due',
+      sealPickId: ''
     };
 
     function emit(name, detail) {
@@ -2063,7 +2122,7 @@ setCarrierMode, setCarrierZone, setCarrierSize
     }
 
     function renderHeaderBrand(host) {
-      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.4</span></h1></div>';
+      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.5</span></h1></div>';
     }
     function renderHeaderStatus(host) {
       function paint() {
@@ -3404,7 +3463,7 @@ setCarrierMode, setCarrierZone, setCarrierSize
         '<article class="card"><span class="tag gold">加工CSV</span><h3>レーザー・印字用CSV</h3><p>選んだ注文から、名前と日付のCSVを出します。</p></article>',
         '<article class="card"><span class="tag sage">送り状</span><h3>ヤマトB2クラウド</h3><p>式場名と挙式日を記事欄に入れたCSVを出します。</p></article>',
         '<article class="card"><span class="tag taupe">校正</span><h3>送付してから承認</h3><p>校正は未送付 → 送付済 → 承認済の順です。</p></article>',
-        '<article class="card"><span class="tag forest">実寸</span><h3>サンクスカードとミニシール</h3><p>カードは91×55mm、シールはφ30mmです。</p></article>',
+        '<article class="card"><span class="tag forest">実寸</span><h3>サンクスカードとミニシール</h3><p>カードは91×55mmです。ミニシールは角丸スクエアで、円ではありません。ページのサイズ欄は約35×25mmです。</p></article>',
         '</div></div></section>',
         '<section class="panel"><h2>外部APIの接続予定</h2><p class="lead">期限の見本です。この画面はキーを持たず、ポーリングもしません。</p><div class="monitors">',
         '<article class="monitor"><header><h3>WordPress / Welcart</h3><span class="tag forest">未接続</span></header><p>認証の想定: Application Password。いまは呼びません。</p></article>',
@@ -3576,15 +3635,16 @@ setCarrierMode, setCarrierZone, setCarrierSize
         return view;
       }
       if (template && template.kind === 'miniSeal') {
-        if (SEAL_LABELS.length !== 59 || !seal || seal.cartValue !== seal.label) {
-          view.headline = '図柄未登録・共通参考見本';
-          view.detail = '59図柄のIDとカート値が一致しません。実製造には使えません。画像は読み込んでいません。';
+        if (line.designId && !seal) {
+          view.headline = '図柄未登録';
+          view.detail = 'この明細の図柄IDは、この端末の図柄一覧にありません。実製造には使えません。画像は読み込んでいません。';
           return view;
         }
         view.status = 'sample';
-        view.headline = '画面見本 ' + seal.label;
+        view.headline = seal ? ('画面見本 ' + seal.label) : '図柄未選択';
         const linked = template.skus.indexOf(order.sku) >= 0;
-        view.detail = '公開見本です。製造原稿ではありません。原本ファイルはありません。名前は図柄の上に載せていません。印刷可能範囲はφ' + template.printAreaMm.diameter + 'mm、' + template.sides + '面です。' + (linked ? 'このSKUに紐付いています。' : 'このSKUの紐付けはありません。');
+        const fileNote = !seal ? '図柄は一覧から選びます。' : (seal.file ? '図柄画像はこの端末のファイルです。' : 'この図柄の画像ファイルはありません。');
+        view.detail = '公開見本です。製造原稿ではありません。枠は角丸スクエアです。' + fileNote + '名前は図柄の上に載せていません。寸法は約35×25mmで、再構築サイト option.html のミニシール表に書かれています。' + (linked ? 'このSKUに紐付いています。' : 'このSKUの紐付けはありません。');
       }
       return view;
     }
@@ -3623,6 +3683,7 @@ setCarrierMode, setCarrierZone, setCarrierSize
       }
       on('oms:open', paint);
       on('oms:draft', function () { applyPreview(); });
+      on('oms:seal', paint);
     }
     function renderDrawerSamples(host) {
       function paint() {
@@ -3642,6 +3703,44 @@ setCarrierMode, setCarrierZone, setCarrierSize
       }
       on('oms:open', paint);
       on('oms:draft', fillSamples);
+      on('oms:seal', fillSamples);
+    }
+    function renderDrawerMiniseal(host) {
+      host.addEventListener('error', function (event) {
+        const img = event.target;
+        if (!img || img.tagName !== 'IMG' || !img.hasAttribute('data-seal-img')) return;
+        const frame = img.closest('.seal-frame');
+        if (!frame) return;
+        frame.classList.add('is-empty');
+        frame.innerHTML = '<p class="miss">' + escapeHtml(img.alt || '') + '</p><p class="miss">画像なし</p>';
+      }, true);
+      function chosenBlock() {
+        const seal = currentSeal();
+        const title = seal ? seal.label : '未選択';
+        const size = '約35×25mm。再構築サイト option.html のミニシール表。';
+        return '<div class="seal-frame">' + sealFrameInner(seal) + '</div><div><p class="cap">' + escapeHtml(title) + '</p><p class="sub">角丸スクエア。円ではありません。' + escapeHtml(size) + '</p></div>';
+      }
+      function paint() {
+        if (!currentOrder()) { host.innerHTML = ''; return; }
+        const buttons = SEAL_LABELS.map(function (label) {
+          const id = label.slice(0, 2);
+          const seal = SEAL_BY_ID[id];
+          const on = state.sealPickId === id;
+          return '<button type="button" data-action="pick-seal" data-seal-id="' + escapeHtml(id) + '" class="' + (on ? 'is-on' : '') + '" aria-pressed="' + (on ? 'true' : 'false') + '"><span class="seal-frame">' + sealFrameInner(seal) + '</span><span class="nm">' + escapeHtml(label.slice(3)) + '</span></button>';
+        }).join('');
+        host.innerHTML = '<div class="head"><h3>ミニシールの図柄</h3><p class="sub">この端末の画像</p></div><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。</p><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div><div class="grid">' + buttons + '</div>';
+      }
+      function refresh() {
+        if (!host.querySelector('[data-seal-chosen]')) { paint(); return; }
+        host.querySelector('[data-seal-chosen]').innerHTML = chosenBlock();
+        host.querySelectorAll('[data-seal-id]').forEach(function (button) {
+          const on = button.dataset.sealId === state.sealPickId;
+          button.classList.toggle('is-on', on);
+          button.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      }
+      on('oms:open', paint);
+      on('oms:seal', refresh);
     }
     function renderDrawerParts(host) {
       function paint() {
@@ -3743,6 +3842,7 @@ setCarrierMode, setCarrierZone, setCarrierSize
       on('oms:open', paint);
       on('oms:change', paint);
       on('oms:draft', paint);
+      on('oms:seal', paint);
     }
     function renderDrawerRealSize(host) {
       function paint() {
@@ -3756,10 +3856,14 @@ setCarrierMode, setCarrierZone, setCarrierSize
         let piece = '';
         if (view.status === 'diy') {
           piece = '<div class="piece"><div class="thanks"><p class="cap">配置見本</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div><p class="caption">汎用の入力配置見本。購入用テンプレートではありません</p></div>';
-        } else if (view.status === 'sample') {
-          piece = '<div class="piece"><div class="seal"><div><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div></div><p class="caption">ミニシール φ30mm・画面見本（製造原稿ではない）</p></div>';
+        } else if (view.status === 'version-missing') {
+          piece = '<p class="caption">' + escapeHtml(view.headline) + '</p>';
         } else {
-          piece = '<div class="piece"><div class="seal"><div><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div></div><p class="caption">図柄未登録・共通参考見本</p></div>';
+          const seal = currentSeal() || view.seal;
+          const caption = seal && seal.file
+            ? seal.label + '・角丸・約35×25mm（option.html のサイズ欄）・画面見本'
+            : (seal ? seal.label + '・画像なし' : '図柄未選択');
+          piece = '<div class="piece"><div class="seal">' + sealFrameInner(seal) + '</div><p class="caption">' + escapeHtml(caption) + '</p></div>';
         }
         host.innerHTML = '<div class="head"><h3>画面の寸法見本</h3><p class="sub">実寸PDFは、余白・書体・面付けの確定前に製造へ回しません</p></div><div class="stage"><div class="row">' + thanks + piece + '</div></div><p class="limit">' + escapeHtml(view.detail) + '</p>';
         fill();
@@ -3770,6 +3874,7 @@ setCarrierMode, setCarrierZone, setCarrierSize
       }
       on('oms:open', paint);
       on('oms:draft', fill);
+      on('oms:seal', paint);
     }
     function renderDrawerStock(host) {
       function paint() {
@@ -3820,6 +3925,7 @@ setCarrierMode, setCarrierZone, setCarrierSize
       { name: 'drawer-warning', render: renderDrawerWarning },
       { name: 'drawer-preview', render: renderDrawerPreview },
       { name: 'drawer-samples', render: renderDrawerSamples },
+      { name: 'drawer-miniseal', render: renderDrawerMiniseal },
       { name: 'drawer-parts', render: renderDrawerParts },
       { name: 'drawer-fees', render: renderDrawerFees },
       { name: 'drawer-campaign', render: renderDrawerCampaign },
@@ -3928,11 +4034,28 @@ setCarrierMode, setCarrierZone, setCarrierSize
       emit('oms:change');
       showToast('注文 ' + order.id + ' の工程を「' + order.status + '」に更新しました');
     }
+    function pickMiniSeal(id) {
+      if (!id || !SEAL_BY_ID[id]) return;
+      const order = currentOrder();
+      if (!order) return;
+      state.sealPickId = id;
+      const line = order.line;
+      const diy = line && line.templateId === 'paper-diy-blanc';
+      if (line && !diy) {
+        line.designId = id;
+        if (!line.templateId) {
+          line.templateId = 'mini-seal-d30';
+          line.templateVersion = '2026.11.20';
+        }
+      }
+      emit('oms:seal');
+    }
     function openOrderDrawer(id) {
       const order = state.orders.find(function (item) { return item.id === id; });
       if (!order) return;
       state.currentId = id;
       state.draft = readDraft(order);
+      state.sealPickId = (order.line && order.line.designId && SEAL_BY_ID[order.line.designId]) ? order.line.designId : '';
       const root = document.querySelector('[data-part="drawer"]');
       root.querySelector('.drawer-backdrop').hidden = false;
       root.querySelector('.drawer-panel').hidden = false;
@@ -4167,6 +4290,7 @@ setCarrierMode, setCarrierZone, setCarrierSize
       else if (name === 'carrier-mode') setCarrierMode(el.dataset.mode);
       else if (name === 'carrier-zone') setCarrierZone(el);
       else if (name === 'carrier-size') setCarrierSize(el);
+      else if (name === 'pick-seal') pickMiniSeal(el.dataset.sealId);
     }
     document.addEventListener('click', function (event) {
       const interactive = event.target.closest('button, a, input, select, textarea, label');
