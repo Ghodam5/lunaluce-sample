@@ -1180,3 +1180,15 @@ input,select,textarea{font-size:16px!important}
 }
 @media(min-width:1024px){.mobile-header-space{display:none!important}}
 @media(prefers-reduced-motion:reduce){.tabs-bottom{transition:none!important}}
+
+/* v42：切替ではなく、ページと同じ距離だけ上下して収納・復帰する。 */
+.mobile-logo-slot,.mobile-category-slot{display:contents}
+@media(max-width:1023px){
+ .mobile-logo-slot,.mobile-category-slot{display:block;overflow:hidden;overflow:clip}
+ .mobile-logo-slot{height:calc(var(--logo-full,58px) - var(--logo-offset,0px))}
+ .mobile-category-slot{height:calc(var(--cats-full,160px) - var(--cats-offset,0px))}
+ .mobile-logo-slot>.hd-in{transform:translateY(calc(-1 * var(--logo-offset,0px)))}
+ .mobile-category-slot>.cats{transform:translateY(calc(-1 * var(--cats-offset,0px)))}
+ header.hd.mobile-scroll-header{position:fixed;left:0;right:0;top:0;background:rgba(250,253,252,.93);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 2px 10px rgba(38,48,58,.07)}
+ header.hd.mobile-scroll-header+.mobile-header-space{display:block}
+}
