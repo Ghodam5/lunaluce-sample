@@ -11,6 +11,7 @@ header-tabs            renderHeaderTabs
 tab-dashboard          renderDashboard
 kpi-strip              renderKpiStrip
 part-stock             renderPartStockStrip
+product-search         renderProductSearch
 order-filters          renderOrderFilters
 order-list             renderOrderList
 tab-architecture       renderArchitectureTab
@@ -45,10 +46,11 @@ closeOrderDrawer, onEditInput, saveDrawerEdits, toggleRushTicket,
 markProofSent, markProofApproved, confirmOrderStock, triggerSingleAction,
 openManualOrderModal, closeManualOrderModal, submitManualOrder,
 selectSchemaTable, copySqlDdl, goToSimulatorWithSelected,
-downloadSimulatedCsv, showToast
+downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct
 
 料金の式は feeNumbers だけ。1注文につき1回、¥500＋¥20×文字数。のし¥20。ラッピング¥90。
 キャンペーンは名前の表示だけ。例: 5円ご縁。
+商品検索は product-search だけ。同じフォルダの oms-products.json を読む。キャンペーンの計算はしない。
 -->
 <html lang="ja">
 <head>
@@ -1260,6 +1262,92 @@ downloadSimulatedCsv, showToast
     @media (min-width: 834px) {
       [data-part="toast"] { left: auto; right: 20px; width: min(440px, calc(100% - 40px)); }
     }
+
+    /* owner: renderProductSearch */
+    [data-part="product-search"] .panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    [data-part="product-search"] h2 { margin: 0; font-size: 15px; color: var(--forest); }
+    [data-part="product-search"] h3 { margin: 0 0 8px; font-size: 14px; color: var(--forest); }
+    [data-part="product-search"] .lead { margin: 4px 0 0; color: var(--taupe-light); font-size: 13px; }
+    [data-part="product-search"] .query {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--taupe);
+    }
+    [data-part="product-search"] input[type="search"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #d6d3d1;
+      background: var(--ivory);
+      font-size: 16px;
+      font-weight: 400;
+    }
+    [data-part="product-search"] .meta { margin: 8px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="product-search"] .line {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--champagne-soft);
+      border: 1px solid var(--champagne-light);
+    }
+    [data-part="product-search"] .line .grid {
+      display: grid;
+      gap: 8px;
+    }
+    [data-part="product-search"] .line .grid div { display: flex; flex-direction: column; gap: 2px; }
+    [data-part="product-search"] .line .wide { grid-column: 1 / -1; }
+    [data-part="product-search"] .line span { color: var(--taupe-light); font-size: 12px; }
+    [data-part="product-search"] .line strong { color: var(--ink); font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+    [data-part="product-search"] .flags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    [data-part="product-search"] .flag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--white);
+      color: var(--taupe);
+      font-size: 13px;
+    }
+    [data-part="product-search"] .flag.is-on { background: var(--forest); color: #fff; font-weight: 600; }
+    [data-part="product-search"] .hits {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+      max-height: 320px;
+      overflow: auto;
+    }
+    [data-part="product-search"] .hits button {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--ivory);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    [data-part="product-search"] .hits button.is-on { border-color: var(--champagne); background: var(--white); }
+    [data-part="product-search"] .hits strong { font-size: 14px; font-weight: 600; }
+    [data-part="product-search"] .hits span,
+    [data-part="product-search"] .more,
+    [data-part="product-search"] .empty { color: var(--taupe); font-size: 13px; }
+    [data-part="product-search"] .empty { margin: 0; }
+    [data-part="product-search"] .more { margin: 0; }
+    @media (min-width: 834px) {
+      [data-part="product-search"] .line .grid { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -1659,9 +1747,144 @@ downloadSimulatedCsv, showToast
       on('oms:list', paint);
       on('oms:change', paint);
     }
+    function foldText(value) {
+      const text = String(value == null ? '' : value);
+      const normalized = text.normalize ? text.normalize('NFKC') : text;
+      return normalized.toLowerCase().replace(/\s+/g, '');
+    }
+    function buildCatalogLines(products) {
+      const lines = [];
+      (products || []).forEach(function (product) {
+        const naire = !!(product.naire && product.naire.exists);
+        const variants = product.skus && product.skus.length ? product.skus : [null];
+        variants.forEach(function (sku, index) {
+          const code = sku ? (sku.sku || '') : (product.sku || '');
+          const skuName = sku ? (sku.name || '') : (product.sku_name || '');
+          const line = {
+            key: String(product.id) + '|' + code + '|' + index,
+            productId: product.id,
+            name: product.name || '',
+            skuName: skuName,
+            sku: code,
+            itemCode: product.item_code || '',
+            priceTaxIn: sku ? sku.price_tax_in : product.price_tax_in,
+            stock: sku ? sku.stock : product.stock,
+            naire: naire,
+            noshi: !!product.noshi,
+            wrapping: !!product.wrapping
+          };
+          line.hay = foldText([line.name, line.skuName, line.sku, line.itemCode].join(' '));
+          lines.push(line);
+        });
+      });
+      return lines;
+    }
+    function renderProductSearch(host) {
+      let lines = [];
+      let query = '';
+      let pickedKey = '';
+      let status = 'loading';
+
+      host.innerHTML = '<section class="panel"><h2>商品検索</h2><p class="lead">バックアップの公開商品です。商品名かSKUを入れて選びます。選ぶと注文明細に、名前・SKU・税込価格・在庫（あるとき）・名入れ／のし／包装が入ります。ダミー注文はそのままです。</p><label class="query">商品名・SKU<input data-action="product-query" type="search" placeholder="例: ペンダントクロック / pb-hansel" autocomplete="off" spellcheck="false"></label><p class="meta" data-meta>商品データを読み込んでいます</p><div class="line" data-line aria-live="polite"></div><div class="hits" data-hits></div></section>';
+      const meta = host.querySelector('[data-meta]');
+      const lineHost = host.querySelector('[data-line]');
+      const hits = host.querySelector('[data-hits]');
+      const input = host.querySelector('[data-action="product-query"]');
+
+      function flagChip(label, on) {
+        return '<span class="flag' + (on ? ' is-on' : '') + '">' + escapeHtml(label) + (on ? 'あり' : 'なし') + '</span>';
+      }
+      function paintLine() {
+        const line = lines.find(function (item) { return item.key === pickedKey; });
+        if (!line) {
+          lineHost.innerHTML = '<h3>注文明細</h3><p class="empty">まだ商品を選んでいません。</p>';
+          return;
+        }
+        const skuName = line.skuName && line.skuName !== line.name
+          ? '<div class="wide"><span>SKU名</span><strong>' + escapeHtml(line.skuName) + '</strong></div>'
+          : '';
+        const stock = line.stock == null
+          ? ''
+          : '<div><span>在庫</span><strong>' + escapeHtml(String(line.stock)) + '</strong></div>';
+        lineHost.innerHTML = '<h3>注文明細</h3><div class="grid"><div class="wide"><span>商品名</span><strong>' + escapeHtml(line.name) + '</strong></div>' + skuName + '<div><span>SKU</span><strong>' + escapeHtml(line.sku) + '</strong></div><div><span>税込価格</span><strong>' + escapeHtml(formatYen(line.priceTaxIn)) + '</strong></div>' + stock + '</div><div class="flags">' + flagChip('名入れ', line.naire) + flagChip('のし', line.noshi) + flagChip('包装', line.wrapping) + '</div>';
+      }
+      function paintHits() {
+        if (status !== 'ready') {
+          hits.innerHTML = '<p class="empty">' + escapeHtml(status === 'error' ? '候補を出せません' : '読み込みが終わるまでお待ちください') + '</p>';
+          return;
+        }
+        const q = foldText(query);
+        if (!q) {
+          hits.innerHTML = '<p class="empty">商品名かSKUを入れると、ここに候補が出ます。</p>';
+          return;
+        }
+        const found = lines.filter(function (line) { return line.hay.indexOf(q) !== -1; });
+        const shown = found.slice(0, 30);
+        if (!shown.length) {
+          hits.innerHTML = '<p class="empty">該当する商品はありません。</p>';
+          return;
+        }
+        const more = found.length > shown.length
+          ? '<p class="more">該当 ' + found.length + '件のうち先頭30件です。もう少し絞ってください。</p>'
+          : '<p class="more">該当 ' + found.length + '件</p>';
+        hits.innerHTML = more + shown.map(function (line) {
+          const on = line.key === pickedKey;
+          const variant = line.skuName && line.skuName !== line.name
+            ? '<span>' + escapeHtml(line.skuName) + '</span>'
+            : '';
+          return '<button type="button" data-action="product-pick" data-key="' + escapeHtml(line.key) + '" class="' + (on ? 'is-on' : '') + '" aria-pressed="' + (on ? 'true' : 'false') + '"><strong>' + escapeHtml(line.name) + '</strong><span>' + escapeHtml(line.sku) + ' · ' + escapeHtml(formatYen(line.priceTaxIn)) + '</span>' + variant + '</button>';
+        }).join('');
+      }
+      function paint() {
+        paintLine();
+        paintHits();
+      }
+      paint();
+      on('oms:product-query', function (value) {
+        query = value || '';
+        paintHits();
+      });
+      on('oms:product-pick', function (key) {
+        if (!lines.some(function (line) { return line.key === key; })) return;
+        pickedKey = key;
+        paint();
+      });
+      input.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        const first = hits.querySelector('button');
+        if (first) pickCatalogProduct(first);
+      });
+
+      const url = new URL('oms-products.json', window.location.href);
+      fetch(url.href).then(function (res) {
+        if (!res.ok) throw new Error(String(res.status));
+        return res.json();
+      }).then(function (data) {
+        const products = data && data.products;
+        if (!Array.isArray(products)) throw new Error('products');
+        lines = buildCatalogLines(products);
+        status = 'ready';
+        const ids = {};
+        lines.forEach(function (line) { ids[line.productId] = true; });
+        meta.textContent = '公開商品 ' + Object.keys(ids).length + '件、SKU ' + lines.length + '件。楽天・Yahoo・本店へは接続していません。';
+        paint();
+      }).catch(function () {
+        status = 'error';
+        meta.textContent = '同じフォルダの oms-products.json を読めませんでした。';
+        paintHits();
+      });
+    }
+    function onProductQuery(el) {
+      emit('oms:product-query', el.value);
+    }
+    function pickCatalogProduct(el) {
+      emit('oms:product-pick', el.dataset.key);
+    }
     const DASHBOARD_PARTS = [
       { name: 'kpi-strip', render: renderKpiStrip },
       { name: 'part-stock', render: renderPartStockStrip },
+      { name: 'product-search', render: renderProductSearch },
       { name: 'order-filters', render: renderOrderFilters },
       { name: 'order-list', render: renderOrderList }
     ];
@@ -2292,6 +2515,8 @@ downloadSimulatedCsv, showToast
       else if (name === 'copy-ddl') copySqlDdl();
       else if (name === 'open-simulator') goToSimulatorWithSelected();
       else if (name === 'download') downloadSimulatedCsv(el.dataset.kind);
+      else if (name === 'product-query') onProductQuery(el);
+      else if (name === 'product-pick') pickCatalogProduct(el);
     }
     document.addEventListener('click', function (event) {
       const interactive = event.target.closest('button, a, input, select, textarea, label');
@@ -2308,7 +2533,7 @@ downloadSimulatedCsv, showToast
     });
     document.addEventListener('input', function (event) {
       const name = event.target.dataset.action;
-      if (name === 'search' || name === 'edit-field') runAction(name, event.target);
+      if (name === 'search' || name === 'edit-field' || name === 'product-query') runAction(name, event.target);
     });
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape') {
