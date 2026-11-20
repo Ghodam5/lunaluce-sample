@@ -205,3 +205,6 @@ node tools/components.cjs show name-preview。本文はsite-src/sections/top/nam
 - touch-guard.js：旧iOSでの静止連続タップ用。全touchmoveやgesturestartを禁止する方式へ戻さない。
 
 お気に入りは24件で押し出す旧上限を解消し、現行279商品すべてを保持できる安全上限1000件へ。期限では消去しない。最近見た商品は直近12件。検査のannouncement-windowは幅内で切り抜く表示窓なので、内部を横移動する文字だけは既存railと同様にluna-qaの対象外とし、ページ幅と表示窓の範囲は別途検査する。
+
+## 歩く白猫（v52）
+node tools/components.cjs show walking-cat。形はwalking-cat.jsのSVG、歩行はwalking-cat.css。4本の脚の位相差、体の小さい上下動、しっぽと瞬きを独立管理。site-announcements.jsから同じ部品を使う。帯を高くしない。脚などの子要素も停止し、reduced-motionでは全て静止。

@@ -1,0 +1,19 @@
+/* 脚を4拍で運ぶ歩行。全身を揺らすだけの旧アニメーションは使わない。 */
+.announcement-cat.walking-cat{width:84px;height:44px;display:block;overflow:visible;animation:none;flex:none}
+.walking-cat .cat-body,.walking-cat .cat-head{fill:#fffdf8}
+.walking-cat .cat-tail path{fill:none;stroke:#fffdf8;stroke-width:7;stroke-linecap:round}
+.walking-cat .cat-inner-ear,.walking-cat .cat-nose{fill:#eeb7b7}
+.walking-cat .cat-eyes{fill:#315a58;transform-box:fill-box;transform-origin:center;animation:cat-blink 4.8s infinite}
+.walking-cat .cat-mouth,.walking-cat .cat-whiskers{fill:none;stroke:#46726c;stroke-width:.9;stroke-linecap:round}
+.walking-cat .cat-leg{fill:none;stroke:#fffdf8;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;transform-box:fill-box;transform-origin:50% 0%;animation:cat-walk-step .88s linear infinite}
+.walking-cat .cat-front-far,.walking-cat .cat-back-far{stroke:#dceae5}
+.walking-cat .cat-front-near{animation-delay:0s}.walking-cat .cat-back-near{animation-delay:-.22s}.walking-cat .cat-front-far{animation-delay:-.44s}.walking-cat .cat-back-far{animation-delay:-.66s}
+.walking-cat .cat-toes{stroke:#d1dbd6;stroke-width:.7}
+.walking-cat .cat-upper{animation:cat-walk-body .44s ease-in-out infinite}
+.walking-cat .cat-tail{transform-box:fill-box;transform-origin:0% 100%;animation:cat-tail-sway 1.76s ease-in-out infinite}
+@keyframes cat-walk-step{0%{transform:rotate(21deg)}25%{transform:rotate(0deg) translateY(-1.5px)}50%{transform:rotate(-21deg)}75%{transform:rotate(0deg)}100%{transform:rotate(21deg)}}
+@keyframes cat-walk-body{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+@keyframes cat-tail-sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(6deg)}}
+@keyframes cat-blink{0%,42%,46%,100%{transform:scaleY(1)}44%{transform:scaleY(.1)}}
+.strip.is-paused .walking-cat *{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){.walking-cat *{animation:none!important}}

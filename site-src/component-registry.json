@@ -150,9 +150,18 @@
         "site-announcements.js",
         "site-announcements.css",
         "site-src/shared/shipping.html",
-        "images/malls"
+        "images/malls",
+        "walking-cat.js",
+        "walking-cat.css"
       ],
       "edit": "上部告知はID・文言・内部リンク・日本時間の掲載期間をJSONで編集しbuild。猫とスクロールは停止可能、動きを減らす設定で静止。OMSからの公開接続は未実装。"
+    },
+    "walking-cat": {
+      "resources": [
+        "walking-cat.js",
+        "walking-cat.css"
+      ],
+      "edit": "白猫の歩行部品。顔・耳・ひげ・しっぽ・4本の脚を分離したSVG。4拍の歩行、停止／再生とreduced-motionを共通CSSで管理。お知らせ帯は44pxのまま。"
     }
   }
 }
