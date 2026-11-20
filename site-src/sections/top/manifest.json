@@ -53,5 +53,10 @@
     "id": "welcome-board",
     "title": "ウェルカムボード 14件",
     "file": "site-src/sections/top/welcome-board.html"
+  },
+  {
+    "id": "name-preview",
+    "title": "名入れプレビュー（お試し4種類）",
+    "file": "site-src/sections/top/name-preview.html"
   }
 ]

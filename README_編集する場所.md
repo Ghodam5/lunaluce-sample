@@ -189,3 +189,6 @@ rail-controls.css/jsに一元化。操作中100%、静止1.2秒で18%、端は�
 
 ## スマホの連続タップ拡大（v48）
 style.cssのhtmlと標準ボタン／リンク等、rail-controls.cssの矢印をtouch-action:manipulationに統一。ダブルタップ拡大だけ抑え、パンとピンチを保持。ビューアのtouch-action:noneや数量ホイールのpan-yは独立した操作仕様。入力欄は既存のスマホ16px以上を保持。実機Safariの版による差はエミュレーションだけで保証しない。部品台帳show touchで参照する。
+
+## 名入れプレビューお試し（v49）
+node tools/components.cjs show name-preview。本文はsite-src/sections/top/name-preview.html、見本の見え方はname-preview.css、切替と入力反映はname-preview.js。top.htmlへ章として差し込む。入力はDOM内のtextContentだけで表示し、カート・保存・送信と接続しない。4つのdata-preview-typeとpanelのIDを一致させる。席次表は架空の固定レイアウトで編集／印刷機能ではない。共通ヘッダーや商品データを編集しない。

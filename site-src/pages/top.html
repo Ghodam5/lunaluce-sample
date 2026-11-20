@@ -1,5 +1,5 @@
 <!doctype html><html lang="ja"><head>{{> navigation-head}}<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>トップ｜ルナルーチェ（案4サンプル）</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Cormorant+Garamond:wght@500;600&family=Great+Vibes&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v={{version}}"><link rel="stylesheet" href="features.css?v={{version}}">{{> notes-head}}<link rel="stylesheet" href="home-guides.css?v={{version}}">{{> share-head}}{{> services-head}}<link rel="stylesheet" href="home-promos.css?v={{version}}"></head>
+<title>トップ｜ルナルーチェ（案4サンプル）</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Cormorant+Garamond:wght@500;600&family=Great+Vibes&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v={{version}}"><link rel="stylesheet" href="features.css?v={{version}}">{{> notes-head}}<link rel="stylesheet" href="home-guides.css?v={{version}}">{{> share-head}}{{> services-head}}<link rel="stylesheet" href="home-promos.css?v={{version}}"><link rel="stylesheet" href="name-preview.css?v={{version}}"></head>
 <body class=""><div class="sample-bar">サンプル（案4デザイン・スマホが基本）｜<a href="index.html">説明と見比べ</a></div>
 {{> shipping}}
 {{> header}}
@@ -38,19 +38,7 @@ rail.querySelectorAll('.prod').forEach(function(e){e.hidden=true;});
 show.forEach(function(k){var e=rail.querySelector('.prod[data-i="'+k+'"]');if(e){e.hidden=false;rail.insertBefore(e,more);}});
 var m=now.getUTCMonth()+1,dd=now.getUTCDate(),s=r.querySelector('.pd-date');if(s)s.textContent=m+'月'+dd+'日のおすすめ';})();</script>
 {{@ top/flavor}}
-<section class="sec" id="namer"><div class="sh"><h2>名入れプレビュー（お試し）</h2></div>
- <div class="namer">
-  <div class="pv"><div class="box"><div class="lbl"><div class="t1" id="pT1">Thank you</div><div class="t2" id="pT2">Taro &amp; Hanako</div><div class="t3" id="pT3">2027.04.18</div></div></div>
-   <span class="note">※仕上がりイメージです。実際の書体・配置は商品ごとに異なります</span></div>
-  <div class="form"><div class="trybadge">お試し用・ここで入力しても注文にはなりません</div><h3>名前を入れると、<br>その場で仕上がりが見られます。</h3>
-   <p class="lead">見本は GOEN 名入れカード型プチギフト（金平糖）。名入れの見た目を、商品を選ぶ前に気軽にお試しいただけます。</p>
-   <div class="field"><label>メッセージ</label><select id="iT1"><option>Thank you</option><option>Happy Wedding</option><option>With Love</option><option>ありがとう</option></select></div>
-   <div class="field"><label>お名前（ローマ字）</label><input id="iT2" value="Taro &amp; Hanako" maxlength="24"></div>
-   <div class="field"><label>日付</label><input id="iT3" value="2027.04.18" maxlength="12"></div>
-   <a class="btn co" style="width:100%;display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 12px;margin-top:6px" href="category.html?g=all&n=1">名入れできる商品をさがす</a>
-   <ol class="trysteps"><li>気に入った商品を選んでカートへ</li><li>カートで「名入れ・ご指定を入力する」にチェック</li><li>その商品の名入れ欄に入力して注文</li></ol>
-   <p class="note">ここで入れた内容は保存されません。実際の名入れは、商品を選んだあとカートで入力します。</p></div>
- </div></section>
+{{@ top/name-preview}}
 {{@ top/parents}}
 <section class="sec recommended-features" hidden data-placement-id="legacy-recommendations"><div class="sh"><h2>おすすめ特集</h2></div><div class="recommended-grid"><a href="bridal-bag.html"><img src="images/bridal-bag-intro.png" alt="" loading="lazy"><b>ブライダルバッグ</b></a><a href="preparedness-gift.html"><img src="images/feature-emergency.jpg" alt="" loading="lazy"><b>防災・備蓄ギフト</b></a><a href="neko.html"><img src="images/feature-neko.png" alt="" loading="lazy"><b>にゃんこモチーフ</b></a><a href="new-arrivals.html"><img src="images/feature-new.png" alt="" loading="lazy"><b>新着商品</b></a><a href="sale.html"><img src="images/feature-sale.png" alt="" loading="lazy"><b>数量限定・特価商品</b></a></div></section><section class="sec" hidden data-placement-id="legacy-season-strip"><div class="sh"><h2>季節の特集</h2><a href="category.html?g=season">特集一覧 →</a></div><div class="season">
  <a class="ss" href="category.html?g=season"><div class="ph"><img src="images/kashi-xmas.jpg" alt="" loading="lazy"></div><div class="t">クリスマスのプチギフト<small>12月の会・差し入れに</small></div></a>
@@ -152,12 +140,5 @@ function fit(){const show=tb&&getComputedStyle(tb).display!=='none';
  if(bb)R.style.setProperty('--buyh',bb.getBoundingClientRect().height+'px');}
 fit();window.addEventListener('load',fit);window.addEventListener('resize',fit);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);})();
-</script><script>
-const $=id=>document.getElementById(id);const FREE=20000,UNIT=184;
-function upd(){$('pT1').textContent=$('iT1').value;$('pT2').textContent=$('iT2').value||'お名前';$('pT3').textContent=$('iT3').value;}
-['iT1','iT2','iT3'].forEach(id=>$(id).addEventListener('input',upd));upd();
-</script><style>
-.trybadge{display:inline-block;font-size:12px;font-weight:700;color:#a65f00;background:#fff4e5;border:1px solid #f0b35a;border-radius:999px;padding:3px 12px;margin-bottom:8px}
-.trysteps{margin:10px 0 6px 1.3em;font-size:13px;line-height:1.7;color:var(--ink)}
-</style><script>
+</script><script src="name-preview.js?v={{version}}"></script><script>
 </script><script src="catico.js?v={{version}}"></script><script src="hscroll.js?v={{version}}"></script><script src="data.js?v={{version}}"></script><script src="feature-data.js?v={{version}}"></script><script src="product-data.js?v={{version}}"></script><script src="catalog.js?v={{version}}"></script><script src="campaign-data.js?v={{version}}"></script><script src="campaign-rules.js?v={{version}}"></script><script src="demo-cart.js?v={{version}}"></script><script src="header-scroll.js?v={{version}}"></script>{{> notes-script}}{{> share-script}}{{> services-script}}<script src="ranking-data.js?v={{version}}"></script><script src="home-collections.js?v={{version}}"></script><script src="home-promos-data.js?v={{version}}"></script><script src="home-promos.js?v={{version}}"></script></body></html>

@@ -120,6 +120,14 @@
         "rail-controls.css"
       ],
       "edit": "共通のタッチ操作。htmlと標準操作部品はmanipulationでダブルタップ拡大を抑え、縦横スクロール・ピンチを保持。user-scalable=noや全touchendキャンセルは使わない。商品写真ビューアと数量ホイールは個別の操作を保持。"
+    },
+    "name-preview": {
+      "resources": [
+        "site-src/sections/top/name-preview.html",
+        "name-preview.css",
+        "name-preview.js"
+      ],
+      "edit": "4種類のお試し見本。本文・CSS・入力反映を独立部品で管理。注文・保存・送信へ接続せず、席次表は架空配置。商品実画像／本番印刷データと誤認させない。"
     }
   }
 }
