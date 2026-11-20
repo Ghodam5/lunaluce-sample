@@ -130,3 +130,7 @@ services-head／services-scriptは全ページ必須の共通部品。通常の�
 
 ## サンプル一覧のスマホ見本（v39）
 一覧専用の編集元はsite-src/pages/index.htmlとphone-preview.js。iframeは390px幅を保ちmax-width:noneとし、枠の内寸に応じて1回だけ縮小する。全体のiframe向けmax-width:100%を変更して解決しない。ResizeObserverでウィンドウ幅の変更にも追従。実サイトのレイアウトは変更しない。
+
+
+## 案内本文の横幅と特集配置（v40）
+目次がないguide-shellの単独guide-contentは全列を使う（support.css）。本文を左の205pxの目次列へ配置しない。おすすめ特集はfeatures.cssで1024px以上の本文枠を隠し、既存sideだけ表示。1023px以下では既存sideが隠れ本文内だけ表示する。QAははみ出しの有無だけでなくFAQ本文がshell全幅になることと、境界1023/1024pxの可視性も確認する。

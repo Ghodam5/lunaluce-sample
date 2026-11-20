@@ -22,3 +22,6 @@
  .support-page input::placeholder,.support-page textarea::placeholder{color:transparent!important;-webkit-text-fill-color:transparent!important}
  .support-page [data-example-only],.support-page .sample-only{display:none!important}
 }
+
+/* 目次のない案内は、目次用の細い列へ本文を置かず全幅で表示する。 */
+.guide-shell>.guide-content:only-child{grid-column:1/-1}
