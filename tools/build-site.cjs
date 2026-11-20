@@ -3,12 +3,13 @@ const root=path.resolve(__dirname,'..'),src=path.join(root,'site-src');
 const read=p=>fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n');
 const digest=p=>crypto.createHash('sha256').update(read(p)).digest('hex');
 const args=new Set(process.argv.slice(2));
+require('./components.cjs').check();
 require('./products.cjs').build(args.has('--check'));
 require('./site-content.cjs').build(args.has('--check'));
 const version=JSON.parse(read(path.join(src,'version.json'))).version;
 if(!Number.isSafeInteger(version)||version<1)throw Error('Invalid version');
 const pages=JSON.parse(read(path.join(src,'pages.json')));
-const sharedFiles=fs.readdirSync(path.join(src,'shared')).filter(f=>f.endsWith('.html')).map(f=>'site-src/shared/'+f).concat(['style.css','header-scroll.js','hscroll.js','catico.js','notes-resize.css','notes-resize.js','navigation-position.js','page-share.css','page-share.js','site-services.css','site-services-core.js','site-services-ui.js','rail-controls.css','rail-controls.js']).concat(fs.readdirSync(path.join(root,'images/social')).filter(f=>f.endsWith('.svg')).map(f=>'images/social/'+f));
+const sharedFiles=fs.readdirSync(path.join(src,'shared')).filter(f=>f.endsWith('.html')).map(f=>'site-src/shared/'+f).concat(['style.css','header-scroll.js','hscroll.js','catico.js','notes-resize.css','notes-resize.js','navigation-position.js','page-share.css','page-share.js','site-services.css','site-services-core.js','site-services-ui.js','rail-controls.css','rail-controls.js','placement-visibility.js']).concat(fs.readdirSync(path.join(root,'images/social')).filter(f=>f.endsWith('.svg')).map(f=>'images/social/'+f));
 const hashes=Object.fromEntries(sharedFiles.sort().map(f=>[f,digest(path.join(root,f))]));
 const lock=path.join(src,'shared.lock.json');
 if(args.has('--update-shared-lock'))fs.writeFileSync(lock,JSON.stringify(hashes,null,2)+'\n');
@@ -17,10 +18,12 @@ const expected=JSON.parse(read(lock));
 const changed=Object.keys({...hashes,...expected}).filter(k=>hashes[k]!==expected[k]);
 if(changed.length)throw Error('共通部分が変更されています。林さんの指示対象か確認してください。承認済みの共通変更だけ --update-shared-lock で記録します:\n'+changed.join('\n'));
 function render(text,vars,stack=[]){
+ text=text.replace(/{{@\s*([a-z0-9-]+\/[a-z0-9-]+)\s*}}/g,(_,name)=>{if(stack.includes('@'+name))throw Error('Recursive section '+name);return render(read(path.join(src,'sections',name+'.html')),vars,[...stack,'@'+name]);});
  text=text.replace(/{{>\s*([\w-]+)\s*}}/g,(_,name)=>{if(stack.includes(name))throw Error('Recursive include '+name);const p=path.join(src,'shared',name+'.html');return render(read(p),vars,[...stack,name]);});
  text=text.replace(/{{#(\w+)}}([\s\S]*?){{\/\1}}/g,(_,k,body)=>vars[k]?body:'');
- text=text.replace(/{{(\w+)}}/g,(_,k)=>{if(!(k in vars))throw Error('Unknown variable '+k);return String(vars[k]);});
- if(/{{[>#/]/.test(text))throw Error('Unresolved template');return text;
+ function value(k,chain=[]){if(!(k in vars))throw Error('Unknown variable '+k);if(chain.includes(k))throw Error('Recursive variable '+k);return String(vars[k]).replace(/{{(\w+)}}/g,(_,name)=>value(name,[...chain,k]));}
+ text=text.replace(/{{(\w+)}}/g,(_,k)=>value(k));
+ if(/{{[>@#/]/.test(text))throw Error('Unresolved template');return text;
 }
 let stale=[];for(const [file,settings] of Object.entries(pages)){
  if(path.basename(file)!==file||!file.endsWith('.html'))throw Error('Invalid page path');

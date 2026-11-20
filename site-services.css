@@ -4,3 +4,6 @@
 @media print{.saved-toggle,.calendar-nav button,.service-form button,.checkout-progress{display:none!important}}
 
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.cal button{font-family:inherit}.cal b{font-size:14px}.service-page h1{overflow-wrap:anywhere}.service-products small{font-size:12px}
+
+/* 期間外・移動済みの掲載枠は、個別のdisplay指定より優先して隠す。 */
+[data-placement-id][hidden]{display:none!important}

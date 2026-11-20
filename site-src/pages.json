@@ -482,5 +482,33 @@
     "bottomMyActive": "",
     "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
     "searchClose": "</button>"
+  },
+  "ranking.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header data-shared-menu class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>",
+    "pageTitle": "売れ筋TOP10",
+    "pageStyles": "<link rel=\"stylesheet\" href=\"home-promos.css?v={{version}}\">",
+    "pageScripts": "<script src=\"home-promos-data.js?v={{version}}\"></script><script src=\"ranking-data.js?v={{version}}\"></script><script src=\"home-collections.js?v={{version}}\"></script>"
+  },
+  "feature-list.html": {
+    "campaign": false,
+    "features": false,
+    "headerOpen": "<header data-shared-menu class=\"hd\">",
+    "drawerOpen": "<aside class=\"drawer\" aria-label=\"さがすメニュー\">",
+    "homeActive": "",
+    "bottomHomeActive": "",
+    "bottomMyActive": "",
+    "searchOpen": "<button class=\"tab on\" type=\"button\" data-open-menu>",
+    "searchClose": "</button>",
+    "pageTitle": "おすすめ特集",
+    "pageStyles": "<link rel=\"stylesheet\" href=\"home-promos.css?v={{version}}\">",
+    "pageScripts": "<script src=\"home-promos-data.js?v={{version}}\"></script><script src=\"ranking-data.js?v={{version}}\"></script><script src=\"home-collections.js?v={{version}}\"></script>"
   }
 }

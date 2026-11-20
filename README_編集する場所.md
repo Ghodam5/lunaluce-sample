@@ -163,3 +163,23 @@ header-scroll.jsはヘッダー直前の高さ0マーカーを文書位置の基
 
 ## 丸い矢印の共通部品（v45）
 rail-controls.js/cssがSVGを円の中央へ配置し、商品列・特集の上下左右の矢印で共用する。文字の＜＞を直接調整しない。共通保護対象で、商品・特集の追加時に編集しない。home-promos.jsはPCのマウスドラッグと離した後のスライド、左右ボタン、タッチ・キー操作を担当。動きを減らす設定を尊重する。左右矢印にはPC専用の余白を確保して本文を覆わない。
+
+
+## 部品台帳を先に呼ぶ（v46・林さん指示）
+`node tools/components.cjs list` が部品一覧、`show product`／`show category`／`show promo`／`show arrows`／`show guide` が対応する型と編集場所。機械用の正本はsite-src/component-registry.json。参照先が消えたらビルドを失敗させる。
+
+トップの各章はsite-src/sections/top/ID.html、対応表は同manifest.json。`node tools/components.cjs section cookie`のように対象だけ調べる。mainページへは`{{@ top/cookie}}`で差し込む。元のクリスマス章もchristmas.htmlに残し、掲載設定で非表示にしている。
+
+新しい案内は`node tools/pages.cjs create-guide new-slug "ページ名"`で、登録済みの共通テンプレート＋本文部品を作る。本文のファイルはsite-src/sections/pages/new-slug.html。CSSを追加生成せずguide-hero／guide-section／service-card等の型を使う。入力例や仮の本文を整えてから版上げ・ビルド・QA・公開。商品ページはこのツールで複製せずitem.html?id=IDを使用し、カテゴリもcategory.html?g=...&m=...&s=...を使う。
+
+## 掲載とリンク（v46）
+期間は特集JSONのstartsAt/endsAt（時差付き、日本時間）。開始を含み終了を含まない。手動停止はactive:false。配置の停止はhome-layout.json。ブラウザの表示判定だけで本番公開条件を保証せず、本番はサーバーとキャッシュでも判定する。
+おすすめ5特集はrecommended-features.json、クリスマス4商品はchristmas.json。旧枠は消去せず配置を停止。TOP10はranking-top10.jsonでトップと専用ページが同じ10IDを参照。全件リンクは各分類へ、ドラジェは専用小分類、クリスマスのカードはクリスマスのプチギフトだけへ。古い全バックアップ件数の固定表示は隠し、分類ページの実数を使う。
+
+
+## 現在の共通スタイルと編集の約束（v46）
+- この節がv45以前の丸矢印・下段操作・PC用の左右余白の説明に優先する。矢印はrail-controls.css/jsの48×60px・角丸四角・中央SVG。スマホも特集カード左右中央に重ね、専用の下段や余白を作らない。端は半透明、ホバーの淡い緑とぼかし輪郭を共用する。
+- 先頭付近の短い上スワイプはheader-scroll.jsでトップ特集の上端を検索直下へ滑らかにそろえる。指を止めたままの二段階操作ではなく、次の操作で普通に読み進める。横スワイプとフォーム操作は奪わない。
+- 商品・カテゴリ・案内・特集はcomponent-registry.jsonに登録した型を必ず呼び出す。文章やIDの変更ごとに新しいCSS・ページ全体を作らない。共通CSSの変更は明示された共通仕様変更時だけ。
+- おすすめの5タイルは16:9の枠＋原画像の比率を保つcontain＋下中央の見出し。季節掲載は日本時間の期間とactiveで管理する。現在は先頭案内＋5つの設定カード。サンプルのクライアント時刻判定は本番の掲載管理への接続を意味しない。
+- OMS担当への設計案はdocs/OMS_サイト掲載管理_連携案.md。新WordPress側を掲載設定の正本にし、OMSは管理画面として接続する提案。原本ZIP・本店DBは変更せず、実連携はまだ行っていない。

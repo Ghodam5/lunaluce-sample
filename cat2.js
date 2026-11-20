@@ -7,7 +7,7 @@ function sa(it,a){return a.some(function(x){return s(it,x)})}
 function re(r){return function(it){return r.test(it.t)}}
 var GROUPS=[
  {k:'food',name:'食べ物・飲み物',desc:'結婚式のお見送り、引菓子、引出物、手土産に。お菓子・シフォン・グルメを集めました。',mids:[
-  {k:'petit',name:'プチギフト',f:function(it){return h(it,'petit')&&sa(it,['cookie','candy','wafu','choco','tea','other'])},subs:[['cookie','クッキー'],['candy','キャンディー・金平糖'],['wafu','和風'],['choco','チョコレート'],['tea','紅茶＆コーヒー'],['other','その他']],sf:function(it,x){return s(it,x)}},
+  {k:'petit',name:'プチギフト',f:function(it){return h(it,'petit')&&sa(it,['cookie','candy','wafu','choco','tea','other'])},subs:[['cookie','クッキー'],['candy','キャンディー・金平糖'],['dragee','ドラジェ'],['wafu','和風'],['choco','チョコレート'],['tea','紅茶＆コーヒー'],['other','その他']],sf:function(it,x){return x==='dragee'?/ドラジェ/.test(it.t):x==='candy'?s(it,x)&&!/ドラジェ/.test(it.t):s(it,x)}},
   {k:'hikigashi',name:'引菓子',f:function(it){return h(it,'hikigashi')&&!h(it,'hikidemono')},subs:[]},
   {k:'gourmet',name:'引出物グルメ',f:function(it){return h(it,'hikidemono')},subs:[['sweets','バーム・パン・スイーツ'],['gourmet','パスタ・スープ・調味料'],['gohan','お米・ごはん'],['bousai','防災・保存食']],sf:function(it,x){return s(it,x)}},
   {k:'chiffon',name:'シフォンケーキ',f:function(it){return h(it,'chiffon')},subs:[]}]},
@@ -34,7 +34,7 @@ var GROUPS=[
   {k:'shikisai',name:'SHIKISAI ONE',f:function(it){return h(it,'catalog')&&s(it,'shikisai')},subs:[]},
   {k:'ocean',name:'OCEAN&TERRE',f:function(it){return h(it,'catalog')&&s(it,'ocean')},subs:[]}]},
  {k:'season',name:'季節・特集',desc:'クリスマス、バレンタインなど、季節のアイテム。',mids:[
-  {k:'xmas',name:'クリスマス',f:function(it){return h(it,'season')&&/クリスマス|サンタ|スノー/.test(it.t)},subs:[]},
+  {k:'xmas',name:'クリスマス',f:function(it){return h(it,'season')&&/クリスマス|サンタ|スノー/.test(it.t)},subs:[['petit','クリスマスのプチギフト']],sf:function(it,x){return x==='petit'?h(it,'petit'):true}},
   {k:'val',name:'バレンタイン',f:function(it){return h(it,'season')&&/バレンタイン/.test(it.t)},subs:[]},
   {k:'hal',name:'ハロウィン',f:function(it){return h(it,'season')&&/ハロウィン/.test(it.t)},subs:[]},
   {k:'other',name:'お年賀・そのほか',f:function(it){return h(it,'season')&&!/クリスマス|サンタ|スノー|バレンタイン|ハロウィン/.test(it.t)},subs:[]}]}
@@ -75,7 +75,7 @@ function render(){
  var cr='<a href="top.html">ホーム</a><span>›</span>';
  if(m||sd){cr+='<a href="category.html?g='+G.k+'">'+esc(G.name)+'</a><span>›</span>';cr+=sd?'<a href="category.html?g='+G.k+'&m='+m.k+'">'+esc(m.name)+'</a><span>›</span>'+esc(sd[1]):esc(m.name)}else cr+=esc(G.name);
  document.getElementById('cr').innerHTML=cr;
- document.getElementById('h1').innerHTML=esc(G.name)+'<small>'+list.length+'件</small>';
+ document.getElementById('h1').innerHTML=esc(sd?sd[1]:m?m.name:G.name)+'<small>'+list.length+'件</small>';
  document.getElementById('gd').textContent=G.desc;
  var featureNav=document.getElementById('category-features');if(!featureNav){featureNav=document.createElement('nav');featureNav.id='category-features';featureNav.className='chips feature-links';featureNav.setAttribute('aria-label','関連する特集');document.getElementById('gd').after(featureNav)}
  var featureLinks={food:[['preparedness-gift.html','防災・備蓄ギフト']],goods:[['neko.html','にゃんこモチーフ']],paper:[['bridal-bag.html','ブライダルバッグを選ぶ']],season:[['preparedness-gift.html','防災・備蓄ギフト'],['neko.html','にゃんこモチーフ'],['new-arrivals.html','新着商品'],['sale.html','数量限定・特価商品'],['charity-santa.html','チャリティーサンタ']]};
@@ -97,7 +97,7 @@ function render(){
  document.getElementById('fcnt').textContent=act.length?'（'+act.length+'）':'';
  document.getElementById('fsum').innerHTML='<span>'+list.length+'件を表示</span>'+act.map(function(a){return '<button type="button" class="tagx" data-x="'+a[0]+'">'+esc(a[1])+' ×</button>'}).join('')+(act.length?'<button type="button" class="clr" data-x="all">すべて解除</button>':'');
  var rk=document.getElementById('rank');
- if(base.length>=3&&!act.length){var top=base.slice().sort(function(a,b){return a.o-b.o}).slice(0,20);rk.innerHTML='<div class="rankbox"><h3>売れ筋 TOP'+top.length+' <small>迷ったらまずここから・横にスワイプ</small></h3><div class="rankrow">'+top.map(function(it,i){return '<a class="rkc" href="'+esc(it.url||'item.html')+'"><i>'+(i+1)+'</i><div class="ph">'+(it.i?'<img src="'+it.i+'" alt="" loading="lazy">':'<span class="noimg">準備中</span>')+'</div><b>'+esc(it.t)+'</b><span>'+it.pt+'</span></a>'}).join('')+'</div></div>'}else rk.innerHTML='';
+ if(list.length>=3&&!act.length){var top=list.slice().sort(function(a,b){return a.o-b.o}).slice(0,20);rk.innerHTML='<div class="rankbox"><h3>売れ筋 TOP'+top.length+' <small>迷ったらまずここから・横にスワイプ</small></h3><div class="rankrow">'+top.map(function(it,i){return '<a class="rkc" href="'+esc(it.url||'item.html')+'"><i>'+(i+1)+'</i><div class="ph">'+(it.i?'<img src="'+it.i+'" alt="" loading="lazy">':'<span class="noimg">準備中</span>')+'</div><b>'+esc(it.t)+'</b><span>'+it.pt+'</span></a>'}).join('')+'</div></div>'}else rk.innerHTML='';
  var r=document.getElementById('res');
  if(!list.length)r.innerHTML='<p class="note" style="margin:24px 0">この条件に合う商品は、サンプルにはありません。 <button type="button" class="clr" data-x="all">すべて解除</button></p>';
  else r.innerHTML='<div class="prods p4">'+list.slice(0,shown).map(card).join('')+'</div>'+(list.length>shown?'<div class="morewrap"><button type="button" class="morebtn" id="moreb">もっと見る（残り'+(list.length-shown)+'件）</button></div>':'')+'<p class="note" style="margin-top:14px">サンプルのため、掲載している商品の一部のみを表示しています。</p>';
