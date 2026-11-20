@@ -1196,3 +1196,12 @@ input,select,textarea{font-size:16px!important}
 /* v43：検索中も使える会員入口。PCは従来のログインを維持。 */
 .mobile-login{display:none}
 @media(max-width:1023px){.hd-search{gap:5px}.mobile-login{display:flex;flex:0 0 54px;min-width:54px;min-height:44px;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:1px solid #bee0dc;border-radius:12px;background:#f0f9f6;color:var(--teal-d);font-size:12px;font-weight:700;line-height:1.25}.mobile-login svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.mobile-login:hover,.mobile-login:focus-visible{background:#dff2ec;outline:2px solid var(--teal);outline-offset:1px}.hd-search .sbox button{padding-inline:10px}}
+
+/* v44：会員入口だけに、間隔を空けた一筋の光。 */
+@media(max-width:1023px){
+ .mobile-login{position:relative;isolation:isolate;overflow:hidden;flex-basis:60px;min-width:60px;margin-left:7px;border-radius:16px 7px 16px 7px;border-color:#e9c787;background:linear-gradient(145deg,#fff9e8,#fce6ce);color:#775326;box-shadow:0 2px 5px rgba(142,105,50,.12)}
+ .mobile-login::after{content:'';position:absolute;pointer-events:none;inset:-30% auto -30% -75%;width:45%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);transform:skewX(-22deg);animation:member-glint 6s ease-in-out infinite}
+ .mobile-login:hover,.mobile-login:focus-visible{background:#ffefd2;outline-color:#bd8a3e}
+}
+@keyframes member-glint{0%,12%{left:-75%;opacity:0}16%{opacity:1}30%{left:135%;opacity:1}31%,100%{left:135%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.mobile-login::after{animation:none;display:none}}

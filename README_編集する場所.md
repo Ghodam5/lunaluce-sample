@@ -146,3 +146,7 @@ header-scroll.jsはヘッダー直前の高さ0マーカーを文書位置の基
 
 ## トップの縦長特集カードとログイン（v43）
 1枚目の写真・コピー・説明・既存CTAはsite-src/pages/top.htmlのmain-bn。続く3枚の画像・文言・一覧リンク・4商品IDはsite-src/home-promos.jsonで個別変更する。商品名・画像はShopCatalogから参照し複製しない。home-promos-data.jsは自動生成、直接編集しない。型はhome-promos.js／home-promos.css。自動送りなし、ネイティブ横スクロール・矢印・キーボード対応。ユーザー別のおすすめや実際の割引を装わない。スマホのログイン入口はshared/header.htmlとstyle.cssのv43節（共通保護対象）。実会員認証は引き続き未接続。
+
+
+## ログインの光とカード色（v44）
+検索とログインの距離はstyle.cssのmobile-loginのmargin-leftで確保。キランはmobile-login::afterのmember-glintのみ、6秒に1回。prefers-reduced-motionでは停止。カードのthemeはhome-promos.json（rose／mint／lavender）、1枚目はcream。home-promos.cssで淡色と細い上枠を管理する。スマホはカード幅を画面内の幅より58px小さくし、隣を46pxほど見せる。写真原本と商品リンクは変更しない。
