@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<!--
+Luna Luce OMS 2.1
+部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
+並び順は関数の外にある配列だけを入れ替える。
+
+header                 renderHeader
+header-brand           renderHeaderBrand
+header-status          renderHeaderStatus
+header-tabs            renderHeaderTabs
+tab-dashboard          renderDashboard
+kpi-strip              renderKpiStrip
+part-stock             renderPartStockStrip
+order-filters          renderOrderFilters
+order-list             renderOrderList
+tab-architecture       renderArchitectureTab
+tab-schema             renderSchemaTab
+tab-simulator          renderSimulatorTab
+drawer                 renderDrawer
+drawer-head            renderDrawerHead
+drawer-warning         renderDrawerWarning
+drawer-preview         renderDrawerPreview
+drawer-samples         renderDrawerSamples
+drawer-parts           renderDrawerParts
+drawer-fees            renderDrawerFees
+drawer-campaign        renderDrawerCampaign
+drawer-schedule        renderDrawerSchedule
+drawer-rush            renderDrawerRush
+drawer-proof           renderDrawerProof
+drawer-sheet           renderDrawerSheet
+drawer-realsize        renderDrawerRealSize
+drawer-stock           renderDrawerStock
+drawer-edit            renderDrawerEdit
+drawer-raw             renderDrawerRaw
+drawer-actions         renderDrawerActions
+manual-modal           renderManualModal
+toast                  renderToast
+
+配列: APP_PARTS, HEADER_PARTS, DASHBOARD_PARTS, DRAWER_PARTS
+
+操作: switchTab, triggerManualSync, setChannelFilter, setStatusFilter,
+filterByUrgency, filterByWarning, resetSpecialFilters, onSearch,
+toggleSelectAll, toggleSingleSelect, quickChangeStatus, openOrderDrawer,
+closeOrderDrawer, onEditInput, saveDrawerEdits, toggleRushTicket,
+markProofSent, markProofApproved, confirmOrderStock, triggerSingleAction,
+openManualOrderModal, closeManualOrderModal, submitManualOrder,
+selectSchemaTable, copySqlDdl, goToSimulatorWithSelected,
+downloadSimulatedCsv, showToast
+
+料金の式は feeNumbers だけ。1注文につき1回、¥500＋¥20×文字数。のし¥20。ラッピング¥90。
+キャンペーンは名前の表示だけ。例: 5円ご縁。
+-->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luna Luce OMS 2.1｜統合受注・名入れ制作管理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --forest: #1f2a27;
+      --forest-light: #2c3b37;
+      --ivory: #faf8f5;
+      --ivory-warm: #f3efe8;
+      --white: #ffffff;
+      --champagne: #b8965c;
+      --champagne-light: #e8dec8;
+      --champagne-soft: #f7f3ea;
+      --taupe: #5e514d;
+      --taupe-light: #8a7b76;
+      --urgent: #d9534f;
+      --sage: #2a9d8f;
+      --ink: #2b2624;
+      --line: rgba(31, 42, 39, 0.12);
+      --shadow: 0 8px 24px rgba(20, 28, 26, 0.06);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; max-width: 100%; }
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    body.scroll-lock { overflow: hidden; }
+    [hidden] { display: none !important; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: 0.45; }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--champagne);
+      outline-offset: 2px;
+    }
+    p { overflow-wrap: anywhere; }
+    .part { min-width: 0; max-width: 100%; }
+    .part * { min-width: 0; }
+    [data-tab-panel] { min-width: 0; max-width: 100%; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: #c9bfa9; border-radius: 999px; }
+
+    /* owner: renderHeader — hide-on-scroll lives here, not in the order list */
+    [data-part="header"] {
+      position: relative;
+      z-index: 30;
+      --header-h: 0px;
+    }
+    [data-part="header"] .header-spacer {
+      height: var(--header-h);
+      transition: height 0.22s ease;
+      overflow-anchor: none;
+    }
+    [data-part="header"].is-away .header-spacer { height: 0; }
+    [data-part="header"] .header-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: var(--forest);
+      color: #fff;
+      padding: 8px 10px 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+      transform: translateY(0);
+      transition: transform 0.22s ease;
+    }
+    [data-part="header"].is-away .header-bar { transform: translateY(-100%); }
+    [data-part="header"] .header-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      align-items: center;
+    }
+    @media (min-width: 834px) {
+      [data-part="header"] .header-bar { padding: 8px 16px 10px; }
+    }
+    @media (min-width: 1280px) {
+      [data-part="header"] .header-bar { padding: 8px 24px 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [data-part="header"] .header-bar,
+      [data-part="header"] .header-spacer { transition: none; }
+    }
+
+    /* owner: renderHeaderBrand */
+    [data-part="header-brand"] { flex: 1 1 240px; }
+    [data-part="header-brand"] .brand {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      min-width: 0;
+    }
+    [data-part="header-brand"] .mark {
+      width: 32px;
+      height: 32px;
+      flex: none;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(184, 150, 92, 0.2);
+      border: 1px solid rgba(184, 150, 92, 0.6);
+      color: var(--champagne);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+    }
+    [data-part="header-brand"] h1 {
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    [data-part="header-brand"] .badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--champagne);
+      color: #fff;
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      vertical-align: 3px;
+    }
+    @media (min-width: 834px) {
+      [data-part="header-brand"] .mark { width: 36px; height: 36px; font-size: 20px; }
+      [data-part="header-brand"] h1 { font-size: 26px; }
+    }
+
+    /* owner: renderHeaderStatus */
+    [data-part="header-status"] { flex: 1 1 280px; }
+    [data-part="header-status"] .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    [data-part="header-status"] .status-copy { flex: 1 1 200px; min-width: 0; }
+    [data-part="header-status"] .status-copy p { margin: 0; font-size: 13px; line-height: 1.35; }
+    [data-part="header-status"] .status-live { color: #b7f0d8; display: flex; gap: 6px; align-items: flex-start; }
+    [data-part="header-status"] .dot {
+      width: 8px;
+      height: 8px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: var(--sage);
+      flex: none;
+    }
+    [data-part="header-status"] .status-sub,
+    [data-part="header-status"] .status-time { color: #d6d3d1; }
+    [data-part="header-status"] .status-time { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; }
+    [data-part="header-status"] button {
+      flex: 0 0 auto;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: var(--forest-light);
+      color: #f5f5f4;
+      font-size: 14px;
+    }
+    @media (min-width: 834px) {
+      [data-part="header-status"] .status-row { justify-content: flex-end; }
+    }
+
+    /* owner: renderHeaderTabs */
+    [data-part="header-tabs"] {
+      flex: 1 1 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    [data-part="header-tabs"] button {
+      flex: 1 1 calc(50% - 6px);
+      min-width: 7.5rem;
+      min-height: 44px;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: #e7e5e4;
+      font-size: 15px;
+      line-height: 1.25;
+      text-align: center;
+      white-space: normal;
+    }
+    [data-part="header-tabs"] button[aria-selected="true"] {
+      background: var(--champagne);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(184, 150, 92, 0.35);
+    }
+    @media (min-width: 834px) {
+      [data-part="header-tabs"] button { flex: 1 1 0; min-width: 0; font-size: 15px; }
+    }
+
+    /* owner: renderMain */
+    [data-part="main"] {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 14px 12px 72px;
+    }
+    @media (min-width: 834px) {
+      [data-part="main"] { padding: 20px 20px 80px; }
+    }
+    @media (min-width: 1280px) {
+      [data-part="main"] { padding: 24px 28px 88px; }
+    }
+
+    /* owner: renderDashboard */
+    [data-part="tab-dashboard"] {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* owner: renderKpiStrip */
+    [data-part="kpi-strip"] {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    [data-part="kpi-strip"] article {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+    [data-part="kpi-strip"] article:last-child { grid-column: 1 / -1; }
+    [data-part="kpi-strip"] button {
+      display: block;
+      width: 100%;
+      min-height: 44px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      text-align: left;
+    }
+    [data-part="kpi-strip"] .label { margin: 0; color: var(--taupe-light); font-size: 13px; font-weight: 500; }
+    [data-part="kpi-strip"] .urgent-label { color: var(--urgent); }
+    [data-part="kpi-strip"] .warn-label { color: #92400e; }
+    [data-part="kpi-strip"] .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 8px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+    [data-part="kpi-strip"] .num {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 36px;
+      line-height: 1;
+      color: var(--forest);
+    }
+    [data-part="kpi-strip"] .pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(42, 157, 143, 0.12);
+      color: var(--sage);
+    }
+    [data-part="kpi-strip"] article.is-urgent { border-color: rgba(217, 83, 79, 0.45); }
+    [data-part="kpi-strip"] article.is-urgent .num,
+    [data-part="kpi-strip"] article.is-urgent .pill { color: var(--urgent); background: rgba(217, 83, 79, 0.1); }
+    [data-part="kpi-strip"] article.is-warn { border-color: rgba(217, 119, 6, 0.45); }
+    [data-part="kpi-strip"] article.is-warn .num { color: #d97706; }
+    [data-part="kpi-strip"] article.is-warn .pill { color: #92400e; background: #fef3c7; }
+    [data-part="kpi-strip"] article.is-make .num { color: var(--champagne); }
+    [data-part="kpi-strip"] article.is-make .pill { color: var(--taupe); background: var(--champagne-soft); }
+    [data-part="kpi-strip"] article.is-ship .num { color: var(--sage); }
+    @media (min-width: 834px) {
+      [data-part="kpi-strip"] { grid-template-columns: repeat(3, 1fr); }
+      [data-part="kpi-strip"] article:last-child { grid-column: auto; }
+    }
+    @media (min-width: 1280px) {
+      [data-part="kpi-strip"] { grid-template-columns: repeat(5, 1fr); }
+    }
+
+    /* owner: renderPartStockStrip */
+    [data-part="part-stock"] {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    [data-part="part-stock"] h2 { margin: 0; font-size: 15px; color: var(--forest); }
+    [data-part="part-stock"] .lead { margin: 4px 0 0; color: var(--taupe-light); font-size: 13px; }
+    [data-part="part-stock"] .note { margin: 8px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="part-stock"] .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    [data-part="part-stock"] .cell {
+      border: 1px solid var(--line);
+      background: var(--ivory);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    [data-part="part-stock"] .cell.is-low { border-color: #fcd34d; background: #fffbeb; }
+    [data-part="part-stock"] .cell p { margin: 0; color: var(--taupe-light); font-size: 13px; }
+    [data-part="part-stock"] .cell strong {
+      display: block;
+      margin-top: 4px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--forest);
+    }
+    @media (min-width: 834px) {
+      [data-part="part-stock"] .grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* owner: renderOrderFilters */
+    [data-part="order-filters"] {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    [data-part="order-filters"] .block { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    [data-part="order-filters"] .cap { font-size: 14px; font-weight: 600; color: var(--taupe); }
+    [data-part="order-filters"] .search-wrap {
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    [data-part="order-filters"] button {
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 0;
+      background: var(--ivory-warm);
+      color: var(--taupe);
+      font-size: 14px;
+    }
+    [data-part="order-filters"] button.is-on { background: var(--forest); color: #fff; }
+    [data-part="order-filters"] .status button.is-on { background: var(--taupe); }
+    [data-part="order-filters"] .reset {
+      background: #ffe4e6;
+      color: var(--urgent);
+    }
+    [data-part="order-filters"] .search-wrap { flex: 1 1 100%; max-width: 100%; }
+    [data-part="order-filters"] input[type="search"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #d6d3d1;
+      background: var(--ivory);
+      font-size: 16px;
+    }
+    [data-part="order-filters"] .manual {
+      flex: 1 1 100%;
+      min-height: 44px;
+      background: var(--champagne);
+      color: #fff;
+      font-weight: 600;
+    }
+    @media (min-width: 834px) {
+      [data-part="order-filters"] .search-wrap { flex: 1 1 240px; }
+      [data-part="order-filters"] .manual { flex: 0 1 auto; }
+    }
+
+    /* owner: renderOrderList */
+    [data-part="order-list"] {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    [data-part="order-list"] .list-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      align-items: center;
+      padding: 12px;
+      background: rgba(243, 239, 232, 0.7);
+      border-bottom: 1px solid var(--line);
+    }
+    [data-part="order-list"] h2 {
+      flex: 1 1 100%;
+      margin: 0;
+      font-size: 15px;
+      color: var(--forest);
+    }
+    [data-part="order-list"] .hint { flex: 1 1 100%; margin: 0; color: var(--taupe-light); font-size: 13px; }
+    [data-part="order-list"] .count { margin: 0; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13px; color: var(--taupe); }
+    [data-part="order-list"] .batch, [data-part="order-list"] .open {
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 0;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: normal;
+    }
+    [data-part="order-list"] .batch { flex: 1 1 100%; background: var(--forest); color: #fff; }
+    [data-part="order-list"] .select-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      font-size: 14px;
+    }
+    [data-part="order-list"] input[type="checkbox"] { width: 20px; height: 20px; min-width: 20px; flex: none; }
+    [data-part="order-list"] .card {
+      padding: 12px;
+      border-top: 1px solid var(--line);
+      cursor: pointer;
+    }
+    [data-part="order-list"] .card.is-warn { background: rgba(255, 251, 235, 0.65); }
+    [data-part="order-list"] .card-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    [data-part="order-list"] .check {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      font-size: 14px;
+    }
+    [data-part="order-list"] .open {
+      background: var(--ivory-warm);
+      color: var(--taupe);
+      border: 1px solid var(--line);
+    }
+    [data-part="order-list"] .fields {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    [data-part="order-list"] .field {
+      min-width: 0;
+      padding: 8px;
+      border-radius: 12px;
+      background: var(--ivory);
+    }
+    [data-part="order-list"] .field span {
+      display: block;
+      color: var(--taupe-light);
+      font-size: 12px;
+    }
+    [data-part="order-list"] .field strong { display: block; margin-top: 2px; font-size: 14px; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="order-list"] .badge, [data-part="order-list"] .mini {
+      display: inline-block;
+      margin: 2px 4px 0 0;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    [data-part="order-list"] .ch-WELCART { background: #065f46; color: #fff; }
+    [data-part="order-list"] .ch-RAKUTEN { background: #be123c; color: #fff; }
+    [data-part="order-list"] .ch-YAHOO { background: #d97706; color: #fff; }
+    [data-part="order-list"] .ch-MANUAL { background: #0369a1; color: #fff; }
+    [data-part="order-list"] .hot { background: var(--urgent); color: #fff; }
+    [data-part="order-list"] .soon { background: #fef3c7; color: #92400e; }
+    [data-part="order-list"] .calm { background: #f5f5f4; color: var(--taupe); }
+    [data-part="order-list"] .done { background: rgba(42, 157, 143, 0.15); color: var(--sage); }
+    [data-part="order-list"] .rush { background: var(--urgent); color: #fff; }
+    [data-part="order-list"] .mark {
+      background: var(--champagne-soft);
+      color: #8a6a32;
+      border: 1px solid rgba(184, 150, 92, 0.45);
+    }
+    [data-part="order-list"] select {
+      width: 100%;
+      min-height: 44px;
+      margin-top: 4px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    [data-part="order-list"] .empty { margin: 0; padding: 20px 12px; color: var(--taupe); }
+    @media (min-width: 834px) {
+      [data-part="order-list"] .list-head { padding: 14px 16px; }
+      [data-part="order-list"] h2 { flex: 1 1 280px; }
+      [data-part="order-list"] .batch { flex: 1 1 16rem; }
+      [data-part="order-list"] .fields { grid-template-columns: 1fr 1fr; }
+      [data-part="order-list"] .card { padding: 14px 16px; }
+    }
+    @media (min-width: 1280px) {
+      [data-part="order-list"] .fields { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    /* owner: renderArchitectureTab */
+    [data-part="tab-architecture"] { display: flex; flex-direction: column; gap: 14px; }
+    [data-part="tab-architecture"] .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    [data-part="tab-architecture"] .kicker {
+      font-family: "Cormorant Garamond", serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      font-size: 13px;
+    }
+    [data-part="tab-architecture"] h2 {
+      margin: 4px 0 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: 22px;
+      color: var(--forest);
+      line-height: 1.35;
+    }
+    [data-part="tab-architecture"] .lead { color: var(--taupe-light); font-size: 14px; }
+    [data-part="tab-architecture"] .banner {
+      margin: 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--champagne-soft);
+      border: 1px solid rgba(184, 150, 92, 0.35);
+      color: var(--taupe);
+      font-size: 14px;
+    }
+    [data-part="tab-architecture"] .flow { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+    [data-part="tab-architecture"] .stage { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    [data-part="tab-architecture"] .stage-title {
+      margin: 0;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: var(--ivory-warm);
+      border: 1px solid var(--line);
+      text-align: center;
+      font-size: 14px;
+      color: var(--forest);
+    }
+    [data-part="tab-architecture"] .stage.core .stage-title { background: var(--forest); color: #fff; border: 0; }
+    [data-part="tab-architecture"] .card {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--ivory);
+      min-width: 0;
+    }
+    [data-part="tab-architecture"] .card h3 { margin: 6px 0 0; font-size: 14px; color: var(--forest); }
+    [data-part="tab-architecture"] .card p { margin: 4px 0 0; font-size: 13px; color: var(--taupe-light); }
+    [data-part="tab-architecture"] .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    [data-part="tab-architecture"] .tag.green { background: #065f46; }
+    [data-part="tab-architecture"] .tag.rose { background: #be123c; }
+    [data-part="tab-architecture"] .tag.amber { background: #d97706; }
+    [data-part="tab-architecture"] .tag.sky { background: #0369a1; }
+    [data-part="tab-architecture"] .tag.gold { background: var(--champagne); }
+    [data-part="tab-architecture"] .tag.sage { background: var(--sage); }
+    [data-part="tab-architecture"] .tag.taupe { background: var(--taupe); }
+    [data-part="tab-architecture"] .tag.forest { background: var(--forest); }
+    [data-part="tab-architecture"] code {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+    [data-part="tab-architecture"] .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--champagne);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    [data-part="tab-architecture"] .arrow svg { transform: rotate(90deg); }
+    [data-part="tab-architecture"] .core-box {
+      background: var(--forest);
+      color: #e7e5e4;
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    [data-part="tab-architecture"] .core-box .card { background: var(--forest-light); border-color: rgba(255,255,255,0.08); }
+    [data-part="tab-architecture"] .core-box h3 { color: var(--champagne); }
+    [data-part="tab-architecture"] .core-box p { color: #d6d3d1; }
+    [data-part="tab-architecture"] .monitors { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    [data-part="tab-architecture"] .monitor {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--ivory);
+    }
+    [data-part="tab-architecture"] .monitor header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    [data-part="tab-architecture"] .monitor h3 { margin: 0; font-size: 14px; color: var(--forest); }
+    @media (min-width: 834px) {
+      [data-part="tab-architecture"] .panel { padding: 18px; }
+      [data-part="tab-architecture"] .monitors { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1280px) {
+      [data-part="tab-architecture"] .flow {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.05fr) auto minmax(0, 1fr);
+        align-items: stretch;
+      }
+      [data-part="tab-architecture"] .arrow { flex-direction: column; }
+      [data-part="tab-architecture"] .arrow svg { transform: none; }
+      [data-part="tab-architecture"] .monitors { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    /* owner: renderSchemaTab */
+    [data-part="tab-schema"] .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    [data-part="tab-schema"] .head { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; justify-content: space-between; }
+    [data-part="tab-schema"] h2 {
+      margin: 4px 0 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: 22px;
+      color: var(--forest);
+      line-height: 1.35;
+    }
+    [data-part="tab-schema"] .kicker { color: var(--champagne); letter-spacing: 0.14em; font-size: 13px; font-family: "Cormorant Garamond", serif; }
+    [data-part="tab-schema"] .lead { margin: 6px 0 0; color: var(--taupe-light); font-size: 14px; }
+    [data-part="tab-schema"] .copy {
+      min-height: 44px;
+      padding: 8px 14px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--forest);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    [data-part="tab-schema"] .layout { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
+    [data-part="tab-schema"] .tables { display: flex; flex-direction: column; gap: 8px; }
+    [data-part="tab-schema"] .tables button {
+      width: 100%;
+      min-height: 48px;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--ivory);
+      color: var(--taupe);
+    }
+    [data-part="tab-schema"] .tables button.is-on { background: var(--forest); color: #fff; border-color: var(--forest); }
+    [data-part="tab-schema"] .tables .name { display: block; font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 700; overflow-wrap: anywhere; }
+    [data-part="tab-schema"] .tables button.is-on .name { color: var(--champagne); }
+    [data-part="tab-schema"] .detail {
+      background: var(--ivory);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      min-width: 0;
+    }
+    [data-part="tab-schema"] .detail h3 { margin: 0; font-family: "JetBrains Mono", ui-monospace, monospace; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="tab-schema"] .jp { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 999px; background: var(--champagne-soft); border: 1px solid rgba(184,150,92,.35); font-size: 12px; }
+    [data-part="tab-schema"] .indexes { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    [data-part="tab-schema"] .indexes span {
+      padding: 2px 8px;
+      border-radius: 8px;
+      background: rgba(68, 64, 60, 0.08);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+    [data-part="tab-schema"] .schema-head, [data-part="tab-schema"] .schema-row {
+      display: grid;
+      gap: 4px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    [data-part="tab-schema"] .schema-head { display: none; }
+    [data-part="tab-schema"] .k { display: block; color: var(--taupe-light); font-size: 12px; }
+    [data-part="tab-schema"] .c-name { font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 700; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="tab-schema"] .key {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 6px;
+      color: #fff;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    [data-part="tab-schema"] .key.PK { background: var(--champagne); }
+    [data-part="tab-schema"] .key.FK { background: var(--sage); }
+    [data-part="tab-schema"] .key.other { background: #e7e5e4; color: var(--forest); }
+    @media (min-width: 834px) {
+      [data-part="tab-schema"] .panel { padding: 18px; }
+      [data-part="tab-schema"] .layout { grid-template-columns: 240px minmax(0, 1fr); }
+      [data-part="tab-schema"] .schema-head { display: grid; color: var(--taupe); font-size: 12px; }
+      [data-part="tab-schema"] .schema-head, [data-part="tab-schema"] .schema-row {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) 72px minmax(0, 1.5fr);
+        gap: 8px;
+        align-items: start;
+      }
+      [data-part="tab-schema"] .k { display: none; }
+    }
+    @media (min-width: 1280px) {
+      [data-part="tab-schema"] .layout { grid-template-columns: 320px minmax(0, 1fr); }
+    }
+
+    /* owner: renderSimulatorTab */
+    [data-part="tab-simulator"] .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    [data-part="tab-simulator"] h2 {
+      margin: 4px 0 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: 22px;
+      color: var(--forest);
+      line-height: 1.35;
+    }
+    [data-part="tab-simulator"] .kicker { color: var(--champagne); letter-spacing: 0.14em; font-size: 13px; font-family: "Cormorant Garamond", serif; }
+    [data-part="tab-simulator"] .lead { color: var(--taupe-light); font-size: 14px; }
+    [data-part="tab-simulator"] .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    [data-part="tab-simulator"] .actions button {
+      flex: 1 1 220px;
+      min-height: 48px;
+      border: 0;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    [data-part="tab-simulator"] .laser { background: var(--champagne); }
+    [data-part="tab-simulator"] .b2 { background: var(--sage); }
+    [data-part="tab-simulator"] .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 14px; }
+    [data-part="tab-simulator"] .grid > * { min-width: 0; }
+    [data-part="tab-simulator"] .csv-head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; align-items: baseline; }
+    [data-part="tab-simulator"] h3 { margin: 0; font-size: 14px; color: var(--forest); }
+    [data-part="tab-simulator"] pre {
+      margin: 8px 0 0;
+      max-width: 100%;
+      height: 280px;
+      overflow: auto;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--forest);
+      color: #e7e5e4;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: pre;
+    }
+    @media (min-width: 1280px) {
+      [data-part="tab-simulator"] .panel { padding: 18px; }
+      [data-part="tab-simulator"] .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* owner: renderDrawer */
+    [data-part="drawer"] .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(0, 0, 0, 0.4);
+    }
+    [data-part="drawer"] .drawer-panel {
+      position: fixed;
+      z-index: 50;
+      inset: 0;
+      width: 100%;
+      max-width: 100%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+    [data-part="drawer"] .drawer-body {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    @media (min-width: 834px) {
+      [data-part="drawer"] .drawer-panel {
+        inset: 0 0 0 auto;
+        width: min(720px, 100%);
+        box-shadow: -16px 0 40px rgba(0, 0, 0, 0.16);
+      }
+      [data-part="drawer"] .drawer-body { padding: 18px 20px 28px; }
+    }
+
+    /* owner: renderDrawerHead */
+    [data-part="drawer-head"] {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      background: var(--forest);
+      color: #fff;
+      padding: 12px;
+    }
+    [data-part="drawer-head"] .titles { flex: 1; min-width: 0; }
+    [data-part="drawer-head"] .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    [data-part="drawer-head"] .ch {
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: #065f46;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    [data-part="drawer-head"] .oid { font-family: "JetBrains Mono", ui-monospace, monospace; color: var(--champagne); font-size: 14px; overflow-wrap: anywhere; }
+    [data-part="drawer-head"] h2 { margin: 6px 0 0; font-family: "Noto Serif JP", serif; font-size: 16px; font-weight: 500; overflow-wrap: anywhere; }
+    [data-part="drawer-head"] .close {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: #e7e5e4;
+      font-size: 22px;
+    }
+
+    /* shared card skin for drawer sections. Each part still sets its own type size. */
+    [data-part^="drawer-"] .card {
+      background: var(--ivory-warm);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    [data-part^="drawer-"] h3 { margin: 0; font-size: 14px; color: var(--forest); }
+    [data-part^="drawer-"] .sub { margin: 0; color: var(--taupe-light); font-size: 12px; }
+
+    /* owner: renderDrawerWarning */
+    [data-part="drawer-warning"] .warn {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      color: #78350f;
+      font-size: 14px;
+    }
+
+    /* owner: renderDrawerPreview */
+    [data-part="drawer-preview"] .card { background: var(--ivory-warm); }
+    [data-part="drawer-preview"] .preview-head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    [data-part="drawer-preview"] .frame {
+      background: #fff;
+      border: 1px solid rgba(184, 150, 92, 0.45);
+      border-radius: 12px;
+      padding: 8px;
+    }
+    [data-part="drawer-preview"] svg { width: 100%; height: auto; display: block; }
+
+    /* owner: renderDrawerSamples */
+    [data-part="drawer-samples"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; align-items: end; margin-bottom: 8px; }
+    [data-part="drawer-samples"] .grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    [data-part="drawer-samples"] .sample { border-radius: 12px; padding: 12px; text-align: center; min-width: 0; }
+    [data-part="drawer-samples"] .sample p { margin: 0; }
+    [data-part="drawer-samples"] .caption { font-size: 12px; letter-spacing: 0.14em; }
+    [data-part="drawer-samples"] .name { margin-top: 8px; font-size: 20px; line-height: 1.25; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="drawer-samples"] .date { margin-top: 6px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13px; }
+    [data-part="drawer-samples"] .s1 { border: 2px solid var(--champagne); background: #fff; }
+    [data-part="drawer-samples"] .s1 .caption, [data-part="drawer-samples"] .s1 .date { color: var(--champagne); }
+    [data-part="drawer-samples"] .s1 .name { font-family: "Cormorant Garamond", serif; }
+    [data-part="drawer-samples"] .s2 { border: 1px solid var(--forest); background: var(--ivory); }
+    [data-part="drawer-samples"] .s2 .name { font-family: "Noto Serif JP", serif; font-size: 18px; }
+    [data-part="drawer-samples"] .s2 .caption, [data-part="drawer-samples"] .s2 .date { color: var(--forest); }
+    [data-part="drawer-samples"] .s3 { border: 1px dashed var(--champagne); background: var(--champagne-soft); }
+    [data-part="drawer-samples"] .s3 .name { font-family: "Noto Serif JP", serif; font-style: italic; font-size: 18px; }
+    [data-part="drawer-samples"] .s3 .caption, [data-part="drawer-samples"] .s3 .date { color: var(--taupe); }
+    @media (min-width: 834px) {
+      [data-part="drawer-samples"] .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    /* owner: renderDrawerParts */
+    [data-part="drawer-parts"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; }
+    [data-part="drawer-parts"] .body { margin-top: 8px; background: var(--ivory); border: 1px solid var(--line); border-radius: 12px; padding: 4px 12px; }
+    [data-part="drawer-parts"] .line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    [data-part="drawer-parts"] .line:last-child { border-bottom: 0; }
+    [data-part="drawer-parts"] .qty { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+    /* owner: renderDrawerFees */
+    [data-part="drawer-fees"] .lines { margin: 8px 0 0; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 14px; color: var(--forest); }
+    [data-part="drawer-fees"] .lines p { margin: 2px 0; overflow-wrap: anywhere; }
+    [data-part="drawer-fees"] .total { color: var(--taupe); }
+
+    /* owner: renderDrawerCampaign */
+    [data-part="drawer-campaign"] p { margin: 8px 0 0; font-size: 14px; color: var(--forest); }
+
+    /* owner: renderDrawerSchedule */
+    [data-part="drawer-schedule"] .grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px; }
+    [data-part="drawer-schedule"] .cell { margin: 0; padding: 10px 12px; border-radius: 12px; background: #fff; border: 1px solid var(--line); font-size: 14px; }
+    @media (min-width: 834px) {
+      [data-part="drawer-schedule"] .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* owner: renderDrawerRush */
+    [data-part="drawer-rush"] .row, [data-part="drawer-proof"] .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    [data-part="drawer-rush"] button, [data-part="drawer-proof"] button {
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    [data-part="drawer-rush"] button { background: #fff; color: var(--urgent); border: 1px solid rgba(217, 83, 79, 0.5); }
+    [data-part="drawer-rush"] button.is-on { background: var(--urgent); color: #fff; }
+
+    /* owner: renderDrawerProof */
+    [data-part="drawer-proof"] .state { font-weight: 700; color: var(--forest); }
+    [data-part="drawer-proof"] .send { background: #fff; border: 1px solid var(--champagne); color: var(--taupe); }
+    [data-part="drawer-proof"] .approve { background: var(--forest); border: 0; color: #fff; }
+
+    /* owner: renderDrawerSheet */
+    [data-part="drawer-sheet"] .sheet {
+      margin-top: 8px;
+      background: #fff;
+      border: 1px solid var(--forest);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    [data-part="drawer-sheet"] .sheet-top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(31, 42, 39, 0.15);
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+    }
+    [data-part="drawer-sheet"] table { width: 100%; border-collapse: collapse; }
+    [data-part="drawer-sheet"] th {
+      width: 7.2rem;
+      padding: 4px 8px 4px 0;
+      text-align: left;
+      vertical-align: top;
+      color: var(--taupe);
+      font-weight: 500;
+      font-size: 13px;
+    }
+    [data-part="drawer-sheet"] td { padding: 4px 0; vertical-align: top; color: var(--forest); font-size: 14px; overflow-wrap: anywhere; }
+
+    /* owner: renderDrawerRealSize */
+    [data-part="drawer-realsize"] .stage {
+      margin-top: 8px;
+      overflow-x: auto;
+      max-width: 100%;
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background-color: var(--ivory-warm);
+      background-image:
+        linear-gradient(rgba(31, 42, 39, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 42, 39, 0.06) 1px, transparent 1px);
+      background-size: 10mm 10mm;
+    }
+    [data-part="drawer-realsize"] .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+    [data-part="drawer-realsize"] .piece { flex: none; }
+    [data-part="drawer-realsize"] .thanks {
+      width: 91mm;
+      min-width: 91mm;
+      height: 55mm;
+      background: #fff;
+      border: 1px solid var(--champagne);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3mm;
+      overflow: hidden;
+    }
+    [data-part="drawer-realsize"] .thanks .cap { margin: 0; font-size: 9pt; letter-spacing: 0.18em; color: var(--taupe-light); }
+    [data-part="drawer-realsize"] .thanks .name { margin: 1mm 0 0; font-family: "Noto Serif JP", serif; font-size: 14pt; line-height: 1.2; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="drawer-realsize"] .thanks .date { margin: 1mm 0 0; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10pt; color: var(--champagne); }
+    [data-part="drawer-realsize"] .seal {
+      width: 30mm;
+      min-width: 30mm;
+      height: 30mm;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid var(--champagne);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2mm;
+    }
+    [data-part="drawer-realsize"] .seal .name { margin: 0; font-size: 7pt; line-height: 1.15; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="drawer-realsize"] .seal .date { margin: 0.5mm 0 0; font-size: 6pt; font-family: "JetBrains Mono", ui-monospace, monospace; color: var(--champagne); }
+    [data-part="drawer-realsize"] .caption { margin: 4px 0 0; font-size: 12px; color: var(--taupe); }
+
+    /* owner: renderDrawerStock */
+    [data-part="drawer-stock"] .card { background: var(--forest); color: #e7e5e4; border-color: transparent; }
+    [data-part="drawer-stock"] h3 { color: var(--champagne); }
+    [data-part="drawer-stock"] p { margin: 6px 0 0; font-size: 13px; color: #d6d3d1; }
+    [data-part="drawer-stock"] button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 10px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--champagne);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* owner: renderDrawerEdit */
+    [data-part="drawer-edit"] .head { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; }
+    [data-part="drawer-edit"] .fee-badge {
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: #f5f5f4;
+      color: var(--taupe);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+    [data-part="drawer-edit"] .fee-badge.is-on { background: #ffe4e6; color: var(--urgent); font-weight: 700; }
+    [data-part="drawer-edit"] .grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+    [data-part="drawer-edit"] label { display: block; font-size: 13px; color: var(--taupe); margin-bottom: 4px; }
+    [data-part="drawer-edit"] input, [data-part="drawer-edit"] select {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid #d6d3d1;
+      background: #fff;
+      font-size: 16px;
+    }
+    [data-part="drawer-edit"] .save-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin-top: 12px; }
+    [data-part="drawer-edit"] .check { display: flex; gap: 8px; align-items: center; min-height: 44px; font-size: 14px; color: var(--taupe); }
+    [data-part="drawer-edit"] .save {
+      min-height: 44px;
+      padding: 8px 14px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--forest);
+      color: #fff;
+      font-weight: 700;
+    }
+    @media (min-width: 834px) {
+      [data-part="drawer-edit"] .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* owner: renderDrawerRaw */
+    [data-part="drawer-raw"] pre {
+      margin: 8px 0 0;
+      max-width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      background: #1c1917;
+      color: #6ee7b7;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    /* owner: renderDrawerActions */
+    [data-part="drawer-actions"] .grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px; }
+    [data-part="drawer-actions"] button {
+      min-height: 48px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    [data-part="drawer-actions"] .a1 { background: var(--champagne-soft); border: 1px solid rgba(184,150,92,.5); color: var(--taupe); }
+    [data-part="drawer-actions"] .a2 { background: rgba(42,157,143,.1); border: 1px solid rgba(42,157,143,.4); color: var(--forest); }
+    [data-part="drawer-actions"] .a3 { background: var(--ivory-warm); border: 1px solid #d6d3d1; color: var(--taupe); }
+    [data-part="drawer-actions"] .a4 { background: var(--forest); border: 0; color: #fff; }
+    @media (min-width: 834px) {
+      [data-part="drawer-actions"] .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* owner: renderManualModal */
+    [data-part="manual-modal"] {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    [data-part="manual-modal"] .card {
+      width: 100%;
+      max-height: 100%;
+      overflow: auto;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
+      padding: 16px;
+    }
+    [data-part="manual-modal"] .top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+    [data-part="manual-modal"] h2 { margin: 6px 0 0; font-family: "Noto Serif JP", serif; font-size: 18px; color: var(--forest); }
+    [data-part="manual-modal"] .tag { display: inline-block; padding: 2px 8px; border-radius: 6px; background: #0369a1; color: #fff; font-size: 12px; font-weight: 700; }
+    [data-part="manual-modal"] .x { width: 44px; height: 44px; border: 0; border-radius: 12px; background: var(--ivory-warm); }
+    [data-part="manual-modal"] .grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+    [data-part="manual-modal"] label { display: block; font-size: 13px; color: var(--taupe); margin-bottom: 4px; }
+    [data-part="manual-modal"] input, [data-part="manual-modal"] select {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid #d6d3d1;
+      font-size: 16px;
+      background: #fff;
+    }
+    [data-part="manual-modal"] .buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+    [data-part="manual-modal"] .buttons button { min-height: 44px; padding: 8px 14px; border-radius: 12px; border: 0; font-weight: 700; }
+    [data-part="manual-modal"] .cancel { background: #f5f5f4; color: var(--taupe); }
+    [data-part="manual-modal"] .ok { background: var(--forest); color: #fff; }
+    @media (min-width: 834px) {
+      [data-part="manual-modal"] { align-items: center; padding: 24px; }
+      [data-part="manual-modal"] .card { width: min(560px, 100%); max-height: min(90vh, 820px); border-radius: 16px; }
+      [data-part="manual-modal"] .grid { grid-template-columns: 1fr 1fr; }
+      [data-part="manual-modal"] .span-2 { grid-column: 1 / -1; }
+    }
+
+    /* owner: renderToast */
+    [data-part="toast"] {
+      position: fixed;
+      z-index: 80;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      pointer-events: none;
+    }
+    [data-part="toast"] .bubble {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--forest);
+      color: #fff;
+      border: 1px solid rgba(184, 150, 92, 0.4);
+      box-shadow: var(--shadow);
+      font-size: 14px;
+    }
+    [data-part="toast"] .dot { width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--champagne); flex: none; }
+    @media (min-width: 834px) {
+      [data-part="toast"] { left: auto; right: 20px; width: min(440px, calc(100% - 40px)); }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    const TODAY = '2026-11-19';
+    const SAME_DAY_CUTOFF = '13:00';
+    const PART_KEYS = [
+      { key: 'sweets', label: '菓子', short: '菓子' },
+      { key: 'box', label: '箱', short: '箱' },
+      { key: 'thanksCard', label: 'サンクスカード', short: 'カード' },
+      { key: 'miniSeal', label: 'ミニシール', short: 'シール' }
+    ];
+    const FONT_OPTIONS = [
+      'モダンカリグラフィ（ゴールド）',
+      'クラシック明朝（トープ）',
+      'ナチュラル筆記体（ホワイト）',
+      '和モダン毛筆体（金箔）'
+    ];
+    const STATUS_OPTIONS = ['新規受付', '名入れ確認中', '校正・データ作成', '製造・レーザー加工', '梱包・出荷済'];
+    const HEADER_TABS = [
+      { id: 'dashboard', label: '1 統合受注' },
+      { id: 'architecture', label: '2 システム' },
+      { id: 'schema', label: '3 DBスキーマ' },
+      { id: 'simulator', label: '4 加工・CSV' }
+    ];
+    const CHANNELS = [
+      { id: 'ALL', label: 'すべて' },
+      { id: 'WELCART', label: '自社Welcart' },
+      { id: 'RAKUTEN', label: '楽天市場' },
+      { id: 'YAHOO', label: 'Yahoo!ショッピング' },
+      { id: 'MANUAL', label: '電話・FAX注文' }
+    ];
+
+    const state = {
+      orders: [],
+      partStock: { sweets: 500, box: 340, thanksCard: 360, miniSeal: 200 },
+      lastStockMove: '',
+      activeChannel: 'ALL',
+      activeStatus: 'ALL',
+      onlyUrgent: false,
+      onlyWarning: false,
+      query: '',
+      currentId: null,
+      draft: null,
+      activeTab: 'dashboard',
+      schemaIndex: 0,
+      lastSync: TODAY + ' 10:15:00'
+    };
+
+    function emit(name, detail) {
+      document.dispatchEvent(new CustomEvent(name, { detail: detail }));
+    }
+    function on(name, fn) {
+      document.addEventListener(name, function (event) { fn(event.detail); });
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+    function formatYen(amount) {
+      return '¥' + Number(amount || 0).toLocaleString('ja-JP');
+    }
+    function daysUntil(iso) {
+      const today = new Date(TODAY + 'T00:00:00');
+      const date = new Date(iso + 'T00:00:00');
+      return Math.ceil((date - today) / 86400000);
+    }
+    function orderClock(order) {
+      const time = String((order.orderDate || '').split(' ')[1] || '00:00').slice(0, 5);
+      return { time: time, within: time <= SAME_DAY_CUTOFF };
+    }
+    function currentOrder() {
+      return state.orders.find(function (order) { return order.id === state.currentId; }) || null;
+    }
+    function dotted(iso) {
+      return String(iso || '').replace(/-/g, '.');
+    }
+
+    function feeNumbers(order) {
+      const applies = !!order.extraCharApplies;
+      const count = applies ? Number(order.extraCharCount) || 0 : 0;
+      const extraTotal = applies ? 500 + 20 * count : 0;
+      return {
+        extraBase: applies ? 500 : 0,
+        extraCount: count,
+        extraPer: 20,
+        extraTotal: extraTotal,
+        noshi: Number(order.noshiFee) || 0,
+        wrapping: Number(order.wrappingFee) || 0
+      };
+    }
+    function partCounts(order) {
+      const per = order.partPer || {};
+      const qty = Number(order.qty) || 0;
+      const counts = {};
+      PART_KEYS.forEach(function (part) {
+        counts[part.key] = (Number(per[part.key]) || 0) * qty;
+      });
+      return counts;
+    }
+    function applyStaffDefaults(order) {
+      if (!order.partPer) order.partPer = { sweets: 1, box: 1, thanksCard: 1, miniSeal: 1 };
+      if (order.extraCharApplies == null) order.extraCharApplies = false;
+      if (order.extraCharCount == null) order.extraCharCount = 0;
+      if (order.noshiFee == null) order.noshiFee = 0;
+      if (order.wrappingFee == null) order.wrappingFee = 0;
+      if (order.campaignMark === undefined) order.campaignMark = null;
+      if (order.bestBefore === undefined) order.bestBefore = null;
+      if (!order.proofStatus) order.proofStatus = '未送付';
+      if (order.rushTicket == null) order.rushTicket = false;
+      if (order.stockCommitted == null) order.stockCommitted = false;
+      return order;
+    }
+    function readDraft(order) {
+      return {
+        couple: order.coupleNames,
+        wedding: order.weddingDate,
+        message: order.headerMsg,
+        font: order.fontStyle,
+        noshi: order.noshiSeal,
+        status: order.status,
+        clearWarning: !order.warning
+      };
+    }
+    function draftCouple() {
+      return state.draft ? state.draft.couple : (currentOrder() ? currentOrder().coupleNames : '');
+    }
+    function draftWedding() {
+      return state.draft ? state.draft.wedding : (currentOrder() ? currentOrder().weddingDate : '');
+    }
+
+    function seedOrders() {
+      const orders = [
+        { id: 'WC-20261119-01', channel: 'WELCART', channelLabel: '自社Welcart', orderDate: '2026-11-19 08:42', weddingDate: '2026-11-24', customerName: '高橋 拓也', shippingTo: 'アニヴェルセル表参道 婚礼サロン気付', postalCode: '107-0061', address: '東京都港区北青山3-5-30', phone: '03-5410-8988', productName: '透明アクリル ウェルカムボード「Lumière」', sku: 'LL-WB-001-GLD', qty: 1, amount: 15300, coupleNames: 'Takuya & Misaki', headerMsg: 'WELCOME TO OUR WEDDING', fontStyle: 'モダンカリグラフィ（ゴールド）', noshiSeal: '蝶結び熨斗（内熨斗）', status: '製造・レーザー加工', warning: null, selected: true, rawPayload: { source: 'WordPress Welcart REST / wp_usces_order_meta', usces_order_id: 10842, custom_order: { role_n_couple: 'Takuya & Misaki', role_d_wedding_date: '2026.11.24', role_m_message: 'WELCOME TO OUR WEDDING', role_w_font: 'Modern Calligraphy Gold', role_s_noshi: '蝶結び（内熨斗）' } } },
+        { id: 'RK-394810-20261119', channel: 'RAKUTEN', channelLabel: '楽天市場', orderDate: '2026-11-19 07:15', weddingDate: '2026-11-25', customerName: '山本 梨花', shippingTo: 'ご自宅配送（大阪府大阪市中央区）', postalCode: '542-0081', address: '大阪府大阪市中央区南船場2-4-12', phone: '090-1234-5678', productName: '真鍮ガラスケース リングピロー「Étoile」', sku: 'LL-RP-014-BRS', qty: 1, amount: 6930, coupleNames: 'Koji ♡ Rika（旧字体確認要）', headerMsg: 'FOREVER & ALWAYS', fontStyle: 'クラシック明朝（トープ）', noshiSeal: 'ギフトBOXリボン包装', status: '名入れ確認中', warning: '楽天市場の備考欄に特殊記号「♡」が含まれています。レーザー彫刻機用フォントでは「&」への置換推奨のため確認してください。', selected: true, rawPayload: { source: 'Rakuten RMS getOrder API v2.0', orderNumber: '394810-20261119-08419201', remarks: '挙式が来週水曜日のため急ぎでお願いします！ハート記号入れられますか？' } },
+        { id: 'YH-lunaluce-100492', channel: 'YAHOO', channelLabel: 'Yahoo!ショッピング', orderDate: '2026-11-18 22:10', weddingDate: '2026-12-03', customerName: '鈴木 健一', shippingTo: 'ザ・リッツ・カールトン東京 宴会デスク気付', postalCode: '107-6245', address: '東京都港区赤坂9-7-1', phone: '03-3423-8000', productName: 'プチギフト「Merci」アールグレイ＆フィナンシェ', sku: 'LL-PG-082-EARL', qty: 72, amount: 30240, coupleNames: 'Kenichi & Ayaka', headerMsg: 'THANK YOU FOR COMING', fontStyle: 'ナチュラル筆記体（ホワイト）', noshiSeal: 'オリジナルサンクスタグ付', status: '校正・データ作成', warning: null, selected: true, rawPayload: { source: 'Yahoo! Shopping orderInfo API', OrderId: 'lunaluce-100492', ShipRequest: '12月1日午前中に会場へ直送希望' } },
+        { id: 'WC-20261119-02', channel: 'WELCART', channelLabel: '自社Welcart', orderDate: '2026-11-19 09:30', weddingDate: '2026-12-12', customerName: '伊藤 美咲', shippingTo: 'ご自宅配送（愛知県名古屋市中区）', postalCode: '460-0008', address: '愛知県名古屋市中区栄3-15-8', phone: '080-9876-5432', productName: '【引出物】今治オーガニックタオル木箱セット＋5円ご縁ギフト', sku: 'LL-HG-105-SET', qty: 35, amount: 38675, coupleNames: 'Daisuke & Misaki', headerMsg: 'WITH HEARTFELT THANKS', fontStyle: '和モダン毛筆体（金箔）', noshiSeal: '結び切り10本（新郎新婦連名）', status: '新規受付', warning: null, selected: false, rawPayload: { source: 'WordPress Welcart REST', usces_order_id: 10843, campaign_mark: '5円ご縁' } },
+        { id: 'FAX-20261119-01', channel: 'MANUAL', channelLabel: '電話・FAX注文', orderDate: '2026-11-19 09:50', weddingDate: '2026-12-14', customerName: '株式会社ブライダルプロデュース東海', shippingTo: '名古屋マリオットアソシアホテル 資材室気付', postalCode: '450-6002', address: '愛知県名古屋市中村区名駅1-1-4', phone: '052-584-1111', productName: '大口法人注文：オリジナル名入れドラジェBOX', sku: 'LL-BLK-020-DRG', qty: 120, amount: 45600, coupleNames: 'Shota & Haruka', headerMsg: 'HAPPY WEDDING', fontStyle: 'モダンカリグラフィ（ゴールド）', noshiSeal: 'ゴールドリボンシール', status: '校正・データ作成', warning: null, selected: false, rawPayload: { source: 'Manual FAX Order Entry (0586-86-1140)', fax_received_at: '2026-11-19 09:45', corporate_estimate_id: 'EST-2026-889' } },
+        { id: 'RK-394810-20261118', channel: 'RAKUTEN', channelLabel: '楽天市場', orderDate: '2026-11-18 19:05', weddingDate: '2026-12-19', customerName: '中村 翔太', shippingTo: 'ご自宅配送（神奈川県横浜市西区）', postalCode: '220-0012', address: '神奈川県横浜市西区みなとみらい2-3-1', phone: '090-5555-1212', productName: 'プリザーブドフラワー 感謝状時計「Grâce」', sku: 'LL-PGF-003-CLK', qty: 2, amount: 33000, coupleNames: '（未入力・備考欄確認要）', headerMsg: 'THANK YOU MOM & DAD', fontStyle: 'クラシック明朝（トープ）', noshiSeal: '贈呈用化粧箱ラッピング', status: '名入れ確認中', warning: '注文時の選択肢で「新郎新婦名・生年月日」が空欄です。サンクスメールにてヒアリングが必要です。', selected: false, rawPayload: { source: 'Rakuten RMS getOrder API v2.0', orderNumber: '394810-20261118-08415590' } },
+        { id: 'YH-lunaluce-100488', channel: 'YAHOO', channelLabel: 'Yahoo!ショッピング', orderDate: '2026-11-17 15:20', weddingDate: '2026-11-28', customerName: '小林 結衣', shippingTo: '八芳園 バンケットオフィス気付', postalCode: '108-8631', address: '東京都港区白金台1-1-1', phone: '03-3443-3111', productName: '木製結婚証明書「Chêne（シェーヌ）」ゲスト参加型', sku: 'LL-CRT-009-WOD', qty: 1, amount: 18900, coupleNames: 'Ryosuke & Yui', headerMsg: 'MARRIAGE CERTIFICATE', fontStyle: 'モダンカリグラフィ（ゴールド）', noshiSeal: '専用スタンド＆化粧箱付', status: '梱包・出荷済', warning: null, selected: false, rawPayload: { source: 'Yahoo! Shopping orderInfo API', OrderId: 'lunaluce-100488', tracking_number: '4912-8841-9023' } },
+        { id: 'WC-20261117-09', channel: 'WELCART', channelLabel: '自社Welcart', orderDate: '2026-11-17 11:10', weddingDate: '2026-11-29', customerName: '渡辺 麻衣', shippingTo: 'ご自宅配送（兵庫県神戸市中央区）', postalCode: '650-0021', address: '兵庫県神戸市中央区三宮町1-4-3', phone: '070-3322-9988', productName: '席次表・メニュー表 DIY印刷キット「Blanc」', sku: 'LL-PPR-031-WHT', qty: 80, amount: 22400, coupleNames: 'Naoki & Mai', headerMsg: 'WEDDING RECEPTION', fontStyle: 'クラシック明朝（トープ）', noshiSeal: 'ゴールドゴム紐付属', status: '梱包・出荷済', warning: null, selected: false, rawPayload: { source: 'WordPress Welcart REST', usces_order_id: 10831, tracking_number: '4912-8841-8810' } }
+      ];
+      const extras = {
+        'WC-20261119-01': { extraCharApplies: true, extraCharCount: 6, noshiFee: 20, wrappingFee: 0 },
+        'RK-394810-20261119': { wrappingFee: 90 },
+        'YH-lunaluce-100492': { bestBefore: '2027-02-28', proofStatus: '送付済' },
+        'WC-20261119-02': { campaignMark: '5円ご縁', noshiFee: 20 },
+        'FAX-20261119-01': { extraCharApplies: true, extraCharCount: 2, bestBefore: '2027-04-30', proofStatus: '承認済' },
+        'RK-394810-20261118': { wrappingFee: 90 },
+        'YH-lunaluce-100488': { proofStatus: '承認済' }
+      };
+      orders.forEach(function (order) {
+        if (extras[order.id]) Object.assign(order, extras[order.id]);
+        applyStaffDefaults(order);
+      });
+      state.orders = orders;
+    }
+
+    const dbSchemaTables = [
+      { name: 'orders', jpName: '統合受注ヘッダ（全販路共通マスター）', description: 'Welcart・楽天・Yahoo!・電話/FAXの注文を一つの形で置く中核テーブルです。この画面の注文はダミーで、本番の取込はまだ接続していません。', indexes: ['UNIQUE (channel, channel_order_id)', 'INDEX idx_orders_wedding_date (wedding_date, status)'], columns: [
+        { col: 'id', type: 'UUID / BIGSERIAL', key: 'PK', note: 'OMS内部一意注文ID' },
+        { col: 'channel', type: 'VARCHAR(20)', key: 'UQ1', note: 'WELCART | RAKUTEN | YAHOO | MANUAL' },
+        { col: 'channel_order_id', type: 'VARCHAR(64)', key: 'UQ1', note: '各販路の元注文番号' },
+        { col: 'wedding_date', type: 'DATE', key: 'IDX', note: '挙式日・記念日' },
+        { col: 'customer_name', type: 'VARCHAR(100)', key: '', note: '注文者氏名' },
+        { col: 'shipping_venue_name', type: 'VARCHAR(150)', key: '', note: '式場名・会場担当' },
+        { col: 'oms_status', type: 'VARCHAR(30)', key: 'IDX', note: '新規受付 / 名入れ確認中 / 校正 / 加工 / 出荷済' },
+        { col: 'has_parse_warning', type: 'BOOLEAN', key: 'IDX', note: '名入れ要確認フラグ' }
+      ]},
+      { name: 'item_personalizations', jpName: '名入れ正規化テーブル', description: '名前・日付・見出し・書体・のしを、プリントと管理表にそのまま出せる形で持ちます。', indexes: ['INDEX idx_pers_order_item (order_item_id)'], columns: [
+        { col: 'id', type: 'BIGSERIAL', key: 'PK', note: '名入れ明細ID' },
+        { col: 'order_item_id', type: 'BIGINT', key: 'FK', note: 'order_items.id' },
+        { col: 'role_n_couple_names', type: 'VARCHAR(120)', key: '', note: '新郎新婦名' },
+        { col: 'role_d_event_date_text', type: 'VARCHAR(40)', key: '', note: '印字用日付' },
+        { col: 'role_m_header_message', type: 'VARCHAR(160)', key: '', note: '見出し・定型メッセージ' },
+        { col: 'role_wh_font_style', type: 'VARCHAR(60)', key: '', note: '書体' },
+        { col: 'role_s_noshi_seal', type: 'VARCHAR(80)', key: '', note: '熨斗・シール' },
+        { col: 'over_char_fee', type: 'INTEGER', key: '', note: '文字数超過。1注文につき1回。¥500＋¥20×文字数' },
+        { col: 'noshi_fee', type: 'INTEGER', key: '', note: 'のし ¥20' },
+        { col: 'wrapping_fee', type: 'INTEGER', key: '', note: 'ラッピング ¥90' }
+      ]},
+      { name: 'order_items', jpName: '受注明細・SKU', description: '商品SKU・数量。親数量から菓子・箱・サンクスカード・ミニシールへ展開します。', indexes: ['INDEX idx_items_order_id (order_id)'], columns: [
+        { col: 'id', type: 'BIGSERIAL', key: 'PK', note: '明細ID' },
+        { col: 'order_id', type: 'UUID', key: 'FK', note: 'orders.id' },
+        { col: 'unified_sku', type: 'VARCHAR(50)', key: 'IDX', note: '統一SKU' },
+        { col: 'product_name', type: 'VARCHAR(200)', key: '', note: '商品名' },
+        { col: 'quantity', type: 'INTEGER', key: '', note: '親数量' }
+      ]},
+      { name: 'campaign_marks', jpName: 'キャンペーン印（名前のみ）', description: '本店カートから渡された印の名前だけを残します。判定や金額の計算はしません。例: 5円ご縁', indexes: ['INDEX idx_mark_order (order_id)'], columns: [
+        { col: 'id', type: 'BIGSERIAL', key: 'PK', note: '印ID' },
+        { col: 'order_id', type: 'UUID', key: 'FK', note: 'orders.id' },
+        { col: 'mark_name', type: 'VARCHAR(40)', key: '', note: '印の名前。例: 5円ご縁' }
+      ]},
+      { name: 'channel_raw_payloads', jpName: '受信メモ（ダミー）', description: 'サンプルの受信メモです。楽天・Yahoo・本店の本番取込はまだしません。', indexes: ['INDEX idx_raw_order_id (order_id)'], columns: [
+        { col: 'id', type: 'BIGSERIAL', key: 'PK', note: 'メモID' },
+        { col: 'order_id', type: 'UUID', key: 'FK', note: 'orders.id' },
+        { col: 'raw_json', type: 'JSONB', key: '', note: 'ダミーの原文' }
+      ]},
+      { name: 'production_batches', jpName: '加工CSV出力履歴', description: 'レーザー加工・印字CSVを出した履歴です。', indexes: ['INDEX idx_batch_created_at (created_at)'], columns: [
+        { col: 'id', type: 'BIGSERIAL', key: 'PK', note: 'バッチID' },
+        { col: 'batch_code', type: 'VARCHAR(32)', key: 'UQ', note: '例: LASER-20261119-01' },
+        { col: 'machine_type', type: 'VARCHAR(40)', key: '', note: 'LASER | CARD | SEAL' }
+      ]},
+      { name: 'shipments', jpName: '送り状', description: 'ヤマトB2の送り状CSVに出す項目です。モールへの書き戻しはまだ接続していません。', indexes: ['INDEX idx_ship_order_id (order_id)'], columns: [
+        { col: 'id', type: 'BIGSERIAL', key: 'PK', note: '出荷ID' },
+        { col: 'order_id', type: 'UUID', key: 'FK', note: 'orders.id' },
+        { col: 'carrier_code', type: 'VARCHAR(20)', key: '', note: 'YAMATO' },
+        { col: 'tracking_number', type: 'VARCHAR(32)', key: '', note: '伝票番号' }
+      ]},
+      { name: 'part_stock_moves', jpName: '部品在庫の画面内引当', description: '菓子・箱・サンクスカード・ミニシール。確定で1回だけ減り、再読込で戻ります。', indexes: ['INDEX idx_stock_order (order_id)'], columns: [
+        { col: 'id', type: 'BIGSERIAL', key: 'PK', note: '引当ID' },
+        { col: 'order_id', type: 'UUID', key: 'FK', note: 'orders.id' },
+        { col: 'part_code', type: 'VARCHAR(20)', key: '', note: 'sweets | box | thanksCard | miniSeal' },
+        { col: 'quantity', type: 'INTEGER', key: '', note: '引き落とした数' }
+      ]}
+    ];
+
+    function visibleOrders() {
+      const query = state.query.trim().toLowerCase();
+      return state.orders.slice().sort(function (a, b) {
+        return new Date(a.weddingDate) - new Date(b.weddingDate);
+      }).filter(function (order) {
+        if (state.activeChannel !== 'ALL' && order.channel !== state.activeChannel) return false;
+        if (state.activeStatus !== 'ALL' && order.status !== state.activeStatus) return false;
+        if (state.onlyUrgent && !(daysUntil(order.weddingDate) <= 7 && order.status !== '梱包・出荷済')) return false;
+        if (state.onlyWarning && !order.warning) return false;
+        if (query) {
+          const hay = [order.id, order.customerName, order.coupleNames, order.productName, order.shippingTo, order.campaignMark || ''].join(' ').toLowerCase();
+          if (hay.indexOf(query) === -1) return false;
+        }
+        return true;
+      });
+    }
+    function statusOptions(selected) {
+      return STATUS_OPTIONS.map(function (status) {
+        return '<option value="' + escapeHtml(status) + '"' + (status === selected ? ' selected' : '') + '>' + escapeHtml(status) + '</option>';
+      }).join('');
+    }
+    function mountOrdered(parent, pieces) {
+      pieces.forEach(function (piece) {
+        const node = document.createElement('div');
+        node.className = 'part';
+        node.dataset.part = piece.name;
+        parent.appendChild(node);
+        piece.render(node);
+      });
+    }
+
+    function renderHeaderBrand(host) {
+      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.1</span></h1></div>';
+    }
+    function renderHeaderStatus(host) {
+      function paint() {
+        host.innerHTML = '<div class="status-row"><div class="status-copy"><p class="status-live"><span class="dot"></span>ダミー注文 · 本番取込は未接続</p><p class="status-time">最終同期: ' + escapeHtml(state.lastSync) + '</p></div><button type="button" data-action="manual-sync">今すぐ全販路取込</button></div>';
+      }
+      paint();
+      on('oms:sync', paint);
+    }
+    function renderHeaderTabs(host) {
+      function paint() {
+        host.setAttribute('role', 'tablist');
+        host.innerHTML = HEADER_TABS.map(function (tab) {
+          const onTab = state.activeTab === tab.id;
+          return '<button type="button" role="tab" data-action="switch-tab" data-tab="' + tab.id + '" aria-selected="' + (onTab ? 'true' : 'false') + '">' + escapeHtml(tab.label) + '</button>';
+        }).join('');
+      }
+      paint();
+      on('oms:tab', paint);
+    }
+    const HEADER_PARTS = [
+      { name: 'header-brand', render: renderHeaderBrand },
+      { name: 'header-status', render: renderHeaderStatus },
+      { name: 'header-tabs', render: renderHeaderTabs }
+    ];
+    function renderHeader(host) {
+      host.innerHTML = '<div class="header-spacer"></div><div class="header-bar"><div class="header-stack" data-slot="stack"></div></div>';
+      mountOrdered(host.querySelector('[data-slot="stack"]'), HEADER_PARTS);
+      const bar = host.querySelector('.header-bar');
+      let away = false;
+      function measure() {
+        host.style.setProperty('--header-h', bar.offsetHeight + 'px');
+      }
+      measure();
+      if (window.ResizeObserver) {
+        const observer = new ResizeObserver(measure);
+        observer.observe(bar);
+      }
+      window.addEventListener('resize', measure);
+      window.addEventListener('scroll', function () {
+        const y = window.scrollY || document.documentElement.scrollTop || 0;
+        let next = away;
+        if (!away && y > bar.offsetHeight + 24) next = true;
+        else if (away && y <= 2) next = false;
+        if (next === away) return;
+        away = next;
+        host.classList.toggle('is-away', away);
+      }, { passive: true });
+    }
+
+    function renderKpiStrip(host) {
+      function paint() {
+        const urgent = state.orders.filter(function (order) {
+          return daysUntil(order.weddingDate) <= 7 && order.status !== '梱包・出荷済';
+        }).length;
+        const warning = state.orders.filter(function (order) { return !!order.warning; }).length;
+        const production = state.orders.filter(function (order) {
+          return order.status === '製造・レーザー加工' || order.status === '校正・データ作成';
+        }).length;
+        const shipping = state.orders.filter(function (order) { return order.status === '梱包・出荷済'; }).length;
+        const cards = [
+          ['本日新規受注（4販路計）', state.orders.length, '全販路統合済', ''],
+          ['挙式日7日以内・要急ぎ', urgent, '最優先制作', 'is-urgent', 'filter-urgent'],
+          ['名入れ要確認（パース警告）', warning, '要チェック', 'is-warn', 'filter-warning'],
+          ['制作・レーザー加工待ち', production, 'バッチ出力可', 'is-make'],
+          ['本日出荷予定（B2/佐川連携）', shipping, '伝票発行準備', 'is-ship']
+        ];
+        host.innerHTML = cards.map(function (card) {
+          const inner = '<p class="label' + (card[3] === 'is-urgent' ? ' urgent-label' : '') + (card[3] === 'is-warn' ? ' warn-label' : '') + '">' + escapeHtml(card[0]) + '</p><div class="row"><span class="num">' + card[1] + '</span><span class="pill">' + escapeHtml(card[2]) + '</span></div>';
+          if (card[4]) {
+            return '<article class="' + card[3] + '"><button type="button" data-action="' + card[4] + '">' + inner + '</button></article>';
+          }
+          return '<article class="' + card[3] + '">' + inner + '</article>';
+        }).join('');
+      }
+      paint();
+      on('oms:change', paint);
+    }
+    function renderPartStockStrip(host) {
+      function paint() {
+        const cells = PART_KEYS.map(function (part) {
+          const count = state.partStock[part.key];
+          return '<div class="cell' + (count < 80 ? ' is-low' : '') + '"><p>' + escapeHtml(part.label) + '</p><strong data-stock="' + part.key + '">' + count + '</strong></div>';
+        }).join('');
+        host.innerHTML = '<h2>部品在庫（菓子・箱・サンクスカード・ミニシール）</h2><p class="lead">この画面の中だけ。注文を確定すると、その注文の内訳数だけ減ります。再読込で元に戻ります。</p><p class="note" data-stock-note>' + escapeHtml(state.lastStockMove || 'まだ引き落としはありません') + '</p><div class="grid">' + cells + '</div>';
+      }
+      paint();
+      on('oms:change', paint);
+    }
+    function renderOrderFilters(host) {
+      function paint() {
+        const search = state.query;
+        const channels = CHANNELS.map(function (channel) {
+          return '<button type="button" data-action="channel" data-channel="' + channel.id + '" class="' + (state.activeChannel === channel.id ? 'is-on' : '') + '">' + escapeHtml(channel.label) + '</button>';
+        }).join('');
+        const statuses = [{ id: 'ALL', label: '全工程' }].concat(STATUS_OPTIONS.map(function (status) {
+          return { id: status, label: status };
+        })).map(function (status) {
+          return '<button type="button" data-action="status" data-status="' + escapeHtml(status.id) + '" class="' + (state.activeStatus === status.id ? 'is-on' : '') + '">' + escapeHtml(status.label) + '</button>';
+        }).join('');
+        const reset = (state.onlyUrgent || state.onlyWarning)
+          ? '<button type="button" class="reset" data-action="reset-special">× 特別絞り込み解除</button>'
+          : '';
+        host.innerHTML = '<div class="block"><span class="cap">販路:</span>' + channels + '</div><div class="block"><label class="search-wrap">検索<input data-action="search" type="search" placeholder="注文番号・顧客名・新郎新婦名・商品名" value="' + escapeHtml(search) + '"></label><button type="button" class="manual" data-action="open-manual">＋ 電話・FAX注文 手動登録</button></div><div class="block status"><span class="cap">工程:</span>' + statuses + reset + '</div>';
+      }
+      paint();
+      on('oms:filters', paint);
+    }
+    function renderOrderList(host) {
+      function card(order) {
+        const days = daysUntil(order.weddingDate);
+        const clock = orderClock(order);
+        const fees = feeNumbers(order);
+        const counts = partCounts(order);
+        let when = '<span class="mini calm">あと' + days + '日</span>';
+        if (order.status === '梱包・出荷済') when = '<span class="mini done">出荷完了</span>';
+        else if (days <= 7) when = '<span class="mini hot">挙式まであと' + days + '日</span>';
+        else if (days <= 16) when = '<span class="mini soon">あと' + days + '日</span>';
+        const extra = fees.extraTotal > 0
+          ? '超過 ' + formatYen(fees.extraBase) + '+' + formatYen(fees.extraPer) + '×' + fees.extraCount + '=' + formatYen(fees.extraTotal)
+          : '超過 ' + formatYen(0);
+        const fields = [
+          ['挙式日 / 残日数', escapeHtml(order.weddingDate) + '<br>' + when + (order.rushTicket ? ' <span class="mini rush">特急チケット</span>' : '')],
+          ['販路 / 注文番号', '<span class="badge ch-' + order.channel + '">' + escapeHtml(order.channelLabel) + '</span><br>' + escapeHtml(order.id)],
+          ['注文者 / 配送先', escapeHtml(order.customerName) + ' 様<br>' + escapeHtml(order.shippingTo)],
+          ['商品・数量・金額', escapeHtml(order.productName) + '<br>' + escapeHtml(order.sku) + ' × ' + order.qty + '点 ' + formatYen(order.amount) + '<br>内訳 ' + PART_KEYS.map(function (part) { return part.short + counts[part.key]; }).join('・')],
+          ['名入れ', escapeHtml(order.coupleNames) + (order.warning ? ' <span class="mini soon">要確認</span>' : ' <span class="mini done">正規化済</span>') + '<br>' + escapeHtml(order.fontStyle)],
+          ['オプション・料金・印', escapeHtml(order.noshiSeal) + '<br>' + escapeHtml(extra) + '<br>のし ' + formatYen(fees.noshi) + ' / 包装 ' + formatYen(fees.wrapping) + (order.campaignMark ? '<br><span class="mini mark">「' + escapeHtml(order.campaignMark) + '」</span>' : '')],
+          ['期限', '賞味 ' + escapeHtml(order.bestBefore || 'なし') + '<br>' + (clock.within ? '13:00まで（内） ' : '13:00過ぎ ') + escapeHtml(clock.time)],
+          ['工程', '<select data-action="quick-status" data-id="' + escapeHtml(order.id) + '" aria-label="工程">' + statusOptions(order.status) + '</select><br>校正: ' + escapeHtml(order.proofStatus) + '<br>' + (order.stockCommitted ? '在庫引当済' : '在庫未確定')]
+        ].map(function (field) {
+          return '<div class="field"><span>' + field[0] + '</span><strong>' + field[1] + '</strong></div>';
+        }).join('');
+        return '<article class="card' + (order.warning ? ' is-warn' : '') + '" data-action="open-order" data-id="' + escapeHtml(order.id) + '"><div class="card-bar"><label class="check">選択<input type="checkbox" data-action="toggle-one" data-id="' + escapeHtml(order.id) + '"' + (order.selected ? ' checked' : '') + '></label><button type="button" class="open" data-action="open-order" data-id="' + escapeHtml(order.id) + '">名入れ詳細</button></div><div class="fields">' + fields + '</div></article>';
+      }
+      function paint() {
+        const rows = visibleOrders();
+        const selected = state.orders.filter(function (order) { return order.selected; }).length;
+        const allOn = state.orders.length > 0 && selected === state.orders.length;
+        host.innerHTML = '<div class="list-head"><h2>受注一覧（挙式日・納期が近い順に自動ソート）</h2><p class="hint">行を開くと、内訳・プリントサンプル・受注管理表・実寸プレビューが出ます</p><label class="select-all"><input id="select-all" type="checkbox" data-action="toggle-all"' + (allOn ? ' checked' : '') + '>すべて選択</label><p class="count">表示: ' + rows.length + '件 / 全' + state.orders.length + '件</p><p class="count">選択中: ' + selected + '件</p><button type="button" class="batch" data-action="open-simulator">選択注文の加工・送り状CSVを生成</button></div>' + (rows.length ? rows.map(card).join('') : '<p class="empty">該当する注文はありません</p>');
+      }
+      paint();
+      on('oms:list', paint);
+      on('oms:change', paint);
+    }
+    const DASHBOARD_PARTS = [
+      { name: 'kpi-strip', render: renderKpiStrip },
+      { name: 'part-stock', render: renderPartStockStrip },
+      { name: 'order-filters', render: renderOrderFilters },
+      { name: 'order-list', render: renderOrderList }
+    ];
+    function renderDashboard(host) {
+      mountOrdered(host, DASHBOARD_PARTS);
+    }
+
+    function renderArchitectureTab(host) {
+      host.innerHTML = [
+        '<section class="panel">',
+        '<p class="banner">この図は設計の見取り図です。楽天・Yahoo・本店の本番取込はせず、キャンペーン金額も計算しません。</p>',
+        '<p class="kicker">System Architecture</p>',
+        '<h2>4販路の見取り図と、名入れ・制作の流れ</h2>',
+        '<p class="lead">自社Welcart・楽天・Yahoo!・電話/FAXを、同じ制作の列で見るための図です。いま画面に出ている注文はダミーです。</p>',
+        '<div class="flow">',
+        '<div class="stage"><p class="stage-title">① 受注データ取込層（4販路）</p>',
+        '<article class="card"><span class="tag green">自社 WordPress / Welcart</span><h3>特注欄の直接抽出（未接続）</h3><p>role=n/d/w/h/m/s を取る想定です。この画面はAPIを呼びません。</p></article>',
+        '<article class="card"><span class="tag rose">楽天市場</span><h3>searchOrder / getOrder（未接続）</h3><p>項目選択肢と備考を後で取る想定です。いまはサンプル注文だけです。</p></article>',
+        '<article class="card"><span class="tag amber">Yahoo!ショッピング</span><h3>orderList / orderInfo（未接続）</h3><p>オプション項目を後で取る想定です。いまはサンプル注文だけです。</p></article>',
+        '<article class="card"><span class="tag sky">電話・FAX</span><h3>0586-86-1150 / 1140</h3><p>この画面の手動登録から、同じ制作の列に入ります。</p></article>',
+        '</div>',
+        '<div class="arrow"><span>RAW</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></div>',
+        '<div class="stage core"><p class="stage-title">② 現場で使う決まり</p><div class="core-box">',
+        '<article class="card"><h3>1. 名入れの確認</h3><p>名前・日付・書体・のしをそろえます。空欄や特殊記号は要確認にします。</p></article>',
+        '<article class="card"><h3>2. 料金は決めた式だけ</h3><p>文字数超過は1注文につき1回、¥500＋¥20×文字数。のし¥20、ラッピング¥90。キャンペーンは渡された名前を出すだけです。</p></article>',
+        '<article class="card"><h3>3. 挙式日と13:00</h3><p>挙式日が近い注文を上に出します。即日の締切は13:00です。</p></article>',
+        '<article class="card"><h3>4. 部品在庫はこの画面の中だけ</h3><p>確定すると菓子・箱・サンクスカード・ミニシールが1回だけ減ります。再読込で戻ります。</p></article>',
+        '</div></div>',
+        '<div class="arrow"><span>OUT</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></div>',
+        '<div class="stage"><p class="stage-title">③ 制作・出荷の出力</p>',
+        '<article class="card"><span class="tag gold">加工CSV</span><h3>レーザー・印字用CSV</h3><p>選んだ注文から、名前と日付のCSVを出します。</p></article>',
+        '<article class="card"><span class="tag sage">送り状</span><h3>ヤマトB2クラウド</h3><p>式場名と挙式日を記事欄に入れたCSVを出します。</p></article>',
+        '<article class="card"><span class="tag taupe">校正</span><h3>送付してから承認</h3><p>校正は未送付 → 送付済 → 承認済の順です。</p></article>',
+        '<article class="card"><span class="tag forest">実寸</span><h3>サンクスカードとミニシール</h3><p>カードは91×55mm、シールはφ30mmです。</p></article>',
+        '</div></div></section>',
+        '<section class="panel"><h2>外部APIの接続予定</h2><p class="lead">期限の見本です。この画面はキーを持たず、ポーリングもしません。</p><div class="monitors">',
+        '<article class="monitor"><header><h3>WordPress / Welcart</h3><span class="tag forest">未接続</span></header><p>認証の想定: Application Password。いまは呼びません。</p></article>',
+        '<article class="monitor"><header><h3>楽天市場 RMS</h3><span class="tag amber">未接続</span></header><p>ライセンスキーの更新は、接続してから監視します。</p></article>',
+        '<article class="monitor"><header><h3>Yahoo!ショッピング</h3><span class="tag forest">未接続</span></header><p>OAuthの更新は、接続してから監視します。</p></article>',
+        '</div></section>'
+      ].join('');
+    }
+
+    function renderSchemaTab(host) {
+      function paint() {
+        const list = dbSchemaTables.map(function (table, index) {
+          return '<button type="button" data-action="schema" data-index="' + index + '" class="' + (index === state.schemaIndex ? 'is-on' : '') + '"><span class="name">' + escapeHtml(table.name) + '</span>' + escapeHtml(table.jpName) + '</button>';
+        }).join('');
+        const table = dbSchemaTables[state.schemaIndex];
+        const head = '<div class="schema-head"><div>カラム名</div><div>データ型</div><div>制約</div><div>説明</div></div>';
+        const rows = table.columns.map(function (column) {
+          const key = column.key
+            ? '<span class="key ' + (column.key === 'PK' || column.key === 'FK' ? column.key : 'other') + '">' + escapeHtml(column.key) + '</span>'
+            : '-';
+          return '<div class="schema-row"><div class="c-name"><span class="k">カラム</span>' + escapeHtml(column.col) + '</div><div><span class="k">型</span>' + escapeHtml(column.type) + '</div><div><span class="k">制約</span>' + key + '</div><div><span class="k">説明</span>' + escapeHtml(column.note) + '</div></div>';
+        }).join('');
+        host.innerHTML = '<section class="panel"><div class="head"><div><p class="kicker">Database Schema</p><h2>統合受注のテーブル見取り図</h2><p class="lead">左の名前を選ぶと、列の意味が出ます。キャンペーンは印の名前だけです。</p></div><button type="button" class="copy" data-action="copy-ddl">CREATE TABLE DDLをコピー</button></div><div class="layout"><div class="tables">' + list + '</div><div class="detail"><h3>' + escapeHtml(table.name) + '</h3><span class="jp">' + escapeHtml(table.jpName) + '</span><p>' + escapeHtml(table.description) + '</p><div class="indexes">' + table.indexes.map(function (index) { return '<span>' + escapeHtml(index) + '</span>'; }).join('') + '</div>' + head + rows + '</div></div></section>';
+      }
+      paint();
+      on('oms:schema', paint);
+    }
+
+    function csvTargets() {
+      const selected = state.orders.filter(function (order) { return order.selected; });
+      return selected.length ? selected : state.orders.slice(0, 3);
+    }
+    function laserCsv() {
+      const header = '注文ID,販路,挙式日,商品SKU,数量,新郎新婦名,印字日付,見出し,書体,熨斗シール,キャンペーン印';
+      const rows = csvTargets().map(function (order) {
+        return [order.id, order.channelLabel, order.weddingDate, order.sku, order.qty, '"' + order.coupleNames + '"', dotted(order.weddingDate), '"' + order.headerMsg + '"', '"' + order.fontStyle + '"', '"' + order.noshiSeal + '"', order.campaignMark ? '"' + order.campaignMark + '"' : 'なし'].join(',');
+      });
+      return [header].concat(rows).join('\n');
+    }
+    function yamatoCsv() {
+      const header = 'お客様管理番号,送り状種類,お届け先郵便番号,お届け先住所,お届け先名称,お届け先電話番号,品名1,記事欄';
+      const rows = csvTargets().map(function (order) {
+        return [order.id, '0', order.postalCode, '"' + order.address + '"', '"' + order.shippingTo + '（' + order.customerName + '様）"', order.phone, '"' + order.productName + '"', '"【挙式日:' + order.weddingDate + '】' + order.coupleNames + '様分"'].join(',');
+      });
+      return [header].concat(rows).join('\n');
+    }
+    function renderSimulatorTab(host) {
+      function paint() {
+        const count = csvTargets().length;
+        host.innerHTML = '<section class="panel"><p class="kicker">Production and Logistics</p><h2>レーザー加工CSV と ヤマトB2送り状CSV</h2><p class="lead">ダッシュボードで選んだ注文からCSVを作ります。未選択のときは先頭3件です。</p><div class="actions"><button type="button" class="laser" data-action="download" data-kind="laser">レーザー加工用CSVをダウンロード</button><button type="button" class="b2" data-action="download" data-kind="yamato">ヤマトB2送り状CSVをダウンロード</button></div><div class="grid"><div><div class="csv-head"><h3>1. 加工・印字用 CSV</h3><span>' + count + '件</span></div><pre id="csv-laser"></pre></div><div><div class="csv-head"><h3>2. ヤマトB2 送り状 CSV</h3><span>' + count + '件</span></div><pre id="csv-yamato"></pre></div></div></section>';
+        host.querySelector('#csv-laser').textContent = laserCsv();
+        host.querySelector('#csv-yamato').textContent = yamatoCsv();
+      }
+      paint();
+      on('oms:simulator', paint);
+    }
+
+    function renderMain(host) {
+      host.setAttribute('role', 'main');
+      host.innerHTML = '<div data-tab-panel="dashboard"></div><div data-tab-panel="architecture" hidden></div><div data-tab-panel="schema" hidden></div><div data-tab-panel="simulator" hidden></div>';
+      mountOrdered(host.querySelector('[data-tab-panel="dashboard"]'), [{ name: 'tab-dashboard', render: renderDashboard }]);
+      mountOrdered(host.querySelector('[data-tab-panel="architecture"]'), [{ name: 'tab-architecture', render: renderArchitectureTab }]);
+      mountOrdered(host.querySelector('[data-tab-panel="schema"]'), [{ name: 'tab-schema', render: renderSchemaTab }]);
+      mountOrdered(host.querySelector('[data-tab-panel="simulator"]'), [{ name: 'tab-simulator', render: renderSimulatorTab }]);
+    }
+
+    function renderDrawerHead(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        host.innerHTML = '<div class="titles"><div class="meta"><span class="ch">' + escapeHtml(order.channelLabel) + '</span><span class="oid">' + escapeHtml(order.id) + '</span></div><h2 id="drawer-title">' + escapeHtml(order.productName) + '（× ' + order.qty + '点）</h2></div><button type="button" class="close" data-action="close-drawer" aria-label="閉じる">×</button>';
+      }
+      on('oms:open', paint);
+    }
+    function renderDrawerWarning(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order || !order.warning) { host.hidden = true; host.innerHTML = ''; return; }
+        host.hidden = false;
+        host.innerHTML = '<div class="warn"><strong>要確認</strong><span>' + escapeHtml(order.warning) + '</span></div>';
+      }
+      on('oms:open', paint);
+      on('oms:change', paint);
+    }
+    function renderDrawerPreview(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        host.innerHTML = '<div class="card"><div class="preview-head"><h3>リアルタイム仕上がりプレビュー</h3><p class="sub">下の入力がすぐに反映されます</p></div><div class="frame"><svg viewBox="0 0 460 210" role="img" aria-label="刻印プレビュー"><rect x="8" y="8" width="444" height="194" rx="12" fill="#FAF8F5" stroke="#B8965C" stroke-width="2"/><text data-sample="message" x="230" y="48" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="15" fill="#8A7B76"></text><text data-sample="name" x="230" y="112" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="30" fill="#433936"></text><text data-sample="date" x="230" y="148" text-anchor="middle" font-size="16" fill="#9E7B43"></text><text data-sample="note" x="230" y="178" text-anchor="middle" font-size="10" fill="#7A6B66"></text></svg></div></div>';
+        applyPreview(host);
+      }
+      function applyPreview(root) {
+        const node = root || host;
+        if (!node.querySelector('svg')) return;
+        const draft = state.draft || {};
+        node.querySelector('[data-sample="message"]').textContent = draft.message || '';
+        node.querySelector('[data-sample="name"]').textContent = draft.couple || '';
+        node.querySelector('[data-sample="date"]').textContent = dotted(draft.wedding || '');
+        node.querySelector('[data-sample="note"]').textContent = '書体: ' + (draft.font || '') + ' ｜ 包装: ' + (draft.noshi || '');
+      }
+      on('oms:open', paint);
+      on('oms:draft', function () { applyPreview(); });
+    }
+    function renderDrawerSamples(host) {
+      function paint() {
+        if (!currentOrder()) { host.innerHTML = ''; return; }
+        host.innerHTML = '<div class="head"><h3>プリントサンプル</h3><p class="sub">同じ名前・同じ日付。デザインだけ違います</p></div><div class="grid"><article class="sample s1"><p class="caption">CALLIGRAPHY</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article><article class="sample s2"><p class="caption">明朝</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article><article class="sample s3"><p class="caption">筆記・丸枠</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article></div>';
+        fillSamples();
+      }
+      function fillSamples() {
+        host.querySelectorAll('[data-sample="name"]').forEach(function (node) { node.textContent = draftCouple(); });
+        host.querySelectorAll('[data-sample="date"]').forEach(function (node) { node.textContent = dotted(draftWedding()); });
+      }
+      on('oms:open', paint);
+      on('oms:draft', fillSamples);
+    }
+    function renderDrawerParts(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        const counts = partCounts(order);
+        const lines = PART_KEYS.map(function (part) {
+          const per = Number(order.partPer[part.key]) || 0;
+          return '<div class="line"><span>' + escapeHtml(part.label) + '</span><span class="qty">親 ' + order.qty + ' × ' + per + ' ＝ ' + counts[part.key] + '</span></div>';
+        }).join('');
+        host.innerHTML = '<div class="head"><h3>部品内訳</h3><p class="sub">親数量 ' + order.qty + '</p></div><div class="body">' + lines + '</div>';
+      }
+      on('oms:open', paint);
+      on('oms:change', paint);
+    }
+    function renderDrawerFees(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        const fees = feeNumbers(order);
+        const extra = fees.extraTotal > 0
+          ? '文字数超過 ' + formatYen(fees.extraBase) + ' ＋ ' + formatYen(fees.extraPer) + ' × ' + fees.extraCount + '文字 ＝ ' + formatYen(fees.extraTotal) + '（1注文につき1回）'
+          : '文字数超過 ' + formatYen(0);
+        const total = fees.extraTotal + fees.noshi + fees.wrapping;
+        host.innerHTML = '<div class="card"><h3>この注文の料金</h3><div class="lines"><p data-fee="extra">' + escapeHtml(extra) + '</p><p data-fee="noshi">のし ' + formatYen(fees.noshi) + '</p><p data-fee="wrap">ラッピング ' + formatYen(fees.wrapping) + '</p><p class="total">オプション計 ' + formatYen(total) + '</p></div></div>';
+      }
+      on('oms:open', paint);
+    }
+    function renderDrawerCampaign(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        const text = order.campaignMark ? '本店カートから渡された印: 「' + order.campaignMark + '」' : '本店カートから渡された印: なし';
+        host.innerHTML = '<div class="card"><h3>キャンペーン印</h3><p>' + escapeHtml(text) + '</p><p class="sub">名前だけです。金額は計算しません。例: 5円ご縁</p></div>';
+      }
+      on('oms:open', paint);
+    }
+    function renderDrawerSchedule(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        const clock = orderClock(order);
+        host.innerHTML = '<div class="card"><h3>賞味期限と即日締切</h3><div class="grid"><p class="cell">賞味期限 ' + escapeHtml(order.bestBefore || 'なし') + '</p><p class="cell">即日締切 ' + SAME_DAY_CUTOFF + '。受付 ' + escapeHtml(clock.time) + (clock.within ? '（締切内）' : '（締切後）') + '</p></div></div>';
+      }
+      on('oms:open', paint);
+    }
+    function renderDrawerRush(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        host.innerHTML = '<div class="card"><h3>特急チケット</h3><div class="row"><button type="button" data-action="toggle-rush" class="' + (order.rushTicket ? 'is-on' : '') + '">' + (order.rushTicket ? '特急チケットを外す' : '特急チケットを付ける') + '</button><span>' + (order.rushTicket ? '特急チケット付き' : '特急チケットなし') + '</span></div></div>';
+      }
+      on('oms:open', paint);
+      on('oms:change', paint);
+    }
+    function renderDrawerProof(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        host.innerHTML = '<div class="card"><h3>校正</h3><div class="row"><span class="state">校正: ' + escapeHtml(order.proofStatus) + '</span><button type="button" class="send" data-action="proof-send"' + (order.proofStatus !== '未送付' ? ' disabled' : '') + '>校正を送付済みにする</button><button type="button" class="approve" data-action="proof-approve"' + (order.proofStatus !== '送付済' ? ' disabled' : '') + '>校正を承認済みにする</button></div></div>';
+      }
+      on('oms:open', paint);
+      on('oms:change', paint);
+    }
+    function renderDrawerSheet(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        const fees = feeNumbers(order);
+        const counts = partCounts(order);
+        const clock = orderClock(order);
+        const rows = [
+          ['販路', order.channelLabel],
+          ['注文者', order.customerName + ' 様'],
+          ['お届け先', order.shippingTo],
+          ['商品', order.productName + ' / ' + order.sku],
+          ['親数量', String(order.qty)],
+          ['内訳', PART_KEYS.map(function (part) { return part.label + ' ' + counts[part.key]; }).join('、')],
+          ['名入れ', draftCouple()],
+          ['日付', dotted(draftWedding())],
+          ['挙式日', draftWedding()],
+          ['料金', '超過 ' + formatYen(fees.extraTotal) + ' / のし ' + formatYen(fees.noshi) + ' / ラッピング ' + formatYen(fees.wrapping)],
+          ['賞味期限', order.bestBefore || 'なし'],
+          ['即日締切', SAME_DAY_CUTOFF + ' / ' + clock.time + ' / ' + (clock.within ? '締切内' : '締切後')],
+          ['特急', order.rushTicket ? 'あり' : 'なし'],
+          ['校正', order.proofStatus],
+          ['キャンペーン印', order.campaignMark ? '「' + order.campaignMark + '」' : 'なし']
+        ].map(function (row) {
+          return '<tr><th>' + escapeHtml(row[0]) + '</th><td>' + escapeHtml(row[1]) + '</td></tr>';
+        }).join('');
+        host.innerHTML = '<div class="head"><h3>受注管理表</h3><p class="sub">この画面の控です。PDFではありません</p></div><div class="sheet"><div class="sheet-top"><strong>受注管理表</strong><span>' + escapeHtml(order.id) + '</span></div><table><tbody>' + rows + '</tbody></table></div>';
+      }
+      on('oms:open', paint);
+      on('oms:change', paint);
+      on('oms:draft', paint);
+    }
+    function renderDrawerRealSize(host) {
+      function paint() {
+        if (!currentOrder()) { host.innerHTML = ''; return; }
+        host.innerHTML = '<div class="head"><h3>実寸レイアウト</h3><p class="sub">ミリ指定の画面プレビューです</p></div><div class="stage"><div class="row"><div class="piece"><div class="thanks"><p class="cap">THANK YOU</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div><p class="caption">サンクスカード 91×55mm</p></div><div class="piece"><div class="seal"><div><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div></div><p class="caption">ミニシール φ30mm</p></div></div></div>';
+        fill();
+      }
+      function fill() {
+        host.querySelectorAll('[data-sample="name"]').forEach(function (node) { node.textContent = draftCouple(); });
+        host.querySelectorAll('[data-sample="date"]').forEach(function (node) { node.textContent = dotted(draftWedding()); });
+      }
+      on('oms:open', paint);
+      on('oms:draft', fill);
+    }
+    function renderDrawerStock(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        const counts = partCounts(order);
+        const plan = PART_KEYS.map(function (part) { return part.short + ' ' + counts[part.key]; }).join('、');
+        const now = PART_KEYS.map(function (part) { return part.label + ' ' + state.partStock[part.key]; }).join('、');
+        host.innerHTML = '<div class="card"><h3>部品在庫の確定</h3><p>いまの部品在庫 ' + escapeHtml(now) + '</p><p>' + (order.stockCommitted ? '確定済み。引き落とした数: ' + escapeHtml(plan) : '未確定。確定すると ' + escapeHtml(plan) + ' を引き落とします。') + '</p><button type="button" data-action="commit-stock"' + (order.stockCommitted ? ' disabled' : '') + '>' + (order.stockCommitted ? '部品在庫は引き落とし済み' : 'この注文を確定して部品在庫を引き落とす') + '</button></div>';
+      }
+      on('oms:open', paint);
+      on('oms:change', paint);
+    }
+    function renderDrawerEdit(host) {
+      function paint() {
+        const order = currentOrder();
+        const draft = state.draft;
+        if (!order || !draft) { host.innerHTML = ''; return; }
+        const fees = feeNumbers(order);
+        const badge = fees.extraTotal > 0
+          ? '文字数超過 ' + formatYen(fees.extraBase) + '＋' + formatYen(fees.extraPer) + '×' + fees.extraCount + '＝' + formatYen(fees.extraTotal)
+          : '文字数超過 ' + formatYen(0);
+        const fonts = FONT_OPTIONS.map(function (font) {
+          return '<option' + (font === draft.font ? ' selected' : '') + '>' + escapeHtml(font) + '</option>';
+        }).join('');
+        host.innerHTML = '<div class="head"><h3>名入れ・工程の編集</h3><span class="fee-badge' + (fees.extraTotal > 0 ? ' is-on' : '') + '">' + escapeHtml(badge) + '</span></div><div class="grid"><div><label for="edit-couple">新郎・新婦名</label><input id="edit-couple" data-action="edit-field" data-field="couple" value="' + escapeHtml(draft.couple) + '"></div><div><label for="edit-date">挙式日</label><input id="edit-date" type="date" data-action="edit-field" data-field="wedding" value="' + escapeHtml(draft.wedding) + '"></div><div><label for="edit-message">見出し・定型メッセージ</label><input id="edit-message" data-action="edit-field" data-field="message" value="' + escapeHtml(draft.message) + '"></div><div><label for="edit-font">書体</label><select id="edit-font" data-action="edit-field" data-field="font">' + fonts + '</select></div><div><label for="edit-noshi">熨斗・サンクスシール</label><input id="edit-noshi" data-action="edit-field" data-field="noshi" value="' + escapeHtml(draft.noshi) + '"></div><div><label for="edit-status">工程ステータス</label><select id="edit-status" data-action="edit-field" data-field="status">' + statusOptions(draft.status) + '</select></div></div><div class="save-row"><label class="check"><input type="checkbox" data-action="edit-field" data-field="clearWarning"' + (draft.clearWarning ? ' checked' : '') + '>名入れ内容を目視確認済みにする（パース警告を解除）</label><button type="button" class="save" data-action="save-edit">変更内容を保存する</button></div>';
+      }
+      on('oms:open', paint);
+    }
+    function renderDrawerRaw(host) {
+      function paint() {
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        host.innerHTML = '<h3>受信メモ</h3><p class="sub">ダミーの原文です。本番の取込ではありません</p><pre></pre>';
+        host.querySelector('pre').textContent = JSON.stringify(order.rawPayload, null, 2);
+      }
+      on('oms:open', paint);
+    }
+    function renderDrawerActions(host) {
+      function paint() {
+        if (!currentOrder()) { host.innerHTML = ''; return; }
+        host.innerHTML = '<h3>この注文の出力</h3><div class="grid"><button type="button" class="a1" data-action="single" data-kind="laser"><span>レーザー加工用CSV出力</span><span>CSV</span></button><button type="button" class="a2" data-action="single" data-kind="yamato"><span>ヤマトB2クラウドCSV出力</span><span>B2</span></button><button type="button" class="a3" data-action="single" data-kind="email"><span>校正確認メールを記録</span><span>記録</span></button><button type="button" class="a4" data-action="single" data-kind="ship"><span>出荷済みにする（API送信なし）</span><span>状態</span></button></div>';
+      }
+      on('oms:open', paint);
+    }
+
+    const DRAWER_PARTS = [
+      { name: 'drawer-warning', render: renderDrawerWarning },
+      { name: 'drawer-preview', render: renderDrawerPreview },
+      { name: 'drawer-samples', render: renderDrawerSamples },
+      { name: 'drawer-parts', render: renderDrawerParts },
+      { name: 'drawer-fees', render: renderDrawerFees },
+      { name: 'drawer-campaign', render: renderDrawerCampaign },
+      { name: 'drawer-schedule', render: renderDrawerSchedule },
+      { name: 'drawer-rush', render: renderDrawerRush },
+      { name: 'drawer-proof', render: renderDrawerProof },
+      { name: 'drawer-sheet', render: renderDrawerSheet },
+      { name: 'drawer-realsize', render: renderDrawerRealSize },
+      { name: 'drawer-stock', render: renderDrawerStock },
+      { name: 'drawer-edit', render: renderDrawerEdit },
+      { name: 'drawer-raw', render: renderDrawerRaw },
+      { name: 'drawer-actions', render: renderDrawerActions }
+    ];
+    function renderDrawer(host) {
+      host.innerHTML = '<div class="drawer-backdrop" data-action="close-drawer" hidden></div><aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden><div data-slot="head"></div><div class="drawer-body" data-slot="body"></div></aside>';
+      mountOrdered(host.querySelector('[data-slot="head"]'), [{ name: 'drawer-head', render: renderDrawerHead }]);
+      mountOrdered(host.querySelector('[data-slot="body"]'), DRAWER_PARTS);
+    }
+
+    function renderManualModal(host) {
+      host.hidden = true;
+      host.innerHTML = '<div class="card" role="dialog" aria-modal="true" aria-labelledby="manual-title"><div class="top"><div><span class="tag">電話・FAX受注入力</span><h2 id="manual-title">電話・FAX・大口注文 新規登録</h2></div><button type="button" class="x" data-action="close-manual" aria-label="閉じる">×</button></div><div class="grid"><div><label for="manual-type">受付経路</label><select id="manual-type"><option>FAX注文 (0586-86-1140)</option><option>電話注文 (0586-86-1150)</option></select></div><div><label for="manual-date">挙式日 / 希望納品日</label><input id="manual-date" type="date" value="2026-12-05"></div><div><label for="manual-customer">ご注文者名</label><input id="manual-customer" placeholder="例: 佐藤 健太"></div><div><label for="manual-venue">お届け先</label><input id="manual-venue" placeholder="例: 式場名"></div><div class="span-2"><label for="manual-product">商品名・数量</label><input id="manual-product" value="プチギフト Merci アールグレイ＆フィナンシェ × 65個"></div><div><label for="manual-couple">名入れ新郎新婦名</label><input id="manual-couple" placeholder="例: Kenta & Yui"></div><div><label for="manual-noshi">熨斗・タグ指定</label><input id="manual-noshi" value="オリジナルサンクスタグ付"></div></div><div class="buttons"><button type="button" class="cancel" data-action="close-manual">キャンセル</button><button type="button" class="ok" data-action="submit-manual">受注キューへ登録する</button></div></div>';
+    }
+    function renderToast(host) {
+      host.hidden = true;
+      host.innerHTML = '<div class="bubble" role="status"><span class="dot"></span><span data-toast-text>処理が完了しました</span></div>';
+    }
+
+    const APP_PARTS = [
+      { name: 'header', render: renderHeader },
+      { name: 'main', render: renderMain },
+      { name: 'drawer', render: renderDrawer },
+      { name: 'manual-modal', render: renderManualModal },
+      { name: 'toast', render: renderToast }
+    ];
+
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+      document.querySelectorAll('[data-tab-panel]').forEach(function (panel) {
+        panel.hidden = panel.dataset.tabPanel !== tabName;
+      });
+      emit('oms:tab', tabName);
+      if (tabName === 'simulator') emit('oms:simulator');
+      if (tabName === 'schema') emit('oms:schema');
+    }
+    function triggerManualSync() {
+      const now = new Date();
+      state.lastSync = TODAY + ' ' + now.toTimeString().split(' ')[0];
+      emit('oms:sync');
+      showToast('本番の取込は行っていません。楽天・Yahoo・本店には接続せず、ダミー注文のままです。');
+    }
+    function setChannelFilter(channel) {
+      state.activeChannel = channel;
+      emit('oms:filters');
+      emit('oms:list');
+    }
+    function setStatusFilter(status) {
+      state.activeStatus = status;
+      emit('oms:filters');
+      emit('oms:list');
+    }
+    function filterByUrgency() {
+      state.onlyUrgent = true;
+      state.onlyWarning = false;
+      emit('oms:filters');
+      emit('oms:list');
+      showToast('挙式日7日以内の要急ぎ注文に絞り込みました');
+    }
+    function filterByWarning() {
+      state.onlyWarning = true;
+      state.onlyUrgent = false;
+      emit('oms:filters');
+      emit('oms:list');
+      showToast('名入れパース警告のある注文に絞り込みました');
+    }
+    function resetSpecialFilters() {
+      state.onlyUrgent = false;
+      state.onlyWarning = false;
+      emit('oms:filters');
+      emit('oms:list');
+    }
+    function onSearch(el) {
+      state.query = el.value;
+      emit('oms:list');
+    }
+    function toggleSelectAll(el) {
+      state.orders.forEach(function (order) { order.selected = el.checked; });
+      emit('oms:list');
+    }
+    function toggleSingleSelect(el) {
+      const order = state.orders.find(function (item) { return item.id === el.dataset.id; });
+      if (!order) return;
+      order.selected = el.checked;
+      emit('oms:list');
+    }
+    function quickChangeStatus(el) {
+      const order = state.orders.find(function (item) { return item.id === el.dataset.id; });
+      if (!order) return;
+      order.status = el.value;
+      emit('oms:change');
+      showToast('注文 ' + order.id + ' の工程を「' + order.status + '」に更新しました');
+    }
+    function openOrderDrawer(id) {
+      const order = state.orders.find(function (item) { return item.id === id; });
+      if (!order) return;
+      state.currentId = id;
+      state.draft = readDraft(order);
+      const root = document.querySelector('[data-part="drawer"]');
+      root.querySelector('.drawer-backdrop').hidden = false;
+      root.querySelector('.drawer-panel').hidden = false;
+      document.body.classList.add('scroll-lock');
+      emit('oms:open');
+      const body = root.querySelector('.drawer-body');
+      if (body) body.scrollTop = 0;
+    }
+    function closeOrderDrawer() {
+      const root = document.querySelector('[data-part="drawer"]');
+      root.querySelector('.drawer-backdrop').hidden = true;
+      root.querySelector('.drawer-panel').hidden = true;
+      document.body.classList.remove('scroll-lock');
+      state.currentId = null;
+      state.draft = null;
+    }
+    function onEditInput(el) {
+      if (!state.draft) return;
+      if (el.dataset.field === 'clearWarning') state.draft.clearWarning = el.checked;
+      else state.draft[el.dataset.field] = el.value;
+      emit('oms:draft');
+    }
+    function saveDrawerEdits() {
+      const order = currentOrder();
+      if (!order || !state.draft) return;
+      order.coupleNames = state.draft.couple;
+      order.weddingDate = state.draft.wedding;
+      order.headerMsg = state.draft.message;
+      order.fontStyle = state.draft.font;
+      order.noshiSeal = state.draft.noshi;
+      order.status = state.draft.status;
+      if (state.draft.clearWarning) order.warning = null;
+      emit('oms:change');
+      emit('oms:open');
+      showToast('注文 ' + order.id + ' の正規化データを保存しました');
+    }
+    function toggleRushTicket() {
+      const order = currentOrder();
+      if (!order) return;
+      order.rushTicket = !order.rushTicket;
+      emit('oms:change');
+      showToast(order.rushTicket ? order.id + ' に特急チケットを付けました' : order.id + ' の特急チケットを外しました');
+    }
+    function markProofSent() {
+      const order = currentOrder();
+      if (!order || order.proofStatus !== '未送付') return;
+      order.proofStatus = '送付済';
+      emit('oms:change');
+      showToast(order.id + ' の校正を送付済みにしました');
+    }
+    function markProofApproved() {
+      const order = currentOrder();
+      if (!order || order.proofStatus !== '送付済') return;
+      order.proofStatus = '承認済';
+      emit('oms:change');
+      showToast(order.id + ' の校正を承認済みにしました');
+    }
+    function confirmOrderStock() {
+      const order = currentOrder();
+      if (!order) return;
+      if (order.stockCommitted) {
+        showToast('この注文の部品在庫はすでに引き落とし済みです');
+        return;
+      }
+      const counts = partCounts(order);
+      const short = PART_KEYS.filter(function (part) { return state.partStock[part.key] < counts[part.key]; });
+      if (short.length) {
+        showToast('在庫が足りないので確定できません（' + short.map(function (part) { return part.label; }).join('・') + '）');
+        return;
+      }
+      PART_KEYS.forEach(function (part) { state.partStock[part.key] -= counts[part.key]; });
+      order.stockCommitted = true;
+      state.lastStockMove = order.id + ' を確定。' + PART_KEYS.map(function (part) {
+        return part.short + ' -' + counts[part.key] + '（残 ' + state.partStock[part.key] + '）';
+      }).join('、');
+      emit('oms:change');
+      showToast(order.id + ' の内訳数を部品在庫から引き落としました');
+    }
+    function triggerSingleAction(kind) {
+      const order = currentOrder();
+      if (!order) return;
+      if (kind === 'laser' || kind === 'yamato') {
+        state.orders.forEach(function (item) { item.selected = item.id === order.id; });
+        closeOrderDrawer();
+        switchTab('simulator');
+        showToast(order.id + (kind === 'laser' ? ' のレーザー加工用CSVを生成しました' : ' のヤマトB2送り状CSVを生成しました'));
+        return;
+      }
+      if (kind === 'email') {
+        showToast(order.customerName + ' 様の校正確認を記録しました。メールの本番送信はまだありません。');
+        return;
+      }
+      if (kind === 'ship') {
+        order.status = '梱包・出荷済';
+        emit('oms:change');
+        closeOrderDrawer();
+        showToast(order.id + ' を出荷済みにしました。モールAPIへは送っていません。');
+      }
+    }
+    function openManualOrderModal() {
+      const host = document.querySelector('[data-part="manual-modal"]');
+      host.hidden = false;
+      document.body.classList.add('scroll-lock');
+    }
+    function closeManualOrderModal() {
+      document.querySelector('[data-part="manual-modal"]').hidden = true;
+      if (!state.currentId) document.body.classList.remove('scroll-lock');
+    }
+    function submitManualOrder() {
+      const type = document.getElementById('manual-type').value;
+      const order = applyStaffDefaults({
+        id: (type.indexOf('FAX') === 0 ? 'FAX' : 'TEL') + '-20261119-' + String(state.orders.length + 1).padStart(2, '0'),
+        channel: 'MANUAL',
+        channelLabel: type,
+        orderDate: TODAY + ' 10:19',
+        weddingDate: document.getElementById('manual-date').value || '2026-12-05',
+        customerName: document.getElementById('manual-customer').value.trim() || '新規電話・FAX顧客',
+        shippingTo: document.getElementById('manual-venue').value.trim() || 'ご自宅配送',
+        postalCode: '460-0001',
+        address: document.getElementById('manual-venue').value.trim() || 'ご自宅配送',
+        phone: '0586-86-1150',
+        productName: document.getElementById('manual-product').value.trim() || 'ブライダルプチギフト',
+        sku: 'LL-MAN-001',
+        qty: 1,
+        amount: 27300,
+        coupleNames: document.getElementById('manual-couple').value.trim() || 'New Couple',
+        headerMsg: 'THANK YOU FOR COMING',
+        fontStyle: FONT_OPTIONS[0],
+        noshiSeal: document.getElementById('manual-noshi').value.trim() || 'オリジナルタグ',
+        status: '新規受付',
+        warning: null,
+        selected: true,
+        rawPayload: { source: 'Manual ' + type, entered_at: TODAY + ' 10:19' }
+      });
+      state.orders.unshift(order);
+      closeManualOrderModal();
+      emit('oms:change');
+      emit('oms:list');
+      showToast(order.channelLabel + '（' + order.id + '）を受注の列へ追加しました');
+    }
+    function selectSchemaTable(index) {
+      state.schemaIndex = Number(index) || 0;
+      emit('oms:schema');
+    }
+    function copySqlDdl() {
+      const table = dbSchemaTables[state.schemaIndex];
+      const ddl = 'CREATE TABLE ' + table.name + ' (\n' + table.columns.map(function (column) {
+        return '  ' + column.col + ' ' + column.type + (column.key === 'PK' ? ' PRIMARY KEY' : '') + ', -- ' + column.note;
+      }).join('\n') + '\n);';
+      const done = function () { showToast(table.name + ' の CREATE TABLE DDL をコピーしました'); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ddl).then(done).catch(function () {
+          const area = document.createElement('textarea');
+          area.value = ddl;
+          document.body.appendChild(area);
+          area.select();
+          document.execCommand('copy');
+          area.remove();
+          done();
+        });
+      }
+    }
+    function goToSimulatorWithSelected() {
+      switchTab('simulator');
+    }
+    function downloadSimulatedCsv(kind) {
+      const content = kind === 'laser' ? laserCsv() : yamatoCsv();
+      const filename = kind === 'laser' ? 'lunaluce_laser_engraving_' + TODAY + '.csv' : 'lunaluce_yamato_b2_' + TODAY + '.csv';
+      const blob = new Blob([new Uint8Array([0xef, 0xbb, 0xbf]), content], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      showToast(filename + ' をダウンロードしました');
+    }
+    let toastTimer = null;
+    function showToast(message) {
+      const host = document.querySelector('[data-part="toast"]');
+      host.hidden = false;
+      host.querySelector('[data-toast-text]').textContent = message;
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { host.hidden = true; }, 3200);
+    }
+
+    function runAction(name, el) {
+      if (name === 'switch-tab') switchTab(el.dataset.tab);
+      else if (name === 'manual-sync') triggerManualSync();
+      else if (name === 'channel') setChannelFilter(el.dataset.channel);
+      else if (name === 'status') setStatusFilter(el.dataset.status);
+      else if (name === 'filter-urgent') filterByUrgency();
+      else if (name === 'filter-warning') filterByWarning();
+      else if (name === 'reset-special') resetSpecialFilters();
+      else if (name === 'search') onSearch(el);
+      else if (name === 'toggle-all') toggleSelectAll(el);
+      else if (name === 'toggle-one') toggleSingleSelect(el);
+      else if (name === 'quick-status') quickChangeStatus(el);
+      else if (name === 'open-order') openOrderDrawer(el.dataset.id);
+      else if (name === 'close-drawer') closeOrderDrawer();
+      else if (name === 'edit-field') onEditInput(el);
+      else if (name === 'save-edit') saveDrawerEdits();
+      else if (name === 'toggle-rush') toggleRushTicket();
+      else if (name === 'proof-send') markProofSent();
+      else if (name === 'proof-approve') markProofApproved();
+      else if (name === 'commit-stock') confirmOrderStock();
+      else if (name === 'single') triggerSingleAction(el.dataset.kind);
+      else if (name === 'open-manual') openManualOrderModal();
+      else if (name === 'close-manual') closeManualOrderModal();
+      else if (name === 'submit-manual') submitManualOrder();
+      else if (name === 'schema') selectSchemaTable(el.dataset.index);
+      else if (name === 'copy-ddl') copySqlDdl();
+      else if (name === 'open-simulator') goToSimulatorWithSelected();
+      else if (name === 'download') downloadSimulatedCsv(el.dataset.kind);
+    }
+    document.addEventListener('click', function (event) {
+      const interactive = event.target.closest('button, a, input, select, textarea, label');
+      if (interactive) {
+        if (!interactive.matches('button, a')) return;
+        if (interactive.hasAttribute('data-action')) runAction(interactive.dataset.action, interactive);
+        return;
+      }
+      const actionEl = event.target.closest('[data-action]');
+      if (actionEl) runAction(actionEl.dataset.action, actionEl);
+    });
+    document.addEventListener('change', function (event) {
+      if (event.target.hasAttribute('data-action')) runAction(event.target.dataset.action, event.target);
+    });
+    document.addEventListener('input', function (event) {
+      const name = event.target.dataset.action;
+      if (name === 'search' || name === 'edit-field') runAction(name, event.target);
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        if (state.currentId) closeOrderDrawer();
+        else closeManualOrderModal();
+      }
+    });
+
+    seedOrders();
+    mountOrdered(document.getElementById('app'), APP_PARTS);
+    switchTab('dashboard');
+  </script>
+</body>
+</html>
