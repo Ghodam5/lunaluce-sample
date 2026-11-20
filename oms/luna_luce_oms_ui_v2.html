@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.1
+Luna Luce OMS 2.2
+この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
 
@@ -17,6 +18,10 @@ order-list             renderOrderList
 tab-architecture       renderArchitectureTab
 tab-schema             renderSchemaTab
 tab-simulator          renderSimulatorTab
+tab-site               renderSiteTab
+site-notices           renderSiteNotices
+site-calendar          renderSiteCalendar
+site-promos            renderSitePromos
 drawer                 renderDrawer
 drawer-head            renderDrawerHead
 drawer-warning         renderDrawerWarning
@@ -37,7 +42,7 @@ drawer-actions         renderDrawerActions
 manual-modal           renderManualModal
 toast                  renderToast
 
-配列: APP_PARTS, HEADER_PARTS, DASHBOARD_PARTS, DRAWER_PARTS
+配列: APP_PARTS, HEADER_PARTS, DASHBOARD_PARTS, SITE_PARTS, DRAWER_PARTS
 
 操作: switchTab, triggerManualSync, setChannelFilter, setStatusFilter,
 filterByUrgency, filterByWarning, resetSpecialFilters, onSearch,
@@ -46,7 +51,8 @@ closeOrderDrawer, onEditInput, saveDrawerEdits, toggleRushTicket,
 markProofSent, markProofApproved, confirmOrderStock, triggerSingleAction,
 openManualOrderModal, closeManualOrderModal, submitManualOrder,
 selectSchemaTable, copySqlDdl, goToSimulatorWithSelected,
-downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSort
+downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSort, loadSiteFile,
+exportSiteDraft, onSiteField, moveSitePromo, addSiteRow, removeSiteRow
 
 料金の式は feeNumbers だけ。1注文につき1回、¥500＋¥20×文字数。のし¥20。ラッピング¥90。
 キャンペーンは名前の表示だけ。例: 5円ご縁。
@@ -56,7 +62,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.1｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.2｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -1366,6 +1372,88 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
     @media (min-width: 834px) {
       [data-part="product-search"] .line .grid { grid-template-columns: 1fr 1fr; }
     }
+
+    /* owner: renderSiteTab */
+    [data-part="tab-site"] { display: flex; flex-direction: column; gap: 14px; }
+
+    /* owner: renderSiteNotices */
+    [data-part="site-notices"] .panel { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+    [data-part="site-notices"] h2 { margin: 0; font-size: 18px; color: var(--forest); }
+    [data-part="site-notices"] .lead, [data-part="site-notices"] .meta { margin: 6px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="site-notices"] .row { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+    [data-part="site-notices"] label { display: block; font-size: 13px; color: var(--taupe); }
+    [data-part="site-notices"] input, [data-part="site-notices"] textarea { width: 100%; margin-top: 4px; min-height: 44px; padding: 8px 10px; border-radius: 12px; border: 1px solid #d6d3d1; background: #fff; font-size: 16px; }
+    [data-part="site-notices"] textarea { min-height: 88px; }
+    [data-part="site-notices"] .check { display: flex; gap: 8px; align-items: center; min-height: 44px; }
+    [data-part="site-notices"] .actions, [data-part="site-notices"] .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+    [data-part="site-notices"] button, [data-part="site-notices"] .file { min-height: 44px; padding: 8px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; color: var(--forest); font-weight: 700; }
+    [data-part="site-notices"] .export { background: var(--forest); color: #fff; border: 0; }
+    [data-part="site-notices"] .band { margin-top: 8px; padding: 10px 12px; border-radius: 12px; background: var(--forest); color: #fff; }
+    [data-part="site-notices"] .news { margin-top: 8px; padding: 10px 12px; border-radius: 12px; background: var(--ivory); }
+    [data-part="site-notices"] .news h3, [data-part="site-notices"] .news p { margin: 0; }
+    [data-part="site-notices"] .news p { margin-top: 4px; color: var(--taupe); font-size: 13px; }
+    [data-part="site-notices"] .checkline { margin: 8px 0 0; font-size: 13px; color: var(--taupe); }
+    [data-part="site-notices"] .checkline.is-bad { color: var(--urgent); font-weight: 700; }
+    @media (min-width: 834px) {
+      [data-part="site-notices"] .row { grid-template-columns: 1fr 1fr; }
+      [data-part="site-notices"] .wide { grid-column: 1 / -1; }
+    }
+
+    /* owner: renderSiteCalendar */
+    [data-part="site-calendar"] .panel { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+    [data-part="site-calendar"] h2 { margin: 0; font-size: 18px; color: var(--forest); }
+    [data-part="site-calendar"] .lead, [data-part="site-calendar"] .meta { margin: 6px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="site-calendar"] .week { display: flex; flex-wrap: wrap; gap: 6px; align-items: end; margin-top: 8px; }
+    [data-part="site-calendar"] .week span { flex: 1 1 100%; font-size: 13px; color: var(--forest); font-weight: 700; }
+    [data-part="site-calendar"] label { display: block; font-size: 12px; color: var(--taupe); flex: 1 1 70px; }
+    [data-part="site-calendar"] select, [data-part="site-calendar"] textarea, [data-part="site-calendar"] input { width: 100%; margin-top: 4px; min-height: 44px; padding: 8px; border-radius: 12px; border: 1px solid #d6d3d1; background: #fff; font-size: 16px; }
+    [data-part="site-calendar"] textarea { min-height: 88px; }
+    [data-part="site-calendar"] .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    [data-part="site-calendar"] button, [data-part="site-calendar"] .file { min-height: 44px; padding: 8px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-weight: 700; }
+    [data-part="site-calendar"] .export { background: var(--forest); color: #fff; border: 0; }
+    [data-part="site-calendar"] .months { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    [data-part="site-calendar"] .month { overflow-x: auto; }
+    [data-part="site-calendar"] table { width: 100%; min-width: 280px; border-collapse: collapse; }
+    [data-part="site-calendar"] th, [data-part="site-calendar"] td { text-align: center; font-size: 12px; padding: 4px 2px; border: 1px solid var(--line); }
+    [data-part="site-calendar"] td.off { background: #fee2e2; }
+    [data-part="site-calendar"] td.partial { background: #fef3c7; }
+    [data-part="site-calendar"] .checkline { margin: 8px 0 0; font-size: 13px; color: var(--taupe); }
+    [data-part="site-calendar"] .checkline.is-bad { color: var(--urgent); font-weight: 700; }
+
+    /* owner: renderSitePromos */
+    [data-part="site-promos"] .panel { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+    [data-part="site-promos"] h2 { margin: 0; font-size: 18px; color: var(--forest); }
+    [data-part="site-promos"] .lead, [data-part="site-promos"] .meta { margin: 6px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="site-promos"] .row { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+    [data-part="site-promos"] label { display: block; font-size: 13px; color: var(--taupe); }
+    [data-part="site-promos"] input { width: 100%; margin-top: 4px; min-height: 44px; padding: 8px 10px; border-radius: 12px; border: 1px solid #d6d3d1; background: #fff; font-size: 16px; }
+    [data-part="site-promos"] .check { display: flex; gap: 8px; align-items: center; min-height: 44px; }
+    [data-part="site-promos"] .bar, [data-part="site-promos"] .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+    [data-part="site-promos"] button, [data-part="site-promos"] .file { min-height: 44px; padding: 8px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-weight: 700; }
+    [data-part="site-promos"] .export { background: var(--forest); color: #fff; border: 0; }
+    [data-part="site-promos"] .card { margin-top: 8px; padding: 10px 12px; border-radius: 12px; background: var(--ivory); }
+    [data-part="site-promos"] .card strong { color: var(--forest); }
+    [data-part="site-promos"] .checkline { margin: 8px 0 0; font-size: 13px; color: var(--taupe); }
+    [data-part="site-promos"] .checkline.is-bad { color: var(--urgent); font-weight: 700; }
+    @media (min-width: 834px) {
+      [data-part="site-promos"] .row { grid-template-columns: 1fr 1fr; }
+      [data-part="site-promos"] .wide { grid-column: 1 / -1; }
+    }
+
+    /* owner: renderDrawerPreview */
+    [data-part="drawer-preview"] .flag { display: inline-block; margin: 0 0 8px; padding: 4px 8px; border-radius: 8px; background: #fffbeb; color: #92400e; font-size: 13px; font-weight: 700; }
+    [data-part="drawer-preview"] .meta { margin: 8px 0 0; font-size: 13px; color: var(--taupe); }
+    [data-part="drawer-preview"] .meta p { margin: 2px 0; overflow-wrap: anywhere; }
+    [data-part="drawer-preview"] .limit { margin: 6px 0 0; color: var(--urgent); font-size: 13px; font-weight: 700; }
+
+    /* owner: renderDrawerSamples */
+    [data-part="drawer-samples"] .note { margin: 0 0 8px; color: #92400e; font-size: 13px; }
+
+    /* owner: renderDrawerRealSize */
+    [data-part="drawer-realsize"] .limit { margin: 8px 0 0; color: var(--taupe); font-size: 13px; }
+
+    /* owner: renderManualModal */
+    [data-part="manual-modal"] .retired { margin: 10px 0 0; color: var(--taupe); font-size: 13px; }
   </style>
 </head>
 <body>
@@ -1385,12 +1473,58 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       'ナチュラル筆記体（ホワイト）',
       '和モダン毛筆体（金箔）'
     ];
+    const SEAL_LABELS = [
+      '01.ティアラ-P', '02.ティアラ-B', '03.ティアラ-V', '04.ティアラ-G', '05.チェック-B', '06.チェック-P', '07.ピンキー', '08.ハート', '09.ウサギ', '10.タグ',
+      '11.ローズ', '12.もみじ', '13.カラフル', '14.pop', '15.幸せカップル', '16.秋ウェディング', '17.桜咲く', '18.和紋鶴', '19.うぐいす', '20.薔薇',
+      '21.angel', '22.ありがとウサギ', '23.寿', '24.鶴', '25.ありがとパンダVt.（バレンタイン仕様　名前単独）', '26.バレンタインハート（バレンタイン仕様　名前単独）', '27.くまサンタ（クリスマス仕様）', '28.ホーリーナイト（クリスマス仕様）', '29.クリスマスギフト（クリスマス仕様）', '30.ほっこり雪だるま',
+      '31.スノウクリスタル', '32.ラブツリー（クリスマス仕様）', '33.ドット（ピンク）', '34.ドット（ブルー）', '35.フラワー（ピンク）', '36.フラワー（ブルー）', '37.ベビー（ピンク）', '38.ベビー（ブルー）', '39.ブルースカイ', '40.ハロウィンA（ハロウィン仕様）',
+      '41.オータム', '42.クローバー', '43.リボン', '44.エアメール', '45.キスマーク', '46.クラシッククラウン', '47.クラシックバタフライ', '48.チェリーブロッサム', '49.ホワイトローズ', '50.ストライプ（オレンジ）',
+      '51.ストライプ（ブルー）', '52.バースデイ', '53.ハロウィンB（ハロウィン仕様）', '54.ドライウッド', '55.クマちゃん', '56.幼稚園・保育園', '57.小学校', '58.中学校', '59.高校'
+    ];
+    const SEAL_BY_ID = {};
+    SEAL_LABELS.forEach(function (label) {
+      const id = label.slice(0, 2);
+      SEAL_BY_ID[id] = { id: id, label: label, cartValue: label };
+    });
+    const DESIGN_TEMPLATES = [
+      {
+        templateId: 'mini-seal-d30',
+        templateVersion: '2026.11.20',
+        productIds: [],
+        skus: ['LL-PG-082-EARL'],
+        kind: 'miniSeal',
+        printAreaMm: { diameter: 30 },
+        paper: 'ミニシール',
+        sides: 1,
+        fonts: FONT_OPTIONS,
+        maxChars: 24,
+        required: ['couple', 'date'],
+        sourceFile: '',
+        sampleNote: '公開見本。製造原稿ではない'
+      },
+      {
+        templateId: 'paper-diy-blanc',
+        templateVersion: '2026.11.20',
+        productIds: [],
+        skus: ['LL-PPR-031-WHT'],
+        kind: 'diy',
+        printAreaMm: null,
+        paper: '席次表・メニュー表（手作り・テンプレート編集印刷）',
+        sides: 1,
+        fonts: ['クラシック明朝（トープ）'],
+        maxChars: 40,
+        required: ['couple'],
+        sourceFile: '',
+        sampleNote: '汎用の入力配置見本。購入用テンプレートは再配布しない'
+      }
+    ];
     const STATUS_OPTIONS = ['新規受付', '名入れ確認中', '校正・データ作成', '製造・レーザー加工', '梱包・出荷済'];
     const HEADER_TABS = [
       { id: 'dashboard', label: '1 統合受注' },
       { id: 'architecture', label: '2 システム' },
       { id: 'schema', label: '3 DBスキーマ' },
-      { id: 'simulator', label: '4 加工・CSV' }
+      { id: 'simulator', label: '4 加工・CSV' },
+      { id: 'site', label: '5 サイト掲載' }
     ];
     const CHANNELS = [
       { id: 'ALL', label: 'すべて' },
@@ -1483,12 +1617,26 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       if (!order.proofStatus) order.proofStatus = '未送付';
       if (order.rushTicket == null) order.rushTicket = false;
       if (order.stockCommitted == null) order.stockCommitted = false;
+      if (!order.line) {
+        order.line = {
+          lineId: order.id + '-L1',
+          relatedId: order.id,
+          designId: '',
+          sourceText: order.coupleNames || '',
+          templateId: '',
+          templateVersion: '',
+          proofStatus: order.proofStatus || '未送付'
+        };
+      } else if (!order.line.proofStatus) {
+        order.line.proofStatus = order.proofStatus || '未送付';
+      }
       return order;
     }
     function readDraft(order) {
       return {
         couple: order.coupleNames,
         wedding: order.weddingDate,
+        delivery: order.deliveryDate || '',
         message: order.headerMsg,
         font: order.fontStyle,
         noshi: order.noshiSeal,
@@ -1523,9 +1671,32 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
         'RK-394810-20261118': { wrappingFee: 90 },
         'YH-lunaluce-100488': { proofStatus: '承認済' }
       };
+      const deliveries = {
+        'WC-20261119-01': '2026-11-21',
+        'RK-394810-20261119': '2026-11-22',
+        'YH-lunaluce-100492': '2026-12-01',
+        'WC-20261119-02': '2026-12-08',
+        'FAX-20261119-01': '2026-12-10',
+        'RK-394810-20261118': '2026-12-15',
+        'YH-lunaluce-100488': '2026-11-26',
+        'WC-20261117-09': '2026-11-23'
+      };
+      const designLines = {
+        'YH-lunaluce-100492': { designId: '08', templateId: 'mini-seal-d30', templateVersion: '2026.11.20' },
+        'WC-20261117-09': { designId: '', templateId: 'paper-diy-blanc', templateVersion: '2026.11.20' }
+      };
       orders.forEach(function (order) {
         if (extras[order.id]) Object.assign(order, extras[order.id]);
+        if (deliveries[order.id]) order.deliveryDate = deliveries[order.id];
         applyStaffDefaults(order);
+        const spec = designLines[order.id];
+        if (spec) {
+          order.line.designId = spec.designId;
+          order.line.templateId = spec.templateId;
+          order.line.templateVersion = spec.templateVersion;
+        }
+        order.line.proofStatus = order.proofStatus;
+        order.line.sourceText = order.coupleNames;
       });
       state.orders = orders;
     }
@@ -1586,6 +1757,15 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
         { col: 'order_id', type: 'UUID', key: 'FK', note: 'orders.id' },
         { col: 'part_code', type: 'VARCHAR(20)', key: '', note: 'sweets | box | thanksCard | miniSeal' },
         { col: 'quantity', type: 'INTEGER', key: '', note: '引き落とした数' }
+      ]},
+      { name: 'personalization_lines', jpName: '名入れ明細の図柄', description: '明細ごとの図柄です。画面の並び番号は恒久キーにしません。未登録は共通参考見本で、実製造には使いません。', indexes: ['UNIQUE (line_id)', 'INDEX idx_line_template (template_id, template_version)'], columns: [
+        { col: 'line_id', type: 'VARCHAR(64)', key: 'UQ', note: '明細ID' },
+        { col: 'related_id', type: 'VARCHAR(64)', key: 'FK', note: '本体の受注ID' },
+        { col: 'design_id', type: 'VARCHAR(16)', key: 'IDX', note: '選択した図柄。空なら未登録' },
+        { col: 'source_text', type: 'VARCHAR(200)', key: '', note: '入力原文' },
+        { col: 'template_id', type: 'VARCHAR(64)', key: '', note: 'テンプレート' },
+        { col: 'template_version', type: 'VARCHAR(32)', key: '', note: '注文時の版' },
+        { col: 'proof_status', type: 'VARCHAR(20)', key: '', note: '確認・校正' }
       ]}
     ];
 
@@ -1598,10 +1778,8 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       return { time: time, label: text.slice(0, 10) };
     }
     function dueInfo(order) {
-      const explicit = dateValue(order.dueDate) || dateValue(order.deliveryDate) || dateValue(order.requestedDelivery);
+      const explicit = dateValue(order.deliveryDate) || dateValue(order.dueDate) || dateValue(order.requestedDelivery);
       if (explicit) return { missing: false, time: explicit.time, label: explicit.label };
-      const held = dateValue(order.weddingDate);
-      if (held) return { missing: false, time: held.time, label: held.label };
       return { missing: true, time: Infinity, label: '' };
     }
     function orderSortTime(order) {
@@ -1647,7 +1825,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
     }
 
     function renderHeaderBrand(host) {
-      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.1</span></h1></div>';
+      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.2</span></h1></div>';
     }
     function renderHeaderStatus(host) {
       function paint() {
@@ -1731,7 +1909,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
           const count = state.partStock[part.key];
           return '<div class="cell' + (count < 80 ? ' is-low' : '') + '"><p>' + escapeHtml(part.label) + '</p><strong data-stock="' + part.key + '">' + count + '</strong></div>';
         }).join('');
-        host.innerHTML = '<h2>部品在庫（菓子・箱・サンクスカード・ミニシール）</h2><p class="lead">この画面の中だけ。注文を確定すると、その注文の内訳数だけ減ります。再読込で元に戻ります。</p><p class="note" data-stock-note>' + escapeHtml(state.lastStockMove || 'まだ引き落としはありません') + '</p><div class="grid">' + cells + '</div>';
+        host.innerHTML = '<h2>部品在庫（菓子・箱・サンクスカード・ミニシール）</h2><p class="lead">この画面の中だけ。注文を確定すると、その注文の内訳数だけ減ります。再読込で元に戻ります。新規の注文ではサンクスカードを選びません。過去の内訳と在庫は残します。</p><p class="note" data-stock-note>' + escapeHtml(state.lastStockMove || 'まだ引き落としはありません') + '</p><div class="grid">' + cells + '</div>';
       }
       paint();
       on('oms:change', paint);
@@ -1769,11 +1947,12 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
           ? '超過 ' + formatYen(fees.extraBase) + '+' + formatYen(fees.extraPer) + '×' + fees.extraCount + '=' + formatYen(fees.extraTotal)
           : '超過 ' + formatYen(0);
         const due = dueInfo(order);
-        const dueNote = due.missing
-          ? '<br><span class="mini soon">納期の日付はありません</span>'
-          : '<br>納期 ' + escapeHtml(due.label);
+        const dueText = due.missing
+          ? '<span class="mini soon">日付はありません</span>'
+          : escapeHtml(due.label);
         const fields = [
-          ['挙式日 / 残日数', escapeHtml(order.weddingDate || '—') + (when ? '<br>' + when : '') + dueNote + (order.rushTicket ? ' <span class="mini rush">特急チケット</span>' : '')],
+          ['挙式日 / 残日数', escapeHtml(order.weddingDate || '—') + (when ? '<br>' + when : '') + (order.rushTicket ? ' <span class="mini rush">特急チケット</span>' : '')],
+          ['納期', dueText],
           ['販路 / 注文番号', '<span class="badge ch-' + order.channel + '">' + escapeHtml(order.channelLabel) + '</span><br>' + escapeHtml(order.id)],
           ['注文者 / 配送先', escapeHtml(order.customerName) + ' 様<br>' + escapeHtml(order.shippingTo)],
           ['商品・数量・金額', escapeHtml(order.productName) + '<br>' + escapeHtml(order.sku) + ' × ' + order.qty + '点 ' + formatYen(order.amount) + '<br>内訳 ' + PART_KEYS.map(function (part) { return part.short + counts[part.key]; }).join('・')],
@@ -1791,7 +1970,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
         const selected = state.orders.filter(function (order) { return order.selected; }).length;
         const allOn = state.orders.length > 0 && selected === state.orders.length;
         const sortKey = state.orderSort === 'wedding' || state.orderSort === 'ordered' ? state.orderSort : 'due';
-        const sortTitle = sortKey === 'wedding' ? '受注一覧（挙式日が近い順）' : (sortKey === 'ordered' ? '受注一覧（受注日が近い順）' : '受注一覧（納品日順）');
+        const sortTitle = sortKey === 'wedding' ? '受注一覧（挙式日が近い順）' : (sortKey === 'ordered' ? '受注一覧（受注日が近い順）' : '受注一覧（納期が近い順）');
         const sorts = [
           ['due', '納期'],
           ['wedding', '挙式日'],
@@ -1800,7 +1979,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
           const onSort = sortKey === item[0];
           return '<button type="button" data-action="sort-orders" data-sort="' + item[0] + '" class="' + (onSort ? 'is-on' : '') + '" aria-pressed="' + (onSort ? 'true' : 'false') + '">' + item[1] + '</button>';
         }).join('');
-        host.innerHTML = '<div class="list-head"><h2>' + sortTitle + '</h2><div class="sort" role="group" aria-label="並び順"><span class="cap">並び:</span>' + sorts + '</div><p class="hint">近い日付が上です。行を開くと、内訳・プリントサンプル・受注管理表・実寸プレビューが出ます</p><label class="select-all"><input id="select-all" type="checkbox" data-action="toggle-all"' + (allOn ? ' checked' : '') + '>すべて選択</label><p class="count">表示: ' + rows.length + '件 / 全' + state.orders.length + '件</p><p class="count">選択中: ' + selected + '件</p><button type="button" class="batch" data-action="open-simulator">選択注文の加工・送り状CSVを生成</button></div>' + (rows.length ? rows.map(card).join('') : '<p class="empty">該当する注文はありません</p>');
+        host.innerHTML = '<div class="list-head"><h2>' + sortTitle + '</h2><div class="sort" role="group" aria-label="並び順"><span class="cap">並び:</span>' + sorts + '</div><p class="hint">納期は納品日、挙式日は挙式の日付です。近い日付が上です。行を開くと、内訳・図柄の見本・受注管理表が出ます</p><label class="select-all"><input id="select-all" type="checkbox" data-action="toggle-all"' + (allOn ? ' checked' : '') + '>すべて選択</label><p class="count">表示: ' + rows.length + '件 / 全' + state.orders.length + '件</p><p class="count">選択中: ' + selected + '件</p><button type="button" class="batch" data-action="open-simulator">選択注文の加工・送り状CSVを生成</button></div>' + (rows.length ? rows.map(card).join('') : '<p class="empty">該当する注文はありません</p>');
       }
       paint();
       on('oms:list', paint);
@@ -1951,6 +2130,758 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       mountOrdered(host, DASHBOARD_PARTS);
     }
 
+    function cloneData(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+    function tokyoStamp(date) {
+      const shifted = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+      return shifted.toISOString().slice(0, 19) + '+09:00';
+    }
+    function tokyoLabel(iso) {
+      const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/.exec(String(iso || ''));
+      return match ? match[1] + ' ' + match[2] + '（日本時間）' : '未設定';
+    }
+    function siteMeta() {
+      return {
+        schemaVersion: 1,
+        timeZone: 'Asia/Tokyo',
+        draftRevision: 1,
+        publishedRevision: 1,
+        updatedBy: 'サンプル読込',
+        updatedAt: '2026-11-20T09:00:00+09:00'
+      };
+    }
+    function setByPath(root, path, value) {
+      const parts = String(path || '').split('.');
+      let node = root;
+      for (let i = 0; i < parts.length - 1; i++) {
+        const key = /^\d+$/.test(parts[i]) ? Number(parts[i]) : parts[i];
+        if (!node || node[key] == null) return;
+        node = node[key];
+      }
+      const last = parts[parts.length - 1];
+      node[/^\d+$/.test(last) ? Number(last) : last] = value;
+    }
+    function extraKeys(obj, allowed) {
+      if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return ['形がオブジェクトではありません'];
+      return Object.keys(obj).filter(function (key) { return allowed.indexOf(key) < 0; }).map(function (key) {
+        return '未知のキー ' + key;
+      });
+    }
+    function bannedKey(obj, path) {
+      const banned = { sku: 1, price: 1, price_tax_in: 1, stock: 1, quantity: 1, customername: 1, couplenames: 1, orderid: 1, password: 1, secret: 1, token: 1, apikey: 1, clientsecret: 1, authorization: 1, amount: 1, ids: 1 };
+      if (!obj || typeof obj !== 'object') return '';
+      const keys = Object.keys(obj);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const here = (path ? path + '.' : '') + key;
+        if (banned[String(key).toLowerCase()]) return here;
+        const nested = bannedKey(obj[key], here);
+        if (nested) return nested;
+      }
+      return '';
+    }
+    function validPublicHref(href) {
+      const text = String(href == null ? '' : href);
+      if (!text || text.trim() !== text || /\s/.test(text)) return false;
+      if (/[\u0000-\u001f\\]/.test(text)) return false;
+      if (/^(javascript|data|vbscript):/i.test(text)) return false;
+      if (text.indexOf('..') >= 0) return false;
+      if (/^https?:\/\//i.test(text)) {
+        try {
+          const url = new URL(text);
+          if (url.username || url.password) return false;
+          return url.protocol === 'http:' || url.protocol === 'https:';
+        } catch (err) {
+          return false;
+        }
+      }
+      if (text.indexOf('//') >= 0 || text.indexOf(':') >= 0) return false;
+      return /^[A-Za-z0-9._~/-]+(\?[A-Za-z0-9._~=&%-]*)?(#[A-Za-z0-9._~-]*)?$/.test(text);
+    }
+    function periodError(startsAt, endsAt, label) {
+      const start = startsAt || '';
+      const end = endsAt || '';
+      if (!start && !end) return '';
+      if (!start || !end) return label + 'は開始と終了を両方入れるか、両方空にしてください';
+      const shape = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+09:00$/;
+      if (!shape.test(start) || !shape.test(end)) return label + 'は日本時間のISO（+09:00）にしてください';
+      if (start >= end) return label + 'の終了は開始より後です。終了の時刻は含みません';
+      return '';
+    }
+    function validSiteId(id) {
+      return /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(String(id || ''));
+    }
+    function duplicateIds(list) {
+      const seen = {};
+      for (let i = 0; i < list.length; i++) {
+        const id = list[i].id;
+        if (!id) continue;
+        if (seen[id]) return id;
+        seen[id] = true;
+      }
+      return '';
+    }
+    function metaErrors(data) {
+      const errors = [];
+      if (data.schemaVersion !== 1) errors.push('schemaVersion は 1 です');
+      if (data.timeZone !== 'Asia/Tokyo') errors.push('timeZone は Asia/Tokyo です');
+      if (!Number.isInteger(data.draftRevision) || data.draftRevision < 1) errors.push('draftRevision が不正です');
+      if (!Number.isInteger(data.publishedRevision) || data.publishedRevision < 1) errors.push('publishedRevision が不正です');
+      if (typeof data.updatedBy !== 'string' || !data.updatedBy.trim()) errors.push('更新者を入れてください');
+      if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+09:00$/.test(data.updatedAt || '')) errors.push('更新日時は日本時間のISOです');
+      return errors;
+    }
+    function orderLeak(text) {
+      const blob = String(text || '');
+      for (let i = 0; i < state.orders.length; i++) {
+        const order = state.orders[i];
+        const fields = [order.customerName, order.coupleNames, order.phone, order.address, order.id];
+        for (let j = 0; j < fields.length; j++) {
+          if (fields[j] && String(fields[j]).length > 2 && blob.indexOf(String(fields[j])) >= 0) return String(fields[j]);
+        }
+      }
+      return '';
+    }
+    function copyMeta(from, to) {
+      to.schemaVersion = from.schemaVersion;
+      to.timeZone = from.timeZone;
+      to.draftRevision = from.draftRevision;
+      to.publishedRevision = from.publishedRevision;
+      to.updatedBy = from.updatedBy;
+      to.updatedAt = from.updatedAt;
+    }
+    function metaOf(editor) {
+      return {
+        schemaVersion: editor.schemaVersion,
+        timeZone: editor.timeZone,
+        draftRevision: editor.draftRevision,
+        publishedRevision: editor.publishedRevision,
+        updatedBy: editor.updatedBy,
+        updatedAt: editor.updatedAt
+      };
+    }
+    function readRows(list, allow, label, mapRow) {
+      const errors = [];
+      const rows = [];
+      if (!Array.isArray(list)) return { errors: [label + 'が配列ではありません'], rows: [] };
+      list.forEach(function (item, index) {
+        const name = label + (index + 1);
+        if (!item || typeof item !== 'object' || Array.isArray(item)) {
+          errors.push(name + 'の形が違います');
+          return;
+        }
+        const unknown = extraKeys(item, allow);
+        if (unknown.length) {
+          errors.push(name + ' ' + unknown.join('、'));
+          return;
+        }
+        rows.push(mapRow(item));
+      });
+      return { errors: errors, rows: rows };
+    }
+    function noticeOn(item, instant) {
+      if (!item.active) return false;
+      if (item.startsAt && instant < item.startsAt) return false;
+      if (item.endsAt && instant >= item.endsAt) return false;
+      return true;
+    }
+    function shiftIso(iso, deltaMs) {
+      const time = new Date(iso).getTime();
+      if (isNaN(time)) return '';
+      return tokyoStamp(new Date(time + deltaMs));
+    }
+    function periodSamples(item) {
+      if (!item.startsAt && !item.endsAt) return '期間の指定はありません';
+      const startBefore = shiftIso(item.startsAt, -1000);
+      const endBefore = shiftIso(item.endsAt, -1000);
+      if (!startBefore || !endBefore) return '期間の形が違います';
+      return [
+        '開始直前は' + (noticeOn(item, startBefore) ? '出る' : '出ない'),
+        '開始は' + (noticeOn(item, item.startsAt) ? '出る' : '出ない'),
+        '終了直前は' + (noticeOn(item, endBefore) ? '出る' : '出ない'),
+        '終了は' + (noticeOn(item, item.endsAt) ? '出る' : '出ない')
+      ].join('、');
+    }
+    function noticePayload(editor) {
+      const payload = metaOf(editor);
+      payload.notices = editor.notices.map(function (item) {
+        const row = { id: item.id, active: !!item.active, text: item.text, href: item.href };
+        if (item.startsAt) row.startsAt = item.startsAt;
+        if (item.endsAt) row.endsAt = item.endsAt;
+        return row;
+      });
+      payload.news = editor.news.map(function (item) {
+        return { id: item.id, title: item.title, body: item.body };
+      });
+      return payload;
+    }
+    function validateNotices(editor) {
+      const errors = metaErrors(editor);
+      const dupNotice = duplicateIds(editor.notices);
+      const dupNews = duplicateIds(editor.news);
+      if (dupNotice) errors.push('帯のIDが重複しています: ' + dupNotice);
+      if (dupNews) errors.push('本文のIDが重複しています: ' + dupNews);
+      editor.notices.forEach(function (item, index) {
+        const label = '帯' + (index + 1);
+        if (!validSiteId(item.id)) errors.push(label + 'のIDが不正です');
+        if (typeof item.active !== 'boolean') errors.push(label + 'の表示が不正です');
+        if (!String(item.text || '').trim()) errors.push(label + 'の一文を入れてください');
+        if (!validPublicHref(item.href)) errors.push(label + 'のURLが不正です');
+        const period = periodError(item.startsAt, item.endsAt, label);
+        if (period) errors.push(period);
+      });
+      editor.news.forEach(function (item, index) {
+        const label = '本文' + (index + 1);
+        if (!validSiteId(item.id)) errors.push(label + 'のIDが不正です');
+        if (!String(item.title || '').trim()) errors.push(label + 'の題名を入れてください');
+        if (!String(item.body || '').trim()) errors.push(label + 'の本文を入れてください');
+      });
+      const payload = noticePayload(editor);
+      const banned = bannedKey(payload, '');
+      if (banned) errors.push('公開しないキーがあります: ' + banned);
+      return { ok: errors.length === 0, errors: errors, payload: payload };
+    }
+    function acceptNotices(data) {
+      const bucket = state.siteNotices;
+      const banned = bannedKey(data, '');
+      if (banned) return { ok: false, errors: ['公開しないキーがあります: ' + banned] };
+      const oms = Object.prototype.hasOwnProperty.call(data, 'draftRevision');
+      const allow = oms
+        ? ['schemaVersion', 'timeZone', 'draftRevision', 'publishedRevision', 'updatedBy', 'updatedAt', 'notices', 'news']
+        : ['schemaVersion', 'timeZone', 'notices'];
+      const unknown = extraKeys(data, allow);
+      if (unknown.length) return { ok: false, errors: unknown };
+      if (oms && data.publishedRevision !== bucket.published.publishedRevision) {
+        return { ok: false, errors: ['別の公開版です。競合のため読み込みを止め、公開済み版を残しました。'] };
+      }
+      const notices = readRows(data.notices, ['id', 'active', 'text', 'href', 'startsAt', 'endsAt'], '帯', function (item) {
+        return { id: item.id, active: item.active, text: item.text, href: item.href, startsAt: item.startsAt || '', endsAt: item.endsAt || '' };
+      });
+      if (notices.errors.length) return { ok: false, errors: notices.errors };
+      const editor = cloneData(bucket.editor);
+      editor.notices = notices.rows;
+      if (oms) {
+        copyMeta(data, editor);
+        const news = readRows(data.news || [], ['id', 'title', 'body'], '本文', function (item) {
+          return { id: item.id, title: item.title, body: item.body };
+        });
+        if (news.errors.length) return { ok: false, errors: news.errors };
+        editor.news = news.rows;
+      }
+      const check = validateNotices(editor);
+      if (!check.ok) return check;
+      return { ok: true, editor: editor };
+    }
+    function parseBase(base) {
+      const weeks = String(base || '').split('&');
+      if (weeks.length !== 5) return null;
+      const grid = [];
+      for (let i = 0; i < 5; i++) {
+        const pair = weeks[i].split('=');
+        if (pair.length !== 2 || pair[0] !== String(i + 1)) return null;
+        const days = pair[1].split(',');
+        if (days.length !== 7) return null;
+        for (let d = 0; d < 7; d++) {
+          if (days[d] !== '' && days[d] !== 'all' && days[d] !== 'am') return null;
+        }
+        grid.push(days);
+      }
+      return grid;
+    }
+    function serializeBase(grid) {
+      return grid.map(function (days, index) { return (index + 1) + '=' + days.join(','); }).join('&');
+    }
+    function textToException(text) {
+      const map = {};
+      const errors = [];
+      const seen = {};
+      String(text || '').split(/\r?\n/).forEach(function (raw) {
+        const line = raw.trim();
+        if (!line) return;
+        const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(line);
+        if (!match) { errors.push('例外日は YYYY-MM-DD です: ' + line); return; }
+        const year = Number(match[1]);
+        const month = Number(match[2]);
+        const day = Number(match[3]);
+        const max = new Date(year, month, 0).getDate();
+        if (month < 1 || month > 12 || day < 1 || day > max) { errors.push('実在しない日付です: ' + line); return; }
+        if (seen[line]) { errors.push('例外日が重複しています: ' + line); return; }
+        seen[line] = true;
+        const key = year + '-' + month;
+        if (!map[key]) map[key] = [];
+        map[key].push(day);
+      });
+      return { map: map, errors: errors };
+    }
+    function readExceptionMap(map, label) {
+      const errors = [];
+      const lines = [];
+      if (!map || typeof map !== 'object' || Array.isArray(map)) return { errors: [label + 'の形が違います'], text: '' };
+      Object.keys(map).forEach(function (key) {
+        const match = /^(\d{4})-(\d{1,2})$/.exec(key);
+        if (!match) errors.push(label + 'の月が不正です: ' + key);
+        if (!Array.isArray(map[key])) {
+          errors.push(label + 'の日が不正です');
+          return;
+        }
+        map[key].forEach(function (day) {
+          if (!Number.isInteger(day)) errors.push(label + 'の日が不正です');
+          else if (match) lines.push(match[1] + '-' + ('0' + match[2]).slice(-2) + '-' + ('0' + day).slice(-2));
+        });
+      });
+      lines.sort();
+      return { errors: errors, text: lines.join('\n') };
+    }
+    function calendarPayload(editor) {
+      const include = textToException(editor.includeText);
+      const exclude = textToException(editor.excludeText);
+      const payload = metaOf(editor);
+      payload.calendar = {
+        source: editor.source,
+        fetchedAt: editor.fetchedAt,
+        base: serializeBase(editor.base),
+        include: include.map,
+        exclude: exclude.map
+      };
+      return { payload: payload, errors: include.errors.concat(exclude.errors) };
+    }
+    function validateCalendar(editor) {
+      const built = calendarPayload(editor);
+      const errors = metaErrors(editor).concat(built.errors);
+      if (!editor.base || editor.base.length !== 5) errors.push('曜日設定が不正です');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(editor.fetchedAt || '')) errors.push('fetchedAt は日付です');
+      if (!validPublicHref(editor.source)) errors.push('参照元URLが不正です');
+      const both = {};
+      String(editor.includeText || '').split(/\r?\n/).forEach(function (line) { const t = line.trim(); if (t) both[t] = true; });
+      String(editor.excludeText || '').split(/\r?\n/).forEach(function (line) {
+        const t = line.trim();
+        if (t && both[t]) errors.push('同じ日が休業と営業の両方にあります: ' + t);
+      });
+      const banned = bannedKey(built.payload, '');
+      if (banned) errors.push('公開しないキーがあります: ' + banned);
+      return { ok: errors.length === 0, errors: errors, payload: built.payload };
+    }
+    function editorFromCalendar(bucket, calendar) {
+      const unknown = extraKeys(calendar, ['source', 'fetchedAt', 'base', 'include', 'exclude']);
+      if (unknown.length) return { ok: false, errors: unknown };
+      const grid = parseBase(calendar.base);
+      if (!grid) return { ok: false, errors: ['曜日設定 base が読めません'] };
+      const inc = readExceptionMap(calendar.include || {}, '追加休業');
+      const exc = readExceptionMap(calendar.exclude || {}, '例外営業');
+      if (inc.errors.length || exc.errors.length) return { ok: false, errors: inc.errors.concat(exc.errors) };
+      const editor = cloneData(bucket.editor);
+      editor.source = calendar.source || '';
+      editor.fetchedAt = calendar.fetchedAt || '';
+      editor.base = grid;
+      editor.includeText = inc.text;
+      editor.excludeText = exc.text;
+      const check = validateCalendar(editor);
+      if (!check.ok) return check;
+      return { ok: true, editor: editor };
+    }
+    function acceptCalendar(data) {
+      const bucket = state.siteCalendar;
+      const banned = bannedKey(data, '');
+      if (banned) return { ok: false, errors: ['公開しないキーがあります: ' + banned] };
+      if (Object.prototype.hasOwnProperty.call(data, 'draftRevision')) {
+        const unknown = extraKeys(data, ['schemaVersion', 'timeZone', 'draftRevision', 'publishedRevision', 'updatedBy', 'updatedAt', 'calendar']);
+        if (unknown.length) return { ok: false, errors: unknown };
+        if (data.publishedRevision !== bucket.published.publishedRevision) {
+          return { ok: false, errors: ['別の公開版です。競合のため読み込みを止め、公開済み版を残しました。'] };
+        }
+        const next = editorFromCalendar(bucket, data.calendar || {});
+        if (!next.ok) return next;
+        copyMeta(data, next.editor);
+        const check = validateCalendar(next.editor);
+        if (!check.ok) return check;
+        return next;
+      }
+      const unknown = extraKeys(data, ['checkedAt', 'sendingEnabled', 'serviceEndpoint', 'shipping', 'calendar', 'brands']);
+      if (unknown.length) return { ok: false, errors: unknown };
+      if (!data.calendar) return { ok: false, errors: ['営業日の calendar がありません'] };
+      return editorFromCalendar(bucket, data.calendar);
+    }
+    function monthTable(year, monthIndex, grid, include, exclude) {
+      const count = new Date(year, monthIndex + 1, 0).getDate();
+      const first = new Date(year, monthIndex, 1).getDay();
+      const key = year + '-' + (monthIndex + 1);
+      const inc = include[key] || [];
+      const exc = exclude[key] || [];
+      let cells = '';
+      for (let i = 0; i < first; i++) cells += '<td></td>';
+      for (let day = 1; day <= count; day++) {
+        const wd = new Date(year, monthIndex, day).getDay();
+        let flag = (grid[Math.min(4, Math.floor((day - 1) / 7))] || [])[wd] || '';
+        if (exc.indexOf(day) >= 0) flag = '';
+        if (inc.indexOf(day) >= 0) flag = 'all';
+        const cls = flag === 'all' ? 'off' : (flag ? 'partial' : '');
+        const label = flag === 'all' ? '休業' : (flag ? '一部' : '営業');
+        cells += '<td class="' + cls + '">' + day + '<br>' + label + '</td>';
+        if (wd === 6 && day !== count) cells += '</tr><tr>';
+      }
+      return '<div class="month"><p>' + year + '年' + (monthIndex + 1) + '月</p><table><thead><tr><th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr></thead><tbody><tr>' + cells + '</tr></tbody></table></div>';
+    }
+    function promoPayload(editor) {
+      const payload = metaOf(editor);
+      payload.order = editor.promos.map(function (item) { return item.id; });
+      payload.promos = editor.promos.map(function (item) {
+        const row = { id: item.id, active: !!item.active, title: item.title, text: item.text, href: item.href };
+        if (item.startsAt) row.startsAt = item.startsAt;
+        if (item.endsAt) row.endsAt = item.endsAt;
+        return row;
+      });
+      return payload;
+    }
+    function validatePromos(editor) {
+      const errors = metaErrors(editor);
+      const dup = duplicateIds(editor.promos);
+      if (dup) errors.push('特集IDが重複しています: ' + dup);
+      editor.promos.forEach(function (item, index) {
+        const label = '特集' + (index + 1);
+        if (!validSiteId(item.id)) errors.push(label + 'のIDが不正です');
+        if (typeof item.active !== 'boolean') errors.push(label + 'の表示が不正です');
+        if (!String(item.title || '').trim()) errors.push(label + 'の題名を入れてください');
+        if (!String(item.text || '').trim()) errors.push(label + 'の一文を入れてください');
+        if (!validPublicHref(item.href)) errors.push(label + 'のURLが不正です');
+        const period = periodError(item.startsAt, item.endsAt, label);
+        if (period) errors.push(period);
+      });
+      const payload = promoPayload(editor);
+      const banned = bannedKey(payload, '');
+      if (banned) errors.push('公開しないキーがあります: ' + banned);
+      return { ok: errors.length === 0, errors: errors, payload: payload };
+    }
+    function acceptPromos(data) {
+      const bucket = state.sitePromos;
+      const banned = bannedKey(data, '');
+      if (banned) return { ok: false, errors: ['公開しないキーがあります: ' + banned] };
+      const unknown = extraKeys(data, ['schemaVersion', 'timeZone', 'draftRevision', 'publishedRevision', 'updatedBy', 'updatedAt', 'order', 'promos']);
+      if (unknown.length) return { ok: false, errors: unknown };
+      if (data.publishedRevision !== bucket.published.publishedRevision) {
+        return { ok: false, errors: ['別の公開版です。競合のため読み込みを止め、公開済み版を残しました。'] };
+      }
+      const promos = readRows(data.promos, ['id', 'active', 'title', 'text', 'href', 'startsAt', 'endsAt'], '特集', function (item) {
+        return { id: item.id, active: item.active, title: item.title, text: item.text, href: item.href, startsAt: item.startsAt || '', endsAt: item.endsAt || '' };
+      });
+      if (promos.errors.length) return { ok: false, errors: promos.errors };
+      if (!Array.isArray(data.order) || data.order.length !== promos.rows.length) return { ok: false, errors: ['掲載順が特集と一致しません'] };
+      const byId = {};
+      promos.rows.forEach(function (item) { byId[item.id] = item; });
+      const ordered = [];
+      for (let i = 0; i < data.order.length; i++) {
+        const item = byId[data.order[i]];
+        if (!item || ordered.indexOf(item) >= 0) return { ok: false, errors: ['掲載順が特集と一致しません'] };
+        ordered.push(item);
+      }
+      const editor = cloneData(bucket.editor);
+      copyMeta(data, editor);
+      editor.promos = ordered;
+      const check = validatePromos(editor);
+      if (!check.ok) return check;
+      return { ok: true, editor: editor };
+    }
+    function siteBucket(name) {
+      if (name === 'notices') return state.siteNotices;
+      if (name === 'calendar') return state.siteCalendar;
+      if (name === 'promos') return state.sitePromos;
+      return null;
+    }
+    function siteEvent(name) { return 'oms:site-' + name; }
+    function siteValidate(name, editor) {
+      if (name === 'notices') return validateNotices(editor);
+      if (name === 'calendar') return validateCalendar(editor);
+      if (name === 'promos') return validatePromos(editor);
+      return { ok: false, errors: ['不明な部品です'], payload: {} };
+    }
+    function siteAccept(name, data) {
+      if (!data || typeof data !== 'object' || Array.isArray(data)) return { ok: false, errors: ['JSONの形が違います'] };
+      if (name === 'notices') return acceptNotices(data);
+      if (name === 'calendar') return acceptCalendar(data);
+      if (name === 'promos') return acceptPromos(data);
+      return { ok: false, errors: ['不明な部品です'] };
+    }
+    function downloadJson(filename, payload) {
+      const blob = new Blob([JSON.stringify(payload, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+    function exportSiteDraft(name) {
+      const bucket = siteBucket(name);
+      if (!bucket) return;
+      const built = siteValidate(name, bucket.editor);
+      if (!built.ok) {
+        bucket.message = built.errors.join(' ');
+        bucket.bad = true;
+        emit(siteEvent(name));
+        showToast('検証で止めたので、書き出していません');
+        return;
+      }
+      bucket.editor.draftRevision += 1;
+      bucket.editor.updatedAt = tokyoStamp(new Date());
+      const again = siteValidate(name, bucket.editor);
+      const leak = orderLeak(JSON.stringify(again.payload));
+      if (!again.ok || leak) {
+        bucket.editor.draftRevision -= 1;
+        bucket.message = leak ? '受注の内容が混ざるので止めました' : again.errors.join(' ');
+        bucket.bad = true;
+        emit(siteEvent(name));
+        showToast('書き出しを止めました。公開済み版はそのままです');
+        return;
+      }
+      const file = (name === 'notices' ? 'site-notices' : name === 'calendar' ? 'site-calendar' : 'site-promos') + '-draft-r' + bucket.editor.draftRevision + '.json';
+      try {
+        downloadJson(file, again.payload);
+      } catch (err) {
+        bucket.editor.draftRevision -= 1;
+        bucket.message = '書き出しに失敗しました。公開済み版はそのままです。';
+        bucket.bad = true;
+        emit(siteEvent(name));
+        return;
+      }
+      bucket.message = '新しい下書きを書き出しました。元のファイルは上書きしていません。公開済み版は残しています。';
+      bucket.bad = false;
+      emit(siteEvent(name) + '-form');
+      showToast('下書きを書き出しました');
+    }
+    function loadSiteFile(el) {
+      const name = el.dataset.site;
+      const bucket = siteBucket(name);
+      const file = el.files && el.files[0];
+      el.value = '';
+      if (!bucket || !file) return;
+      const reader = new FileReader();
+      reader.onload = function () {
+        let data;
+        try { data = JSON.parse(String(reader.result || '')); }
+        catch (err) {
+          bucket.message = 'JSONとして読めません。公開済み版はそのままです。';
+          bucket.bad = true;
+          emit(siteEvent(name));
+          return;
+        }
+        const result = siteAccept(name, data);
+        if (!result.ok) {
+          bucket.message = result.errors.join(' ');
+          bucket.bad = true;
+          emit(siteEvent(name));
+          showToast('読み込みを止めました');
+          return;
+        }
+        bucket.editor = result.editor;
+        bucket.message = '下書きへ読み込みました。元のファイルは上書きしていません。';
+        bucket.bad = false;
+        emit(siteEvent(name) + '-form');
+        showToast('下書きへ読み込みました');
+      };
+      reader.readAsText(file, 'utf-8');
+    }
+    function onSiteField(el) {
+      const bucket = siteBucket(el.dataset.site);
+      if (!bucket) return;
+      setByPath(bucket.editor, el.dataset.path, el.type === 'checkbox' ? el.checked : el.value);
+      bucket.message = '';
+      bucket.bad = false;
+      emit(siteEvent(el.dataset.site));
+    }
+    function moveSitePromo(el) {
+      const bucket = state.sitePromos;
+      const index = Number(el.dataset.index);
+      const next = index + (el.dataset.dir === 'up' ? -1 : 1);
+      const list = bucket.editor.promos;
+      if (next < 0 || next >= list.length) return;
+      const item = list[index];
+      list[index] = list[next];
+      list[next] = item;
+      bucket.message = '';
+      bucket.bad = false;
+      emit('oms:site-promos-form');
+    }
+    function addSiteRow(el) {
+      const bucket = siteBucket(el.dataset.site);
+      if (!bucket) return;
+      const list = bucket.editor[el.dataset.list];
+      if (!list || list.length >= 20) return;
+      if (el.dataset.list === 'notices') list.push({ id: '', active: true, text: '', href: '', startsAt: '', endsAt: '' });
+      if (el.dataset.list === 'news') list.push({ id: '', title: '', body: '' });
+      bucket.message = '';
+      bucket.bad = false;
+      emit(siteEvent(el.dataset.site) + '-form');
+    }
+    function removeSiteRow(el) {
+      const bucket = siteBucket(el.dataset.site);
+      if (!bucket) return;
+      const list = bucket.editor[el.dataset.list];
+      const index = Number(el.dataset.index);
+      if (!list || index < 0 || index >= list.length) return;
+      list.splice(index, 1);
+      bucket.message = '';
+      bucket.bad = false;
+      emit(siteEvent(el.dataset.site) + '-form');
+    }
+    function siteStatus(bucket, built) {
+      return {
+        text: !built.ok ? built.errors.join(' ') : (bucket.message || '検証できました。書き出しは下書きです。'),
+        bad: !built.ok || !!bucket.bad
+      };
+    }
+    function seedSiteContent() {
+      const base = '1=all,,,,,,all&2=all,,,,,,all&3=all,,,,,,am&4=am,,,,,,all&5=all,,,,,,all';
+      const notices = Object.assign(siteMeta(), {
+        notices: [
+          { id: 'name-preview', active: true, text: '名入れの見え方は、お試しページでご確認いただけます。', href: 'name-preview.html', startsAt: '', endsAt: '' },
+          { id: 'consultation', active: true, text: 'ご使用日や数量のご相談は、お問い合わせからお気軽にどうぞ。', href: 'contact.html', startsAt: '', endsAt: '' }
+        ],
+        news: [
+          { id: 'entry-88', title: '【お知らせ】夏季長期休業のお知らせ', body: '期間内でのご注文は通常通り可能ですが、お問い合わせ・受注・出荷業務は休業明けより順次での対応とさせていただきます。この本文の日付は、営業日の休業には入れません。' }
+        ]
+      });
+      const calendar = Object.assign(siteMeta(), {
+        source: 'https://www.luna-luce.jp/',
+        fetchedAt: '2026-11-20',
+        base: parseBase(base),
+        includeText: '2026-12-29\n2026-12-30\n2026-12-31\n2027-01-01\n2027-01-02\n2027-01-03\n2027-01-04\n2027-01-05',
+        excludeText: ''
+      });
+      const promos = Object.assign(siteMeta(), {
+        promos: [
+          { id: 'recommended-features', active: true, title: 'おすすめ特集', text: '気になる特集から、贈り物を選びましょう。', href: 'feature-list.html', startsAt: '', endsAt: '' },
+          { id: 'christmas', active: true, title: '季節のプチギフト｜クリスマス', text: '冬のありがとうを、小さな贈り物に。', href: 'category.html?g=season&m=xmas&s=petit', startsAt: '2026-11-01T00:00:00+09:00', endsAt: '2026-12-26T00:00:00+09:00' },
+          { id: 'named-gifts', active: true, title: '名前を添える、小さな贈り物', text: '発表会にも、結婚式にも。ありがとうが伝わる4品。', href: 'category.html?g=all&n=1', startsAt: '', endsAt: '' },
+          { id: 'flavor', active: true, title: 'ふんわり、FLAVORの贈り物', text: 'お祝いにも手土産にも。選ぶ時間まで楽しく。', href: 'category.html?g=food&m=chiffon', startsAt: '', endsAt: '' },
+          { id: 'parents', active: true, title: 'ご両親へ、ありがとうを形に', text: '生まれた日の重さと、大切な思い出を贈る。', href: 'category.html?g=parents&m=doll', startsAt: '', endsAt: '' }
+        ]
+      });
+      state.siteNotices = { editor: notices, published: noticePayload(notices), message: '', bad: false };
+      state.siteCalendar = { editor: calendar, published: calendarPayload(calendar).payload, message: '', bad: false };
+      state.sitePromos = { editor: promos, published: promoPayload(promos), message: '', bad: false };
+    }
+    function renderSiteNotices(host) {
+      function noticeFields() {
+        return state.siteNotices.editor.notices.map(function (item, index) {
+          return '<div class="row"><div><label>ID<input data-action="site-field" data-site="notices" data-path="notices.' + index + '.id" value="' + escapeHtml(item.id) + '"></label></div><label class="check"><input type="checkbox" data-action="site-field" data-site="notices" data-path="notices.' + index + '.active"' + (item.active ? ' checked' : '') + '>表示する</label><div class="wide"><label>トップの一文<input data-action="site-field" data-site="notices" data-path="notices.' + index + '.text" value="' + escapeHtml(item.text) + '"></label></div><div><label>リンク<input data-action="site-field" data-site="notices" data-path="notices.' + index + '.href" value="' + escapeHtml(item.href) + '"></label></div><div><label>開始（任意）<input data-action="site-field" data-site="notices" data-path="notices.' + index + '.startsAt" value="' + escapeHtml(item.startsAt) + '" placeholder="2026-11-01T00:00:00+09:00"></label></div><div><label>終了（含まない）<input data-action="site-field" data-site="notices" data-path="notices.' + index + '.endsAt" value="' + escapeHtml(item.endsAt) + '" placeholder="2026-12-01T00:00:00+09:00"></label></div><div class="bar"><button type="button" data-action="site-remove" data-site="notices" data-list="notices" data-index="' + index + '">この帯を削除</button></div></div>';
+        }).join('');
+      }
+      function newsFields() {
+        return state.siteNotices.editor.news.map(function (item, index) {
+          return '<div class="row"><div><label>ID<input data-action="site-field" data-site="notices" data-path="news.' + index + '.id" value="' + escapeHtml(item.id) + '"></label></div><div class="wide"><label>題名<input data-action="site-field" data-site="notices" data-path="news.' + index + '.title" value="' + escapeHtml(item.title) + '"></label></div><div class="wide"><label>本文<textarea data-action="site-field" data-site="notices" data-path="news.' + index + '.body">' + escapeHtml(item.body) + '</textarea></label></div><div class="bar"><button type="button" data-action="site-remove" data-site="notices" data-list="news" data-index="' + index + '">この本文を削除</button></div></div>';
+        }).join('');
+      }
+      function paintForm() {
+        const editor = state.siteNotices.editor;
+        host.innerHTML = '<section class="panel"><h2>お知らせ</h2><p class="lead">トップの一文と、お知らせ本文は別です。商品・価格・在庫・注文は入れません。</p><p class="meta" data-meta></p><label>更新者<input data-action="site-field" data-site="notices" data-path="updatedBy" value="' + escapeHtml(editor.updatedBy) + '"></label><h3>トップの一文</h3>' + noticeFields() + '<div class="bar"><button type="button" data-action="site-add" data-site="notices" data-list="notices">帯を追加</button></div><h3>お知らせ本文</h3>' + newsFields() + '<div class="bar"><button type="button" data-action="site-add" data-site="notices" data-list="news">本文を追加</button></div><div data-preview></div><p class="checkline" data-check></p><div class="actions"><button type="button" class="export" data-action="site-export" data-site="notices">下書き書き出し</button><label class="file">JSONを読み込む<input data-action="site-load" data-site="notices" type="file" accept="application/json,.json" hidden></label></div></section>';
+        fill();
+      }
+      function fill() {
+        const editor = state.siteNotices.editor;
+        const built = validateNotices(editor);
+        const meta = host.querySelector('[data-meta]');
+        const preview = host.querySelector('[data-preview]');
+        const check = host.querySelector('[data-check]');
+        if (!meta || !preview || !check) return;
+        const status = siteStatus(state.siteNotices, built);
+        meta.textContent = '下書き版 ' + editor.draftRevision + ' / 公開済み版 ' + editor.publishedRevision + ' / 更新 ' + tokyoLabel(editor.updatedAt) + '。保存先は未接続です。自動公開はしません。';
+        const now = '2026-11-20T12:00:00+09:00';
+        const bands = editor.notices.filter(function (item) { return noticeOn(item, now); }).map(function (item) {
+          return '<p class="band">' + escapeHtml(item.text) + '</p>';
+        }).join('') || '<p class="news">いま出る帯はありません。</p>';
+        const notes = editor.notices.map(function (item) {
+          return '<p class="news">' + escapeHtml(item.id) + ' ' + escapeHtml(periodSamples(item)) + '</p>';
+        }).join('');
+        const bodies = editor.news.map(function (item) {
+          return '<article class="news"><h3>' + escapeHtml(item.title) + '</h3><p>' + escapeHtml(item.body) + '</p></article>';
+        }).join('');
+        preview.innerHTML = '<h3>プレビュー（' + tokyoLabel(now) + '）</h3>' + bands + notes + bodies;
+        check.textContent = status.text;
+        check.classList.toggle('is-bad', status.bad);
+      }
+      paintForm();
+      on('oms:site-notices-form', paintForm);
+      on('oms:site-notices', fill);
+    }
+    function renderSiteCalendar(host) {
+      const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+      function weeks() {
+        return state.siteCalendar.editor.base.map(function (days, week) {
+          const cells = days.map(function (flag, day) {
+            const options = [['', '営業'], ['all', '休業'], ['am', '一部']].map(function (opt) {
+              return '<option value="' + opt[0] + '"' + (opt[0] === flag ? ' selected' : '') + '>' + opt[1] + '</option>';
+            }).join('');
+            return '<label>' + dayNames[day] + '<select data-action="site-field" data-site="calendar" data-path="base.' + week + '.' + day + '">' + options + '</select></label>';
+          }).join('');
+          return '<div class="week"><span>第' + (week + 1) + '週</span>' + cells + '</div>';
+        }).join('');
+      }
+      function paintForm() {
+        const editor = state.siteCalendar.editor;
+        host.innerHTML = '<section class="panel"><h2>営業日</h2><p class="lead">曜日設定と例外日だけを編集します。お知らせ本文の日付は、休業日にしません。</p><p class="meta" data-meta></p><label>更新者<input data-action="site-field" data-site="calendar" data-path="updatedBy" value="' + escapeHtml(editor.updatedBy) + '"></label>' + weeks() + '<div class="row"><label>追加の休業（1行に1日）<textarea data-action="site-field" data-site="calendar" data-path="includeText">' + escapeHtml(editor.includeText) + '</textarea></label><label>例外で営業（1行に1日）<textarea data-action="site-field" data-site="calendar" data-path="excludeText">' + escapeHtml(editor.excludeText) + '</textarea></label></div><div class="months" data-preview></div><p class="checkline" data-check></p><div class="actions"><button type="button" class="export" data-action="site-export" data-site="calendar">下書き書き出し</button><label class="file">JSONを読み込む<input data-action="site-load" data-site="calendar" type="file" accept="application/json,.json" hidden></label></div></section>';
+        fill();
+      }
+      function fill() {
+        const editor = state.siteCalendar.editor;
+        const built = validateCalendar(editor);
+        const meta = host.querySelector('[data-meta]');
+        const preview = host.querySelector('[data-preview]');
+        const check = host.querySelector('[data-check]');
+        if (!meta || !preview || !check) return;
+        const status = siteStatus(state.siteCalendar, built);
+        const include = textToException(editor.includeText).map;
+        const exclude = textToException(editor.excludeText).map;
+        meta.textContent = '下書き版 ' + editor.draftRevision + ' / 公開済み版 ' + editor.publishedRevision + ' / 更新 ' + tokyoLabel(editor.updatedAt) + '。保存先は未接続です。自動公開はしません。';
+        preview.innerHTML = monthTable(2026, 10, editor.base, include, exclude) + monthTable(2026, 11, editor.base, include, exclude);
+        check.textContent = status.text;
+        check.classList.toggle('is-bad', status.bad);
+      }
+      paintForm();
+      on('oms:site-calendar-form', paintForm);
+      on('oms:site-calendar', fill);
+    }
+    function renderSitePromos(host) {
+      function rows() {
+        return state.sitePromos.editor.promos.map(function (item, index) {
+          return '<div class="row"><div><label>ID<input data-action="site-field" data-site="promos" data-path="promos.' + index + '.id" value="' + escapeHtml(item.id) + '"></label></div><label class="check"><input type="checkbox" data-action="site-field" data-site="promos" data-path="promos.' + index + '.active"' + (item.active ? ' checked' : '') + '>掲載する</label><div class="wide"><label>題名<input data-action="site-field" data-site="promos" data-path="promos.' + index + '.title" value="' + escapeHtml(item.title) + '"></label></div><div class="wide"><label>一文<input data-action="site-field" data-site="promos" data-path="promos.' + index + '.text" value="' + escapeHtml(item.text) + '"></label></div><div class="wide"><label>リンク<input data-action="site-field" data-site="promos" data-path="promos.' + index + '.href" value="' + escapeHtml(item.href) + '"></label></div><div><label>開始<input data-action="site-field" data-site="promos" data-path="promos.' + index + '.startsAt" value="' + escapeHtml(item.startsAt) + '" placeholder="2026-11-01T00:00:00+09:00"></label></div><div><label>終了（含まない）<input data-action="site-field" data-site="promos" data-path="promos.' + index + '.endsAt" value="' + escapeHtml(item.endsAt) + '" placeholder="2026-12-26T00:00:00+09:00"></label></div><div class="bar"><button type="button" data-action="site-move" data-site="promos" data-dir="up" data-index="' + index + '">上へ</button><button type="button" data-action="site-move" data-site="promos" data-dir="down" data-index="' + index + '">下へ</button></div></div>';
+        }).join('');
+      }
+      function paintForm() {
+        const editor = state.sitePromos.editor;
+        host.innerHTML = '<section class="panel"><h2>特集</h2><p class="lead">掲載順と、題名・一文・期間だけです。商品ID・価格・在庫は入れません。</p><p class="meta" data-meta></p><label>更新者<input data-action="site-field" data-site="promos" data-path="updatedBy" value="' + escapeHtml(editor.updatedBy) + '"></label>' + rows() + '<div data-preview></div><p class="checkline" data-check></p><div class="actions"><button type="button" class="export" data-action="site-export" data-site="promos">下書き書き出し</button><label class="file">JSONを読み込む<input data-action="site-load" data-site="promos" type="file" accept="application/json,.json" hidden></label></div></section>';
+        fill();
+      }
+      function fill() {
+        const editor = state.sitePromos.editor;
+        const built = validatePromos(editor);
+        const meta = host.querySelector('[data-meta]');
+        const preview = host.querySelector('[data-preview]');
+        const check = host.querySelector('[data-check]');
+        if (!meta || !preview || !check) return;
+        const status = siteStatus(state.sitePromos, built);
+        const now = '2026-11-20T12:00:00+09:00';
+        meta.textContent = '下書き版 ' + editor.draftRevision + ' / 公開済み版 ' + editor.publishedRevision + ' / 更新 ' + tokyoLabel(editor.updatedAt) + '。保存先は未接続です。自動公開はしません。';
+        preview.innerHTML = editor.promos.map(function (item, index) {
+          const onNow = noticeOn(item, now);
+          return '<article class="card"><strong>' + (index + 1) + '. ' + escapeHtml(item.title) + '</strong><p>' + escapeHtml(item.text) + '</p><p>' + (onNow ? 'いま掲載' : 'いまは掲載しない') + '。' + escapeHtml(periodSamples(item)) + '</p></article>';
+        }).join('');
+        check.textContent = status.text;
+        check.classList.toggle('is-bad', status.bad);
+      }
+      paintForm();
+      on('oms:site-promos-form', paintForm);
+      on('oms:site-promos', fill);
+    }
+    const SITE_PARTS = [
+      { name: 'site-notices', render: renderSiteNotices },
+      { name: 'site-calendar', render: renderSiteCalendar },
+      { name: 'site-promos', render: renderSitePromos }
+    ];
+    function renderSiteTab(host) {
+      mountOrdered(host, SITE_PARTS);
+    }
     function renderArchitectureTab(host) {
       host.innerHTML = [
         '<section class="panel">',
@@ -1969,7 +2900,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
         '<div class="stage core"><p class="stage-title">② 現場で使う決まり</p><div class="core-box">',
         '<article class="card"><h3>1. 名入れの確認</h3><p>名前・日付・書体・のしをそろえます。空欄や特殊記号は要確認にします。</p></article>',
         '<article class="card"><h3>2. 料金は決めた式だけ</h3><p>文字数超過は1注文につき1回、¥500＋¥20×文字数。のし¥20、ラッピング¥90。キャンペーンは渡された名前を出すだけです。</p></article>',
-        '<article class="card"><h3>3. 挙式日と13:00</h3><p>挙式日が近い注文を上に出します。即日の締切は13:00です。</p></article>',
+        '<article class="card"><h3>3. 納期と挙式日</h3><p>初期の並びは納期です。納期は納品日、挙式日は別の日付です。即日の締切は13:00です。</p></article>',
         '<article class="card"><h3>4. 部品在庫はこの画面の中だけ</h3><p>確定すると菓子・箱・サンクスカード・ミニシールが1回だけ減ります。再読込で戻ります。</p></article>',
         '</div></div>',
         '<div class="arrow"><span>OUT</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></div>',
@@ -2037,11 +2968,12 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
 
     function renderMain(host) {
       host.setAttribute('role', 'main');
-      host.innerHTML = '<div data-tab-panel="dashboard"></div><div data-tab-panel="architecture" hidden></div><div data-tab-panel="schema" hidden></div><div data-tab-panel="simulator" hidden></div>';
+      host.innerHTML = '<div data-tab-panel="dashboard"></div><div data-tab-panel="architecture" hidden></div><div data-tab-panel="schema" hidden></div><div data-tab-panel="simulator" hidden></div><div data-tab-panel="site" hidden></div>';
       mountOrdered(host.querySelector('[data-tab-panel="dashboard"]'), [{ name: 'tab-dashboard', render: renderDashboard }]);
       mountOrdered(host.querySelector('[data-tab-panel="architecture"]'), [{ name: 'tab-architecture', render: renderArchitectureTab }]);
       mountOrdered(host.querySelector('[data-tab-panel="schema"]'), [{ name: 'tab-schema', render: renderSchemaTab }]);
       mountOrdered(host.querySelector('[data-tab-panel="simulator"]'), [{ name: 'tab-simulator', render: renderSimulatorTab }]);
+      mountOrdered(host.querySelector('[data-tab-panel="site"]'), [{ name: 'tab-site', render: renderSiteTab }]);
     }
 
     function renderDrawerHead(host) {
@@ -2062,21 +2994,79 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       on('oms:open', paint);
       on('oms:change', paint);
     }
+    function designView(order) {
+      const line = order && order.line ? order.line : null;
+      const template = line && line.templateId
+        ? (DESIGN_TEMPLATES.find(function (item) {
+          return item.templateId === line.templateId && item.templateVersion === line.templateVersion;
+        }) || null)
+        : null;
+      const seal = line && line.designId && SEAL_BY_ID[line.designId] ? SEAL_BY_ID[line.designId] : null;
+      const view = {
+        line: line,
+        template: template,
+        seal: seal,
+        status: 'missing',
+        headline: '図柄未登録・共通参考見本',
+        detail: '実製造のプレビューではありません。共通の参考見本です。図柄画像の固定名を白塗りして、入力名へ置き換えてはいません。'
+      };
+      if (line && line.templateId && !template) {
+        view.status = 'version-missing';
+        view.headline = '注文時のテンプレート版がありません';
+        view.detail = '版 ' + (line.templateVersion || '不明') + ' は、いまのマスタにありません。別の版には替えません。実製造には使えません。';
+        return view;
+      }
+      if (template && template.kind === 'diy') {
+        view.status = 'diy';
+        view.headline = '汎用の入力配置見本';
+        view.detail = '席次表・メニュー表は手作り・テンプレート編集印刷です。購入用テンプレートは再配布しません。余白・書体・面付けの確定前に、実寸PDFを製造へ回しません。';
+        return view;
+      }
+      if (template && template.kind === 'miniSeal') {
+        if (SEAL_LABELS.length !== 59 || !seal || seal.cartValue !== seal.label) {
+          view.headline = '図柄未登録・共通参考見本';
+          view.detail = '59図柄のIDとカート値が一致しません。実製造には使えません。画像は読み込んでいません。';
+          return view;
+        }
+        view.status = 'sample';
+        view.headline = '画面見本 ' + seal.label;
+        const linked = template.skus.indexOf(order.sku) >= 0;
+        view.detail = '公開見本です。製造原稿ではありません。原本ファイルはありません。名前は図柄の上に載せていません。印刷可能範囲はφ' + template.printAreaMm.diameter + 'mm、' + template.sides + '面です。' + (linked ? 'このSKUに紐付いています。' : 'このSKUの紐付けはありません。');
+      }
+      return view;
+    }
     function renderDrawerPreview(host) {
       function paint() {
         const order = currentOrder();
         if (!order) { host.innerHTML = ''; return; }
-        host.innerHTML = '<div class="card"><div class="preview-head"><h3>リアルタイム仕上がりプレビュー</h3><p class="sub">下の入力がすぐに反映されます</p></div><div class="frame"><svg viewBox="0 0 460 210" role="img" aria-label="刻印プレビュー"><rect x="8" y="8" width="444" height="194" rx="12" fill="#FAF8F5" stroke="#B8965C" stroke-width="2"/><text data-sample="message" x="230" y="48" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="15" fill="#8A7B76"></text><text data-sample="name" x="230" y="112" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="30" fill="#433936"></text><text data-sample="date" x="230" y="148" text-anchor="middle" font-size="16" fill="#9E7B43"></text><text data-sample="note" x="230" y="178" text-anchor="middle" font-size="10" fill="#7A6B66"></text></svg></div></div>';
+        const view = designView(order);
+        const line = view.line;
+        const meta = [
+          ['明細ID', line ? line.lineId : 'なし'],
+          ['関連ID', line ? line.relatedId : 'なし'],
+          ['図柄', view.seal ? view.seal.id + ' / ' + view.seal.cartValue : '未登録'],
+          ['テンプレート', line && line.templateId ? line.templateId + ' / ' + line.templateVersion : 'なし'],
+          ['校正', line ? line.proofStatus : 'なし'],
+          ['入力原文', line ? line.sourceText : '']
+        ].map(function (row) {
+          return '<p>' + escapeHtml(row[0]) + ' ' + escapeHtml(row[1]) + '</p>';
+        }).join('');
+        host.innerHTML = '<div class="card"><p class="flag">' + escapeHtml(view.headline) + '</p><div class="preview-head"><h3>画面の参考見本</h3><p class="sub">' + escapeHtml(view.detail) + '</p></div><div class="frame"><svg viewBox="0 0 460 210" role="img" aria-label="共通参考見本"><rect x="8" y="8" width="444" height="194" rx="12" fill="#FAF8F5" stroke="#B8965C" stroke-width="2"/><text data-sample="message" x="230" y="48" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="15" fill="#8A7B76"></text><text data-sample="name" x="230" y="112" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="30" fill="#433936"></text><text data-sample="date" x="230" y="148" text-anchor="middle" font-size="16" fill="#9E7B43"></text><text data-sample="note" x="230" y="178" text-anchor="middle" font-size="10" fill="#7A6B66"></text></svg></div><div class="meta">' + meta + '</div><p class="limit" data-limit></p></div>';
         applyPreview(host);
       }
       function applyPreview(root) {
         const node = root || host;
         if (!node.querySelector('svg')) return;
+        const order = currentOrder();
+        const view = order ? designView(order) : null;
         const draft = state.draft || {};
         node.querySelector('[data-sample="message"]').textContent = draft.message || '';
         node.querySelector('[data-sample="name"]').textContent = draft.couple || '';
         node.querySelector('[data-sample="date"]').textContent = dotted(draft.wedding || '');
-        node.querySelector('[data-sample="note"]').textContent = '書体: ' + (draft.font || '') + ' ｜ 包装: ' + (draft.noshi || '');
+        node.querySelector('[data-sample="note"]').textContent = '参考文字。図柄画像の上には載せていません';
+        const limit = node.querySelector('[data-limit]');
+        const max = view && view.template ? view.template.maxChars : 0;
+        if (limit) limit.textContent = max && String(draft.couple || '').length > max ? '文字数超過（上限 ' + max + '）' : '';
       }
       on('oms:open', paint);
       on('oms:draft', function () { applyPreview(); });
@@ -2084,10 +3074,16 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
     function renderDrawerSamples(host) {
       function paint() {
         if (!currentOrder()) { host.innerHTML = ''; return; }
-        host.innerHTML = '<div class="head"><h3>プリントサンプル</h3><p class="sub">同じ名前・同じ日付。デザインだけ違います</p></div><div class="grid"><article class="sample s1"><p class="caption">CALLIGRAPHY</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article><article class="sample s2"><p class="caption">明朝</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article><article class="sample s3"><p class="caption">筆記・丸枠</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article></div>';
+        host.innerHTML = '<div class="head"><h3>書体の参考</h3></div><p class="note" data-design-note></p><div class="grid"><article class="sample s1"><p class="caption">CALLIGRAPHY</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article><article class="sample s2"><p class="caption">明朝</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article><article class="sample s3"><p class="caption">筆記・丸枠</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article></div>';
         fillSamples();
       }
       function fillSamples() {
+        const order = currentOrder();
+        const note = host.querySelector('[data-design-note]');
+        if (note && order) {
+          const view = designView(order);
+          note.textContent = view.headline + '。下の3つは書体の参考で、図柄そのものではありません。';
+        }
         host.querySelectorAll('[data-sample="name"]').forEach(function (node) { node.textContent = draftCouple(); });
         host.querySelectorAll('[data-sample="date"]').forEach(function (node) { node.textContent = dotted(draftWedding()); });
       }
@@ -2101,7 +3097,8 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
         const counts = partCounts(order);
         const lines = PART_KEYS.map(function (part) {
           const per = Number(order.partPer[part.key]) || 0;
-          return '<div class="line"><span>' + escapeHtml(part.label) + '</span><span class="qty">親 ' + order.qty + ' × ' + per + ' ＝ ' + counts[part.key] + '</span></div>';
+          const retired = part.key === 'thanksCard' && per === 0 ? '（新規では選びません）' : '';
+          return '<div class="line"><span>' + escapeHtml(part.label + retired) + '</span><span class="qty">親 ' + order.qty + ' × ' + per + ' ＝ ' + counts[part.key] + '</span></div>';
         }).join('');
         host.innerHTML = '<div class="head"><h3>部品内訳</h3><p class="sub">親数量 ' + order.qty + '</p></div><div class="body">' + lines + '</div>';
       }
@@ -2174,6 +3171,11 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
           ['名入れ', draftCouple()],
           ['日付', dotted(draftWedding())],
           ['挙式日', draftWedding()],
+          ['納期', (state.draft && state.draft.delivery) || order.deliveryDate || 'なし'],
+          ['図柄', designView(order).headline],
+          ['テンプレート', order.line && order.line.templateId ? order.line.templateId + ' / ' + order.line.templateVersion : 'なし'],
+          ['明細ID', order.line ? order.line.lineId : 'なし'],
+          ['入力原文', order.line ? order.line.sourceText : ''],
           ['料金', '超過 ' + formatYen(fees.extraTotal) + ' / のし ' + formatYen(fees.noshi) + ' / ラッピング ' + formatYen(fees.wrapping)],
           ['賞味期限', order.bestBefore || 'なし'],
           ['即日締切', SAME_DAY_CUTOFF + ' / ' + clock.time + ' / ' + (clock.within ? '締切内' : '締切後')],
@@ -2191,8 +3193,22 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
     }
     function renderDrawerRealSize(host) {
       function paint() {
-        if (!currentOrder()) { host.innerHTML = ''; return; }
-        host.innerHTML = '<div class="head"><h3>実寸レイアウト</h3><p class="sub">ミリ指定の画面プレビューです</p></div><div class="stage"><div class="row"><div class="piece"><div class="thanks"><p class="cap">THANK YOU</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div><p class="caption">サンクスカード 91×55mm</p></div><div class="piece"><div class="seal"><div><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div></div><p class="caption">ミニシール φ30mm</p></div></div></div>';
+        const order = currentOrder();
+        if (!order) { host.innerHTML = ''; return; }
+        const counts = partCounts(order);
+        const view = designView(order);
+        const thanks = counts.thanksCard > 0
+          ? '<div class="piece"><div class="thanks"><p class="cap">THANK YOU</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div><p class="caption">過去明細のサンクスカード 91×55mm</p></div>'
+          : '';
+        let piece = '';
+        if (view.status === 'diy') {
+          piece = '<div class="piece"><div class="thanks"><p class="cap">配置見本</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div><p class="caption">汎用の入力配置見本。購入用テンプレートではありません</p></div>';
+        } else if (view.status === 'sample') {
+          piece = '<div class="piece"><div class="seal"><div><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div></div><p class="caption">ミニシール φ30mm・画面見本（製造原稿ではない）</p></div>';
+        } else {
+          piece = '<div class="piece"><div class="seal"><div><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></div></div><p class="caption">図柄未登録・共通参考見本</p></div>';
+        }
+        host.innerHTML = '<div class="head"><h3>画面の寸法見本</h3><p class="sub">実寸PDFは、余白・書体・面付けの確定前に製造へ回しません</p></div><div class="stage"><div class="row">' + thanks + piece + '</div></div><p class="limit">' + escapeHtml(view.detail) + '</p>';
         fill();
       }
       function fill() {
@@ -2226,7 +3242,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
         const fonts = FONT_OPTIONS.map(function (font) {
           return '<option' + (font === draft.font ? ' selected' : '') + '>' + escapeHtml(font) + '</option>';
         }).join('');
-        host.innerHTML = '<div class="head"><h3>名入れ・工程の編集</h3><span class="fee-badge' + (fees.extraTotal > 0 ? ' is-on' : '') + '">' + escapeHtml(badge) + '</span></div><div class="grid"><div><label for="edit-couple">新郎・新婦名</label><input id="edit-couple" data-action="edit-field" data-field="couple" value="' + escapeHtml(draft.couple) + '"></div><div><label for="edit-date">挙式日</label><input id="edit-date" type="date" data-action="edit-field" data-field="wedding" value="' + escapeHtml(draft.wedding) + '"></div><div><label for="edit-message">見出し・定型メッセージ</label><input id="edit-message" data-action="edit-field" data-field="message" value="' + escapeHtml(draft.message) + '"></div><div><label for="edit-font">書体</label><select id="edit-font" data-action="edit-field" data-field="font">' + fonts + '</select></div><div><label for="edit-noshi">熨斗・サンクスシール</label><input id="edit-noshi" data-action="edit-field" data-field="noshi" value="' + escapeHtml(draft.noshi) + '"></div><div><label for="edit-status">工程ステータス</label><select id="edit-status" data-action="edit-field" data-field="status">' + statusOptions(draft.status) + '</select></div></div><div class="save-row"><label class="check"><input type="checkbox" data-action="edit-field" data-field="clearWarning"' + (draft.clearWarning ? ' checked' : '') + '>名入れ内容を目視確認済みにする（パース警告を解除）</label><button type="button" class="save" data-action="save-edit">変更内容を保存する</button></div>';
+        host.innerHTML = '<div class="head"><h3>名入れ・工程の編集</h3><span class="fee-badge' + (fees.extraTotal > 0 ? ' is-on' : '') + '">' + escapeHtml(badge) + '</span></div><div class="grid"><div><label for="edit-couple">新郎・新婦名</label><input id="edit-couple" data-action="edit-field" data-field="couple" value="' + escapeHtml(draft.couple) + '"></div><div><label for="edit-date">挙式日</label><input id="edit-date" type="date" data-action="edit-field" data-field="wedding" value="' + escapeHtml(draft.wedding) + '"></div><div><label for="edit-delivery">納期（納品日）</label><input id="edit-delivery" type="date" data-action="edit-field" data-field="delivery" value="' + escapeHtml(draft.delivery || '') + '"></div><div><label for="edit-message">見出し・定型メッセージ</label><input id="edit-message" data-action="edit-field" data-field="message" value="' + escapeHtml(draft.message) + '"></div><div><label for="edit-font">書体</label><select id="edit-font" data-action="edit-field" data-field="font">' + fonts + '</select></div><div><label for="edit-noshi">熨斗・サンクスシール</label><input id="edit-noshi" data-action="edit-field" data-field="noshi" value="' + escapeHtml(draft.noshi) + '"></div><div><label for="edit-status">工程ステータス</label><select id="edit-status" data-action="edit-field" data-field="status">' + statusOptions(draft.status) + '</select></div></div><div class="save-row"><label class="check"><input type="checkbox" data-action="edit-field" data-field="clearWarning"' + (draft.clearWarning ? ' checked' : '') + '>名入れ内容を目視確認済みにする（パース警告を解除）</label><button type="button" class="save" data-action="save-edit">変更内容を保存する</button></div>';
       }
       on('oms:open', paint);
     }
@@ -2272,7 +3288,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
 
     function renderManualModal(host) {
       host.hidden = true;
-      host.innerHTML = '<div class="card" role="dialog" aria-modal="true" aria-labelledby="manual-title"><div class="top"><div><span class="tag">電話・FAX受注入力</span><h2 id="manual-title">電話・FAX・大口注文 新規登録</h2></div><button type="button" class="x" data-action="close-manual" aria-label="閉じる">×</button></div><div class="grid"><div><label for="manual-type">受付経路</label><select id="manual-type"><option>FAX注文 (0586-86-1140)</option><option>電話注文 (0586-86-1150)</option></select></div><div><label for="manual-date">挙式日 / 希望納品日</label><input id="manual-date" type="date" value="2026-12-05"></div><div><label for="manual-customer">ご注文者名</label><input id="manual-customer" placeholder="例: 佐藤 健太"></div><div><label for="manual-venue">お届け先</label><input id="manual-venue" placeholder="例: 式場名"></div><div class="span-2"><label for="manual-product">商品名・数量</label><input id="manual-product" value="プチギフト Merci アールグレイ＆フィナンシェ × 65個"></div><div><label for="manual-couple">名入れ新郎新婦名</label><input id="manual-couple" placeholder="例: Kenta & Yui"></div><div><label for="manual-noshi">熨斗・タグ指定</label><input id="manual-noshi" value="オリジナルサンクスタグ付"></div></div><div class="buttons"><button type="button" class="cancel" data-action="close-manual">キャンセル</button><button type="button" class="ok" data-action="submit-manual">受注キューへ登録する</button></div></div>';
+      host.innerHTML = '<div class="card" role="dialog" aria-modal="true" aria-labelledby="manual-title"><div class="top"><div><span class="tag">電話・FAX受注入力</span><h2 id="manual-title">電話・FAX・大口注文 新規登録</h2></div><button type="button" class="x" data-action="close-manual" aria-label="閉じる">×</button></div><div class="grid"><div><label for="manual-type">受付経路</label><select id="manual-type"><option>FAX注文 (0586-86-1140)</option><option>電話注文 (0586-86-1150)</option></select></div><div><label for="manual-wedding">挙式日</label><input id="manual-wedding" type="date" value="2026-12-12"></div><div><label for="manual-delivery">納期（希望納品日）</label><input id="manual-delivery" type="date" value="2026-12-05"></div><div><label for="manual-customer">ご注文者名</label><input id="manual-customer" placeholder="例: 佐藤 健太"></div><div><label for="manual-venue">お届け先</label><input id="manual-venue" placeholder="例: 式場名"></div><div class="span-2"><label for="manual-product">商品名・数量</label><input id="manual-product" value="プチギフト Merci アールグレイ＆フィナンシェ × 65個"></div><div><label for="manual-couple">名入れ新郎新婦名</label><input id="manual-couple" placeholder="例: Kenta & Yui"></div><div><label for="manual-noshi">熨斗・タグ指定</label><input id="manual-noshi" value="オリジナルサンクスタグ付"></div></div><p class="retired">サンクスカードは新規では選べません。過去の注文の内訳は残します。</p><div class="buttons"><button type="button" class="cancel" data-action="close-manual">キャンセル</button><button type="button" class="ok" data-action="submit-manual">受注キューへ登録する</button></div></div>';
     }
     function renderToast(host) {
       host.hidden = true;
@@ -2390,6 +3406,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       if (!order || !state.draft) return;
       order.coupleNames = state.draft.couple;
       order.weddingDate = state.draft.wedding;
+      order.deliveryDate = state.draft.delivery;
       order.headerMsg = state.draft.message;
       order.fontStyle = state.draft.font;
       order.noshiSeal = state.draft.noshi;
@@ -2410,6 +3427,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       const order = currentOrder();
       if (!order || order.proofStatus !== '未送付') return;
       order.proofStatus = '送付済';
+      if (order.line) order.line.proofStatus = order.proofStatus;
       emit('oms:change');
       showToast(order.id + ' の校正を送付済みにしました');
     }
@@ -2417,6 +3435,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       const order = currentOrder();
       if (!order || order.proofStatus !== '送付済') return;
       order.proofStatus = '承認済';
+      if (order.line) order.line.proofStatus = order.proofStatus;
       emit('oms:change');
       showToast(order.id + ' の校正を承認済みにしました');
     }
@@ -2478,7 +3497,9 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
         channel: 'MANUAL',
         channelLabel: type,
         orderDate: TODAY + ' 10:19',
-        weddingDate: document.getElementById('manual-date').value || '2026-12-05',
+        weddingDate: document.getElementById('manual-wedding').value || '2026-12-12',
+        deliveryDate: document.getElementById('manual-delivery').value || '2026-12-05',
+        partPer: { sweets: 1, box: 1, thanksCard: 0, miniSeal: 1 },
         customerName: document.getElementById('manual-customer').value.trim() || '新規電話・FAX顧客',
         shippingTo: document.getElementById('manual-venue').value.trim() || 'ご自宅配送',
         postalCode: '460-0001',
@@ -2582,6 +3603,12 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
       else if (name === 'product-query') onProductQuery(el);
       else if (name === 'product-pick') pickCatalogProduct(el);
       else if (name === 'sort-orders') setOrderSort(el.dataset.sort);
+      else if (name === 'site-field') onSiteField(el);
+      else if (name === 'site-export') exportSiteDraft(el.dataset.site);
+      else if (name === 'site-load') loadSiteFile(el);
+      else if (name === 'site-move') moveSitePromo(el);
+      else if (name === 'site-add') addSiteRow(el);
+      else if (name === 'site-remove') removeSiteRow(el);
     }
     document.addEventListener('click', function (event) {
       const interactive = event.target.closest('button, a, input, select, textarea, label');
@@ -2598,7 +3625,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
     });
     document.addEventListener('input', function (event) {
       const name = event.target.dataset.action;
-      if (name === 'search' || name === 'edit-field' || name === 'product-query') runAction(name, event.target);
+      if (name === 'search' || name === 'edit-field' || name === 'product-query' || name === 'site-field') runAction(name, event.target);
     });
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape') {
@@ -2608,6 +3635,7 @@ downloadSimulatedCsv, showToast, onProductQuery, pickCatalogProduct, setOrderSor
     });
 
     seedOrders();
+    seedSiteContent();
     mountOrdered(document.getElementById('app'), APP_PARTS);
     switchTab('dashboard');
   </script>
