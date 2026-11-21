@@ -110,7 +110,7 @@ function productRows() {
 }
 // お手本用の商品データ（商品登録で「似ている商品から作る」ときに使う）。画面は必要になってから読む。
 function templateProducts() {
-  return JSON.parse(fs.readFileSync(path.join(root, 'site-src/products/manifest.json'), 'utf8')).map((id) => read('site-src/products/' + id + '.json')).filter((r) => r.active && r.product).map((r) => { const p = Object.assign({}, r.product); delete p.sourceUrl; return p; });
+  return JSON.parse(fs.readFileSync(path.join(root, 'site-src/products/manifest.json'), 'utf8')).map((id) => read('site-src/products/' + id + '.json')).filter((r) => r.active && r.product).map((r) => { const p = Object.assign({}, r.product); const photos = ((r.detail && r.detail.photos) || []).map((x) => x.src).filter(Boolean); const base = (x) => path.basename(x || ''); if (photos.length) p.photos = [p.image].concat(photos.filter((x) => base(x) !== base(p.image))).filter(Boolean); return p; });
 }
 
 function build() {

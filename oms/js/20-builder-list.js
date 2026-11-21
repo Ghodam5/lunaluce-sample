@@ -23,8 +23,8 @@
           '<h3>トップのカード <small>上から順に表示</small></h3><ul>' + cards + '</ul>' +
           '<div class="adds"><button type="button" data-b="card-add" data-kind="products">＋ 商品4つ</button><button type="button" data-b="card-add" data-kind="campaign">＋ キャンペーン</button><button type="button" data-b="card-add" data-kind="features">＋ 特集一覧</button></div>' +
           '<h3>商品</h3><ul>' + item({ type: 'stock', index: 0 }, true, '在庫の状態（欠品・入荷待ち）', Object.keys(b.stock).length ? Object.keys(b.stock).length + '件を切り替え中' : '販売中以外 ' + b.products.filter(function (p) { return p.stock && p.stock.status !== 'in'; }).length + '件') +
-          b.newProducts.map(function (p, i) { return item({ type: 'product', index: i }, p.active, p.title || '（商品名なし）', '新しい商品・' + stockState(p.stock.status).short); }).join('') + '</ul>' +
-          '<div class="adds"><button type="button" data-b="select" data-type="product-start" data-index="0">＋ 単品商品を登録</button></div>' +
+          b.newProducts.map(function (p, i) { return item({ type: 'product', index: i }, p.active, p.title || '（商品名なし）', (p.edit ? '編集中' : '新しい商品') + '・' + stockState(builderProductStock(p).status).short); }).join('') + '</ul>' +
+          '<div class="adds"><button type="button" data-b="select" data-type="product-start" data-index="0">＋ 単品商品を登録</button>' + (b.newProducts.length ? '<button type="button" data-b="channel-export">楽天・Yahoo用に書き出す</button>' : '') + '</div>' +
           '<h3>色のテーマ</h3><ul>' + themes + '</ul><div class="adds"><button type="button" data-b="theme-add">＋ テーマを追加</button></div>';
       }
       paint();

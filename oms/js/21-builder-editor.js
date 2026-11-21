@@ -71,7 +71,7 @@
     }
     // 画像を取り込むボタン（パソコン・スマホの画像を選ぶ）。data-import の行き先: card=カードの上 / tile番号=その特集
     function builderImportButton(target) {
-      return '<label class="import"><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-import="' + escapeHtml(String(target)) + '"><span>＋ 画像を取り込む</span></label>';
+      return '<label class="import"><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-import="' + escapeHtml(String(target)) + '"' + (target === 'photo' ? ' multiple' : '') + '><span>＋ ' + (target === 'photo' ? '写真を取り込む（複数可）' : '画像を取り込む') + '</span></label>';
     }
     function builderImageLabel(src) {
       const up = state.builder.uploads[src];

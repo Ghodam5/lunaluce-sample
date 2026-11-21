@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.13
+Luna Luce OMS 2.14
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -29,7 +29,8 @@ Luna Luce OMS 2.13
   js/21-builder-editor  サイトビルダー真ん中（選んだ部品を直す）
   js/22-builder-preview サイトビルダー右列（見え方・確認・書き出し）
   js/23-builder-tab     サイトビルダーの3列の枠と操作
-  js/24-builder-products サイトビルダーの商品（欠品・入荷待ち、単品商品の登録。お手本は builder-products.json）
+  js/24-builder-products サイトビルダーの商品（欠品・入荷待ち、単品商品の登録と登録済み商品の編集、複数写真。お手本は builder-products.json）
+  js/25-channel-export 楽天・Yahoo用の一括登録CSV（Shift_JIS）と写真の名前の対応表を作る
   js/90-start           起動（必ず最後）
 新しい部品は新しい番号のファイルとして足し、既存ファイルに詰め込まない。
 2.8 でサイトビルダー（7のタブ）を追加。builder-data.json は tools/oms-builder-data.cjs で作り、直接編集しない。
@@ -38,6 +39,7 @@ Luna Luce OMS 2.13
 2.11 でビルダーに「商品」を追加: 在庫の状態（販売中・残りわずか・入荷待ち・欠品・販売終了）の切り替えと、お手本の商品から単品商品を登録（js/24-builder-products）。
 2.12 で取り込んだ画像に「取り込み」の札と消すボタン（使用中は消せない）、カードの上の画像の大きさ（imageHeight 80〜400px、標準130）をつまみと見本のドラッグで変えられるようにした。
 2.13 で在庫の一覧を、状態の数字を押して絞り込み・20件ずつのページ送りで全部見られるようにし、商品を押すと右に詳細（説明・種類・入力欄・並ぶ場所）を出すようにした。
+2.14 で商品の詳細から「この商品を編集する」で登録済みの商品を直せるようにした（書き出しの edits）。写真は1商品20枚まで、並べ替え・メイン指定・まとめて取り込み。下書きの商品を楽天・Yahoo用の一括登録CSVに書き出す（js/25-channel-export、試作）。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
 
@@ -108,7 +110,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.13｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.14｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -149,6 +151,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/21-builder-editor.js"></script>
   <script src="js/22-builder-preview.js"></script>
   <script src="js/24-builder-products.js"></script>
+  <script src="js/25-channel-export.js"></script>
   <script src="js/23-builder-tab.js"></script>
   <script src="js/90-start.js"></script>
 </body>

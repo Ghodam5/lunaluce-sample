@@ -100,7 +100,7 @@
       const t = templateId ? builderTemplate(templateId) : null;
       const p = {
         id: builderNextProductId(), active: true, from: t ? String(t.id) : '',
-        code: '', title: '', price: t ? t.price : 0, minq: t ? t.minq : 1, image: '',
+        code: '', title: '', price: t ? t.price : 0, minq: t ? t.minq : 1, image: '', photos: [],
         places: [], hasName: t ? !!t.hasName : false,
         skus: t ? t.skus.map(function (s) { return { t: t.skus.length > 1 ? s.t : '', price: s.price }; }) : [{ t: '', price: 0 }],
         spec: t ? cloneData(t.spec) : null, pack: t ? t.pack : 1, seal: t ? !!t.seal : false,
@@ -120,9 +120,54 @@
       if (!p.places.length) p.places.push({ g: '', m: '', s: '' });
       return p;
     }
+    // 写真は photos（1枚目がメイン）。image はいつも photos[0] にそろえる（古い下書きは image だけなので写す）
+    function builderSyncPhotos(p) {
+      if (!Array.isArray(p.photos)) p.photos = [];
+      p.photos = p.photos.filter(function (src, i, a) { return src && a.indexOf(src) === i; });
+      if (!p.photos.length && p.image) p.photos = [p.image];
+      p.image = p.photos[0] || '';
+      return p.photos;
+    }
+    function builderProductStock(p) {
+      return p.edit ? builderStockOf(p.id) : p.stock;
+    }
+    // 登録済みの商品を編集する: いまの商品データをまるごと写して下書きにする（保存は書き出し→反映ツール）
+    function builderEditProduct(id) {
+      const b = state.builder;
+      const t = builderTemplate(id);
+      if (!t) return null;
+      const p = {
+        id: String(t.id), edit: true, active: true, from: String(t.id),
+        code: t.code || '', title: t.title || '', price: t.price, minq: t.minq || 1, image: t.image || '',
+        photos: (t.photos && t.photos.length ? t.photos.slice() : t.image ? [t.image] : []),
+        places: [], placesTouched: false, hasName: !!t.hasName,
+        skus: t.skus.map(function (s) { return { code: s.code, t: t.skus.length > 1 ? s.t : (s.t === t.title ? '' : s.t), price: s.price }; }),
+        spec: t.spec ? cloneData(t.spec) : null, pack: t.pack || 1, seal: !!t.seal,
+        orig: { code: t.code || '', categories: (t.categories || []).slice(), subs: (t.subs || []).slice(), category: t.category || '', tags: (t.tags || []).slice(), minnote: t.minnote || '', sourceUrl: t.sourceUrl || '' },
+        stock: { status: 'in' }
+      };
+      PRODUCT_TEXT_FIELDS.forEach(function (f) { p[f[0]] = t[f[0]] || ''; });
+      builderSyncPhotos(p);
+      p.places = builderPlacesOf(t);
+      if (!p.places.length) p.places.push({ g: '', m: '', s: '' });
+      return p;
+    }
+    // その商品がいま並んでいる置き場所（最大3つ）
+    function builderPlacesOf(t) {
+      const out = [];
+      state.builder.links.categories.forEach(function (g) {
+        g.mids.forEach(function (m) {
+          if (out.length >= 3 || !m.place.ok) return;
+          const r = m.place;
+          if (r.categories.every(function (c) { return (t.categories || []).indexOf(c) >= 0; }) && r.subs.every(function (x) { return (t.subs || []).indexOf(x) >= 0; }) && (!r.titleHint || (t.title || '').indexOf(r.titleHint) >= 0)) out.push({ g: g.k, m: m.k, s: '' });
+        });
+      });
+      return out;
+    }
     function builderProductErrors(p) {
       const out = [];
-      const codes = state.builder.products.map(function (x) { return (x.code || '').toLowerCase(); });
+      const codes = state.builder.products.filter(function (x) { return x.id !== p.id; }).map(function (x) { return (x.code || '').toLowerCase(); });
+      builderSyncPhotos(p);
       if (!(p.title || '').trim()) out.push('商品名を入れてください');
       if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,40}$/.test(p.code || '')) out.push('商品コードを英数字で入れてください（楽天・Yahooと同じものにすると照合が楽です）');
       else if (codes.indexOf(p.code.toLowerCase()) >= 0 || state.builder.newProducts.filter(function (x) { return (x.code || '').toLowerCase() === p.code.toLowerCase(); }).length > 1) out.push('同じ商品コードの商品がもうあります');
@@ -133,8 +178,8 @@
         if (!(Number(s.price) > 0)) out.push('種類' + (i + 1) + 'の価格を入れてください');
         if (p.skus.length > 1 && !(s.t || '').trim()) out.push('種類' + (i + 1) + 'の名前を入れてください');
       });
-      const places = (p.places || []).filter(function (pl) { return pl.g; });
-      if (!places.length) out.push('サイトのどこに並べるか（置き場所）を選んでください');
+      const places = p.edit && !p.placesTouched ? [] : (p.places || []).filter(function (pl) { return pl.g; });
+      if (!places.length && !(p.edit && !p.placesTouched)) out.push('サイトのどこに並べるか（置き場所）を選んでください');
       places.forEach(function (pl) {
         const f = builderPlaceFind(pl);
         if (!f.m) out.push(builderPlaceLabel(pl) + ': その中の分類まで選んでください');
@@ -142,25 +187,30 @@
         else if (f.rule.titleHint && (p.title || '').indexOf(f.rule.titleHint) < 0) out.push(builderPlaceLabel(pl) + 'に並べるには、商品名に「' + f.rule.titleHint + '」を入れてください');
       });
       if (!(p.description || '').trim()) out.push('商品の説明を入れてください');
-      if (p.stock.status === 'wait' && !p.stock.eta) out.push('入荷予定日を入れてください');
+      if (!p.edit && p.stock.status === 'wait' && !p.stock.eta) out.push('入荷予定日を入れてください');
+      if (p.photos.length > 20) out.push('写真は20枚までにしてください（楽天・Yahooの上限に合わせています）');
       return out;
     }
     // サイトの商品ファイル（site-src/products/<番号>.json）と同じ形にする
     function builderProductRow(p) {
-      const tags = builderPlaceTags(p);
-      const skus = p.skus.map(function (s, i) { return { code: p.skus.length > 1 ? p.code + '-' + (i + 1) : p.code, t: (s.t || '').trim() || p.title, price: Number(s.price) }; });
+      builderSyncPhotos(p);
+      const keep = p.edit && !p.placesTouched;
+      const tags = keep ? { categories: p.orig.categories.filter(function (c) { return c !== 'nairi'; }).concat(p.hasName ? ['nairi'] : []), subs: p.orig.subs.slice() } : builderPlaceTags(p);
+      // 種類のコード: 編集では元のコードを残す（楽天・Yahooとの照合が切れないように）。足した種類だけ自動で付ける
+      const skus = p.skus.map(function (s, i) { return { code: s.code && p.code === (p.orig ? p.orig.code : p.code) ? s.code : p.skus.length > 1 ? p.code + '-' + (i + 1) : p.code, t: (s.t || '').trim() || p.title, price: Number(s.price) }; });
       const firstPlace = builderPlaceFind((p.places || []).filter(function (pl) { return pl.g; })[0] || {});
       const product = {
-        id: p.id, code: p.code, title: p.title.trim(), price: Math.min.apply(null, skus.map(function (s) { return s.price; })), image: p.image, sourceUrl: ''
+        id: p.id, code: p.code, title: p.title.trim(), price: Math.min.apply(null, skus.map(function (s) { return s.price; })), image: p.image, sourceUrl: p.orig ? p.orig.sourceUrl : ''
       };
       PRODUCT_TEXT_FIELDS.forEach(function (f) { product[f[0]] = (p[f[0]] || '').trim(); });
       Object.assign(product, {
-        category: firstPlace.m ? firstPlace.m.name : '', categories: tags.categories, subs: tags.subs,
-        tags: p.hasName ? ['名入れ'] : [], skus: skus,
+        category: keep ? p.orig.category : firstPlace.m ? firstPlace.m.name : '', categories: tags.categories, subs: tags.subs,
+        tags: (p.orig ? p.orig.tags.filter(function (x) { return x !== '名入れ'; }) : []).concat(p.hasName ? ['名入れ'] : []), skus: skus,
         spec: Object.assign({ fields: [], skus: [], minq: null, notes: [] }, p.spec || {}, { code: p.code, pid: p.id }),
-        minq: Number(p.minq), minnote: '', hasName: !!p.hasName, petit: tags.categories.indexOf('petit') >= 0, seal: !!p.seal, pack: Number(p.pack) || 1
+        minq: Number(p.minq), minnote: p.orig ? p.orig.minnote : '', hasName: !!p.hasName, petit: tags.categories.indexOf('petit') >= 0, seal: !!p.seal, pack: Number(p.pack) || 1
       });
-      return { active: p.active !== false && p.stock.status !== 'end', product: product, stock: p.stock.status === 'in' ? undefined : cloneData(p.stock), template: p.from || undefined };
+      const st = builderProductStock(p);
+      return { active: p.active !== false && st.status !== 'end', product: product, photos: p.photos.slice(), stock: p.edit || st.status === 'in' ? undefined : cloneData(st), template: p.edit ? undefined : p.from || undefined, edit: p.edit ? true : undefined };
     }
 
     // ---- 真ん中の列 ----
@@ -238,40 +288,67 @@
         return html + '</li>';
       }).join('');
       const st = p.stock;
-      return '<h2>単品商品の登録</h2>' + (t ? '<p class="lead">お手本: ' + escapeHtml(t.title) + '（ここから写しました）</p>' : '<p class="lead">白紙から作っています。</p>') +
-        '<div class="row">' + builderSwitch('サイトに出す', 'active', p.active !== false) + '<span class="tools"><button type="button" data-b="product-remove">この登録をやめる</button></span></div>' +
+      builderSyncPhotos(p);
+      const head = p.edit ? '<h2>商品の編集</h2><p class="lead">いまの商品の内容を写しました。直したところは、書き出すとサイト（Welcart）と楽天・Yahoo用の一括登録ファイルに入ります。</p>' :
+        '<h2>単品商品の登録</h2>' + (t ? '<p class="lead">お手本: ' + escapeHtml(t.title) + '（ここから写しました）</p>' : '<p class="lead">白紙から作っています。</p>');
+      const placeBlock = p.edit && !p.placesTouched ?
+        '<p class="muted">いまの並び方のまま: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || '（分類の印で並んでいます）') + '</p><button type="button" class="add" data-b="place-edit">置き場所を変える</button>' :
+        '<ol class="places">' + placeRows + '</ol>' + (p.places.length < 3 ? '<button type="button" class="add" data-b="place-add">＋ 置き場所を足す</button>' : '');
+      return head +
+        '<div class="row">' + builderSwitch('サイトに出す', 'active', p.active !== false) + '<span class="tools"><button type="button" data-b="product-remove">' + (p.edit ? 'この編集をやめる（元のまま）' : 'この登録をやめる') + '</button></span></div>' +
         '<h3>基本</h3>' + builderField('商品名', 'title', p.title, { wide: true, max: 80 }) +
-        '<div class="row">' + builderField('商品コード', 'code', p.code, { placeholder: '例: kashi-xmas2', max: 40, hint: '楽天・Yahooと同じにすると、注文と在庫の照合が自動でできます' }) + builderField('最低数量', 'minq', String(p.minq), { type: 'number' }) + '</div>' +
-        '<p class="muted">商品番号は自動で ' + escapeHtml(p.id) + ' になります。</p>' +
+        '<div class="row">' + builderField('商品コード', 'code', p.code, { placeholder: '例: kashi-xmas2', max: 40, hint: p.edit ? '変えると楽天・Yahooの商品と照合できなくなります。ふつうは変えません' : '楽天・Yahooと同じにすると、注文と在庫の照合が自動でできます' }) + builderField('最低数量', 'minq', String(p.minq), { type: 'number' }) + '</div>' +
+        '<p class="muted">' + (p.edit ? '商品番号 ' + escapeHtml(p.id) + '（変わりません）' : '商品番号は自動で ' + escapeHtml(p.id) + ' になります。') + '</p>' +
         '<h3>種類と価格（税込）</h3><ol class="skus">' + p.skus.map(function (s, i) {
           return '<li class="row">' + builderField(p.skus.length > 1 ? '種類' + (i + 1) + 'の名前' : '種類の名前（1つだけなら空でよい）', 'skus.' + i + '.t', s.t, { placeholder: '例: Sサイズ / 白' }) + builderField('価格（円）', 'skus.' + i + '.price', String(s.price || ''), { type: 'number' }) + (p.skus.length > 1 ? '<span class="tools"><button type="button" data-b="sku-remove" data-index="' + i + '">外す</button></span>' : '') + '</li>';
         }).join('') + '</ol><button type="button" class="add" data-b="sku-add">＋ 種類を足す（サイズ・色など）</button>' +
-        '<h3>画像</h3><div class="imgs">' + builderImportButton('card') + '<div class="img-grid">' + builderProductImages(p) + '</div><small>「取り込み」の札が付いた画像は、ここで取り込んだものです。× で消せます。</small></div>' +
-        '<h3>サイトのどこに並べるか（置き場所）</h3><ol class="places">' + placeRows + '</ol>' + (p.places.length < 3 ? '<button type="button" class="add" data-b="place-add">＋ 置き場所を足す</button>' : '') +
+        '<h3>写真（' + p.photos.length + '枚・1枚目がメイン）</h3>' + builderPhotoList(p) +
+        '<div class="imgs"><p class="muted">下の画像を押すと写真に足します。取り込みは何枚でもまとめて選べます。</p>' + builderImportButton('photo') + '<div class="img-grid">' + builderProductImages(p) + '</div><small>「取り込み」の札が付いた画像は、ここで取り込んだものです。× で消せます。</small></div>' +
+        '<h3>サイトのどこに並べるか（置き場所）</h3>' + placeBlock +
         builderSwitch('名入れできる商品にする（「名入れできる」の絞り込みに出ます）', 'hasName', !!p.hasName) +
         (p.spec && p.spec.fields && p.spec.fields.length ? '<p class="muted">名入れなどの入力欄 ' + p.spec.fields.length + '項目は、お手本から写しています。</p>' : '') +
         '<h3>説明</h3>' + PRODUCT_TEXT_FIELDS.map(function (f) { return builderField(f[1], f[0], p[f[0]], { wide: true, area: f[2] }); }).join('') +
+        (p.edit ? '<h3>在庫の状態</h3><p class="muted">いま: ' + escapeHtml(stockState(builderStockOf(p.id).status).short) + '。在庫の状態は「在庫の状態（欠品・入荷待ち）」の一覧で切り替えます。</p>' :
         '<h3>在庫の状態</h3><label class="fld"><span>いまの状態</span><select data-f="stock.status">' + STOCK_STATES.filter(function (s) { return s.id !== 'end'; }).map(function (s) { return '<option value="' + s.id + '"' + (s.id === st.status ? ' selected' : '') + '>' + escapeHtml(s.label) + '</option>'; }).join('') + '</select></label>' +
-        (st.status === 'wait' ? builderField('入荷予定日', 'stock.eta', st.eta || '', { type: 'date' }) : '');
+        (st.status === 'wait' ? builderField('入荷予定日', 'stock.eta', st.eta || '', { type: 'date' }) : '')) +
+        '<h3>楽天・Yahooへ</h3><p class="muted">左の一覧の「楽天・Yahoo用に書き出す」で、この下書きの商品（新しい商品と編集した商品）を各店の一括登録ファイル（CSV）にします。</p>';
+    }
+    // 登録する写真の並び: 1枚目がメイン。← → で並べ替え、★でメインに、外すで写真から外す（画像そのものは消えない）
+    function builderPhotoList(p) {
+      if (!p.photos.length) return '<p class="muted photo-empty">まだ写真がありません。下から選ぶか取り込んでください。</p>';
+      return '<ol class="photo-list">' + p.photos.map(function (src, i) {
+        return '<li class="photo' + (i === 0 ? ' is-main' : '') + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy">' + (i === 0 ? '<em class="main-badge">メイン</em>' : '') +
+          '<span class="photo-tools"><button type="button" data-b="photo-move" data-index="' + i + '" data-dir="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="前へ">←</button>' +
+          (i ? '<button type="button" data-b="photo-main" data-index="' + i + '" title="この写真をメインにする">★メイン</button>' : '') +
+          '<button type="button" data-b="photo-move" data-index="' + i + '" data-dir="1"' + (i === p.photos.length - 1 ? ' disabled' : '') + ' aria-label="後ろへ">→</button>' +
+          '<button type="button" data-b="photo-remove" data-index="' + i + '" title="写真から外す">外す</button></span></li>';
+      }).join('') + '</ol>';
     }
     function builderProductImages(p) {
       const b = state.builder;
-      const choices = Array.from(new Set(builderImageChoices().concat(p.image ? [p.image] : []).concat(p.from && builderProduct(p.from) ? [builderProduct(p.from).image] : []))).filter(Boolean);
-      return choices.map(function (src) { return builderImgTile(src, src === p.image); }).join('');
+      const t = p.from ? builderTemplate(p.from) : null;
+      const choices = Array.from(new Set(builderImageChoices().concat(p.photos).concat(t && t.photos ? t.photos : []).concat(p.from && builderProduct(p.from) ? [builderProduct(p.from).image] : []))).filter(Boolean);
+      return choices.map(function (src) { return builderImgTile(src, p.photos.indexOf(src) >= 0); }).join('');
     }
 
     // ---- 右の列（見え方） ----
     function builderProductPreview(p) {
-      const st = stockState(p.stock.status);
+      builderSyncPhotos(p);
+      const stk = builderProductStock(p);
+      const st = stockState(stk.status);
       const prices = p.skus.map(function (s) { return Number(s.price) || 0; });
       const min = Math.min.apply(null, prices), max = Math.max.apply(null, prices);
-      return '<article class="pv-item">' + (p.image ? '<img src="' + escapeHtml(builderImg(p.image)) + '" alt="">' : '<div class="pv-empty">画像</div>') +
+      return '<article class="pv-item">' + (p.image ? '<img src="' + escapeHtml(builderImg(p.image)) + '" alt="">' : '<div class="pv-empty">画像</div>') + builderPhotoThumbs(p.photos) +
         '<h4>' + escapeHtml(p.title || '商品名') + '</h4><p class="pv-price">' + formatYen(min) + (max > min ? '〜' : '') + '<small>（税込）</small></p>' +
-        (p.stock.status !== 'in' ? '<p class="pv-stock st-' + st.id + '">' + escapeHtml(st.short) + (p.stock.status === 'wait' && p.stock.eta ? '・' + escapeHtml(p.stock.eta.replace(/-/g, '/')) + '入荷予定' : '') + '</p>' : '') +
+        (stk.status !== 'in' ? '<p class="pv-stock st-' + st.id + '">' + escapeHtml(st.short) + (stk.status === 'wait' && stk.eta ? '・' + escapeHtml(stk.eta.replace(/-/g, '/')) + '入荷予定' : '') + '</p>' : '') +
         (p.hasName ? '<p class="pv-tag">名入れできます</p>' : '') +
         '<p class="pv-desc">' + escapeHtml((p.description || '').slice(0, 120)) + ((p.description || '').length > 120 ? '…' : '') + '</p>' +
-        '<p class="pv-place">並ぶ場所: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || '未選択') + '</p>' +
-        '<p class="pv-all">' + (p.stock.status === 'out' ? 'いまは注文できません' : 'カートに入れる') + '</p></article>';
+        '<p class="pv-place">並ぶ場所: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || (p.edit ? 'いまのまま' : '未選択')) + '</p>' +
+        '<p class="pv-all">' + (stk.status === 'out' ? 'いまは注文できません' : 'カートに入れる') + '</p></article>';
+    }
+    function builderPhotoThumbs(list) {
+      if (!list || list.length < 2) return '';
+      return '<div class="pv-thumbs">' + list.map(function (src) { return '<img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy">'; }).join('') + '</div>';
     }
     // 商品の詳細（右の列）。お手本用の商品データ（builder-products.json）から、説明・種類・名入れの入力欄まで出す
     function builderStockDetail(id) {
@@ -292,7 +369,7 @@
       const rows = [['内容', p.contents], ['サイズ', p.size], ['素材', p.material], ['賞味期限', p.expiry], ['アレルギー', p.allergens], ['保存方法', p.storage]].filter(function (r) { return r[1]; });
       const fields = (p.spec && p.spec.fields) || [];
       return '<div class="pv-detail"><p class="pv-note"><button type="button" data-b="stock-detail" data-id="">‹ 切り替えた商品の一覧に戻る</button></p>' +
-        '<article class="pv-item">' + (p.image ? '<img src="' + escapeHtml(builderImg(p.image)) + '" alt="">' : '') +
+        '<article class="pv-item">' + (p.image ? '<img src="' + escapeHtml(builderImg(p.image)) + '" alt="">' : '') + builderPhotoThumbs(p.photos) +
         '<h4>' + escapeHtml(p.title) + '</h4><p class="pv-price">' + formatYen(p.price) + (p.skus.some(function (s) { return s.price !== p.price; }) ? '〜' : '') + '<small>（税込）</small></p>' +
         '<p class="pv-stock st-' + state0.id + '">' + escapeHtml(state0.short) + (st.eta ? '・' + escapeHtml(st.eta.replace(/-/g, '/')) + '入荷予定' : '') + '</p>' +
         '<dl class="pv-dl"><dt>商品番号</dt><dd>' + escapeHtml(String(p.id)) + '</dd><dt>商品コード</dt><dd>' + escapeHtml(p.code || '—') + '</dd><dt>最低数量</dt><dd>' + escapeHtml(String(p.minq || 1)) + '</dd>' +
@@ -302,7 +379,8 @@
         (fields.length ? '<h5>注文時の入力欄（' + fields.length + '）</h5><ul class="pv-ul">' + fields.map(function (f) { return '<li>' + escapeHtml(f.label || f.k) + '<small>' + escapeHtml(f.form || '') + (f.req ? '・必須' : '') + '</small></li>'; }).join('') + '</ul>' : '') +
         (p.description ? '<h5>説明</h5><p class="pv-desc">' + escapeHtml(p.description) + '</p>' : '') +
         (p.notice ? '<h5>注意事項</h5><p class="pv-desc">' + escapeHtml(p.notice) + '</p>' : '') +
-        '</article><p class="pv-actions"><button type="button" data-b="product-new" data-template="' + escapeHtml(String(p.id)) + '">この商品をお手本に新しい商品を登録</button></p></div>';
+        '</article><p class="pv-actions"><button type="button" class="primary" data-b="product-edit" data-id="' + escapeHtml(String(p.id)) + '">' + (b.newProducts.some(function (x) { return x.edit && x.id === String(p.id); }) ? '編集の続きを開く' : 'この商品を編集する（写真・説明・価格など）') + '</button>' +
+        '<button type="button" data-b="product-new" data-template="' + escapeHtml(String(p.id)) + '">この商品をお手本に新しい商品を登録</button></p></div>';
     }
     function builderStockPreview() {
       const b = state.builder;

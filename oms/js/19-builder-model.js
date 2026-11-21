@@ -96,7 +96,11 @@
       return ups.concat(b.images.filter(function (src) { return !b.uploads[src]; }));
     }
     function builderImageOk(src) {
-      return !!src && (state.builder.images.indexOf(src) >= 0 || !!state.builder.uploads[src]);
+      const b = state.builder;
+      if (!src) return false;
+      if (b.images.indexOf(src) >= 0 || b.uploads[src]) return true;
+      // 商品の画像（いまの商品の写真）も使える
+      return b.products.some(function (p) { return p.image === src; }) || (b.templates || []).some(function (p) { return p.image === src || (p.photos || []).indexOf(src) >= 0; });
     }
     // 画像の取り込み: 長い辺を1600pxまでに縮め、写真はJPEG・透過のあるPNGはPNGのまま。ファイル名は英数字に置き換える。
     function builderImportImage(file) {
@@ -138,7 +142,7 @@
       state.builder.cards.forEach(function (c) {
         [c.image].concat((c.tiles || []).map(function (t) { return t.image; })).forEach(function (src) { if (state.builder.uploads[src]) used[src] = true; });
       });
-      state.builder.newProducts.forEach(function (p) { if (state.builder.uploads[p.image]) used[p.image] = true; });
+      state.builder.newProducts.forEach(function (p) { (p.photos || []).concat([p.image]).forEach(function (src) { if (state.builder.uploads[src]) used[src] = true; }); });
       return Object.keys(used).sort();
     }
     function builderSelected() {
@@ -283,7 +287,7 @@
     function builderAllErrors() {
       const out = builderNoticeErrors().concat(builderStockErrors());
       state.builder.newProducts.forEach(function (p) {
-        builderProductErrors(p).forEach(function (e) { out.push('新しい商品 ' + (p.title || p.id) + ': ' + e); });
+        builderProductErrors(p).forEach(function (e) { out.push((p.edit ? '編集中の商品 ' : '新しい商品 ') + (p.title || p.id) + ': ' + e); });
       });
       state.builder.cards.forEach(function (card) {
         builderCardErrors(card).forEach(function (e) { out.push((card.title || '題名なしのカード') + ': ' + e); });
@@ -334,8 +338,10 @@
         }),
         // 在庫の状態を切り替えた商品（OMSが正）。status: in/few/wait/out/end、wait は eta（入荷予定日）付き
         stock: Object.keys(b.stock).map(function (id) { return Object.assign({ id: id }, b.stock[id]); }),
-        // 新しく登録する商品（site-src/products/<id>.json と同じ形）
-        products: b.newProducts.map(builderProductRow),
+        // 新しく登録する商品（site-src/products/<id>.json と同じ形）。photos は写真の並び（1枚目がメイン）
+        products: b.newProducts.filter(function (p) { return !p.edit; }).map(builderProductRow),
+        // 登録済みの商品を直したもの（同じ形。商品番号は元のまま）
+        edits: b.newProducts.filter(function (p) { return p.edit; }).map(builderProductRow),
         // 取り込んだ画像（カードで使っているものだけ）。反映ツールが path の場所に書き出す。
         uploads: builderUsedUploads().map(function (src) {
           const u = b.uploads[src];

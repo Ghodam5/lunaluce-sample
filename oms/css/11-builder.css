@@ -184,3 +184,14 @@
     [data-part="builder-preview"] .pv-ul li { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dotted var(--line); padding-bottom: 2px; }
     [data-part="builder-preview"] .pv-ul small { color: var(--taupe-light); white-space: nowrap; }
     [data-part="builder-preview"] .pv-actions button, [data-part="builder-preview"] .pv-note button { font-size: 13px; }
+    /* 2.14 商品の写真（複数・並べ替え・メイン） */
+    [data-part="builder-editor"] .photo-list { list-style: none; margin: 6px 0 10px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+    [data-part="builder-editor"] .photo-list .photo { position: relative; border: 1px solid var(--line, #e5dccf); border-radius: 8px; padding: 4px; background: #fff; display: flex; flex-direction: column; gap: 4px; }
+    [data-part="builder-editor"] .photo-list .photo.is-main { border: 2px solid var(--accent, #b06a3b); }
+    [data-part="builder-editor"] .photo-list img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display: block; }
+    [data-part="builder-editor"] .photo-list .main-badge { position: absolute; top: 8px; left: 8px; background: var(--accent, #b06a3b); color: #fff; font-style: normal; font-size: 11px; padding: 1px 6px; border-radius: 10px; }
+    [data-part="builder-editor"] .photo-tools { display: flex; flex-wrap: wrap; gap: 3px; }
+    [data-part="builder-editor"] .photo-tools button { font-size: 11px; padding: 2px 6px; min-height: 28px; flex: 1 1 auto; }
+    [data-part="builder-preview"] .pv-thumbs { display: flex; gap: 4px; overflow-x: auto; margin: 4px 0; }
+    [data-part="builder-preview"] .pv-thumbs img { width: 44px; height: 44px; object-fit: cover; border-radius: 4px; flex: none; }
+    [data-part="builder-preview"] .pv-actions button.primary { background: var(--accent, #b06a3b); color: #fff; border-color: transparent; font-weight: 600; }

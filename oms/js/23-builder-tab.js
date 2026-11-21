@@ -75,13 +75,20 @@
       if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = builderUniqueId(card.id.replace(/-copy(-\d+)?$|-\d+$/, '') + '-copy', b.cards); copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
       if (name === 'card-remove' && card) { b.cards.splice(b.sel.index, 1); b.sel = { type: 'ticker', index: 0 }; builderChanged(true); showToast('カードを削除しました。「変更を取り消す」で元に戻せます。'); return; }
       if (name === 'card-theme' && card) { card.theme = el.dataset.theme; builderChanged(true); return; }
-      if (name === 'card-image' && (card || b.sel.type === 'product')) { builderSelected().image = el.dataset.src; builderChanged(true); return; }
+      if (name === 'card-image' && b.sel.type === 'product') { builderAddPhotos(builderSelected(), [el.dataset.src]); builderChanged(true); return; }
+      if (name === 'card-image' && card) { card.image = el.dataset.src; builderChanged(true); return; }
       if (name === 'slot-pick' && card) { card.ids[Number(el.dataset.slot)] = el.dataset.id; b.query = {}; builderChanged(true); return; }
       if (name === 'slot-clear' && card) { card.ids[Number(el.dataset.slot)] = ''; builderChanged(true); return; }
       if (name === 'tile-add' && card) { if (card.tiles.length >= BUILDER_TILE_MAX) return; card.tiles.push({ label: '', href: '', image: b.images[0] || '' }); builderChanged(true); return; }
       if (name === 'tile-remove' && card) { card.tiles.splice(Number(el.dataset.tile), 1); builderChanged(true); return; }
       if (name === 'tile-move' && card) { if (builderMove(card.tiles, Number(el.dataset.tile), Number(el.dataset.dir)) !== false) builderChanged(true); return; }
       if (name === 'product-new') { b.newProducts.push(builderNewProduct(el.dataset.template)); b.sel = { type: 'product', index: b.newProducts.length - 1 }; b.templateQuery = ''; builderChanged(true); return; }
+      if (name === 'product-edit') { builderOpenEdit(el.dataset.id); return; }
+      if (name === 'photo-move' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); if (builderMove(p.photos, index, Number(el.dataset.dir)) !== false) { p.image = p.photos[0]; builderChanged(true); } return; }
+      if (name === 'photo-main' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); p.photos.unshift(p.photos.splice(index, 1)[0]); p.image = p.photos[0]; builderChanged(true); return; }
+      if (name === 'photo-remove' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); p.photos.splice(index, 1); p.image = p.photos[0] || ''; builderChanged(true); return; }
+      if (name === 'place-edit' && b.sel.type === 'product') { builderSelected().placesTouched = true; builderChanged(true); return; }
+      if (name === 'channel-export') { builderChannelExport(); return; }
       if (name === 'product-remove' && b.sel.type === 'product') { b.newProducts.splice(b.sel.index, 1); b.sel = { type: 'stock', index: 0 }; builderChanged(true); return; }
       if (name === 'sku-add' && b.sel.type === 'product') { builderSelected().skus.push({ t: '', price: 0 }); builderChanged(true); return; }
       if (name === 'sku-remove' && b.sel.type === 'product') { builderSelected().skus.splice(index, 1); builderChanged(true); return; }
@@ -115,12 +122,42 @@
       if (name === 'export') { downloadJson('site-builder-draft.json', builderExportPayload()); showToast('site-builder-draft.json を書き出しました。サイトへの反映は担当者が確認してから行います。'); return; }
       if (name === 'reset') { builderResetDraft(); showToast('変更を取り消して、いまのサイトの内容に戻しました。'); }
     }
-    // 画像の取り込み: 選んだ画像を縮めて一時保存し、そのままカード（または特集）に使う
+    function builderAddPhotos(p, list) {
+      builderSyncPhotos(p);
+      list.forEach(function (src) { if (src && p.photos.indexOf(src) < 0) p.photos.push(src); });
+      p.image = p.photos[0] || '';
+    }
+    // 登録済みの商品の編集を開く（同じ商品の編集中の下書きがあればそれを開く）
+    function builderOpenEdit(id) {
+      const b = state.builder;
+      let i = b.newProducts.findIndex(function (x) { return x.edit && x.id === String(id); });
+      if (i < 0) {
+        const p = builderEditProduct(id);
+        if (!p) { showToast('商品の詳細を読み込み中です。少し待ってからもう一度押してください。'); return; }
+        b.newProducts.push(p);
+        i = b.newProducts.length - 1;
+      }
+      b.sel = { type: 'product', index: i };
+      b.stockDetail = '';
+      builderChanged(true);
+      const ed = document.querySelector('[data-part="builder-editor"]');
+      if (ed && window.innerWidth < 1100) ed.scrollIntoView({ block: 'start' });
+    }
+    // 画像の取り込み: 選んだ画像を縮めて一時保存し、そのままカード（または特集）に使う。商品の写真は何枚でもまとめて取り込める
     function builderImportFrom(el) {
       const card = builderSelected();
-      const file = el.files && el.files[0];
+      const files = Array.from(el.files || []);
+      const file = files[0];
       const target = el.dataset.import;
       el.value = '';
+      if (target === 'photo' && state.builder.sel.type === 'product' && card && files.length) {
+        Promise.all(files.map(builderImportImage)).then(function (res) {
+          builderAddPhotos(card, res.map(function (r) { return r.path; }));
+          builderChanged(true);
+          showToast(res.length + '枚の写真を取り込みました。' + (res.every(function (r) { return r.stored; }) ? '' : 'このブラウザに保存しきれません。画面を閉じる前に下書きを書き出してください。'));
+        }).catch(function (err) { showToast(err.message); });
+        return;
+      }
       if (!file || (state.builder.sel.type !== 'card' && state.builder.sel.type !== 'product') || !card) return;
       builderImportImage(file).then(function (res) {
         if (target === 'card') card.image = res.path;
@@ -146,7 +183,7 @@
         if (c.image === src) users.push(c.title || 'カード');
         (c.tiles || []).forEach(function (t) { if (t.image === src) users.push((c.title || 'カード') + 'の特集「' + (t.label || '') + '」'); });
       });
-      b.newProducts.forEach(function (p) { if (p.image === src) users.push('新しい商品「' + (p.title || p.id) + '」'); });
+      b.newProducts.forEach(function (p) { if (p.image === src || (p.photos || []).indexOf(src) >= 0) users.push((p.edit ? '編集中の商品「' : '新しい商品「') + (p.title || p.id) + '」の写真'); });
       if (users.length) { showToast('この画像は使われているので消せません: ' + users.join('、') + '。先に別の画像に変えてください。'); return; }
       const name = b.uploads[src].name;
       delete b.uploads[src];
