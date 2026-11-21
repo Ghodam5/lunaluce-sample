@@ -9,10 +9,10 @@
     const REFLECT_PARTS = [
       ['cards', 'トップのカード'], ['notices', '流れる文言'], ['news', 'お知らせ本文'], ['homeSections', 'トップの商品の段'],
       ['themes', '色のテーマ'], ['plans', '企画'], ['listing', '出す・出さないと販売期間'], ['stock', '在庫の状態'],
-      ['newCategories', '新しいカテゴリー'], ['categoryNames', 'カテゴリーの名前'], ['products', '新しい商品'], ['edits', '商品の直し'], ['businessDays', '営業日'], ['uploads', '取り込んだ画像']
+      ['newCategories', '新しいカテゴリー'], ['categoryNames', 'カテゴリーの名前'], ['noticeTemplates', '注意事項の定型文'], ['products', '新しい商品'], ['edits', '商品の直し'], ['businessDays', '営業日'], ['uploads', '取り込んだ画像']
     ];
     const REFLECT_DESTS = [
-      { id: 'site', name: '新サイト（GitHub）', parts: ['cards', 'notices', 'news', 'homeSections', 'themes', 'plans', 'listing', 'stock', 'newCategories', 'categoryNames', 'products', 'edits', 'uploads'], lead: '変わったファイルをプルリクエストにします。中身を確かめてマージすると、見本サイトに出ます。' },
+      { id: 'site', name: '新サイト（GitHub）', parts: ['cards', 'notices', 'news', 'homeSections', 'themes', 'plans', 'listing', 'stock', 'newCategories', 'categoryNames', 'noticeTemplates', 'products', 'edits', 'uploads'], lead: '変わったファイルをプルリクエストにします。中身を確かめてマージすると、見本サイトに出ます。' },
       { id: 'welcart', name: '本店 Welcart（テスト環境）', parts: ['products', 'edits', 'stock', 'businessDays', 'newCategories', 'categoryNames', 'uploads'], lead: 'テスト環境の本店に、商品・在庫・営業日を入れます。本番にはまだつなぎません。' },
       { id: 'rakuten', name: '楽天', parts: ['products', 'edits', 'businessDays'], lead: 'API の申請がすむまでは、CSVとお休み一覧をダウンロードして楽天の管理画面に入れます。' },
       { id: 'yahoo', name: 'Yahoo', parts: ['products', 'edits', 'businessDays'], lead: 'API の申請がすむまでは、CSVとお休み一覧をダウンロードしてYahooの管理画面に入れます。' }

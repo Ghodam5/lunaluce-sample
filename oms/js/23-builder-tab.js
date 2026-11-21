@@ -74,6 +74,7 @@
       if (builderPlanAction(name, el)) return;
       if (builderReflectAction(name, el)) return;
       if (builderCatNamesAction(name, el)) return;
+      if (builderNotesAction(name, el)) return;
       if (name === 'list-filter') { b.listFilter = el.dataset.filter; b.stockPage = 1; emit('oms:builder', { form: true }); return; }
       if (name === 'link-open') { b.linkOpen = b.linkOpen === el.dataset.field ? '' : el.dataset.field; b.linkTab = ''; b.linkQuery = ''; emit('oms:builder', { form: true }); return; }
       if (name === 'link-tab') { b.linkTab = el.dataset.tab; emit('oms:builder', { form: true }); return; }
@@ -268,6 +269,7 @@
         const el = event.target;
         if (builderSectionInput(el, false)) return;
         if (builderCatNamesInput(el, false)) return;
+        if (el.type !== 'checkbox' && el.tagName !== 'SELECT' && (builderNotesInput(el, false) || builderDeliveryInput(el, false))) return;
         if (el.dataset.catd !== undefined && el.type !== 'radio' && el.tagName !== 'SELECT') { builderCatInput(el, false); return; }
         if ((el.dataset.plan !== undefined && el.type !== 'radio' && el.type !== 'date') || el.dataset.planq !== undefined) { builderPlanInput(el, false); return; }
         if (el.dataset.news !== undefined && el.type !== 'checkbox' && el.type !== 'date') { builderNewsInput(el, false); return; }
@@ -310,6 +312,7 @@
         if (el.dataset.codesImport !== undefined) { builderImportCodes(el); return; }
         if (builderSectionInput(el, true)) return;
         if (builderCatNamesInput(el, true)) return;
+        if (builderNotesInput(el, true) || builderDeliveryInput(el, true)) return;
         if (el.dataset.catd !== undefined) { builderCatInput(el, true); return; }
         if (el.dataset.plan !== undefined || el.dataset.planCat !== undefined) { if (el.type === 'text' || el.tagName === 'TEXTAREA') return; builderPlanInput(el, true); return; }
         if (builderListingChange(el)) return;

@@ -32,7 +32,7 @@
       const out = b.newProducts.filter(function (p) { return !p.edit; }).map(function (p) {
         return { id: p.id, code: p.code || '', title: p.title || '（商品名なし）', price: Math.min.apply(null, p.skus.map(function (s) { return Number(s.price) || 0; })), image: p.image || '', src: 'new' };
       });
-      b.products.forEach(function (p) { out.push({ id: p.id, code: p.code || '', title: p.title, price: p.price, image: p.image, src: 'site' }); });
+      b.products.forEach(function (p) { out.push({ id: p.id, code: p.code || '', title: p.title, price: p.price, image: p.image, src: 'site', lead: p.lead }); });
       (b.unlisted || []).forEach(function (p) { out.push({ id: p.id, code: p.code, title: p.title, price: p.price, image: '', src: 'w', cat: p.cat }); });
       return out;
     }

@@ -441,3 +441,25 @@
     [data-part="builder-editor"] .catname small, [data-part="builder-editor"] .catname button { grid-column: 2; justify-self: start; }
     [data-part="builder-editor"] .catname small { color: var(--taupe-light, #8a7f73); font-size: 12px; }
     [data-part="builder-editor"] .catname.is-changed input { border-color: var(--accent, #b06a3b); background: #fff9f3; }
+    /* 2.29 お届け日数・注意事項の定型文 */
+    [data-part="builder-editor"] h3 .req { font-size: 11px; color: #fff; background: #b06a3b; border-radius: 6px; padding: 1px 6px; margin-left: 4px; }
+    [data-part="builder-editor"] .lead-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    [data-part="builder-editor"] .note-pick { list-style: none; margin: 6px 0; padding: 0; display: grid; gap: 6px; }
+    [data-part="builder-editor"] .note-pick li { border: 1px solid var(--line, #e5dccf); border-left: 4px solid #d8cfc3; border-radius: 8px; padding: 6px 10px; background: #fff; }
+    [data-part="builder-editor"] .note-pick li.is-on { background: #fffaf5; }
+    [data-part="builder-editor"] .note-pick label { display: flex; gap: 8px; align-items: center; min-height: 40px; }
+    [data-part="builder-editor"] .note-pick input { width: 20px; height: 20px; min-height: 0; flex: none; }
+    [data-part="builder-editor"] .note-pick small { display: block; color: var(--taupe-light, #8a7f73); font-size: 12px; line-height: 1.6; }
+    [data-part="builder-editor"] .tone-important, [data-part="builder-preview"] .tone-important { border-left-color: #c8794f !important; }
+    [data-part="builder-editor"] .tone-caution, [data-part="builder-preview"] .tone-caution { border-left-color: #7f9cc0 !important; }
+    [data-part="builder-editor"] .note-tpls { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 10px; }
+    [data-part="builder-editor"] .note-tpl { border: 1px solid var(--line, #e5dccf); border-left: 4px solid #d8cfc3; border-radius: 10px; padding: 8px 10px; background: #fff; display: grid; gap: 4px; }
+    [data-part="builder-editor"] .note-tpl .row { display: flex; justify-content: space-between; align-items: center; }
+    [data-part="builder-preview"] .pv-lead { margin: 6px 0; padding: 6px 8px; border-radius: 8px; background: #f7f3ec; font-size: 12px; }
+    [data-part="builder-preview"] .pv-lead b { color: #8a4b2a; font-size: 14px; }
+    [data-part="builder-preview"] .pv-lead small { margin-left: 6px; padding: 1px 6px; border: 1px solid #e3c9b3; border-radius: 999px; }
+    [data-part="builder-preview"] .pv-lead.is-none { background: #fdf0ef; color: #9b2c27; }
+    [data-part="builder-preview"] .pv-notes { list-style: none; margin: 6px 0; padding: 0; display: grid; gap: 6px; }
+    [data-part="builder-preview"] .pv-notes li { border-left: 4px solid #d8cfc3; background: #faf8f5; border-radius: 8px; padding: 6px 8px; font-size: 12px; line-height: 1.6; display: grid; gap: 2px; }
+    [data-part="builder-editor"] .ls-nolead { background: #fdf0ef; color: #9b2c27; }
+    [data-part="builder-editor"] .st-nolead.is-on { background: #9b2c27; color: #fff; }

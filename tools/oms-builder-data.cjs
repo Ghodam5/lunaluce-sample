@@ -105,12 +105,28 @@ function linkTargets() {
   return { categories, features, pageGroups };
 }
 
+// お届けまでの日数（2.29）。商品に delivery があればそれ、無ければ本文の「お届けまで(に)約14日」などから読む（サイトの tools/delivery-days.cjs と同じ読み方）
+const LEAD_RE = /お届けまで(?:に|の目安は)?\s*(?:約|およそ)?\s*(\d{1,2})\s*(?:[~〜～\-－]\s*(\d{1,2}))?\s*(日|週間)/;
+function leadOf(p) {
+  if (p.delivery) return p.delivery;
+  const text = [p.notice, p.description, p.minnote].join('\n');
+  const m = LEAD_RE.exec(text.replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)));
+  if (!m) return null;
+  const k = m[3] === '週間' ? 7 : 1;
+  return { min: Number(m[1]) * k, max: Number(m[2] || m[1]) * k, made: /受注|製造|生産|制作/.test(text), source: '本文' };
+}
+// 注意事項の定型文。サイトに site-src/notice-templates.json があればそれ（無ければOMSの標準を使う）
+function noticeTemplates() {
+  const f = path.join(root, 'site-src/notice-templates.json');
+  return fs.existsSync(f) ? read('site-src/notice-templates.json').templates : undefined;
+}
+
 function productRows() {
   return JSON.parse(fs.readFileSync(path.join(root, 'site-src/products/manifest.json'), 'utf8')).map((id) => read('site-src/products/' + id + '.json')).filter((r) => r.product).map((r) => r.product);
 }
 // お手本用の商品データ（商品登録で「似ている商品から作る」ときに使う）。画面は必要になってから読む。
 function templateProducts() {
-  return JSON.parse(fs.readFileSync(path.join(root, 'site-src/products/manifest.json'), 'utf8')).map((id) => read('site-src/products/' + id + '.json')).filter((r) => r.active && r.product).map((r) => { const p = Object.assign({}, r.product); const photos = ((r.detail && r.detail.photos) || []).map((x) => x.src).filter(Boolean); const base = (x) => path.basename(x || ''); if (photos.length) p.photos = [p.image].concat(photos.filter((x) => base(x) !== base(p.image))).filter(Boolean); return p; });
+  return JSON.parse(fs.readFileSync(path.join(root, 'site-src/products/manifest.json'), 'utf8')).map((id) => read('site-src/products/' + id + '.json')).filter((r) => r.active && r.product).map((r) => { const p = Object.assign({}, r.product); const lead = leadOf(p); if (lead) p.delivery = lead; const photos = ((r.detail && r.detail.photos) || []).map((x) => x.src).filter(Boolean); const base = (x) => path.basename(x || ''); if (photos.length) p.photos = [p.image].concat(photos.filter((x) => base(x) !== base(p.image))).filter(Boolean); return p; });
 }
 
 // トップ本文の商品の段（いまの並び）。site-src/home-sections.json があればそれ、なければ top.html の並びから作る
@@ -139,9 +155,9 @@ function build() {
   const ids = order.concat(files.filter((id) => !order.includes(id)));
   const cards = ids.map((id) => Object.assign({ inManifest: order.includes(id) }, read('site-src/home-promos/' + id + '.json')));
   const notices = read('site-src/site-notices.json');
-  const products = fs.readdirSync(path.join(root, 'site-src/products')).filter((f) => /^\d+\.json$/.test(f)).map((f) => read('site-src/products/' + f)).filter((p) => p.active && p.product).map((p) => Object.assign({ id: String(p.product.id), code: p.product.code, title: p.product.title, price: p.product.price, image: p.product.image || '' }, p.stock ? { stock: p.stock } : {})).sort((a, b) => Number(a.id) - Number(b.id));
+  const products = fs.readdirSync(path.join(root, 'site-src/products')).filter((f) => /^\d+\.json$/.test(f)).map((f) => read('site-src/products/' + f)).filter((p) => p.active && p.product).map((p) => Object.assign({ id: String(p.product.id), code: p.product.code, title: p.product.title, price: p.product.price, image: p.product.image || '', lead: !!leadOf(p.product) }, p.stock ? { stock: p.stock } : {})).sort((a, b) => Number(a.id) - Number(b.id));
   const images = Array.from(new Set(cards.flatMap((c) => [c.image].concat((c.tiles || []).map((t) => t.image))).filter(Boolean))).sort();
-  return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets(), homeSections: homeSections() };
+  return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets(), homeSections: homeSections(), noticeTemplates: noticeTemplates() };
 }
 
 // 使われている商品コードの台帳（商品コードの重複チェック用）。小文字にそろえ、どこで使っているかを文字で持つ
