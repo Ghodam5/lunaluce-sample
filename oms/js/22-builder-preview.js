@@ -37,7 +37,7 @@
         if (!b.ready) { host.innerHTML = ''; return; }
         const nowIso = new Date().toISOString();
         const s = b.sel;
-        const shown = b.notices.filter(function (n) { return builderOnNow(n, nowIso); });
+        const shown = b.notices.concat(builderAutoBands()).filter(function (n) { return builderOnNow(n, nowIso); });
         const ticker = '<div class="pv-ticker">' + (shown.length ? shown.map(function (n) { return '<span>' + escapeHtml(n.text) + '</span>'; }).join('') : '<span>（いま流れる文言はありません）</span>') + '</div>';
         let main = '';
         if (s.type === 'card' && builderSelected()) {
@@ -49,6 +49,8 @@
           main = builderPlanPreview(builderSelected());
         } else if (s.type === 'days') {
           main = builderDaysPreview();
+        } else if (s.type === 'news') {
+          main = builderNewsPreview();
         } else if (s.type === 'stock') {
           main = builderStockPreview();
         } else if (s.type === 'product-start') {

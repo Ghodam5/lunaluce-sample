@@ -20,6 +20,7 @@
           return item({ type: 'theme', index: i }, true, t.name, t.builtIn ? '標準' : '追加', t);
         }).join('');
         host.innerHTML = builderHistBar() + '<h3>サイトの上の帯</h3><ul>' + ticker + '</ul>' +
+          '<h3>お知らせ本文</h3><ul>' + item({ type: 'news', index: 0 }, true, 'お知らせ本文', builderNewsList().length + '件' + (builderDaysLongNotices().length ? '＋長期休暇' + builderDaysLongNotices().length + '件（自動）' : '')) + '</ul>' +
           '<h3>トップのカード <small>上から順に表示</small></h3><ul>' + cards + '</ul>' +
           '<div class="adds"><button type="button" data-b="card-add" data-kind="products">＋ 商品</button><button type="button" data-b="card-add" data-kind="campaign">＋ キャンペーン</button><button type="button" data-b="card-add" data-kind="features">＋ 特集一覧</button></div>' +
           '<h3>商品</h3><ul>' + item({ type: 'stock', index: 0 }, true, '在庫と出店（出す・出さない・期間）', Object.keys(b.stock).length ? Object.keys(b.stock).length + '件を切り替え中' : '販売中以外 ' + b.products.filter(function (p) { return p.stock && p.stock.status !== 'in'; }).length + '件') +

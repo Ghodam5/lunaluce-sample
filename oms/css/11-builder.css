@@ -324,3 +324,36 @@
     [data-part="builder-list"] .hist-bar button { flex: 1; font-size: 13px; padding: 6px 8px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
     [data-part="builder-list"] .hist-bar button:disabled { opacity: .45; cursor: default; }
     [data-part="builder-list"] .hist-bar small { font-size: 11px; background: #f2efe9; color: #6b6258; border-radius: 8px; padding: 0 6px; }
+    /* 2.23 営業日: 1か月ずつ・1年先まで、第1週〜の行、営業→お休み→午前だけ。長期休暇。お知らせ本文 */
+    [data-part="builder-editor"] .days-cal-nav { align-items: center; justify-content: space-between; flex-wrap: nowrap; }
+    [data-part="builder-editor"] .days-cal-nav button { min-height: 40px; padding: 4px 14px; }
+    [data-part="builder-editor"] .days-cal-title { font-size: 17px; }
+    [data-part="builder-editor"] .days-months { display: flex; gap: 4px; overflow-x: auto; padding: 2px 0 8px; scrollbar-width: thin; }
+    [data-part="builder-editor"] .days-months button { flex: 0 0 auto; min-height: 30px; font-size: 12px; padding: 2px 9px; border-radius: 14px; }
+    [data-part="builder-editor"] .days-months button.is-on { background: var(--ink, #2b2620); color: #fff; border-color: var(--ink, #2b2620); }
+    [data-part="builder-editor"] .days-cal .days-cal-grid { grid-template-columns: 44px repeat(7, minmax(0, 1fr)); gap: 4px; }
+    [data-part="builder-editor"] .days-cal-grid em { font-style: normal; font-size: 11px; color: var(--taupe-light, #8a7f73); display: flex; align-items: center; }
+    [data-part="builder-editor"] .days-cal .days-cal-grid button, [data-part="builder-editor"] .days-cal .days-cal-grid span { min-height: 46px; flex-direction: column; gap: 1px; line-height: 1.1; }
+    [data-part="builder-editor"] .days-cal-grid small { font-size: 10px; font-weight: 600; min-height: 11px; }
+    [data-part="builder-editor"] .days-cal-grid button.am, [data-part="builder-editor"] .days-legend .lg.am, [data-part="builder-editor"] .days-cal-grid span.past.am { background: #fdf0c9; color: #7a5410; font-weight: 600; }
+    [data-part="builder-editor"] .days-cal-grid button.is-long, [data-part="builder-editor"] .days-legend .lg.is-long { box-shadow: inset 0 -4px 0 #8b6bb8; }
+    [data-part="builder-editor"] .days-cal-grid button.off.is-long { background: #ecdff5; color: #5b3a85; }
+    [data-part="builder-editor"] .days-cal-grid span.past.off { background: #f8d9d2; }
+    [data-part="builder-editor"] .days-longs { list-style: none; padding: 0; margin: 6px 0; display: grid; gap: 10px; }
+    [data-part="builder-editor"] .days-long { border: 1px solid var(--line, #e5dccf); border-left: 4px solid #8b6bb8; border-radius: 8px; padding: 10px; background: #fff; }
+    [data-part="builder-editor"] .days-long select { min-height: 36px; }
+    [data-part="builder-editor"] .days-long-out { margin: 6px 0 0; font-size: 13px; color: #5b3a85; }
+    [data-part="builder-editor"] details.days-more { margin: 12px 0; border: 1px solid var(--line, #e5dccf); border-radius: 8px; padding: 8px 10px; }
+    [data-part="builder-editor"] details.days-more summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+    [data-part="builder-editor"] .news-items { list-style: none; padding: 0; display: grid; gap: 10px; }
+    [data-part="builder-editor"] .news-item { border: 1px solid var(--line, #e5dccf); border-radius: 8px; padding: 10px; background: #fff; }
+    [data-part="builder-editor"] .news-item textarea { width: 100%; box-sizing: border-box; font-family: inherit; }
+    [data-part="builder-editor"] .news-autos { list-style: none; padding: 0; margin: 4px 0 8px; display: grid; gap: 6px; }
+    [data-part="builder-editor"] .news-autos li { border-left: 4px solid #8b6bb8; background: #f7f2fb; border-radius: 6px; padding: 6px 10px; display: grid; gap: 2px; }
+    [data-part="builder-editor"] .news-autos small { color: var(--taupe-light, #8a7f73); font-size: 12px; }
+    [data-part="builder-preview"] .pv-cal-grid span.am { background: #fdf0c9; color: #7a5410; }
+    [data-part="builder-preview"] .pv-news { border: 1px solid var(--line, #e5dccf); border-radius: 8px; padding: 8px 10px; margin: 6px 0; background: #fff; font-size: 13px; }
+    [data-part="builder-preview"] .pv-news h4 { margin: 2px 0 4px; font-size: 14px; }
+    [data-part="builder-preview"] .pv-news p { margin: 0 0 6px; line-height: 1.6; }
+    [data-part="builder-preview"] .pv-news small { color: var(--taupe-light, #8a7f73); font-size: 11px; }
+    [data-part="builder-preview"] .pv-band { color: #5b3a85; font-size: 12px; }

@@ -37,9 +37,8 @@
       { id: 'architecture', label: '2 システム' },
       { id: 'schema', label: '3 DBスキーマ' },
       { id: 'simulator', label: '4 加工・CSV' },
-      { id: 'site', label: '5 サイト掲載' },
-      { id: 'carrier', label: '6 契約送料' },
-      { id: 'builder', label: '7 サイトビルダー' }
+      { id: 'carrier', label: '5 契約送料' },
+      { id: 'builder', label: '6 サイトビルダー' }
     ];
     const CHANNELS = [
       { id: 'ALL', label: 'すべて' },

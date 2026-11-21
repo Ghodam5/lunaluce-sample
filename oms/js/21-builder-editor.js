@@ -176,7 +176,7 @@
             builderField('流れる文', 'n.' + i + '.text', n.text, { wide: true, max: 60, hint: '60文字まで。商品の価格・在庫・注文のことは書かない' }) +
             builderLinkPicker('押したときに開くページ', 'n.' + i + '.href', n.href || '', true) + builderPeriod(n, 'n.' + i + '.', false) + '</li>';
         }).join('');
-        return '<h2>流れる文言</h2><p class="lead">サイトの一番上に流れる一文です。上から順に流れます。</p><ol class="notices">' + rows + '</ol><button type="button" class="add" data-b="notice-add">＋ 文言を足す</button>';
+        return '<h2>流れる文言</h2><p class="lead">サイトの一番上に流れる一文です。上から順に流れます。</p><ol class="notices">' + rows + '</ol><button type="button" class="add" data-b="notice-add">＋ 文言を足す</button>' + builderAutoBandsForm();
       }
       function cardForm(card) {
         const kind = card.kind || 'products';
@@ -212,7 +212,7 @@
         if (!b.ready) { host.innerHTML = ''; return; }
         const s = b.sel;
         const target = builderSelected();
-        host.innerHTML = s.type === 'ticker' ? tickerForm() : s.type === 'card' && target ? cardForm(target) : s.type === 'stock' ? builderStockForm() : s.type === 'days' ? builderDaysForm() : s.type === 'plan' && target ? builderPlanForm(target) : s.type === 'product-start' ? builderProductStart() : s.type === 'product' && target ? builderProductForm(target) : s.type === 'theme' && target ? themeForm(target) : '<p class="muted">左の一覧から選んでください。</p>';
+        host.innerHTML = s.type === 'ticker' ? tickerForm() : s.type === 'card' && target ? cardForm(target) : s.type === 'stock' ? builderStockForm() : s.type === 'days' ? builderDaysForm() : s.type === 'news' ? builderNewsForm() : s.type === 'plan' && target ? builderPlanForm(target) : s.type === 'product-start' ? builderProductStart() : s.type === 'product' && target ? builderProductForm(target) : s.type === 'theme' && target ? themeForm(target) : '<p class="muted">左の一覧から選んでください。</p>';
       }
       paint();
       on('oms:builder', function (detail) { if (!detail || detail.form) paint(); });

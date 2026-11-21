@@ -11,11 +11,11 @@
     const BUILDER_UPLOAD_KEY = 'luna-oms-builder-uploads-v1';
     const BUILDER_TILE_MAX = 8;
 
-    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], newCats: [], days: null, listing: {}, plans: [], planQuery: '', listFilter: '', stockQuery: '', stockFilter: '', stockPage: 1, templateQuery: '' };
+    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], newCats: [], days: null, news: [], listing: {}, plans: [], planQuery: '', listFilter: '', stockQuery: '', stockFilter: '', stockPage: 1, templateQuery: '' };
 
     function builderSnapshot() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, days: b.days, listing: b.listing, plans: b.plans });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, days: b.days, news: b.news, listing: b.listing, plans: b.plans });
     }
     function builderDirty() {
       return state.builder.ready && builderSnapshot() !== state.builder.base;
@@ -48,7 +48,8 @@
         b.stock = {};
         b.newProducts = [];
         b.newCats = [];
-        b.days = { weekly: [0, 6], off: [], on: [] }; // 営業日はOMSで管理するのが基本（2.21）
+        b.days = { weekly: [0, 6], off: [], on: [], am: [], long: [] }; // 営業日はOMSで管理するのが基本（2.21）
+        b.news = [];
         b.listing = {};
         b.plans = [];
         b.base = builderSnapshot();
@@ -63,7 +64,8 @@
             b.notices = saved.notices || b.notices;
             b.stock = saved.stock || {};
             b.newProducts = saved.newProducts || [];
-            if ('days' in saved) b.days = saved.days;
+            if ('days' in saved) b.days = builderDaysNorm(saved.days);
+            b.news = saved.news || [];
             b.newCats = saved.newCats || [];
             b.listing = saved.listing || {};
             b.plans = saved.plans || [];
@@ -319,7 +321,7 @@
       return out;
     }
     function builderAllErrors() {
-      const out = builderNoticeErrors().concat(builderStockErrors()).concat(builderDaysErrors()).concat(builderListingErrors()).concat(builderPlanErrors());
+      const out = builderNoticeErrors().concat(builderStockErrors()).concat(builderDaysErrors()).concat(builderNewsErrors()).concat(builderListingErrors()).concat(builderPlanErrors());
       state.builder.newProducts.forEach(function (p) {
         builderProductErrors(p).forEach(function (e) { out.push((p.edit ? '編集中の商品 ' : '新しい商品 ') + (p.title || p.id) + ': ' + e); });
       });
@@ -366,7 +368,9 @@
           const out = cloneData(n);
           ['href', 'startsAt', 'endsAt'].forEach(function (k) { if (!out[k]) delete out[k]; });
           return out;
-        }),
+        }).concat(builderAutoBands()), // 長期休暇から自動で出す文言（auto: 'days'）
+        // お知らせ本文（手で書いた記事＋長期休暇から自動で作った記事 auto: 'days'）
+        news: builderNewsExport(),
         themes: b.themes.filter(function (t) { return !t.builtIn; }).map(function (t) {
           return { id: t.id, name: t.name, background: t.background, border: t.border, top: t.top, accent: t.accent };
         }),
