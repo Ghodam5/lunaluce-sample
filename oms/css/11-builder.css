@@ -206,3 +206,17 @@
     [data-part="builder-editor"] .code-check.is-wait { background: #f2efe9; color: #6b6258; }
     [data-part="builder-editor"] .code-src summary { cursor: pointer; font-size: 12px; color: var(--taupe-light, #8a7f73); }
     [data-part="builder-editor"] .code-src .import { margin: 4px 6px 4px 0; }
+    /* 2.16 営業日 */
+    [data-part="builder-editor"] .days-week { display: flex; flex-wrap: wrap; gap: 6px 12px; }
+    [data-part="builder-editor"] .days-list { list-style: none; padding: 0; margin: 4px 0 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+    [data-part="builder-editor"] .days-list li { display: flex; align-items: center; gap: 6px; border: 1px solid var(--line, #e5dccf); border-radius: 16px; padding: 2px 4px 2px 10px; font-size: 13px; background: #fff; }
+    [data-part="builder-editor"] .days-list button { font-size: 12px; padding: 2px 8px; min-height: 28px; }
+    [data-part="builder-preview"] .pv-cal { margin: 6px 0 10px; }
+    [data-part="builder-preview"] .pv-cal b { font-size: 13px; }
+    [data-part="builder-preview"] .pv-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 12px; margin-top: 4px; }
+    [data-part="builder-preview"] .pv-cal-grid i { font-style: normal; color: var(--taupe-light, #8a7f73); }
+    [data-part="builder-preview"] .pv-cal-grid span { padding: 4px 0; border-radius: 4px; background: #f1f7ef; }
+    [data-part="builder-preview"] .pv-cal-grid span:empty { background: none; }
+    [data-part="builder-preview"] .pv-cal-grid span.off { background: #f8d9d2; color: #8a2d1c; font-weight: 600; }
+    [data-part="builder-preview"] .pv-cal-grid span.today { outline: 2px solid var(--accent, #b06a3b); }
+    [data-part="builder-preview"] .pv-cal-grid span.past { opacity: .4; }

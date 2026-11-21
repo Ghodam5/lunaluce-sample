@@ -11,11 +11,11 @@
     const BUILDER_UPLOAD_KEY = 'luna-oms-builder-uploads-v1';
     const BUILDER_TILE_MAX = 8;
 
-    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], stockQuery: '', stockFilter: '', stockPage: 1, templateQuery: '' };
+    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], days: null, stockQuery: '', stockFilter: '', stockPage: 1, templateQuery: '' };
 
     function builderSnapshot() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, days: b.days });
     }
     function builderDirty() {
       return state.builder.ready && builderSnapshot() !== state.builder.base;
@@ -46,6 +46,7 @@
         b.uploads = {};
         b.stock = {};
         b.newProducts = [];
+        b.days = null;
         b.base = builderSnapshot();
         try {
           const ups = JSON.parse(localStorage.getItem(BUILDER_UPLOAD_KEY) || 'null');
@@ -58,6 +59,7 @@
             b.notices = saved.notices || b.notices;
             b.stock = saved.stock || {};
             b.newProducts = saved.newProducts || [];
+            b.days = saved.days || null;
             b.themes = b.themes.filter(function (t) { return t.builtIn; }).concat(saved.themes || []);
           }
         } catch (e) { /* 下書きが壊れていたら元データのまま */ }
@@ -285,7 +287,7 @@
       return out;
     }
     function builderAllErrors() {
-      const out = builderNoticeErrors().concat(builderStockErrors());
+      const out = builderNoticeErrors().concat(builderStockErrors()).concat(builderDaysErrors());
       state.builder.newProducts.forEach(function (p) {
         builderProductErrors(p).forEach(function (e) { out.push((p.edit ? '編集中の商品 ' : '新しい商品 ') + (p.title || p.id) + ': ' + e); });
       });
@@ -337,7 +339,9 @@
           return { id: t.id, name: t.name, background: t.background, border: t.border, top: t.top, accent: t.accent };
         }),
         // 在庫の状態を切り替えた商品（OMSが正）。status: in/few/wait/out/end、wait は eta（入荷予定日）付き
-        stock: Object.keys(b.stock).map(function (id) { return Object.assign({ id: id }, b.stock[id]); }),
+        stock: Object.keys(b.stock).map(function (id) { const p = builderProduct(id); return Object.assign({ id: id, code: p ? p.code : '' }, b.stock[id]); }),
+        // 営業日（OMSで管理しているときだけ）: 今日から1年分のお休みの日。Welcartの受け取りプラグインがこの通りにする
+        businessDays: builderDaysExport(),
         // 新しく登録する商品（site-src/products/<id>.json と同じ形）。photos は写真の並び（1枚目がメイン）
         products: b.newProducts.filter(function (p) { return !p.edit; }).map(builderProductRow),
         // 登録済みの商品を直したもの（同じ形。商品番号は元のまま）
