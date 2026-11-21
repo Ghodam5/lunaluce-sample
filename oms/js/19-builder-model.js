@@ -7,23 +7,11 @@
       features: { label: '特集一覧のカード', short: '特集' },
       campaign: { label: 'キャンペーンのカード', short: 'キャンペーン' }
     };
-    const BUILDER_PAGES = [
-      ['', 'リンクなし'],
-      ['feature-list.html', '特集の一覧'],
-      ['new-arrivals.html', '新着商品'],
-      ['sale.html', '数量限定・特価'],
-      ['campaign.html', 'キャンペーン'],
-      ['name-preview.html', '名入れお試し'],
-      ['contact.html', 'お問い合わせ'],
-      ['shopping-guide.html', 'ご利用ガイド'],
-      ['shipping.html', '送料・お届け'],
-      ['news.html', 'お知らせ']
-    ];
     const BUILDER_STORE_KEY = 'luna-oms-builder-draft-v1';
     const BUILDER_UPLOAD_KEY = 'luna-oms-builder-uploads-v1';
     const BUILDER_TILE_MAX = 8;
 
-    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {} };
+    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '' };
 
     function builderSnapshot() {
       const b = state.builder;
@@ -54,6 +42,7 @@
         b.notices = cloneData(data.notices.notices || []);
         b.products = data.products;
         b.images = data.images;
+        b.links = data.links || b.links;
         b.uploads = {};
         b.base = builderSnapshot();
         try {
@@ -186,6 +175,52 @@
       return true;
     }
 
+    // リンク先: URLの文字を、担当者が読める名前に直す（カテゴリ・特集・ページ・商品）
+    function builderLinkParse(href) {
+      href = href || '';
+      if (!href) return { type: 'none' };
+      const q = href.indexOf('?');
+      const file = q < 0 ? href.split('#')[0] : href.slice(0, q);
+      const params = new URLSearchParams(q < 0 ? '' : href.slice(q + 1).split('#')[0]);
+      if (file === 'category.html') return { type: 'category', g: params.get('g') || 'all', m: params.get('m') || '', s: params.get('s') || '', n: params.get('n') === '1', extra: Array.from(params.keys()).some(function (k) { return ['g', 'm', 's', 'n'].indexOf(k) < 0; }) };
+      if (file === 'item.html' && params.get('id')) return { type: 'product', id: params.get('id') };
+      return { type: 'page', file: file, plain: q < 0 && href.indexOf('#') < 0 };
+    }
+    function builderCategoryHref(g, m, sub, n) {
+      let h = 'category.html?g=' + encodeURIComponent(g || 'all');
+      if (m) h += '&m=' + encodeURIComponent(m);
+      if (m && sub) h += '&s=' + encodeURIComponent(sub);
+      if (n) h += '&n=1';
+      return h;
+    }
+    function builderPageInfo(file) {
+      const L = state.builder.links;
+      const f = L.features.find(function (x) { return x.href === file; });
+      if (f) return { label: f.label, image: f.image, group: '特集' };
+      for (let i = 0; i < L.pageGroups.length; i += 1) {
+        const p = L.pageGroups[i].pages.find(function (x) { return x.href === file; });
+        if (p) return { label: p.label, image: '', group: L.pageGroups[i].name };
+      }
+      return null;
+    }
+    function builderLinkInfo(href) {
+      const p = builderLinkParse(href);
+      if (p.type === 'none') return { kind: 'なし', label: 'リンクなし', image: '' };
+      if (p.type === 'product') {
+        const prod = builderProduct(p.id);
+        return prod ? { kind: '商品', label: prod.title, image: prod.image } : { kind: '商品', label: '商品番号 ' + p.id + '（掲載中の商品にありません）', image: '', bad: true };
+      }
+      if (p.type === 'category') {
+        if (p.g === 'all') return { kind: 'カテゴリ', label: 'すべての商品' + (p.n ? '（名入れできる商品だけ）' : ''), image: '' };
+        const g = state.builder.links.categories.find(function (x) { return x.k === p.g; });
+        if (!g) return { kind: 'カテゴリ', label: href, image: '', bad: true };
+        const m = g.mids.find(function (x) { return x.k === p.m; });
+        const sub = m && m.subs.find(function (x) { return x[0] === p.s; });
+        return { kind: 'カテゴリ', label: [g.name, m && m.name, sub && sub[1]].filter(Boolean).join(' › ') + (p.n ? '（名入れできる商品だけ）' : ''), image: '' };
+      }
+      const info = builderPageInfo(p.file);
+      return info ? { kind: info.group, label: info.label + (p.plain ? '' : '（くわしい指定あり）'), image: info.image } : { kind: 'ページ', label: href, image: '' };
+    }
     function builderLocalLink(href) {
       return /^[a-z0-9][a-z0-9-]*\.html(?:[?#][^\s"'<>]*)?$/.test(href || '');
     }

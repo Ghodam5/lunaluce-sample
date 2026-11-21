@@ -15,18 +15,13 @@
       else obj[last] = value;
       if ((last === 'startDate' || last === 'lastDay') && (obj.startsAt || obj.endsAt)) obj.timeZone = 'Asia/Tokyo';
     }
-    function builderInput(el, repaintForm) {
+    // 選んでいる部品（流れる文言・テーマ・カード）の項目に値を入れる
+    function builderSetField(field, value) {
       const b = state.builder;
-      const field = el.dataset.f;
-      const value = el.type === 'checkbox' ? el.checked : el.value;
       if (b.sel.type === 'ticker') {
         builderSetPath({ n: b.notices }, field, value);
       } else if (b.sel.type === 'theme') {
-        const theme = builderSelected();
-        if (field === 'id') {
-          b.cards.forEach(function (c) { if (c.theme === theme.id) c.theme = value; });
-        }
-        theme[field] = value;
+        builderSelected()[field] = value;
       } else {
         const card = builderSelected();
         if (field === 'useImage') {
@@ -36,7 +31,29 @@
           builderSetPath(card, field, value);
         }
       }
+    }
+    function builderInput(el, repaintForm) {
+      builderSetField(el.dataset.f, el.type === 'checkbox' ? el.checked : el.value);
       builderChanged(repaintForm);
+    }
+    function builderGetField(field) {
+      const b = state.builder;
+      let obj = b.sel.type === 'ticker' ? { n: b.notices } : builderSelected();
+      field.split('.').forEach(function (k) { obj = obj == null ? obj : obj[k]; });
+      return obj || '';
+    }
+    // カテゴリの選択肢が変わったら、URLを組み立て直す（大分類を変えたら下の段は選び直し）
+    function builderLinkCat(el) {
+      const field = el.dataset.field;
+      const cur = builderLinkParse(builderGetField(field));
+      const c = cur.type === 'category' ? cur : { g: '', m: '', s: '', n: false };
+      const part = el.dataset.linkCat;
+      if (part === 'g') { c.g = el.value; c.m = ''; c.s = ''; }
+      if (part === 'm') { c.m = el.value; c.s = ''; }
+      if (part === 's') c.s = el.value;
+      if (part === 'n') c.n = el.checked;
+      builderSetField(field, c.g ? builderCategoryHref(c.g === 'all' ? 'all' : c.g, c.g === 'all' ? '' : c.m, c.s, c.n) : '');
+      builderChanged(true);
     }
     function builderMove(list, index, dir) {
       const to = index + dir;
@@ -49,7 +66,10 @@
       const b = state.builder;
       const card = b.sel.type === 'card' ? builderSelected() : null;
       const index = Number(el.dataset.index);
-      if (name === 'select') { b.sel = { type: el.dataset.type, index: index }; b.query = {}; emit('oms:builder', { form: true }); return; }
+      if (name === 'link-open') { b.linkOpen = b.linkOpen === el.dataset.field ? '' : el.dataset.field; b.linkTab = ''; b.linkQuery = ''; emit('oms:builder', { form: true }); return; }
+      if (name === 'link-tab') { b.linkTab = el.dataset.tab; emit('oms:builder', { form: true }); return; }
+      if (name === 'link-set') { builderSetField(el.dataset.field, el.dataset.href); b.linkOpen = ''; b.linkTab = ''; b.linkQuery = ''; builderChanged(true); return; }
+      if (name === 'select') { b.linkOpen = ''; b.sel = { type: el.dataset.type, index: index }; b.query = {}; emit('oms:builder', { form: true }); return; }
       if (name === 'card-move') { const to = builderMove(b.cards, index, Number(el.dataset.dir)); if (to !== false) { b.sel = { type: 'card', index: to }; builderChanged(true); } return; }
       if (name === 'card-add') { b.cards.push(builderNewCard(el.dataset.kind)); b.sel = { type: 'card', index: b.cards.length - 1 }; builderChanged(true); showToast('新しいカードは「トップに表示する」が切れた状態で作りました。'); return; }
       if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = builderUniqueId(card.id.replace(/-copy(-\d+)?$|-\d+$/, '') + '-copy', b.cards); copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
@@ -105,6 +125,12 @@
       });
       host.addEventListener('input', function (event) {
         const el = event.target;
+        if (el.dataset.lq !== undefined) {
+          state.builder.linkQuery = el.value;
+          const box = host.querySelector('[data-lhits="' + el.dataset.lq + '"]');
+          if (box) box.innerHTML = builderLinkHits(el.dataset.lq);
+          return;
+        }
         if (el.dataset.q !== undefined) {
           state.builder.query[el.dataset.q] = el.value;
           const box = host.querySelector('[data-hits="' + el.dataset.q + '"]');
@@ -116,6 +142,7 @@
       host.addEventListener('change', function (event) {
         const el = event.target;
         if (el.dataset.import !== undefined) { builderImportFrom(el); return; }
+        if (el.dataset.linkCat !== undefined) { builderLinkCat(el); return; }
         if (el.dataset.f && (el.type === 'checkbox' || el.tagName === 'SELECT' || el.type === 'date')) builderInput(el, true);
       });
       loadBuilder();

@@ -11,12 +11,52 @@
     function builderSwitch(label, field, on) {
       return '<label class="switch"><input type="checkbox" data-f="' + field + '"' + (on ? ' checked' : '') + '><span>' + escapeHtml(label) + '</span></label>';
     }
-    function builderPageSelect(label, field, value) {
-      const known = BUILDER_PAGES.some(function (p) { return p[0] === value; });
-      const opts = BUILDER_PAGES.map(function (p) {
-        return '<option value="' + p[0] + '"' + (p[0] === value ? ' selected' : '') + '>' + escapeHtml(p[1]) + '</option>';
-      }).join('') + (known ? '' : '<option value="' + escapeHtml(value) + '" selected>いまのリンク（' + escapeHtml(value) + '）</option>');
-      return '<label class="fld"><span>' + escapeHtml(label) + '</span><select data-f="' + field + '">' + opts + '</select></label>';
+    // リンク先を名前で選ぶ部品。閉じているときは「いまの行き先」だけ、開くとカテゴリ・特集・ページ・商品から選べる。
+    function builderLinkPicker(label, field, value, allowNone) {
+      const b = state.builder;
+      const info = builderLinkInfo(value);
+      const open = b.linkOpen === field;
+      let html = '<div class="link-pick' + (open ? ' is-open' : '') + '"><span class="lp-label">' + escapeHtml(label) + '</span>' +
+        '<div class="lp-now' + (info.bad ? ' is-bad' : '') + '">' + (info.image ? '<img src="' + escapeHtml(builderImg(info.image)) + '" alt="">' : '') + '<span><small>' + escapeHtml(info.kind) + '</small><b>' + escapeHtml(info.label) + '</b></span>' +
+        '<button type="button" data-b="link-open" data-field="' + field + '">' + (open ? '閉じる' : '変える') + '</button></div>';
+      if (!open) return html + '</div>';
+      const parsed = builderLinkParse(value);
+      const tab = b.linkTab || (parsed.type === 'product' ? 'product' : parsed.type === 'category' ? 'category' : 'page');
+      const tabs = [['category', 'カテゴリ'], ['page', '特集・ページ'], ['product', '商品']];
+      html += '<div class="lp-tabs" role="tablist">' + tabs.map(function (t) { return '<button type="button" role="tab" aria-selected="' + (t[0] === tab) + '" data-b="link-tab" data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('') + (allowNone ? '<button type="button" class="lp-none" data-b="link-set" data-field="' + field + '" data-href="">リンクなしにする</button>' : '') + '</div>';
+      if (tab === 'category') {
+        const c = parsed.type === 'category' ? parsed : { g: '', m: '', s: '', n: false };
+        const g = b.links.categories.find(function (x) { return x.k === c.g; });
+        const m = g && g.mids.find(function (x) { return x.k === c.m; });
+        html += '<div class="lp-cat"><label class="fld"><span>大きな分類</span><select data-link-cat="g" data-field="' + field + '"><option value="">選んでください</option><option value="all"' + (c.g === 'all' ? ' selected' : '') + '>すべての商品</option>' +
+          b.links.categories.map(function (x) { return '<option value="' + escapeHtml(x.k) + '"' + (x.k === c.g ? ' selected' : '') + '>' + escapeHtml(x.name) + '</option>'; }).join('') + '</select></label>';
+        if (g) html += '<label class="fld"><span>その中の分類（任意）</span><select data-link-cat="m" data-field="' + field + '"><option value="">' + escapeHtml(g.name) + 'のすべて</option>' + g.mids.map(function (x) { return '<option value="' + escapeHtml(x.k) + '"' + (x.k === c.m ? ' selected' : '') + '>' + escapeHtml(x.name) + '</option>'; }).join('') + '</select></label>';
+        if (m && m.subs.length) html += '<label class="fld"><span>さらに細かく（任意）</span><select data-link-cat="s" data-field="' + field + '"><option value="">' + escapeHtml(m.name) + 'のすべて</option>' + m.subs.map(function (x) { return '<option value="' + escapeHtml(x[0]) + '"' + (x[0] === c.s ? ' selected' : '') + '>' + escapeHtml(x[1]) + '</option>'; }).join('') + '</select></label>';
+        if (c.g) html += '<label class="switch"><input type="checkbox" data-link-cat="n" data-field="' + field + '"' + (c.n ? ' checked' : '') + '><span>名入れできる商品だけにする</span></label>';
+        html += '</div>';
+      } else if (tab === 'page') {
+        const cur = parsed.type === 'page' ? parsed.file : '';
+        html += '<p class="lp-h">特集</p><div class="lp-feats">' + b.links.features.map(function (f) {
+          return '<button type="button" class="lp-feat' + (f.href === cur ? ' is-on' : '') + '" data-b="link-set" data-field="' + field + '" data-href="' + escapeHtml(f.href) + '">' + (f.image ? '<img src="' + escapeHtml(builderImg(f.image)) + '" alt="" loading="lazy">' : '<i>一覧</i>') + '<span>' + escapeHtml(f.label) + '</span></button>';
+        }).join('') + '</div>' + b.links.pageGroups.map(function (grp) {
+          return '<p class="lp-h">' + escapeHtml(grp.name) + '</p><div class="lp-pages">' + grp.pages.map(function (p) {
+            return '<button type="button" class="lp-page' + (p.href === cur ? ' is-on' : '') + '" data-b="link-set" data-field="' + field + '" data-href="' + escapeHtml(p.href) + '">' + escapeHtml(p.label) + '</button>';
+          }).join('') + '</div>';
+        }).join('');
+      } else {
+        html += '<label class="fld"><span>商品名か商品番号で探す</span><input type="search" data-lq="' + field + '" value="' + escapeHtml(b.linkQuery) + '" placeholder="例: シフォン / 48734"></label><div class="hits" data-lhits="' + field + '">' + builderLinkHits(field) + '</div>';
+      }
+      html += '<details class="adv"><summary>URLを直接入れる（くわしい人向け）</summary>' + builderField('URL', field, value, { wide: true, hint: 'サイト内のページだけ。例: category.html?g=food' }) + '</details>';
+      return html + '</div>';
+    }
+    function builderLinkHits(field) {
+      const q = foldText(state.builder.linkQuery || '');
+      if (!q) return '';
+      const hits = state.builder.products.filter(function (p) { return p.id.indexOf(q) === 0 || foldText(p.title).indexOf(q) >= 0; }).slice(0, 6);
+      if (!hits.length) return '<p class="muted">見つかりません</p>';
+      return hits.map(function (p) {
+        return '<button type="button" class="hit" data-b="link-set" data-field="' + field + '" data-href="item.html?id=' + escapeHtml(p.id) + '"><img src="' + escapeHtml(builderImg(p.image)) + '" alt="" loading="lazy"><span>' + escapeHtml(p.title) + '<small>' + escapeHtml(p.id) + '・' + formatYen(p.price) + '</small></span></button>';
+      }).join('');
     }
     function builderPeriod(item, prefix, required) {
       return '<div class="period">' +
@@ -75,7 +115,7 @@
         const opts = builderImageChoices().concat(builderImageOk(t.image) || !t.image ? [] : [t.image]).map(function (src) {
           return '<option value="' + escapeHtml(src) + '"' + (src === t.image ? ' selected' : '') + '>' + escapeHtml(builderImageLabel(src)) + '</option>';
         }).join('');
-        return '<li class="tile"><div class="row"><b class="tile-no">' + (i + 1) + '</b>' + builderField('特集の名前', 'tiles.' + i + '.label', t.label) + builderPageSelect('リンク先', 'tiles.' + i + '.href', t.href) + '</div>' +
+        return '<li class="tile"><div class="row"><b class="tile-no">' + (i + 1) + '</b>' + builderField('特集の名前', 'tiles.' + i + '.label', t.label) + '</div>' + builderLinkPicker('押したときに開くページ', 'tiles.' + i + '.href', t.href, false) +
           '<div class="row"><img class="tile-thumb" src="' + escapeHtml(builderImg(t.image)) + '" alt=""><label class="fld"><span>画像</span><select data-f="tiles.' + i + '.image">' + opts + '</select></label>' + builderImportButton(i) + '</div>' +
           '<div class="row"><span class="tools"><button type="button" data-b="tile-move" data-tile="' + i + '" data-dir="-1"' + (i === 0 ? ' disabled' : '') + '>↑</button><button type="button" data-b="tile-move" data-tile="' + i + '" data-dir="1"' + (i === list.length - 1 ? ' disabled' : '') + '>↓</button><button type="button" data-b="tile-remove" data-tile="' + i + '">この特集を外す</button></span></div></li>';
       }).join('') + '</ol><button type="button" class="add" data-b="tile-add"' + (full ? ' disabled' : '') + '>＋ 特集を足す</button>' + (full ? '<small class="muted">' + BUILDER_TILE_MAX + 'つまでです。</small>' : '');
@@ -87,7 +127,7 @@
           return '<li class="notice"><div class="row">' + builderSwitch('表示する', 'n.' + i + '.active', n.active !== false) +
             '<span class="tools"><button type="button" data-b="notice-move" data-index="' + i + '" data-dir="-1">↑</button><button type="button" data-b="notice-move" data-index="' + i + '" data-dir="1">↓</button><button type="button" data-b="notice-remove" data-index="' + i + '">削除</button></span></div>' +
             builderField('流れる文', 'n.' + i + '.text', n.text, { wide: true, max: 60, hint: '60文字まで。商品の価格・在庫・注文のことは書かない' }) +
-            builderPageSelect('押したときに開くページ', 'n.' + i + '.href', n.href || '') + builderPeriod(n, 'n.' + i + '.', false) + '</li>';
+            builderLinkPicker('押したときに開くページ', 'n.' + i + '.href', n.href || '', true) + builderPeriod(n, 'n.' + i + '.', false) + '</li>';
         }).join('');
         return '<h2>流れる文言</h2><p class="lead">サイトの一番上に流れる一文です。上から順に流れます。</p><ol class="notices">' + rows + '</ol><button type="button" class="add" data-b="notice-add">＋ 文言を足す</button>';
       }
@@ -98,7 +138,7 @@
           '<h3>色</h3>' + builderThemePicker(card) +
           '<h3>文字</h3>' + (kind === 'campaign' ? builderField('目印（バッジ）', 'badge', card.badge, { placeholder: '例: 5円ご縁 / 10%OFF', max: 16 }) : '') +
           builderField('題名', 'title', card.title, { wide: true, max: 40 }) + builderField('一文', 'text', card.text, { wide: true, max: 60, area: true }) +
-          '<div class="row">' + builderField('ボタンの文字', 'cta', card.cta, { max: 24 }) + builderPageSelect('ボタンのリンク先', 'href', card.href) + '</div>';
+          builderField('ボタンの文字', 'cta', card.cta, { max: 24 }) + builderLinkPicker('ボタンを押したときに開くページ（カードの画像を押したときも同じ）', 'href', card.href, false);
         if (kind === 'features') {
           body += '<h3>画像</h3>' + builderImagePicker(card) + '<h3>並べる特集</h3>' + builderTiles(card);
         } else {

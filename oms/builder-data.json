@@ -1873,5 +1873,429 @@
     "images/features/pb-goen.jpg",
     "images/kashi-xmas.jpg",
     "images/main-flavor.jpg"
-  ]
+  ],
+  "links": {
+    "categories": [
+      {
+        "k": "food",
+        "name": "食べ物・飲み物",
+        "mids": [
+          {
+            "k": "petit",
+            "name": "プチギフト",
+            "subs": [
+              [
+                "cookie",
+                "クッキー"
+              ],
+              [
+                "candy",
+                "キャンディー・金平糖"
+              ],
+              [
+                "dragee",
+                "ドラジェ"
+              ],
+              [
+                "wafu",
+                "和風"
+              ],
+              [
+                "choco",
+                "チョコレート"
+              ],
+              [
+                "tea",
+                "紅茶＆コーヒー"
+              ],
+              [
+                "other",
+                "その他"
+              ]
+            ]
+          },
+          {
+            "k": "hikigashi",
+            "name": "引菓子",
+            "subs": []
+          },
+          {
+            "k": "gourmet",
+            "name": "引出物グルメ",
+            "subs": [
+              [
+                "sweets",
+                "バーム・パン・スイーツ"
+              ],
+              [
+                "gourmet",
+                "パスタ・スープ・調味料"
+              ],
+              [
+                "gohan",
+                "お米・ごはん"
+              ],
+              [
+                "bousai",
+                "防災・保存食"
+              ]
+            ]
+          },
+          {
+            "k": "chiffon",
+            "name": "シフォンケーキ",
+            "subs": []
+          }
+        ]
+      },
+      {
+        "k": "goods",
+        "name": "雑貨・実用品",
+        "mids": [
+          {
+            "k": "goods",
+            "name": "実用品プチギフト",
+            "subs": []
+          },
+          {
+            "k": "set",
+            "name": "セット商品",
+            "subs": []
+          },
+          {
+            "k": "disney",
+            "name": "ディズニー",
+            "subs": []
+          }
+        ]
+      },
+      {
+        "k": "welcome",
+        "name": "ウェルカム飾り",
+        "mids": [
+          {
+            "k": "board",
+            "name": "ウェルカムボード",
+            "subs": [
+              [
+                "mirror",
+                "ミラー"
+              ],
+              [
+                "clock",
+                "クロック"
+              ],
+              [
+                "bb",
+                "黒板・サムシングフォー"
+              ],
+              [
+                "flower",
+                "フラワー・花"
+              ]
+            ]
+          },
+          {
+            "k": "wpetit",
+            "name": "ウェルカムプチギフト",
+            "subs": []
+          },
+          {
+            "k": "diy",
+            "name": "DIY用品",
+            "subs": []
+          }
+        ]
+      },
+      {
+        "k": "paper",
+        "name": "ペーパー・演出",
+        "mids": [
+          {
+            "k": "invite",
+            "name": "招待状・席次表・席札",
+            "subs": [
+              [
+                "invite",
+                "招待状"
+              ],
+              [
+                "seat",
+                "席次表・席札"
+              ],
+              [
+                "print",
+                "印刷代行"
+              ]
+            ]
+          },
+          {
+            "k": "coaster",
+            "name": "名入れコースター",
+            "subs": []
+          },
+          {
+            "k": "guest",
+            "name": "ゲストブック・証明書",
+            "subs": [
+              [
+                "guest",
+                "ゲストブック・芳名帳"
+              ],
+              [
+                "cert",
+                "結婚証明書"
+              ]
+            ]
+          },
+          {
+            "k": "shower",
+            "name": "シャワー・小物",
+            "subs": []
+          },
+          {
+            "k": "bag",
+            "name": "ブライダルバッグ",
+            "subs": [
+              [
+                "set",
+                "50個セット"
+              ],
+              [
+                "single",
+                "1個から"
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "k": "parents",
+        "name": "両親贈呈",
+        "mids": [
+          {
+            "k": "doll",
+            "name": "ウェイトドール・ベア",
+            "subs": []
+          },
+          {
+            "k": "kosodate",
+            "name": "子育て卒業証書",
+            "subs": []
+          },
+          {
+            "k": "clock",
+            "name": "クロックギフト",
+            "subs": []
+          }
+        ]
+      },
+      {
+        "k": "catalog",
+        "name": "カタログギフト",
+        "mids": [
+          {
+            "k": "grace",
+            "name": "Grace",
+            "subs": []
+          },
+          {
+            "k": "shikisai",
+            "name": "SHIKISAI ONE",
+            "subs": []
+          },
+          {
+            "k": "ocean",
+            "name": "OCEAN&TERRE",
+            "subs": []
+          }
+        ]
+      },
+      {
+        "k": "season",
+        "name": "季節・特集",
+        "mids": [
+          {
+            "k": "xmas",
+            "name": "クリスマス",
+            "subs": [
+              [
+                "petit",
+                "クリスマスのプチギフト"
+              ]
+            ]
+          },
+          {
+            "k": "val",
+            "name": "バレンタイン",
+            "subs": []
+          },
+          {
+            "k": "hal",
+            "name": "ハロウィン",
+            "subs": []
+          },
+          {
+            "k": "other",
+            "name": "お年賀・そのほか",
+            "subs": []
+          }
+        ]
+      }
+    ],
+    "features": [
+      {
+        "href": "bridal-bag.html",
+        "label": "ブライダルバッグ",
+        "image": "images/bridal-bag-intro.png"
+      },
+      {
+        "href": "preparedness-gift.html",
+        "label": "防災・備蓄ギフト",
+        "image": "images/feature-emergency.jpg"
+      },
+      {
+        "href": "neko.html",
+        "label": "にゃんこモチーフ",
+        "image": "images/feature-neko.png"
+      },
+      {
+        "href": "new-arrivals.html",
+        "label": "新着商品",
+        "image": "images/feature-new.png"
+      },
+      {
+        "href": "sale.html",
+        "label": "数量限定・特価商品",
+        "image": "images/feature-sale.png"
+      },
+      {
+        "href": "feature-list.html",
+        "label": "特集の一覧",
+        "image": ""
+      }
+    ],
+    "pageGroups": [
+      {
+        "k": "campaign",
+        "name": "キャンペーン・読みもの",
+        "pages": [
+          {
+            "href": "campaign.html",
+            "label": "お得なキャンペーン開催中"
+          },
+          {
+            "href": "campaign-5yen.html",
+            "label": "5円でご縁キャンペーン"
+          },
+          {
+            "href": "charity-santa.html",
+            "label": "チャリティーサンタ"
+          },
+          {
+            "href": "ranking.html",
+            "label": "人気ランキング"
+          },
+          {
+            "href": "news.html",
+            "label": "お知らせ"
+          },
+          {
+            "href": "columns.html",
+            "label": "ギフトの読みもの"
+          },
+          {
+            "href": "brands.html",
+            "label": "ブランド・カタログから探す"
+          },
+          {
+            "href": "monitor.html",
+            "label": "モニター募集"
+          },
+          {
+            "href": "name-preview.html",
+            "label": "名入れお試し"
+          }
+        ]
+      },
+      {
+        "k": "guide",
+        "name": "ご案内・ガイド",
+        "pages": [
+          {
+            "href": "shopping-guide.html",
+            "label": "お買い物ガイド"
+          },
+          {
+            "href": "product-guide.html",
+            "label": "選び方・ご注文ガイド"
+          },
+          {
+            "href": "wedding-guide.html",
+            "label": "結婚準備ガイド"
+          },
+          {
+            "href": "shipping.html",
+            "label": "送料・配送のご案内"
+          },
+          {
+            "href": "noshi.html",
+            "label": "包装・熨斗オプション"
+          },
+          {
+            "href": "option.html",
+            "label": "袋・シール・紙袋のオプション"
+          },
+          {
+            "href": "bulk-pricing.html",
+            "label": "まとめ買い・数量別価格"
+          },
+          {
+            "href": "speed.html",
+            "label": "お急ぎ・スピード対応"
+          },
+          {
+            "href": "faq.html",
+            "label": "よくあるご質問"
+          },
+          {
+            "href": "contact.html",
+            "label": "お問い合わせ"
+          },
+          {
+            "href": "bulk-order.html",
+            "label": "大口注文のご相談"
+          },
+          {
+            "href": "telephone-order.html",
+            "label": "電話でのご注文"
+          },
+          {
+            "href": "fax-order.html",
+            "label": "FAXでのご注文"
+          },
+          {
+            "href": "overseas-shipping.html",
+            "label": "海外発送について"
+          },
+          {
+            "href": "partners.html",
+            "label": "提携商品募集"
+          },
+          {
+            "href": "company.html",
+            "label": "会社概要"
+          },
+          {
+            "href": "legal.html",
+            "label": "特定商取引法に基づく表記"
+          },
+          {
+            "href": "privacy.html",
+            "label": "個人情報の取り扱い"
+          }
+        ]
+      }
+    ]
+  }
 }
