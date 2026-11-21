@@ -1,0 +1,32 @@
+# 部品: oms-db（OMSのデータベース）
+# 置き場: ホスティンガーVPS（hPanel → Dockerマネージャー → Compose → URLから作成）
+# 外からは直接つながらない。同じ oms-net の部品だけが「oms-db」という名前で使う。
+# 環境欄に入れるもの: POSTGRES_PASSWORD（林さんが入力。記録・GitHubには書かない）
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: oms
+      POSTGRES_USER: oms
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD を環境欄に入れてください}
+      TZ: Asia/Tokyo
+    volumes:
+      - oms-db-data:/var/lib/postgresql/data
+    networks:
+      oms-net:
+        aliases: [oms-db]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U oms -d oms"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    mem_limit: 512m
+
+networks:
+  oms-net:
+    name: oms-net
+
+volumes:
+  oms-db-data:
+    name: oms-db-data
