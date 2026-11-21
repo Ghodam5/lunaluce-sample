@@ -328,6 +328,7 @@
       else if (name === 'carrier-mode') setCarrierMode(el.dataset.mode);
       else if (name === 'carrier-zone') setCarrierZone(el);
       else if (name === 'carrier-size') setCarrierSize(el);
+      else if (carrierAction(name, el)) return; // 36-carrier-rates: 契約送料を直す
       else if (name === 'pick-seal') pickMiniSeal(el.dataset.sealId);
     }
     document.addEventListener('click', function (event) {

@@ -373,3 +373,14 @@
       [data-part="tab-carrier"] .panel { padding: 22px; }
     }
 
+    /* 2.28 契約送料を直す */
+    [data-part="tab-carrier"] .rate-bar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin: 14px 0 8px; }
+    [data-part="tab-carrier"] .rate-bar.is-edit { padding: 10px 12px; border-radius: 12px; background: #fff6ee; border: 1px solid #e8cdb5; }
+    [data-part="tab-carrier"] .rate-bar label { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 14px; }
+    [data-part="tab-carrier"] .rate-bar button { min-height: 44px; padding: 8px 14px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-weight: 600; }
+    [data-part="tab-carrier"] .rate-bar button.primary { background: var(--forest, #1f2b27); color: #fff; border-color: transparent; }
+    [data-part="tab-carrier"] .rate-bar .muted { color: var(--taupe-light); font-size: 13px; flex-basis: 100%; margin: 0; }
+    [data-part="tab-carrier"] .rate-bar .rate-err { color: #9b2c27; font-size: 13px; flex-basis: 100%; margin: 0; }
+    [data-part="tab-carrier"] .rate-in { width: 76px; min-height: 40px; padding: 6px 8px; border-radius: 8px; border: 1px solid #d6d3d1; font-size: 16px; text-align: right; background: #fff; }
+    [data-part="tab-carrier"] td.is-changed { background: #fff6ee; font-weight: 700; }
+    [data-part="tab-carrier"] input[type="date"] { min-height: 40px; padding: 6px 8px; border-radius: 8px; border: 1px solid #d6d3d1; font-size: 16px; }

@@ -108,32 +108,22 @@
     function renderCarrierTab(host) {
       function paint() {
         const sizeMode = state.carrierMode === 'size';
-        const yen = sizeMode ? yamatoContractCost(state.carrierZone, state.carrierSize) : NEKOPOS_CONTRACT;
+        const yen = sizeMode ? yamatoContractCost(state.carrierZone, state.carrierSize) : nekoposContract();
         const zoneOptions = '<option value="">区分を選ぶ</option>' + YAMATO_CONTRACT.map(function (item) {
           return '<option value="' + escapeHtml(item.zone) + '"' + (item.zone === state.carrierZone ? ' selected' : '') + '>' + escapeHtml(item.zone) + '</option>';
         }).join('');
         const sizeOptions = '<option value="">サイズを選ぶ</option>' + YAMATO_SIZES.map(function (size) {
           return '<option value="' + size + '"' + (size === state.carrierSize ? ' selected' : '') + '>' + size + '</option>';
         }).join('');
-        const head = '<tr><th scope="col">区分</th>' + YAMATO_SIZES.map(function (size) {
-          return '<th scope="col">' + size + '</th>';
-        }).join('') + '</tr>';
-        const body = YAMATO_CONTRACT.map(function (item) {
-          const cells = item.rates.map(function (rate, index) {
-            const on = sizeMode && item.zone === state.carrierZone && YAMATO_SIZES[index] === state.carrierSize;
-            return '<td' + (on ? ' class="is-on"' : '') + '>' + rate.toLocaleString('ja-JP') + '</td>';
-          }).join('');
-          return '<tr><th scope="row">' + escapeHtml(item.zone) + '</th>' + cells + '</tr>';
-        }).join('');
         let result;
         if (!sizeMode) {
-          result = '<span class="tag">ネコポス 280円</span><strong data-carrier-yen="' + NEKOPOS_CONTRACT + '">' + formatYen(NEKOPOS_CONTRACT) + '</strong><p>定額です。サイズ表の行ではありません。ルナルーチェがヤマトに払う金額です。</p>';
+          result = '<span class="tag">ネコポス ' + formatYen(nekoposContract()) + '</span><strong data-carrier-yen="' + nekoposContract() + '">' + formatYen(nekoposContract()) + '</strong><p>定額です。サイズ表の行ではありません。ルナルーチェがヤマトに払う金額です。</p>';
         } else if (yen == null) {
           result = '<span class="tag">ヤマト契約送料</span><strong data-carrier-yen="">未選択</strong><p>区分とサイズを選ぶと、契約送料が出ます。</p>';
         } else {
           result = '<span class="tag">ヤマト契約送料</span><strong data-carrier-yen="' + yen + '">' + formatYen(yen) + '</strong><p>' + escapeHtml(state.carrierZone) + '・サイズ' + state.carrierSize + '。ルナルーチェがヤマトに払う金額です。</p>';
         }
-        host.innerHTML = '<section class="panel"><p class="kicker">Carrier cost</p><h2>ヤマト契約送料</h2><p class="lead">黒猫ヤマトの契約運賃です。お客様が払う送料には入れません。名入れ・のし・包装はこの計算の外です。</p><div class="modes"><button type="button" data-action="carrier-mode" data-mode="size" aria-pressed="' + (sizeMode ? 'true' : 'false') + '">宅急便サイズ</button><button type="button" data-action="carrier-mode" data-mode="nekopos" aria-pressed="' + (sizeMode ? 'false' : 'true') + '">ネコポス</button></div><div class="pick"' + (sizeMode ? '' : ' hidden') + '><label>区分<select data-action="carrier-zone">' + zoneOptions + '</select></label><label>サイズ<select data-action="carrier-size">' + sizeOptions + '</select></label></div><div class="result" data-carrier-result>' + result + '<p>お客様への請求送料ではありません。</p></div><div class="scroll"><table><thead>' + head + '</thead><tbody>' + body + '</tbody><caption>単位は円。サイズ60から200は契約表の列です。商品の箱サイズとは結びつけていません。</caption></table></div><aside class="nekopos"><h3>ネコポス 280円</h3><p>定額です。上のサイズ表の行ではありません。お客様への請求送料ではありません。</p></aside></section>';
+        host.innerHTML = '<section class="panel"><p class="kicker">Carrier cost</p><h2>ヤマト契約送料</h2><p class="lead">黒猫ヤマトの契約運賃です。電話などのお問い合わせで、当店の送料がいくらかかるかを見るためのものです。お客様が払う送料には入れません。名入れ・のし・包装はこの計算の外です。</p><div class="modes"><button type="button" data-action="carrier-mode" data-mode="size" aria-pressed="' + (sizeMode ? 'true' : 'false') + '">宅急便サイズ</button><button type="button" data-action="carrier-mode" data-mode="nekopos" aria-pressed="' + (sizeMode ? 'false' : 'true') + '">ネコポス</button></div><div class="pick"' + (sizeMode ? '' : ' hidden') + '><label>区分<select data-action="carrier-zone">' + zoneOptions + '</select></label><label>サイズ<select data-action="carrier-size">' + sizeOptions + '</select></label></div><div class="result" data-carrier-result>' + result + '<p>お客様への請求送料ではありません。</p></div>' + carrierEditBar() + '<div class="scroll">' + carrierTable(sizeMode) + '</div><aside class="nekopos"><h3>ネコポス ' + formatYen(nekoposContract()) + '</h3><p>定額です。上のサイズ表の行ではありません。お客様への請求送料ではありません。</p></aside></section>';
       }
       paint();
       on('oms:carrier', paint);
