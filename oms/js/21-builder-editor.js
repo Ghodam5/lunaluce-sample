@@ -81,7 +81,7 @@
     function builderImgTile(src, on) {
       const up = state.builder.uploads[src];
       return '<span class="img-wrap' + (up ? ' is-up' : '') + '"><button type="button" class="img' + (on ? ' is-on' : '') + (up ? ' is-up' : '') + '" data-b="card-image" data-src="' + escapeHtml(src) + '" aria-pressed="' + on + '" title="' + escapeHtml(builderImageLabel(src)) + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy"></button>' +
-        (up ? '<em class="up-badge">取り込み</em><button type="button" class="img-del" data-b="upload-remove" data-src="' + escapeHtml(src) + '" aria-label="取り込んだ画像 ' + escapeHtml(up.name) + ' を消す" title="この取り込み画像を消す">×</button>' : '') + '</span>';
+        (up ? '<em class="up-badge">取り込み</em>' : '') + '<button type="button" class="img-del" data-b="image-hide" data-src="' + escapeHtml(src) + '" aria-label="この画像をアーカイブする" title="アーカイブする（画像は消えません）">×</button></span>';
     }
     // カードの上の画像の高さ（サイトでの高さ px。標準130）。つまみと、右の見本の下端のドラッグで変えられる
     const BUILDER_IMG_H = { min: 80, max: 400, base: 130 };
@@ -93,10 +93,16 @@
     function builderImagePicker(card) {
       const b = state.builder;
       const choices = Array.from(new Set(builderImageChoices().concat(card.image ? [card.image] : []).concat((card.ids || []).map(function (id) { const p = builderProduct(id); return p && p.image; }).filter(Boolean))));
-      const tiles = choices.map(function (src) { return builderImgTile(src, src === card.image); }).join('');
-      return '<div class="imgs">' + builderSwitch('カードの上に画像を出す', 'useImage', !!card.image) + (card.image || card.useImage ? builderImportButton('card') + '<div class="img-grid">' + tiles + '</div><small>「取り込み」の札が付いた画像は、ここで取り込んだものです。× で消せます（使っている場所があるときは消せません）。</small>' + (card.image ? builderImageSize(card) : '') : '') + '</div>';
+      const archived = builderHiddenImages();
+      const tiles = choices.filter(function (src) { return src === card.image || archived.indexOf(src) < 0; }).map(function (src) { return builderImgTile(src, src === card.image); }).join('');
+      const hidden = archived.filter(function (src) { return b.uploads[src] || !/^images\/uploads\//.test(src); });
+      const hiddenBox = hidden.length ? '<details class="img-hidden"' + (b.showHidden ? ' open' : '') + '><summary>アーカイブ（' + hidden.length + '件）: 押すと開きます</summary><p class="muted">アーカイブした画像です。「呼び戻す」で上の一覧に戻ります。' + (hidden.some(function (src) { return b.uploads[src]; }) ? '取り込んだ画像だけは「完全に消す」もできます。' : '') + '</p><div class="img-grid">' + hidden.map(function (src) {
+        const up = b.uploads[src];
+        return '<span class="img-wrap img-arch"><img src="' + escapeHtml(builderImg(src)) + '" alt="" title="' + escapeHtml(builderImageLabel(src)) + '"><button type="button" data-b="image-unhide" data-src="' + escapeHtml(src) + '">呼び戻す</button>' + (up ? '<button type="button" class="danger" data-b="upload-remove" data-src="' + escapeHtml(src) + '">完全に消す</button>' : '') + '</span>';
+      }).join('') + '</div><button type="button" data-b="image-unhide-all">全部呼び戻す</button></details>' : '';
+      return '<div class="imgs">' + builderSwitch('カードの上に画像を出す', 'useImage', !!card.image) + (card.image || card.useImage ? builderImportButton('card') + '<div class="img-grid">' + tiles + '</div><small>× でアーカイブします（一覧から外すだけで、画像は消えません。下の「アーカイブ」から呼び戻せます）。使っている画像はアーカイブできません。</small>' + hiddenBox + (card.image ? builderImageSize(card) : '') : '') + '</div>';
     }
-    // 並べる商品（4つ）。← → で並び順を変え、「別の商品に替える」で入れ替え、下の候補から押して選べる
+    // 並べる商品（2〜6つ）。← → で並び順を変え、「別の商品に替える」で入れ替え、下の候補から押して選べる。数に合わせてサイトでバランスよく並ぶ
     function builderSlots(card) {
       const b = state.builder;
       const ids = card.ids || ['', '', '', ''];
@@ -104,7 +110,9 @@
         const q = b.query[i] || '';
         return '<label class="fld"><span>' + label + '</span><input type="search" data-q="' + i + '" value="' + escapeHtml(q) + '" placeholder="商品名か商品番号"></label><div class="hits" data-hits="' + i + '">' + builderHits(i) + '</div>';
       };
-      return '<p class="muted">左上から順に並びます（1・2が上の段、3・4が下の段）。← → で並び順を変えられます。</p><ol class="slots">' + ids.map(function (id, i) {
+      const n = ids.length;
+      const rows = { 2: '1段に2つ', 3: '1段に3つ', 4: '2つずつ2段', 5: '上に3つ・下に2つ', 6: '3つずつ2段' }[n] || '';
+      return '<p class="muted">いま ' + n + 'つ（' + rows + '）。左上から順に並びます。← → で並び順を変えられます。2〜6つにでき、数に合わせて自動でバランスよく並びます。</p><ol class="slots">' + ids.map(function (id, i) {
         const p = id ? builderProduct(id) : null;
         const move = '<span class="slot-move"><button type="button" data-b="slot-move" data-slot="' + i + '" data-dir="-1" aria-label="' + (i + 1) + 'つ目を前へ"' + (i === 0 ? ' disabled' : '') + '>←</button><button type="button" data-b="slot-move" data-slot="' + i + '" data-dir="1" aria-label="' + (i + 1) + 'つ目を後ろへ"' + (i === ids.length - 1 ? ' disabled' : '') + '>→</button></span>';
         if (p) {
@@ -113,8 +121,8 @@
             '<span class="slot-tools">' + move + '<button type="button" data-b="slot-swap" data-slot="' + i + '">' + (swapping ? 'やめる' : '別の商品に替える') + '</button><button type="button" data-b="slot-clear" data-slot="' + i + '">外す</button></span>' +
             (swapping ? '<div class="slot-search">' + search(i, (i + 1) + 'つ目と入れ替える商品を探す（下の候補を押しても替わります）') + '</div>' : '') + '</li>';
         }
-        return '<li class="slot empty"><b class="slot-no">' + (i + 1) + '</b>' + search(i, (i + 1) + 'つ目の商品を探す') + move + '</li>';
-      }).join('') + '</ol>' + builderSlotCandidates(card);
+        return '<li class="slot empty"><b class="slot-no">' + (i + 1) + '</b>' + search(i, (i + 1) + 'つ目の商品を探す') + '<span class="slot-tools">' + move + (n > 2 ? '<button type="button" data-b="slot-remove" data-slot="' + i + '">この枠を消す</button>' : '') + '</span></li>';
+      }).join('') + '</ol>' + (n < 6 ? '<button type="button" class="add" data-b="slot-add">＋ 商品の枠を足す（いま' + n + 'つ・6つまで）</button>' : '') + builderSlotCandidates(card);
     }
     // 候補: つながっている企画の商品、なければボタンのリンク先のカテゴリーの商品
     function builderSlotCandidates(card) {
@@ -130,7 +138,7 @@
       const list = builderPlanMembers(src).filter(function (m) { return m.src === 'site'; });
       if (!list.length) return '<p class="muted">' + escapeHtml(label) + ': 候補を読み込み中か、まだありません。</p>';
       const target = b.slotSwap !== undefined && b.slotSwap !== null && card.ids[b.slotSwap] ? b.slotSwap : card.ids.indexOf('');
-      return '<details class="slot-cands" open><summary>候補から選ぶ: ' + escapeHtml(label) + ' ' + list.length + '件</summary><p class="muted">' + (target >= 0 ? '押すと ' + (target + 1) + 'つ目に入ります。' : '4つ埋まっています。「別の商品に替える」を押してから選ぶと、その場所と入れ替わります。') + '</p><div class="cand-grid">' + list.slice(0, 40).map(function (m) {
+      return '<details class="slot-cands" open><summary>候補から選ぶ: ' + escapeHtml(label) + ' ' + list.length + '件</summary><p class="muted">' + (target >= 0 ? '押すと ' + (target + 1) + 'つ目に入ります。' : '枠が全部埋まっています。「＋ 商品の枠を足す」か、「別の商品に替える」を押してから選んでください。') + '</p><div class="cand-grid">' + list.slice(0, 40).map(function (m) {
         const used = card.ids.indexOf(m.id) >= 0;
         return '<button type="button" class="cand' + (used ? ' is-used' : '') + '" data-b="slot-cand" data-id="' + escapeHtml(m.id) + '"' + (used || target < 0 ? ' disabled' : '') + ' title="' + escapeHtml(m.title) + '"><img src="' + escapeHtml(builderImg(m.image)) + '" alt="" loading="lazy"><span>' + escapeHtml(m.title) + '</span>' + (used ? '<i>' + (card.ids.indexOf(m.id) + 1) + 'つ目</i>' : '') + '</button>';
       }).join('') + '</div></details>';
@@ -181,7 +189,7 @@
         if (kind === 'features') {
           body += '<h3>画像</h3>' + builderImagePicker(card) + '<h3>並べる特集</h3>' + builderTiles(card);
         } else {
-          body += '<h3>画像</h3>' + builderImagePicker(card) + '<h3>並べる商品（4つ）</h3>' + builderSlots(card);
+          body += '<h3>画像</h3>' + builderImagePicker(card) + '<h3>並べる商品（2〜6つ）</h3>' + builderSlots(card);
         }
         body += '<h3>表示する期間</h3>' + builderPeriod(card, '', kind === 'campaign') +
           (kind === 'campaign' ? builderSwitch('「あと○日」を出す', 'showCountdown', card.showCountdown !== false) : '') + builderPlanCardHint(card);

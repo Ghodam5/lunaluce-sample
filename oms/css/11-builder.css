@@ -287,3 +287,13 @@
     [data-part="builder-editor"] .cand span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     [data-part="builder-editor"] .cand.is-used { opacity: .5; }
     [data-part="builder-editor"] .cand i { position: absolute; top: 6px; left: 6px; font-style: normal; background: var(--forest, #2f4a3a); color: #fff; font-size: 10px; padding: 0 6px; border-radius: 8px; }
+    /* 2.20 画像のアーカイブ・カードの商品数（2〜6つ） */
+    [data-part="builder-editor"] .img-hidden { margin: 8px 0; padding: 8px 10px; border: 1px dashed var(--line, #d8d0c4); border-radius: 10px; background: #fbf9f5; }
+    [data-part="builder-editor"] .img-hidden summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+    [data-part="builder-editor"] .img-arch { display: flex; flex-direction: column; gap: 4px; align-items: stretch; }
+    [data-part="builder-editor"] .img-arch img { width: 100%; height: 64px; object-fit: contain; background: #fff; border-radius: 8px; opacity: .75; }
+    [data-part="builder-editor"] .img-arch button { min-height: 32px; font-size: 12px; padding: 2px 6px; }
+    [data-part="builder-editor"] .img-arch .danger { color: #9b2c1f; }
+    [data-part="builder-preview"] .pv-products { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    [data-part="builder-preview"] .pv-products > * { grid-column: span 3; }
+    [data-part="builder-preview"] .pv-products[data-count="3"] > *, [data-part="builder-preview"] .pv-products[data-count="6"] > *, [data-part="builder-preview"] .pv-products[data-count="5"] > :nth-child(-n+3) { grid-column: span 2; }

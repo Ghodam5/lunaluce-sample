@@ -22,7 +22,7 @@
           const left = builderDaysLeft(card, nowIso);
           html += '<p class="pv-badge">' + escapeHtml(card.badge || 'キャンペーン') + (card.showCountdown !== false && left !== null && left > 0 ? '<b>あと' + left + '日</b>' : '') + '</p>';
         }
-        html += (card.image ? builderPreviewImg(card) : '') + '<h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-products">' +
+        html += (card.image ? builderPreviewImg(card) : '') + '<h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-products" data-count="' + (card.ids || []).length + '">' +
           (card.ids || []).map(function (id) {
             const p = builderProduct(id);
             return p ? '<span><img src="' + escapeHtml(builderImg(p.image)) + '" alt=""><em>' + escapeHtml(p.title) + '</em></span>' : '<span class="pv-empty">商品を選ぶ</span>';

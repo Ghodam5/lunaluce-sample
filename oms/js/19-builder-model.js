@@ -3,7 +3,7 @@
 // 担当者はJSONを触らない。書き出しは site-builder-draft.json 1つにまとめ、tools/oms-builder-apply.cjs で site-src に反映する。
     const BUILDER_IMAGE_BASE = '../';
     const BUILDER_KINDS = {
-      products: { label: '商品4つのカード', short: '商品' },
+      products: { label: '商品を並べるカード（2〜6つ）', short: '商品' },
       features: { label: '特集一覧のカード', short: '特集' },
       campaign: { label: 'キャンペーンのカード', short: 'キャンペーン' }
     };
@@ -102,7 +102,27 @@
     function builderImageChoices() {
       const b = state.builder;
       const ups = Object.keys(b.uploads).sort(function (x, y) { return (b.uploads[y].at || '').localeCompare(b.uploads[x].at || ''); });
-      return ups.concat(b.images.filter(function (src) { return !b.uploads[src]; }));
+      const hidden = builderHiddenImages();
+      return ups.filter(function (src) { return hidden.indexOf(src) < 0; }).concat(b.images.filter(function (src) { return !b.uploads[src] && hidden.indexOf(src) < 0; }));
+    }
+    // アーカイブした画像（一覧から外すだけで画像は消さない。このブラウザに覚えておき、いつでも呼び戻せる）
+    const BUILDER_HIDDEN_KEY = 'luna-oms-hidden-images-v1';
+    function builderHiddenImages() {
+      const b = state.builder;
+      if (!b.hiddenImages) { try { b.hiddenImages = JSON.parse(localStorage.getItem(BUILDER_HIDDEN_KEY) || '[]'); } catch (e) { b.hiddenImages = []; } }
+      return b.hiddenImages;
+    }
+    function builderSaveHidden() {
+      try { localStorage.setItem(BUILDER_HIDDEN_KEY, JSON.stringify(state.builder.hiddenImages || [])); } catch (e) { /* 画面を開いている間だけ */ }
+    }
+    // その画像を使っているところ（カードの画像・特集のバナー）
+    function builderImageUsers(src) {
+      const users = [];
+      state.builder.cards.forEach(function (c) {
+        if (c.image === src) users.push('カード「' + (c.title || '題名なし') + '」');
+        (c.tiles || []).forEach(function (t) { if (t.image === src) users.push('カード「' + (c.title || '') + '」の特集「' + (t.label || '') + '」'); });
+      });
+      return users;
     }
     function builderImageOk(src) {
       const b = state.builder;
@@ -269,7 +289,8 @@
         });
       } else {
         const ids = (card.ids || []).filter(Boolean);
-        if (ids.length !== 4) out.push('商品を4つ選んでください');
+        if (ids.length < 2 || ids.length > 6) out.push('商品を2〜6つ選んでください');
+        if ((card.ids || []).some(function (x) { return !x; })) out.push('商品が空いている枠があります。選ぶか「この枠を消す」で消してください');
         if (new Set(ids).size !== ids.length) out.push('同じ商品が2回入っています');
         ids.forEach(function (id) { if (!builderProduct(id)) out.push('商品 ' + id + ' は掲載中の商品にありません'); });
         if (card.kind === 'campaign' && !(card.badge || '').trim()) out.push('キャンペーンの目印（例: 5円ご縁、10%OFF）を入れてください');

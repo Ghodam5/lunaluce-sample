@@ -84,10 +84,12 @@
       if (name === 'slot-pick' && card) { card.ids[Number(el.dataset.slot)] = el.dataset.id; b.query = {}; b.slotSwap = null; builderChanged(true); return; }
       if (name === 'slot-clear' && card) { card.ids[Number(el.dataset.slot)] = ''; b.slotSwap = null; builderChanged(true); return; }
       if (name === 'slot-move' && card) { if (builderMove(card.ids, Number(el.dataset.slot), Number(el.dataset.dir)) !== false) { b.slotSwap = null; builderChanged(true); } return; }
+      if (name === 'slot-add' && card) { if (card.ids.length < 6) { card.ids.push(''); b.slotSwap = null; builderChanged(true); } return; }
+      if (name === 'slot-remove' && card) { if (card.ids.length > 2) { card.ids.splice(Number(el.dataset.slot), 1); b.slotSwap = null; b.query = {}; builderChanged(true); } return; }
       if (name === 'slot-swap' && card) { const i = Number(el.dataset.slot); b.slotSwap = b.slotSwap === i ? null : i; b.query = {}; emit('oms:builder', { form: true }); return; }
       if (name === 'slot-cand' && card) {
         const i = b.slotSwap !== null && b.slotSwap !== undefined && card.ids[b.slotSwap] ? b.slotSwap : card.ids.indexOf('');
-        if (i < 0) { showToast('4つ埋まっています。替えたい商品の「別の商品に替える」を押してから選んでください。'); return; }
+        if (i < 0) { showToast('枠が全部埋まっています。「＋ 商品の枠を足す」か、替えたい商品の「別の商品に替える」を押してから選んでください。'); return; }
         card.ids[i] = el.dataset.id; b.slotSwap = null; b.query = {}; builderChanged(true); return;
       }
       if (name === 'tile-add' && card) { if (card.tiles.length >= BUILDER_TILE_MAX) return; card.tiles.push({ label: '', href: '', image: b.images[0] || '' }); builderChanged(true); return; }
@@ -110,6 +112,19 @@
       if (name === 'stock-filter') { b.stockFilter = el.dataset.filter; b.stockPage = 1; emit('oms:builder', { form: true }); return; }
       if (name === 'stock-page') { b.stockPage = Number(el.dataset.page); emit('oms:builder', { form: true }); const top = document.querySelector('[data-part="builder-editor"] .stock-range'); if (top && el.closest('.pager') && el.closest('.pager').nextElementSibling === null) top.scrollIntoView({ block: 'start' }); return; }
       if (name === 'upload-remove') { builderRemoveUpload(el.dataset.src); return; }
+      if (name === 'image-hide') {
+        const src = el.dataset.src;
+        const users = builderImageUsers(src);
+        if (users.length) { showToast('この画像は使われているのでアーカイブできません: ' + users.join('、') + '。先に別の画像に変えてください。'); return; }
+        const h = builderHiddenImages();
+        if (h.indexOf(src) < 0) h.push(src);
+        builderSaveHidden();
+        emit('oms:builder', { form: true });
+        showToast('画像をアーカイブしました（消えてはいません）。下の「アーカイブ」から呼び戻せます。');
+        return;
+      }
+      if (name === 'image-unhide') { b.hiddenImages = builderHiddenImages().filter(function (x) { return x !== el.dataset.src; }); builderSaveHidden(); b.showHidden = true; emit('oms:builder', { form: true }); return; }
+      if (name === 'image-unhide-all') { b.hiddenImages = []; builderSaveHidden(); emit('oms:builder', { form: true }); showToast('アーカイブした画像をすべて呼び戻しました。'); return; }
       if (name === 'img-size' && card) { builderSetImgH(card, (card.imageHeight || 130) + Number(el.dataset.step)); builderChanged(true); return; }
       if (name === 'img-size-reset' && card) { delete card.imageHeight; builderChanged(true); return; }
       if (name === 'img-fit' && card) { builderFitImage(card); return; }
