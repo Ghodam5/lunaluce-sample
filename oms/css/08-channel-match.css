@@ -1,0 +1,113 @@
+/* Luna Luce OMS 部品CSS: 08-channel-match（元は luna_luce_oms_ui_v2.html の <style>。並び順どおりに読み込む） */
+    /* owner: renderChannelMatch */
+    [data-part="channel-match"] .panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    [data-part="channel-match"] h2 { margin: 0; font-size: 15px; color: var(--forest); }
+    [data-part="channel-match"] h3 { margin: 0; font-size: 14px; color: var(--forest); }
+    [data-part="channel-match"] h4 { margin: 0; font-size: 14px; color: var(--ink); overflow-wrap: anywhere; }
+    [data-part="channel-match"] .lead { margin: 4px 0 0; color: var(--taupe-light); font-size: 13px; }
+    [data-part="channel-match"] .query {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--taupe);
+    }
+    [data-part="channel-match"] input[type="search"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #d6d3d1;
+      background: var(--ivory);
+      font-size: 16px;
+      font-weight: 400;
+    }
+    [data-part="channel-match"] .counts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    [data-part="channel-match"] .counts span {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--champagne-soft);
+      border: 1px solid var(--champagne-light);
+      color: var(--forest);
+      font-size: 13px;
+    }
+    [data-part="channel-match"] .hits {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    [data-part="channel-match"] .card {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--ivory);
+    }
+    [data-part="channel-match"] .card header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    [data-part="channel-match"] .tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--forest);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    [data-part="channel-match"] .tag.is-wait { background: var(--champagne); }
+    [data-part="channel-match"] .tag.is-stop { background: var(--taupe); }
+    [data-part="channel-match"] .links, [data-part="channel-match"] .note, [data-part="channel-match"] .yahoo, [data-part="channel-match"] .more, [data-part="channel-match"] .empty {
+      margin: 8px 0 0;
+      color: var(--taupe);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+    [data-part="channel-match"] .sides {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    [data-part="channel-match"] .side {
+      padding: 10px;
+      border-radius: 12px;
+      background: var(--white);
+      border: 1px solid var(--line);
+    }
+    [data-part="channel-match"] .side-card + .side-card { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+    [data-part="channel-match"] .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    [data-part="channel-match"] .grid div { display: flex; flex-direction: column; gap: 2px; }
+    [data-part="channel-match"] .grid .wide { grid-column: 1 / -1; }
+    [data-part="channel-match"] .grid span { color: var(--taupe-light); font-size: 12px; }
+    [data-part="channel-match"] .grid strong { color: var(--ink); font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+    @media (min-width: 834px) {
+      [data-part="channel-match"] .panel { padding: 18px; }
+      [data-part="channel-match"] .sides { grid-template-columns: 1fr 1fr; }
+      [data-part="channel-match"] .grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1280px) {
+      [data-part="channel-match"] .panel { padding: 22px; }
+      [data-part="channel-match"] .sides { gap: 16px; }
+    }
+
