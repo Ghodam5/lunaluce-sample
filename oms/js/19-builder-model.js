@@ -22,6 +22,7 @@
     }
     function builderSave() {
       try { localStorage.setItem(BUILDER_STORE_KEY, builderSnapshot()); } catch (e) { /* 保存できない環境では何もしない */ }
+      builderHistRecord(); // 31-builder-history: 元に戻す用に前の形を覚える
     }
     // 取り込んだ画像は下書きとは別の場所に一時保存する（容量が大きいため）。入りきらない時は画面を閉じるまでだけ保持。
     function builderSaveUploads() {
@@ -71,6 +72,7 @@
         } catch (e) { /* 下書きが壊れていたら元データのまま */ }
         builderApplyNewCats();
         b.ready = true;
+        builderHistStart();
         emit('oms:builder', { form: true });
       }).catch(function (err) {
         state.builder.error = err.message;
@@ -78,6 +80,7 @@
       });
     }
     function builderResetDraft() {
+      builderHistBeforeReset();
       try { localStorage.removeItem(BUILDER_STORE_KEY); localStorage.removeItem(BUILDER_UPLOAD_KEY); } catch (e) { /* 何もしない */ }
       state.builder.ready = false;
       state.builder.sel = { type: 'ticker', index: 0 };

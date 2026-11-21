@@ -63,6 +63,7 @@
       return to;
     }
     function builderAction(name, el) {
+      if (builderHistAction(name)) return;
       const b = state.builder;
       const card = b.sel.type === 'card' ? builderSelected() : null;
       const index = Number(el.dataset.index);
@@ -77,7 +78,7 @@
       if (name === 'card-move') { const to = builderMove(b.cards, index, Number(el.dataset.dir)); if (to !== false) { b.sel = { type: 'card', index: to }; builderChanged(true); } return; }
       if (name === 'card-add') { b.cards.push(builderNewCard(el.dataset.kind)); b.sel = { type: 'card', index: b.cards.length - 1 }; builderChanged(true); showToast('新しいカードは「トップに表示する」が切れた状態で作りました。'); return; }
       if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = builderUniqueId(card.id.replace(/-copy(-\d+)?$|-\d+$/, '') + '-copy', b.cards); copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
-      if (name === 'card-remove' && card) { b.cards.splice(b.sel.index, 1); b.sel = { type: 'ticker', index: 0 }; builderChanged(true); showToast('カードを削除しました。「変更を取り消す」で元に戻せます。'); return; }
+      if (name === 'card-remove' && card) { b.cards.splice(b.sel.index, 1); b.sel = { type: 'ticker', index: 0 }; builderChanged(true); showToast('カードを削除しました。「↶ 元に戻す」で戻せます。'); return; }
       if (name === 'card-theme' && card) { card.theme = el.dataset.theme; builderChanged(true); return; }
       if (name === 'card-image' && b.sel.type === 'product') { builderAddPhotos(builderSelected(), [el.dataset.src]); builderChanged(true); return; }
       if (name === 'card-image' && card) { card.image = el.dataset.src; builderChanged(true); return; }
@@ -147,7 +148,7 @@
         return;
       }
       if (name === 'export') { downloadJson('site-builder-draft.json', builderExportPayload()); showToast('site-builder-draft.json を書き出しました。サイトへの反映は担当者が確認してから行います。'); return; }
-      if (name === 'reset') { builderResetDraft(); showToast('変更を取り消して、いまのサイトの内容に戻しました。'); }
+      if (name === 'reset') { builderResetDraft(); showToast('変更を取り消して、いまのサイトの内容に戻しました。「↶ 元に戻す」で取り消す前に戻せます。'); }
     }
     function builderAddPhotos(p, list) {
       builderSyncPhotos(p);

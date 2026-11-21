@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.21
+Luna Luce OMS 2.22
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -36,6 +36,7 @@ Luna Luce OMS 2.21
   js/28-builder-categories カテゴリー（大・中・小）を新しく作る。英字の名前は URL と商品コード（ll-<中>-001）に使う。書き出しの newCategories
   js/29-builder-listing 出す・出さない と販売期間（在庫の画面の「未出店」。本店だけの商品は builder-unlisted.json）。書き出しの listing
   js/30-builder-plans 企画（季節・イベント・セール）。期間を決めると対象の商品の販売期間がそろう。カードは任意。書き出しの plans
+  js/31-builder-history 元に戻す・やり直す（触るたびに前の形を覚える。最大60回。Ctrl+Z / Ctrl+Shift+Z）
   js/90-start           起動（必ず最後）
 新しい部品は新しい番号のファイルとして足し、既存ファイルに詰め込まない。
 2.8 でサイトビルダー（7のタブ）を追加。builder-data.json は tools/oms-builder-data.cjs で作り、直接編集しない。
@@ -52,6 +53,7 @@ Luna Luce OMS 2.21
 2.19 でトップのカードの商品（4つ）の並び順を ← → で変えられるようにし、「別の商品に替える」と、リンク先のカテゴリー（つながった企画があればその商品）の候補から押して選べるようにした。
 2.20 でカード用画像の一覧の × を「アーカイブ」にした（消さずに一覧から外し、アーカイブから呼び戻せる。使っている画像は不可。取り込んだ画像だけアーカイブから完全に消せる）。カードの商品を2〜6つにし、数に合わせて見え方をそろえた（2・3は1段、4は2×2、5は上3下2、6は3×2）。
 2.21 で営業日を「OMSで管理する」のを基本にした。「お休みにする日」「この日は営業する」は何件でも足せる（1日だけ・何日から何日まで）。真ん中にカレンダーを出し、日を押すとお休み⇔営業が切り替わる（飛び石の連休も1日ずつ）。楽天・Yahoo用のお休み一覧（コピー用）を付けた。「Welcartの設定のまま」にも戻せる。
+2.22 でサイトビルダーに「↶ 元に戻す」「↷ やり直す」を付けた（js/31-builder-history）。触るたびに前の形を覚え、1つずつ戻せる（最大60回、画面を開いている間）。文字を打っている間は1回分にまとめる。「変更を取り消す」も元に戻せる。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
 
@@ -122,7 +124,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.21｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.22｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -169,6 +171,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/28-builder-categories.js"></script>
   <script src="js/29-builder-listing.js"></script>
   <script src="js/30-builder-plans.js"></script>
+  <script src="js/31-builder-history.js"></script>
   <script src="js/23-builder-tab.js"></script>
   <script src="js/90-start.js"></script>
 </body>

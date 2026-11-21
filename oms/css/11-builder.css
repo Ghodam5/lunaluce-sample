@@ -319,3 +319,8 @@
     [data-part="builder-editor"] .days-add { align-items: flex-end; }
     [data-part="builder-editor"] textarea.days-copy { width: 100%; box-sizing: border-box; font-family: inherit; font-size: 13px; margin: 4px 0 6px; }
     [data-part="builder-editor"] .days-stop { margin-top: 16px; }
+    /* 2.22 元に戻す・やり直す（左の列の上に固定） */
+    [data-part="builder-list"] .hist-bar { position: sticky; top: 0; z-index: 3; display: flex; gap: 6px; padding: 6px 0 8px; margin-bottom: 4px; background: var(--surface, #fff); border-bottom: 1px solid var(--line, #e5dccf); }
+    [data-part="builder-list"] .hist-bar button { flex: 1; font-size: 13px; padding: 6px 8px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+    [data-part="builder-list"] .hist-bar button:disabled { opacity: .45; cursor: default; }
+    [data-part="builder-list"] .hist-bar small { font-size: 11px; background: #f2efe9; color: #6b6258; border-radius: 8px; padding: 0 6px; }
