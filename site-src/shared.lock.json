@@ -31,7 +31,7 @@
   "rail-controls.css": "0e4aebe618f474c11e47a74119451e9ca75689199ca0b3d535a40db230369e58",
   "rail-controls.js": "99df9c9fa3753ce3591787bf3b5b4d085551e57382462a04add3ad093493c7a3",
   "saved-products-rail.css": "b62ec4879fcf97eddd637e5df91239b3c5894e526f551aadc580b6fb24acc406",
-  "site-announcements.css": "e5c05116fb97a6dc90b8793bdbb3904f75ea2477a41a0d29d3b683581bb5ae26",
+  "site-announcements.css": "9f090e5b73a7ff513b42e826a59a0b2a3b9cbc8ad8cdb5d5add1f3c0ad72f45a",
   "site-services-core.js": "949ad1b6c00b1bf655fa30d86ec3ecd71fc191d65f834177080e56742b7166b5",
   "site-services-ui.js": "99cccb235a5dcf58a9cc2f4e2318a4e7406b6e8ba8c031d6ba8a55b375627648",
   "site-services.css": "dfac536da2e7eafbcdd7dee5ef48b4b72e15ca5f53c7118b20af928231462afa",
@@ -56,5 +56,5 @@
   "style.css": "b37729fce6a1957adbfc9e6d01acc6c0558a082e170a87c6995ce8e5fb6528b9",
   "support.css": "de9f5b75903d67bdc7c36929d0a4b212c95b6d12ad2cc8a2371a2f1231ae70c6",
   "touch-guard.js": "de6445726ca495907f16a0c745ad083a7bac500800d9df009459426d304f84b2",
-  "walking-cat.css": "3d30e6eac097029cdad78c7d59d60c593a32e7548ff1b5cb4a0a90b38107297a"
+  "walking-cat.css": "16f15c3ec88a51fffd45bbe78886716b5656dfc7fae17365a153a132dacf8890"
 }
