@@ -72,6 +72,7 @@
       if (builderSectionAction(name, el)) return;
       if (builderCatAction(name, el)) return;
       if (builderPlanAction(name, el)) return;
+      if (builderReflectAction(name, el)) return;
       if (name === 'list-filter') { b.listFilter = el.dataset.filter; b.stockPage = 1; emit('oms:builder', { form: true }); return; }
       if (name === 'link-open') { b.linkOpen = b.linkOpen === el.dataset.field ? '' : el.dataset.field; b.linkTab = ''; b.linkQuery = ''; emit('oms:builder', { form: true }); return; }
       if (name === 'link-tab') { b.linkTab = el.dataset.tab; emit('oms:builder', { form: true }); return; }
