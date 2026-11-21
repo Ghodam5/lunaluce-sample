@@ -212,7 +212,7 @@
         minq: Number(p.minq), minnote: p.orig ? p.orig.minnote : '', hasName: !!p.hasName, petit: tags.categories.indexOf('petit') >= 0, seal: !!p.seal, pack: Number(p.pack) || 1
       });
       const st = builderProductStock(p);
-      return { active: p.active !== false && st.status !== 'end', product: product, photos: p.photos.slice(), places: keep ? undefined : (p.places || []).filter(function (pl) { return pl.g; }).map(function (pl) { const f = builderPlaceFind(pl); return { g: pl.g, m: pl.m || '', s: pl.s || '', label: builderPlaceLabel(pl), isNew: !!((f.g && f.g.isNew) || (f.m && f.m.isNew) || (f.sub && f.sub[2].isNew)) }; }), stock: p.edit || st.status === 'in' ? undefined : cloneData(st), template: p.edit ? undefined : p.from || undefined, edit: p.edit ? true : undefined };
+      return { active: p.active !== false && st.status !== 'end', product: product, photos: p.photos.slice(), sale: (function () { const l = builderListingOf({ id: p.id, src: p.edit ? 'site' : 'new' }); return l.from || l.to ? { from: l.from || undefined, to: l.to || undefined, plans: l.plans.map(function (x) { return x.id; }) } : undefined; })(), places: keep ? undefined : (p.places || []).filter(function (pl) { return pl.g; }).map(function (pl) { const f = builderPlaceFind(pl); return { g: pl.g, m: pl.m || '', s: pl.s || '', label: builderPlaceLabel(pl), isNew: !!((f.g && f.g.isNew) || (f.m && f.m.isNew) || (f.sub && f.sub[2].isNew)) }; }), stock: p.edit || st.status === 'in' ? undefined : cloneData(st), template: p.edit ? undefined : p.from || undefined, edit: p.edit ? true : undefined };
     }
 
     // ---- 真ん中の列 ----
@@ -222,10 +222,18 @@
       const b = state.builder;
       const q = foldText(b.stockQuery || '');
       const filter = b.stockFilter || '';
-      const list = b.products.filter(function (p) {
-        if (filter && builderStockOf(p.id).status !== filter) return false;
+      const lfilter = b.listFilter || '';
+      const today = builderDaysToday();
+      const all = builderListingItems().map(function (item) { return { item: item, lst: builderListingOf(item) }; });
+      const list = all.filter(function (x) {
+        const p = x.item;
+        if (filter && (p.src !== 'site' || builderStockOf(p.id).status !== filter)) return false;
+        if (!builderListingFilterOk(x.lst, lfilter, today)) return false;
+        if (!filter && !lfilter && p.src === 'w') return false;
         return !q || p.id.indexOf(q) === 0 || foldText(p.title).indexOf(q) >= 0 || foldText(p.code || '').indexOf(q) >= 0;
       });
+      const lchips = [['', 'すべて', all.filter(function (x) { return x.item.src !== 'w'; }).length], ['on', '出店中', 0], ['todo', '未出店', 0], ['off', '出さない', 0], ['period', '期間つき', 0]];
+      all.forEach(function (x) { lchips.forEach(function (c) { if (c[0] && builderListingFilterOk(x.lst, c[0], today)) c[2] += 1; }); });
       const pages = Math.max(1, Math.ceil(list.length / STOCK_PAGE_SIZE));
       const page = Math.min(Math.max(1, b.stockPage || 1), pages);
       const shown = list.slice((page - 1) * STOCK_PAGE_SIZE, page * STOCK_PAGE_SIZE);
@@ -242,17 +250,30 @@
           '<button type="button" data-b="stock-page" data-page="' + (page + 1) + '"' + (page === pages ? ' disabled' : '') + '>次へ ›</button></nav>';
       };
       const range = list.length ? ((page - 1) * STOCK_PAGE_SIZE + 1) + '〜' + Math.min(page * STOCK_PAGE_SIZE, list.length) + '件目 ／ ' + list.length + '件' : '0件';
-      return '<h2>在庫の状態（欠品・入荷待ち）</h2><p class="lead">商品ごとに「いま売れるか」を切り替えます。楽天・Yahoo・本店の在庫をまとめた OMS の状態が正になります。</p>' +
-        '<div class="stock-sum" role="group" aria-label="状態で絞り込む">' + chips.map(function (c) {
+      return '<h2>在庫と出店（出す・出さない・期間）</h2><p class="lead">商品ごとに「いま売れるか」「サイトに出すか」「いつからいつまで出すか」を決めます。楽天・Yahoo・本店の在庫をまとめた OMS の状態が正になります。</p>' +
+        '<h3 class="sum-h">出店で絞り込む</h3><div class="stock-sum" role="group" aria-label="出店で絞り込む">' + lchips.map(function (c) {
+          return '<button type="button" class="st ls-' + (c[0] || 'all') + (c[0] === lfilter ? ' is-on' : '') + '" data-b="list-filter" data-filter="' + c[0] + '" aria-pressed="' + (c[0] === lfilter) + '">' + escapeHtml(c[1]) + ' <b>' + c[2] + '</b></button>';
+        }).join('') + '</div>' + (lfilter === 'todo' ? '<p class="muted">本店（Welcart）にあって新サイトにまだ出していない商品です。上から順に「出す」「出さない」を決めると、この一覧から消えていきます。</p>' : '') +
+        (b.unlistedLoading ? '<p class="muted">本店の商品を読み込み中…</p>' : '') +
+        '<h3 class="sum-h">在庫で絞り込む</h3><div class="stock-sum" role="group" aria-label="状態で絞り込む">' + chips.map(function (c) {
           return '<button type="button" class="st st-' + (c[0] || 'all') + (c[0] === filter ? ' is-on' : '') + '" data-b="stock-filter" data-filter="' + c[0] + '" aria-pressed="' + (c[0] === filter) + '">' + escapeHtml(c[1]) + ' <b>' + c[2] + '</b></button>';
         }).join('') + '</div>' +
         '<label class="fld"><span>商品名・商品番号・商品コードで探す（空なら全部）</span><input type="search" data-sq value="' + escapeHtml(b.stockQuery || '') + '" placeholder="例: シフォン / 48734"></label>' +
-        '<p class="stock-range">' + escapeHtml((filter ? stockState(filter).short + 'の商品' : 'すべての商品') + '・' + range) + '</p>' + nav('上') +
-        '<ol class="stock-list">' + shown.map(function (p) {
+        '<p class="stock-range">' + escapeHtml((lfilter ? lchips.find(function (c) { return c[0] === lfilter; })[1] + '・' : '') + (filter ? stockState(filter).short + 'の商品' : 'すべての商品') + '・' + range) + '</p>' + nav('上') +
+        '<ol class="stock-list">' + shown.map(function (x) {
+          const p = x.item;
           const st = builderStockOf(p.id);
-          return '<li class="stock-row st-' + st.status + (b.stockDetail === p.id ? ' is-open' : '') + '"><button type="button" class="open" data-b="stock-detail" data-id="' + escapeHtml(p.id) + '" title="商品の詳細を見る"><img src="' + escapeHtml(builderImg(p.image)) + '" alt="" loading="lazy"><span class="nm"><b>' + escapeHtml(p.title) + '</b><small>商品番号 ' + escapeHtml(p.id) + (p.code ? '・' + escapeHtml(p.code) : '') + '・' + formatYen(p.price) + '</small><em>詳細を見る ›</em></span></button>' +
-            '<span class="ctl"><select data-stock="' + escapeHtml(p.id) + '" aria-label="在庫の状態">' + STOCK_STATES.map(function (s) { return '<option value="' + s.id + '"' + (s.id === st.status ? ' selected' : '') + '>' + escapeHtml(s.label) + '</option>'; }).join('') + '</select>' +
-            (st.status === 'wait' ? '<label class="eta"><span>入荷予定日</span><input type="date" data-stock-eta="' + escapeHtml(p.id) + '" value="' + escapeHtml(st.eta || '') + '"></label>' : '') + '</span></li>';
+          const lst = x.lst;
+          const now = builderListingNow(lst, today);
+          const tag = p.src === 'new' ? '新しい商品' : p.src === 'w' ? '本店だけ（' + (p.cat || '') + '）' : '';
+          const sub = '商品番号 ' + escapeHtml(p.id) + (p.code ? '・' + escapeHtml(p.code) : '') + '・' + formatYen(p.price) + (tag ? '・' + escapeHtml(tag) : '');
+          const state1 = now === 'before' ? '<i class="ls ls-before">' + escapeHtml(lst.from.slice(5).replace('-', '/')) + 'から</i>' : now === 'after' ? '<i class="ls ls-after">期間終了</i>' : now === 'off' ? '<i class="ls ls-off">出さない</i>' : now === 'todo' ? '<i class="ls ls-todo">未出店</i>' : '';
+          const open = p.src === 'site' ? '<button type="button" class="open" data-b="stock-detail" data-id="' + escapeHtml(p.id) + '" title="商品の詳細を見る"><img src="' + escapeHtml(builderImg(p.image)) + '" alt="" loading="lazy"><span class="nm"><b>' + escapeHtml(p.title) + '</b><small>' + sub + '</small>' + state1 + '<em>詳細を見る ›</em></span></button>' :
+            p.src === 'new' ? '<button type="button" class="open" data-b="select" data-type="product" data-index="' + b.newProducts.findIndex(function (y) { return y.id === p.id; }) + '"><img src="' + escapeHtml(builderImg(p.image)) + '" alt="" loading="lazy"><span class="nm"><b>' + escapeHtml(p.title) + '</b><small>' + sub + '</small>' + state1 + '<em>登録の画面を開く ›</em></span></button>' :
+            '<span class="open"><span class="noimg">本店</span><span class="nm"><b>' + escapeHtml(p.title) + '</b><small>' + sub + '</small>' + state1 + '</span></span>';
+          return '<li class="stock-row st-' + (p.src === 'site' ? st.status : 'in') + ' ls-row-' + now + (b.stockDetail === p.id ? ' is-open' : '') + '">' + open +
+            '<span class="ctl">' + (p.src === 'site' ? '<select data-stock="' + escapeHtml(p.id) + '" aria-label="在庫の状態">' + STOCK_STATES.map(function (s) { return '<option value="' + s.id + '"' + (s.id === st.status ? ' selected' : '') + '>' + escapeHtml(s.label) + '</option>'; }).join('') + '</select>' +
+            (st.status === 'wait' ? '<label class="eta"><span>入荷予定日</span><input type="date" data-stock-eta="' + escapeHtml(p.id) + '" value="' + escapeHtml(st.eta || '') + '"></label>' : '') : '') + builderListingCtl(p, lst) + '</span></li>';
         }).join('') + '</ol>' + (list.length ? nav('下') : '<p class="muted">' + (filter ? stockState(filter).short + 'の商品はありません' : '見つかりません') + '</p>') +
         '<p class="muted">' + STOCK_STATES.map(function (s) { return s.short + ': ' + s.hint; }).join(' ／ ') + '</p>';
     }
@@ -303,6 +324,7 @@
         '<h3>商品コード</h3>' + builderCodeBlock(p) +
         '<div class="row">' + builderField('最低数量', 'minq', String(p.minq), { type: 'number' }) + '</div>' +
         '<p class="muted">' + (p.edit ? '商品番号 ' + escapeHtml(p.id) + '（変わりません）' : '商品番号は自動で ' + escapeHtml(p.id) + ' になります。') + '</p>' +
+        '<h3>販売期間（いつから・いつまで出すか）</h3>' + builderSalePeriodBlock(p) +
         '<h3>種類と価格（税込）</h3><ol class="skus">' + p.skus.map(function (s, i) {
           return '<li class="row">' + builderField(p.skus.length > 1 ? '種類' + (i + 1) + 'の名前' : '種類の名前（1つだけなら空でよい）', 'skus.' + i + '.t', s.t, { placeholder: '例: Sサイズ / 白' }) + builderField('価格（円）', 'skus.' + i + '.price', String(s.price || ''), { type: 'number' }) + (p.skus.length > 1 ? '<span class="tools"><button type="button" data-b="sku-remove" data-index="' + i + '">外す</button></span>' : '') + '</li>';
         }).join('') + '</ol><button type="button" class="add" data-b="sku-add">＋ 種類を足す（サイズ・色など）</button>' +

@@ -154,18 +154,34 @@ function codeRegistry() {
   return { note: 'tools/oms-builder-data.cjs で作る。直接編集しない。Yahooは画面からCSVを読み込んで足す。', sources, codes: sorted };
 }
 
+// 本店（Welcart）にあって新サイトにまだ出していない商品（在庫の画面の「未出店」で、出す・出さないを決める）
+function unlistedProducts() {
+  const wf = path.join(root, 'oms/oms-products.json');
+  if (!fs.existsSync(wf)) return [];
+  const onSite = new Set(productRows().map((p) => String(p.id)));
+  const seen = new Set();
+  return (read('oms/oms-products.json').products || []).filter((p) => {
+    const id = String(p.id);
+    if (onSite.has(id) || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  }).map((p) => ({ id: String(p.id), code: p.item_code || '', title: String(p.name || '').replace(/[\s　]+/g, ' ').trim(), price: p.price_tax_in || 0, cat: String((p.category || [])[0] || '').replace(/^商品 \/ /, '') }))
+    .sort((a, b) => Number(a.id) - Number(b.id));
+}
+
 const outputs = [
   [out, JSON.stringify(build(), null, 2) + '\n'],
   [path.join(root, 'oms', 'builder-products.json'), JSON.stringify({ note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', products: templateProducts() }) + '\n'],
-  [path.join(root, 'oms', 'builder-codes.json'), JSON.stringify(codeRegistry()) + '\n']
+  [path.join(root, 'oms', 'builder-codes.json'), JSON.stringify(codeRegistry()) + '\n'],
+  [path.join(root, 'oms', 'builder-unlisted.json'), JSON.stringify({ note: 'tools/oms-builder-data.cjs で作る。直接編集しない。本店にあって新サイトにない商品。', products: unlistedProducts() }) + '\n']
 ];
 if (process.argv.includes('--check')) {
   for (const [file, text] of outputs) {
     const now = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
     if (now !== text) { console.error(path.relative(root, file) + ' が古いです。node tools/oms-builder-data.cjs を実行してください。'); process.exit(1); }
   }
-  console.log('oms/builder-data.json・builder-products.json・builder-codes.json は最新です');
+  console.log('oms/builder-data.json・builder-products.json・builder-codes.json・builder-unlisted.json は最新です');
 } else {
   for (const [file, text] of outputs) fs.writeFileSync(file, text);
-  console.log('oms/builder-data.json・builder-products.json・builder-codes.json を書き出しました');
+  console.log('oms/builder-data.json・builder-products.json・builder-codes.json・builder-unlisted.json を書き出しました');
 }

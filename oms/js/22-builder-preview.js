@@ -45,6 +45,8 @@
           main = '<p class="pv-note">' + (builderOnNow(card, nowIso) ? 'いまトップに表示されます' : card.active ? '期間外のため、いまは表示されません' : '「トップに表示する」が切れています') + '</p>' + builderCardPreview(card, nowIso);
         } else if (s.type === 'product' && builderSelected()) {
           main = '<p class="pv-note">商品ページの見え方（簡易）</p>' + builderProductPreview(builderSelected());
+        } else if (s.type === 'plan' && builderSelected()) {
+          main = builderPlanPreview(builderSelected());
         } else if (s.type === 'days') {
           main = builderDaysPreview();
         } else if (s.type === 'stock') {
