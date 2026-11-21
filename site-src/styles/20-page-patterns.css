@@ -75,7 +75,8 @@
 .prod .b{padding:10px 12px 12px}
 .prod h4{font-size:12.5px;font-weight:500;line-height:1.55;height:3.1em;overflow:hidden}
 .prod .price{font-size:16px;font-weight:900;margin-top:4px}
-.prod .price small{font-size:10.5px;font-weight:400;color:var(--sub)}
+.prod .price small{font-size:10.5px;font-weight:400;color:var(--sub);white-space:nowrap}
+@media (max-width:359px){.prod .price{font-size:14px}.prod .price small{font-size:10px}}
 
 /* 季節の特集・ガイド */
 .season{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -14px;padding:0 14px 4px}
