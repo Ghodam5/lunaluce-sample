@@ -297,3 +297,25 @@
     [data-part="builder-preview"] .pv-products { grid-template-columns: repeat(6, minmax(0, 1fr)); }
     [data-part="builder-preview"] .pv-products > * { grid-column: span 3; }
     [data-part="builder-preview"] .pv-products[data-count="3"] > *, [data-part="builder-preview"] .pv-products[data-count="6"] > *, [data-part="builder-preview"] .pv-products[data-count="5"] > :nth-child(-n+3) { grid-column: span 2; }
+    /* 2.21 営業日: 何件でも足せる・カレンダーで1日ずつ切り替え */
+    [data-part="builder-editor"] .days-cal-nav { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 8px; }
+    [data-part="builder-editor"] .days-cal-nav button { min-height: 32px; font-size: 13px; padding: 2px 10px; }
+    [data-part="builder-editor"] .days-cals { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    [data-part="builder-editor"] .days-cal b { font-size: 13px; }
+    [data-part="builder-editor"] .days-cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; text-align: center; font-size: 13px; margin-top: 4px; }
+    [data-part="builder-editor"] .days-cal-grid i { font-style: normal; font-size: 11px; color: var(--taupe-light, #8a7f73); }
+    [data-part="builder-editor"] .days-cal-grid span, [data-part="builder-editor"] .days-cal-grid button { min-height: 34px; padding: 0; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+    [data-part="builder-editor"] .days-cal-grid span.past { opacity: .4; }
+    [data-part="builder-editor"] .days-cal-grid span.past.off { background: #f8d9d2; }
+    [data-part="builder-editor"] .days-cal-grid button { border: 1px solid transparent; cursor: pointer; }
+    [data-part="builder-editor"] .days-cal-grid button.on, [data-part="builder-editor"] .days-legend .lg.on { background: #f1f7ef; color: #24613a; }
+    [data-part="builder-editor"] .days-cal-grid button.off, [data-part="builder-editor"] .days-legend .lg.off { background: #f8d9d2; color: #8a2d1c; font-weight: 600; }
+    [data-part="builder-editor"] .days-cal-grid button.is-extra, [data-part="builder-editor"] .days-legend .lg.is-extra { background: #ec9f8f; color: #fff; }
+    [data-part="builder-editor"] .days-cal-grid button.is-open, [data-part="builder-editor"] .days-legend .lg.is-open { background: #cfe8c9; border-color: #24613a; }
+    [data-part="builder-editor"] .days-cal-grid button.today { outline: 2px solid var(--accent, #b06a3b); outline-offset: -2px; }
+    [data-part="builder-editor"] .days-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 12px; }
+    [data-part="builder-editor"] .days-legend > span { white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
+    [data-part="builder-editor"] .days-legend .lg { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid transparent; margin-left: 6px; }
+    [data-part="builder-editor"] .days-add { align-items: flex-end; }
+    [data-part="builder-editor"] textarea.days-copy { width: 100%; box-sizing: border-box; font-family: inherit; font-size: 13px; margin: 4px 0 6px; }
+    [data-part="builder-editor"] .days-stop { margin-top: 16px; }

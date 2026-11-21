@@ -47,7 +47,7 @@
         b.stock = {};
         b.newProducts = [];
         b.newCats = [];
-        b.days = null;
+        b.days = { weekly: [0, 6], off: [], on: [] }; // 営業日はOMSで管理するのが基本（2.21）
         b.listing = {};
         b.plans = [];
         b.base = builderSnapshot();
@@ -62,7 +62,7 @@
             b.notices = saved.notices || b.notices;
             b.stock = saved.stock || {};
             b.newProducts = saved.newProducts || [];
-            b.days = saved.days || null;
+            if ('days' in saved) b.days = saved.days;
             b.newCats = saved.newCats || [];
             b.listing = saved.listing || {};
             b.plans = saved.plans || [];
