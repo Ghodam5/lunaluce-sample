@@ -11,11 +11,11 @@
     const BUILDER_UPLOAD_KEY = 'luna-oms-builder-uploads-v1';
     const BUILDER_TILE_MAX = 8;
 
-    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '' };
+    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], stockQuery: '', stockOnly: false, templateQuery: '' };
 
     function builderSnapshot() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort() });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts });
     }
     function builderDirty() {
       return state.builder.ready && builderSnapshot() !== state.builder.base;
@@ -44,6 +44,8 @@
         b.images = data.images;
         b.links = data.links || b.links;
         b.uploads = {};
+        b.stock = {};
+        b.newProducts = [];
         b.base = builderSnapshot();
         try {
           const ups = JSON.parse(localStorage.getItem(BUILDER_UPLOAD_KEY) || 'null');
@@ -54,6 +56,8 @@
           if (saved && Array.isArray(saved.cards)) {
             b.cards = saved.cards;
             b.notices = saved.notices || b.notices;
+            b.stock = saved.stock || {};
+            b.newProducts = saved.newProducts || [];
             b.themes = b.themes.filter(function (t) { return t.builtIn; }).concat(saved.themes || []);
           }
         } catch (e) { /* 下書きが壊れていたら元データのまま */ }
@@ -134,12 +138,14 @@
       state.builder.cards.forEach(function (c) {
         [c.image].concat((c.tiles || []).map(function (t) { return t.image; })).forEach(function (src) { if (state.builder.uploads[src]) used[src] = true; });
       });
+      state.builder.newProducts.forEach(function (p) { if (state.builder.uploads[p.image]) used[p.image] = true; });
       return Object.keys(used).sort();
     }
     function builderSelected() {
       const s = state.builder.sel;
       if (s.type === 'card') return state.builder.cards[s.index];
       if (s.type === 'theme') return state.builder.themes[s.index];
+      if (s.type === 'product') return state.builder.newProducts[s.index];
       return null;
     }
 
@@ -274,7 +280,10 @@
       return out;
     }
     function builderAllErrors() {
-      const out = builderNoticeErrors();
+      const out = builderNoticeErrors().concat(builderStockErrors());
+      state.builder.newProducts.forEach(function (p) {
+        builderProductErrors(p).forEach(function (e) { out.push('新しい商品 ' + (p.title || p.id) + ': ' + e); });
+      });
       state.builder.cards.forEach(function (card) {
         builderCardErrors(card).forEach(function (e) { out.push((card.title || '題名なしのカード') + ': ' + e); });
       });
@@ -321,6 +330,10 @@
         themes: b.themes.filter(function (t) { return !t.builtIn; }).map(function (t) {
           return { id: t.id, name: t.name, background: t.background, border: t.border, top: t.top, accent: t.accent };
         }),
+        // 在庫の状態を切り替えた商品（OMSが正）。status: in/few/wait/out/end、wait は eta（入荷予定日）付き
+        stock: Object.keys(b.stock).map(function (id) { return Object.assign({ id: id }, b.stock[id]); }),
+        // 新しく登録する商品（site-src/products/<id>.json と同じ形）
+        products: b.newProducts.map(builderProductRow),
         // 取り込んだ画像（カードで使っているものだけ）。反映ツールが path の場所に書き出す。
         uploads: builderUsedUploads().map(function (src) {
           const u = b.uploads[src];

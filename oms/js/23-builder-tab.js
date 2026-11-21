@@ -75,12 +75,18 @@
       if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = builderUniqueId(card.id.replace(/-copy(-\d+)?$|-\d+$/, '') + '-copy', b.cards); copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
       if (name === 'card-remove' && card) { b.cards.splice(b.sel.index, 1); b.sel = { type: 'ticker', index: 0 }; builderChanged(true); showToast('カードを削除しました。「変更を取り消す」で元に戻せます。'); return; }
       if (name === 'card-theme' && card) { card.theme = el.dataset.theme; builderChanged(true); return; }
-      if (name === 'card-image' && card) { card.image = el.dataset.src; builderChanged(true); return; }
+      if (name === 'card-image' && (card || b.sel.type === 'product')) { builderSelected().image = el.dataset.src; builderChanged(true); return; }
       if (name === 'slot-pick' && card) { card.ids[Number(el.dataset.slot)] = el.dataset.id; b.query = {}; builderChanged(true); return; }
       if (name === 'slot-clear' && card) { card.ids[Number(el.dataset.slot)] = ''; builderChanged(true); return; }
       if (name === 'tile-add' && card) { if (card.tiles.length >= BUILDER_TILE_MAX) return; card.tiles.push({ label: '', href: '', image: b.images[0] || '' }); builderChanged(true); return; }
       if (name === 'tile-remove' && card) { card.tiles.splice(Number(el.dataset.tile), 1); builderChanged(true); return; }
       if (name === 'tile-move' && card) { if (builderMove(card.tiles, Number(el.dataset.tile), Number(el.dataset.dir)) !== false) builderChanged(true); return; }
+      if (name === 'product-new') { b.newProducts.push(builderNewProduct(el.dataset.template)); b.sel = { type: 'product', index: b.newProducts.length - 1 }; b.templateQuery = ''; builderChanged(true); return; }
+      if (name === 'product-remove' && b.sel.type === 'product') { b.newProducts.splice(b.sel.index, 1); b.sel = { type: 'stock', index: 0 }; builderChanged(true); return; }
+      if (name === 'sku-add' && b.sel.type === 'product') { builderSelected().skus.push({ t: '', price: 0 }); builderChanged(true); return; }
+      if (name === 'sku-remove' && b.sel.type === 'product') { builderSelected().skus.splice(index, 1); builderChanged(true); return; }
+      if (name === 'place-add' && b.sel.type === 'product') { builderSelected().places.push({ g: '', m: '', s: '' }); builderChanged(true); return; }
+      if (name === 'place-remove' && b.sel.type === 'product') { builderSelected().places.splice(index, 1); builderChanged(true); return; }
       if (name === 'notice-add') { b.notices.push({ id: 'notice-' + Date.now().toString(36), active: true, text: '', href: '' }); builderChanged(true); return; }
       if (name === 'notice-move') { if (builderMove(b.notices, index, Number(el.dataset.dir)) !== false) builderChanged(true); return; }
       if (name === 'notice-remove') { b.notices.splice(index, 1); builderChanged(true); return; }
@@ -108,13 +114,21 @@
       const file = el.files && el.files[0];
       const target = el.dataset.import;
       el.value = '';
-      if (!file || state.builder.sel.type !== 'card' || !card) return;
+      if (!file || (state.builder.sel.type !== 'card' && state.builder.sel.type !== 'product') || !card) return;
       builderImportImage(file).then(function (res) {
         if (target === 'card') card.image = res.path;
         else if (card.tiles && card.tiles[Number(target)]) card.tiles[Number(target)].image = res.path;
         builderChanged(true);
         showToast(res.stored ? '画像を取り込みました。' : '画像を取り込みましたが、このブラウザに保存しきれません。画面を閉じる前に下書きを書き出してください。');
       }).catch(function (err) { showToast(err.message); });
+    }
+    // 検索欄の入力で一覧を描き直しても、入力中の欄から抜けないようにする
+    function builderRepaintKeepFocus(el) {
+      const attr = el.dataset.sq !== undefined ? 'data-sq' : 'data-tq';
+      const pos = el.selectionStart;
+      emit('oms:builder', { form: true });
+      const again = document.querySelector('[' + attr + ']');
+      if (again) { again.focus(); try { again.setSelectionRange(pos, pos); } catch (e) { /* 何もしない */ } }
     }
     function renderBuilderTab(host) {
       host.innerHTML = '<p class="builder-lead">左で直したい部品を選び、真ん中で直し、右で見え方を確かめます。JSONやCSSを触る必要はありません。</p><div class="builder-cols"></div>';
@@ -125,6 +139,8 @@
       });
       host.addEventListener('input', function (event) {
         const el = event.target;
+        if (el.dataset.sq !== undefined) { state.builder.stockQuery = el.value; builderRepaintKeepFocus(el); return; }
+        if (el.dataset.tq !== undefined) { state.builder.templateQuery = el.value; builderRepaintKeepFocus(el); return; }
         if (el.dataset.lq !== undefined) {
           state.builder.linkQuery = el.value;
           const box = host.querySelector('[data-lhits="' + el.dataset.lq + '"]');
@@ -143,6 +159,17 @@
         const el = event.target;
         if (el.dataset.import !== undefined) { builderImportFrom(el); return; }
         if (el.dataset.linkCat !== undefined) { builderLinkCat(el); return; }
+        if (el.dataset.sonly !== undefined) { state.builder.stockOnly = el.checked; emit('oms:builder', { form: true }); return; }
+        if (el.dataset.stock !== undefined) { builderSetStock(el.dataset.stock, { status: el.value }); builderChanged(true); return; }
+        if (el.dataset.stockEta !== undefined) { builderSetStock(el.dataset.stockEta, { eta: el.value }); builderChanged(true); return; }
+        if (el.dataset.place !== undefined) {
+          const pl = builderSelected().places[Number(el.dataset.place)];
+          pl[el.dataset.pp] = el.value;
+          if (el.dataset.pp === 'g') { pl.m = ''; pl.s = ''; }
+          if (el.dataset.pp === 'm') pl.s = '';
+          builderChanged(true);
+          return;
+        }
         if (el.dataset.f && (el.type === 'checkbox' || el.tagName === 'SELECT' || el.type === 'date')) builderInput(el, true);
       });
       loadBuilder();

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.10
+Luna Luce OMS 2.11
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -29,11 +29,13 @@ Luna Luce OMS 2.10
   js/21-builder-editor  サイトビルダー真ん中（選んだ部品を直す）
   js/22-builder-preview サイトビルダー右列（見え方・確認・書き出し）
   js/23-builder-tab     サイトビルダーの3列の枠と操作
+  js/24-builder-products サイトビルダーの商品（欠品・入荷待ち、単品商品の登録。お手本は builder-products.json）
   js/90-start           起動（必ず最後）
 新しい部品は新しい番号のファイルとして足し、既存ファイルに詰め込まない。
 2.8 でサイトビルダー（7のタブ）を追加。builder-data.json は tools/oms-builder-data.cjs で作り、直接編集しない。
 2.9 でおすすめ特集カードにも上の画像を付けられるようにし（特集は1〜8つ・並べ替え可）、ビルダーから画像を取り込めるようにした（下書きに入り、反映時に images/uploads/ に置く）。
 2.10 でリンク先をURLの文字でなく名前で選べるようにした（カテゴリ・特集・ページ・商品。一覧は builder-data.json の links）。
+2.11 でビルダーに「商品」を追加: 在庫の状態（販売中・残りわずか・入荷待ち・欠品・販売終了）の切り替えと、お手本の商品から単品商品を登録（js/24-builder-products）。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
 
@@ -104,7 +106,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.10｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.11｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -144,6 +146,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/20-builder-list.js"></script>
   <script src="js/21-builder-editor.js"></script>
   <script src="js/22-builder-preview.js"></script>
+  <script src="js/24-builder-products.js"></script>
   <script src="js/23-builder-tab.js"></script>
   <script src="js/90-start.js"></script>
 </body>

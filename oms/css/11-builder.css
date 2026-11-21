@@ -117,3 +117,34 @@
     [data-part="builder-editor"] .lp-pages { display: flex; flex-wrap: wrap; gap: 6px; }
     [data-part="builder-editor"] .lp-page { font-size: 12px; padding: 6px 10px; min-height: 0; }
     [data-part="builder-editor"] .lp-feat.is-on, [data-part="builder-editor"] .lp-page.is-on { outline: 3px solid var(--champagne); }
+    /* 商品: 在庫の状態と単品商品の登録（24-builder-products） */
+    [data-part="builder-editor"] .stock-sum, [data-part="builder-editor"] .stock-sum { display: flex; flex-wrap: wrap; gap: 6px; }
+    .st { display: inline-block; border-radius: 999px; padding: 2px 10px; font-size: 12px; background: #eef5f1; color: #2f6b52; margin-right: 4px; }
+    .st.st-few { background: #fff4dc; color: #8a5a00; }
+    .st.st-wait { background: #e6f0ff; color: #2b5797; }
+    .st.st-out { background: #fde8e6; color: #a3271c; }
+    .st.st-end { background: #ececec; color: #555; }
+    [data-part="builder-editor"] .stock-list, [data-part="builder-editor"] .places, [data-part="builder-editor"] .skus { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+    [data-part="builder-editor"] .stock-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border: 1px solid var(--line); border-left-width: 4px; border-radius: 10px; padding: 6px 8px; background: #fff; }
+    [data-part="builder-editor"] .stock-row.st-few { border-left-color: #e0a100; }
+    [data-part="builder-editor"] .stock-row.st-wait { border-left-color: #2b5797; }
+    [data-part="builder-editor"] .stock-row.st-out { border-left-color: #c0392b; }
+    [data-part="builder-editor"] .stock-row.st-end { border-left-color: #888; opacity: .75; }
+    [data-part="builder-editor"] .stock-row img { width: 48px; height: 40px; object-fit: contain; }
+    [data-part="builder-editor"] .stock-row .nm { flex: 1 1 180px; min-width: 0; }
+    [data-part="builder-editor"] .stock-row .nm b { display: block; font-weight: 500; font-size: 13px; overflow-wrap: anywhere; }
+    [data-part="builder-editor"] .stock-row .nm small { color: var(--taupe-light); font-size: 11px; }
+    [data-part="builder-editor"] .stock-row .ctl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    [data-part="builder-editor"] .stock-row .eta { display: flex; align-items: center; gap: 4px; font-size: 12px; }
+    [data-part="builder-editor"] .place, [data-part="builder-editor"] .skus > li { border: 1px solid var(--line); border-radius: 12px; padding: 6px 10px; background: var(--ivory); }
+    [data-part="builder-preview"] .pv-item { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: grid; gap: 6px; }
+    [data-part="builder-preview"] .pv-item img, [data-part="builder-preview"] .pv-item .pv-empty { width: 100%; height: 180px; object-fit: contain; background: var(--ivory); border-radius: 10px; display: grid; place-items: center; }
+    [data-part="builder-preview"] .pv-item h4 { font-size: 15px; line-height: 1.5; }
+    [data-part="builder-preview"] .pv-price { font-size: 18px; font-weight: 700; }
+    [data-part="builder-preview"] .pv-price small { font-size: 11px; font-weight: 400; }
+    [data-part="builder-preview"] .pv-stock { font-weight: 700; }
+    [data-part="builder-preview"] .pv-stock.st-few { color: #8a5a00; } [data-part="builder-preview"] .pv-stock.st-wait { color: #2b5797; } [data-part="builder-preview"] .pv-stock.st-out { color: #a3271c; }
+    [data-part="builder-preview"] .pv-tag { font-size: 12px; color: #2f6b52; }
+    [data-part="builder-preview"] .pv-desc, [data-part="builder-preview"] .pv-place { font-size: 12px; color: var(--taupe); line-height: 1.7; }
+    [data-part="builder-preview"] .pv-stock-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 13px; }
+    [data-part="builder-preview"] .pv-stock-list small { display: block; color: var(--taupe-light); font-size: 11px; margin-left: 4px; }

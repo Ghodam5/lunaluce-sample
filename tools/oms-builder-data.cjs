@@ -48,8 +48,44 @@ function linkTargets() {
   const start = catSrc.indexOf('var GROUPS=');
   const end = catSrc.indexOf('\n];', start) + 3;
   if (start < 0 || end < 3) throw new Error('cat2.js のカテゴリが読めません');
-  const groups = vm.runInNewContext('(' + catSrc.slice(start + 11, end - 1) + ')');
-  const categories = groups.map((g) => ({ k: g.k, name: g.name, mids: g.mids.map((m) => ({ k: m.k, name: m.name, subs: (m.subs || []).map((x) => [x[0], x[1]]) })) }));
+  const helpers = 'function h(it,c){return it.c.indexOf(c)>=0}function s(it,x){return it.s.indexOf(x)>=0}function sa(it,a){return a.some(function(x){return s(it,x)})}function re(r){return function(it){return r.test(it.t)}}';
+  const groups = vm.runInNewContext(helpers + ';(' + catSrc.slice(start + 11, end - 1) + ')');
+  // 置き場所ごとに、いま並んでいる商品のカテゴリ設定で一番多い形を「お手本」にする（新しい商品をそこに並べるため）
+  const items = productRows().map((p) => ({ t: p.title, c: p.categories, s: p.subs }));
+  const titleHint = (fn) => { const m = String(fn).match(/\/([^/]+)\/\.test\(it\.t\)/); return m && !/!\s*\/[^/]+\/\.test\(it\.t\)/.test(String(fn)) ? m[1].split('|')[0] : ''; };
+  const subHint = (m, key) => { const mm = m.sf && String(m.sf).match(new RegExp("x==='" + key + "'\\?\\/([^/|]+)")); return mm ? mm[1] : ''; };
+  // 空から始め、置き場所の条件を満たすまで、並んでいる商品でよく使われている設定を足していく
+  const place = (match, hint, prefer) => {
+    const hits = items.filter(match);
+    const freq = (key) => { const n = {}; hits.forEach((it) => it[key].forEach((v) => { if (v !== 'nairi') n[v] = (n[v] || 0) + 1; })); return n; };
+    const fc = freq('c'), fs2 = freq('s');
+    const cand = { t: hint || '', c: [], s: [] };
+    let pool = Object.keys(fc).map((v) => ['c', v, fc[v]]).concat(Object.keys(fs2).map((v) => ['s', v, fs2[v]])).sort((a, b) => b[2] - a[2] || (a[1] < b[1] ? -1 : 1));
+    if (prefer && fs2[prefer]) pool = [['s', prefer, Infinity]].concat(pool);
+    for (let k = 0; k < pool.length && hits.length && !match(cand); k += 1) {
+      const [key, v] = pool[k];
+      if (cand[key].indexOf(v) >= 0) continue;
+      const trial = { t: cand.t, c: cand.c.slice(), s: cand.s.slice() };
+      trial[key].push(v);
+      if (match(trial)) { cand.c = trial.c; cand.s = trial.s; break; }
+      if (key === 'c' || v === prefer) { cand.c = trial.c; cand.s = trial.s; }
+    }
+    if (hits.length && !match(cand)) {
+      // 見つからなければ、よく使われている設定の組み合わせ（3つまで）を順に試す
+      const top = pool.slice(0, 10);
+      const combos = [];
+      for (let a = 0; a < top.length; a += 1) { combos.push([top[a]]); for (let b = a + 1; b < top.length; b += 1) { combos.push([top[a], top[b]]); for (let c = b + 1; c < top.length; c += 1) combos.push([top[a], top[b], top[c]]); } }
+      combos.sort((x, y) => x.length - y.length);
+      const hit = combos.find((cb) => { const t = { t: cand.t, c: [], s: [] }; cb.forEach(([k, v]) => t[k].push(v)); return match(t); });
+      if (hit) { cand.c = []; cand.s = []; hit.forEach(([k, v]) => cand[k].push(v)); }
+    }
+    const ok = hits.length > 0 && match(cand);
+    return { categories: ok ? cand.c.sort() : [], subs: ok ? cand.s.sort() : [], count: hits.length, titleHint: hint, ok };
+  };
+  const categories = groups.map((g) => ({ k: g.k, name: g.name, mids: g.mids.map((m) => ({
+    k: m.k, name: m.name, place: place(m.f, titleHint(m.f)),
+    subs: (m.subs || []).map((x) => [x[0], x[1], place((it) => m.f(it) && (x[2] ? x[2].test(it.t) : m.sf ? m.sf(it, x[0]) : true), x[2] ? x[2].source.split('|')[0] : subHint(m, x[0]) || titleHint(m.f), x[0])])
+  })) }));
   const ctx = { window: {} };
   vm.runInNewContext(fs.readFileSync(path.join(root, 'feature-data.js'), 'utf8'), ctx);
   const defs = ctx.window.FEATURE_CATALOG.definitions;
@@ -69,23 +105,36 @@ function linkTargets() {
   return { categories, features, pageGroups };
 }
 
+function productRows() {
+  return JSON.parse(fs.readFileSync(path.join(root, 'site-src/products/manifest.json'), 'utf8')).map((id) => read('site-src/products/' + id + '.json')).filter((r) => r.product).map((r) => r.product);
+}
+// お手本用の商品データ（商品登録で「似ている商品から作る」ときに使う）。画面は必要になってから読む。
+function templateProducts() {
+  return JSON.parse(fs.readFileSync(path.join(root, 'site-src/products/manifest.json'), 'utf8')).map((id) => read('site-src/products/' + id + '.json')).filter((r) => r.active && r.product).map((r) => { const p = Object.assign({}, r.product); delete p.sourceUrl; return p; });
+}
+
 function build() {
   const order = read('site-src/home-promos/manifest.json');
   const files = fs.readdirSync(path.join(root, 'site-src/home-promos')).filter((f) => f.endsWith('.json') && f !== 'manifest.json').map((f) => f.replace(/\.json$/, '')).sort();
   const ids = order.concat(files.filter((id) => !order.includes(id)));
   const cards = ids.map((id) => Object.assign({ inManifest: order.includes(id) }, read('site-src/home-promos/' + id + '.json')));
   const notices = read('site-src/site-notices.json');
-  const products = fs.readdirSync(path.join(root, 'site-src/products')).filter((f) => /^\d+\.json$/.test(f)).map((f) => read('site-src/products/' + f)).filter((p) => p.active && p.product).map((p) => ({ id: String(p.product.id), title: p.product.title, price: p.product.price, image: p.product.image || '' })).sort((a, b) => Number(a.id) - Number(b.id));
+  const products = fs.readdirSync(path.join(root, 'site-src/products')).filter((f) => /^\d+\.json$/.test(f)).map((f) => read('site-src/products/' + f)).filter((p) => p.active && p.product).map((p) => Object.assign({ id: String(p.product.id), code: p.product.code, title: p.product.title, price: p.product.price, image: p.product.image || '' }, p.stock ? { stock: p.stock } : {})).sort((a, b) => Number(a.id) - Number(b.id));
   const images = Array.from(new Set(cards.flatMap((c) => [c.image].concat((c.tiles || []).map((t) => t.image))).filter(Boolean))).sort();
   return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets() };
 }
 
-const text = JSON.stringify(build(), null, 2) + '\n';
+const outputs = [
+  [out, JSON.stringify(build(), null, 2) + '\n'],
+  [path.join(root, 'oms', 'builder-products.json'), JSON.stringify({ note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', products: templateProducts() }) + '\n']
+];
 if (process.argv.includes('--check')) {
-  const now = fs.existsSync(out) ? fs.readFileSync(out, 'utf8') : '';
-  if (now !== text) { console.error('oms/builder-data.json が古いです。node tools/oms-builder-data.cjs を実行してください。'); process.exit(1); }
-  console.log('oms/builder-data.json は最新です');
+  for (const [file, text] of outputs) {
+    const now = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+    if (now !== text) { console.error(path.relative(root, file) + ' が古いです。node tools/oms-builder-data.cjs を実行してください。'); process.exit(1); }
+  }
+  console.log('oms/builder-data.json・builder-products.json は最新です');
 } else {
-  fs.writeFileSync(out, text);
-  console.log('oms/builder-data.json を書き出しました');
+  for (const [file, text] of outputs) fs.writeFileSync(file, text);
+  console.log('oms/builder-data.json・builder-products.json を書き出しました');
 }
