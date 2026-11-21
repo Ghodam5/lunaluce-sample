@@ -229,7 +229,7 @@
         '<h3>種類と価格（税込）</h3><ol class="skus">' + p.skus.map(function (s, i) {
           return '<li class="row">' + builderField(p.skus.length > 1 ? '種類' + (i + 1) + 'の名前' : '種類の名前（1つだけなら空でよい）', 'skus.' + i + '.t', s.t, { placeholder: '例: Sサイズ / 白' }) + builderField('価格（円）', 'skus.' + i + '.price', String(s.price || ''), { type: 'number' }) + (p.skus.length > 1 ? '<span class="tools"><button type="button" data-b="sku-remove" data-index="' + i + '">外す</button></span>' : '') + '</li>';
         }).join('') + '</ol><button type="button" class="add" data-b="sku-add">＋ 種類を足す（サイズ・色など）</button>' +
-        '<h3>画像</h3><div class="imgs">' + builderImportButton('card') + '<div class="img-grid">' + builderProductImages(p) + '</div><small>取り込んだ画像（緑の枠）か、サイトにある画像から選べます。</small></div>' +
+        '<h3>画像</h3><div class="imgs">' + builderImportButton('card') + '<div class="img-grid">' + builderProductImages(p) + '</div><small>「取り込み」の札が付いた画像は、ここで取り込んだものです。× で消せます。</small></div>' +
         '<h3>サイトのどこに並べるか（置き場所）</h3><ol class="places">' + placeRows + '</ol>' + (p.places.length < 3 ? '<button type="button" class="add" data-b="place-add">＋ 置き場所を足す</button>' : '') +
         builderSwitch('名入れできる商品にする（「名入れできる」の絞り込みに出ます）', 'hasName', !!p.hasName) +
         (p.spec && p.spec.fields && p.spec.fields.length ? '<p class="muted">名入れなどの入力欄 ' + p.spec.fields.length + '項目は、お手本から写しています。</p>' : '') +
@@ -240,10 +240,7 @@
     function builderProductImages(p) {
       const b = state.builder;
       const choices = Array.from(new Set(builderImageChoices().concat(p.image ? [p.image] : []).concat(p.from && builderProduct(p.from) ? [builderProduct(p.from).image] : []))).filter(Boolean);
-      return choices.map(function (src) {
-        const on = src === p.image;
-        return '<button type="button" class="img' + (on ? ' is-on' : '') + (b.uploads[src] ? ' is-up' : '') + '" data-b="card-image" data-src="' + escapeHtml(src) + '" aria-pressed="' + on + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy"></button>';
-      }).join('');
+      return choices.map(function (src) { return builderImgTile(src, src === p.image); }).join('');
     }
 
     // ---- 右の列（見え方） ----

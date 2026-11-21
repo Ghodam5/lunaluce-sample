@@ -246,6 +246,7 @@
       if (!builderLocalLink(card.href)) out.push('ボタンのリンク先を選んでください');
       if (!state.builder.themes.some(function (t) { return t.id === card.theme; })) out.push('色のテーマを選んでください');
       if (card.image && !builderImageOk(card.image)) out.push('カードの上の画像が見つかりません。選び直してください');
+      if (card.imageHeight && !(card.imageHeight >= 80 && card.imageHeight <= 400)) out.push('画像の大きさを選び直してください');
       if (card.kind === 'features') {
         if (!(card.tiles || []).length) out.push('特集を1つ以上入れてください');
         if ((card.tiles || []).length > BUILDER_TILE_MAX) out.push('特集は' + BUILDER_TILE_MAX + 'つまでにしてください');
@@ -318,6 +319,7 @@
           const out = cloneData(c);
           if (out.kind === 'products') delete out.kind;
           if (out.kind === 'features' && !out.image) delete out.image;
+          if (!out.image || !out.imageHeight || out.imageHeight === 130) delete out.imageHeight;
           ['startsAt', 'endsAt'].forEach(function (k) { if (!out[k]) delete out[k]; });
           if (!out.startsAt && !out.endsAt) delete out.timeZone;
           return out;

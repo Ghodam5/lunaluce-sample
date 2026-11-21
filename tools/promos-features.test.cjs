@@ -13,6 +13,8 @@ test('特集一覧のカードは上の画像を任意で持てて、特集は8�
     a.ok(!ok({ ...base, image: 'images/uploads/none.jpg' }), '無い画像は止める');
     a.ok(!ok({ ...base, tiles: Array(9).fill(base.tiles[0]) }), '9つは止める');
     a.ok(ok({ ...base, tiles: base.tiles.slice(0, 2) }), '2つに減らしても通る');
+    a.ok(ok({ ...base, image: 'images/main-flavor.jpg', imageHeight: 240 }), '画像の高さ240pxは通る');
+    a.ok(!ok({ ...base, image: 'images/main-flavor.jpg', imageHeight: 999 }), '高すぎる画像は止める');
   } finally {
     a.ok(path.resolve(tmp).startsWith(path.resolve(os.tmpdir()) + path.sep));
     fs.rmSync(tmp, { recursive: true, force: true });

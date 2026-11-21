@@ -1,12 +1,17 @@
 // Luna Luce OMS 部品JS: 22-builder-preview（サイトビルダー右の列: サイトでの見え方）
 // 見本はサイトの home-promos.css の形に合わせた簡易表示。色はテーマの値をそのまま使う。
+    // 見本の画像。サイトの高さ（標準130px）を見本の大きさ（標準110px）に縮めて出し、下端をつまんで高さを変えられる
+    function builderPreviewImg(card) {
+      const h = Math.round((card.imageHeight || 130) * 110 / 130);
+      return '<div class="pv-img" style="height:' + h + 'px"><img src="' + escapeHtml(builderImg(card.image)) + '" alt=""><span class="pv-resize" data-resize title="上下に動かして大きさを変える" aria-hidden="true"></span></div>';
+    }
     function builderCardPreview(card, nowIso) {
       const t = builderTheme(card.theme);
       const kind = card.kind || 'products';
       const style = 'background:' + t.background + ';border-color:' + t.border + ';border-top-color:' + t.top + ';--accent:' + t.accent;
       let html = '<article class="pv-card" style="' + escapeHtml(style) + '">';
       if (kind === 'features') {
-        if (card.image) html += '<div class="pv-banner"><img src="' + escapeHtml(builderImg(card.image)) + '" alt=""><h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-tiles">';
+        if (card.image) html += '<div class="pv-banner">' + builderPreviewImg(card) + '<h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-tiles">';
         else html += '<div class="pv-head"><h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-tiles">';
         html += (card.tiles || []).map(function (tile) {
             return '<span><img src="' + escapeHtml(builderImg(tile.image)) + '" alt=""><em>' + escapeHtml(tile.label) + '</em></span>';
@@ -17,7 +22,7 @@
           const left = builderDaysLeft(card, nowIso);
           html += '<p class="pv-badge">' + escapeHtml(card.badge || 'キャンペーン') + (card.showCountdown !== false && left !== null && left > 0 ? '<b>あと' + left + '日</b>' : '') + '</p>';
         }
-        html += (card.image ? '<img src="' + escapeHtml(builderImg(card.image)) + '" alt="">' : '') + '<h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-products">' +
+        html += (card.image ? builderPreviewImg(card) : '') + '<h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-products">' +
           (card.ids || []).map(function (id) {
             const p = builderProduct(id);
             return p ? '<span><img src="' + escapeHtml(builderImg(p.image)) + '" alt=""><em>' + escapeHtml(p.title) + '</em></span>' : '<span class="pv-empty">商品を選ぶ</span>';

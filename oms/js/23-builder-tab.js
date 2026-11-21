@@ -87,6 +87,10 @@
       if (name === 'sku-remove' && b.sel.type === 'product') { builderSelected().skus.splice(index, 1); builderChanged(true); return; }
       if (name === 'place-add' && b.sel.type === 'product') { builderSelected().places.push({ g: '', m: '', s: '' }); builderChanged(true); return; }
       if (name === 'place-remove' && b.sel.type === 'product') { builderSelected().places.splice(index, 1); builderChanged(true); return; }
+      if (name === 'upload-remove') { builderRemoveUpload(el.dataset.src); return; }
+      if (name === 'img-size' && card) { builderSetImgH(card, (card.imageHeight || 130) + Number(el.dataset.step)); builderChanged(true); return; }
+      if (name === 'img-size-reset' && card) { delete card.imageHeight; builderChanged(true); return; }
+      if (name === 'img-fit' && card) { builderFitImage(card); return; }
       if (name === 'notice-add') { b.notices.push({ id: 'notice-' + Date.now().toString(36), active: true, text: '', href: '' }); builderChanged(true); return; }
       if (name === 'notice-move') { if (builderMove(b.notices, index, Number(el.dataset.dir)) !== false) builderChanged(true); return; }
       if (name === 'notice-remove') { b.notices.splice(index, 1); builderChanged(true); return; }
@@ -130,6 +134,54 @@
       const again = document.querySelector('[' + attr + ']');
       if (again) { again.focus(); try { again.setSelectionRange(pos, pos); } catch (e) { /* 何もしない */ } }
     }
+    // 取り込んだ画像を消す。カード・特集・新しい商品で使っていたら消さずに知らせる
+    function builderRemoveUpload(src) {
+      const b = state.builder;
+      if (!b.uploads[src]) return;
+      const users = [];
+      b.cards.forEach(function (c) {
+        if (c.image === src) users.push(c.title || 'カード');
+        (c.tiles || []).forEach(function (t) { if (t.image === src) users.push((c.title || 'カード') + 'の特集「' + (t.label || '') + '」'); });
+      });
+      b.newProducts.forEach(function (p) { if (p.image === src) users.push('新しい商品「' + (p.title || p.id) + '」'); });
+      if (users.length) { showToast('この画像は使われているので消せません: ' + users.join('、') + '。先に別の画像に変えてください。'); return; }
+      const name = b.uploads[src].name;
+      delete b.uploads[src];
+      builderSaveUploads();
+      builderChanged(true);
+      showToast('取り込んだ画像「' + name + '」を消しました。');
+    }
+    function builderSetImgH(card, h) {
+      h = Math.max(BUILDER_IMG_H.min, Math.min(BUILDER_IMG_H.max, Math.round(h / 10) * 10));
+      if (h === BUILDER_IMG_H.base) delete card.imageHeight; else card.imageHeight = h;
+    }
+    // 画像の縦横の比率から、カードの幅いっぱいに出る高さにする（サイトの画像の幅はおよそ300px）
+    function builderFitImage(card) {
+      const img = new Image();
+      img.onload = function () { builderSetImgH(card, 300 * img.naturalHeight / img.naturalWidth); builderChanged(true); };
+      img.src = builderImg(card.image);
+    }
+    // 見本の画像の下端をつまんで、上下に動かすと高さが変わる
+    function builderResizeStart(event, host) {
+      const card = builderSelected();
+      if (!card || state.builder.sel.type !== 'card') return;
+      event.preventDefault();
+      const box = event.target.closest('.pv-img');
+      const startY = event.clientY;
+      const startH = card.imageHeight || BUILDER_IMG_H.base;
+      const move = function (e) {
+        builderSetImgH(card, startH + (e.clientY - startY) * 130 / 110);
+        const h = card.imageHeight || BUILDER_IMG_H.base;
+        box.style.height = Math.round(h * 110 / 130) + 'px';
+        const range = host.querySelector('[data-imgh]');
+        const out = host.querySelector('[data-imgh-out]');
+        if (range) range.value = h;
+        if (out) out.textContent = Math.round(h / BUILDER_IMG_H.base * 100) + '%';
+      };
+      const up = function () { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); builderChanged(true); };
+      window.addEventListener('pointermove', move);
+      window.addEventListener('pointerup', up);
+    }
     function renderBuilderTab(host) {
       host.innerHTML = '<p class="builder-lead">左で直したい部品を選び、真ん中で直し、右で見え方を確かめます。JSONやCSSを触る必要はありません。</p><div class="builder-cols"></div>';
       mountOrdered(host.querySelector('.builder-cols'), BUILDER_PARTS);
@@ -137,8 +189,21 @@
         const el = event.target.closest('[data-b]');
         if (el && !el.disabled) builderAction(el.dataset.b, el);
       });
+      host.addEventListener('pointerdown', function (event) {
+        if (event.target.closest('[data-resize]')) builderResizeStart(event, host);
+      });
       host.addEventListener('input', function (event) {
         const el = event.target;
+        if (el.dataset.imgh !== undefined) {
+          const card = builderSelected();
+          builderSetImgH(card, Number(el.value));
+          const out = host.querySelector('[data-imgh-out]');
+          if (out) out.textContent = Math.round((card.imageHeight || BUILDER_IMG_H.base) / BUILDER_IMG_H.base * 100) + '%';
+          const box = host.querySelector('.pv-img');
+          if (box) box.style.height = Math.round((card.imageHeight || BUILDER_IMG_H.base) * 110 / 130) + 'px';
+          builderSave();
+          return;
+        }
         if (el.dataset.sq !== undefined) { state.builder.stockQuery = el.value; builderRepaintKeepFocus(el); return; }
         if (el.dataset.tq !== undefined) { state.builder.templateQuery = el.value; builderRepaintKeepFocus(el); return; }
         if (el.dataset.lq !== undefined) {
@@ -158,6 +223,7 @@
       host.addEventListener('change', function (event) {
         const el = event.target;
         if (el.dataset.import !== undefined) { builderImportFrom(el); return; }
+        if (el.dataset.imgh !== undefined) { builderChanged(true); return; }
         if (el.dataset.linkCat !== undefined) { builderLinkCat(el); return; }
         if (el.dataset.sonly !== undefined) { state.builder.stockOnly = el.checked; emit('oms:builder', { form: true }); return; }
         if (el.dataset.stock !== undefined) { builderSetStock(el.dataset.stock, { status: el.value }); builderChanged(true); return; }

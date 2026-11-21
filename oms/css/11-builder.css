@@ -148,3 +148,17 @@
     [data-part="builder-preview"] .pv-desc, [data-part="builder-preview"] .pv-place { font-size: 12px; color: var(--taupe); line-height: 1.7; }
     [data-part="builder-preview"] .pv-stock-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 13px; }
     [data-part="builder-preview"] .pv-stock-list small { display: block; color: var(--taupe-light); font-size: 11px; margin-left: 4px; }
+    /* 取り込んだ画像の札・消すボタン、画像の大きさ */
+    [data-part="builder-editor"] .img-wrap { position: relative; display: block; }
+    [data-part="builder-editor"] .img-wrap .img { width: 100%; }
+    [data-part="builder-editor"] .up-badge { position: absolute; left: 4px; top: 4px; background: #2f8f6a; color: #fff; font-style: normal; font-size: 10px; line-height: 1; padding: 3px 6px; border-radius: 999px; pointer-events: none; }
+    [data-part="builder-editor"] .img-del { position: absolute; right: 2px; top: 2px; width: 26px; height: 26px; min-height: 0; padding: 0; border-radius: 50%; background: #fff; border: 1px solid #c0392b; color: #c0392b; font-size: 15px; line-height: 1; display: grid; place-items: center; }
+    [data-part="builder-editor"] .img-size { margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 6px; }
+    [data-part="builder-editor"] .fld > span.size-row { display: flex; align-items: center; gap: 6px; }
+    [data-part="builder-editor"] .size-row input[type="range"] { flex: 1; min-width: 0; accent-color: var(--champagne); }
+    [data-part="builder-editor"] .size-row button { min-height: 0; width: 32px; height: 32px; padding: 0; }
+    [data-part="builder-editor"] .size-row output { min-width: 44px; text-align: right; font-variant-numeric: tabular-nums; }
+    [data-part="builder-preview"] .pv-img { position: relative; }
+    [data-part="builder-preview"] .pv-img img { width: 100%; height: 100%; object-fit: contain; background: #fff; border-radius: 10px; display: block; }
+    [data-part="builder-preview"] .pv-resize { position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%); width: 56px; height: 14px; border-radius: 7px; background: var(--champagne, #b8955a); cursor: ns-resize; touch-action: none; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+    [data-part="builder-preview"] .pv-resize::before { content: ""; position: absolute; left: 14px; right: 14px; top: 5px; height: 4px; border-top: 1px solid #fff; border-bottom: 1px solid #fff; }

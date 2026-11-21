@@ -77,14 +77,24 @@
       const up = state.builder.uploads[src];
       return up ? '取り込み: ' + up.name : src.replace(/^images\//, '');
     }
+    // 画像の一枚: 取り込んだ画像には「取り込み」の札と消すボタンを付ける（サイトにある画像・商品画像は消せない）
+    function builderImgTile(src, on) {
+      const up = state.builder.uploads[src];
+      return '<span class="img-wrap' + (up ? ' is-up' : '') + '"><button type="button" class="img' + (on ? ' is-on' : '') + (up ? ' is-up' : '') + '" data-b="card-image" data-src="' + escapeHtml(src) + '" aria-pressed="' + on + '" title="' + escapeHtml(builderImageLabel(src)) + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy"></button>' +
+        (up ? '<em class="up-badge">取り込み</em><button type="button" class="img-del" data-b="upload-remove" data-src="' + escapeHtml(src) + '" aria-label="取り込んだ画像 ' + escapeHtml(up.name) + ' を消す" title="この取り込み画像を消す">×</button>' : '') + '</span>';
+    }
+    // カードの上の画像の高さ（サイトでの高さ px。標準130）。つまみと、右の見本の下端のドラッグで変えられる
+    const BUILDER_IMG_H = { min: 80, max: 400, base: 130 };
+    function builderImageSize(card) {
+      const h = card.imageHeight || BUILDER_IMG_H.base;
+      return '<div class="img-size"><label class="fld"><span>画像の大きさ（カードの縦の長さも変わります）</span><span class="size-row"><button type="button" data-b="img-size" data-step="-20" aria-label="小さく">−</button><input type="range" min="' + BUILDER_IMG_H.min + '" max="' + BUILDER_IMG_H.max + '" step="10" value="' + h + '" data-imgh aria-label="画像の高さ"><button type="button" data-b="img-size" data-step="20" aria-label="大きく">＋</button><output data-imgh-out>' + Math.round(h / BUILDER_IMG_H.base * 100) + '%</output></span></label>' +
+        '<span class="tools"><button type="button" data-b="img-fit">画像に合わせる</button><button type="button" data-b="img-size-reset"' + (card.imageHeight ? '' : ' disabled') + '>標準に戻す</button></span><small>右の見本の画像の下の線をつまんで、上下に動かしても変えられます。画像の縦横の比率はそのままです。</small></div>';
+    }
     function builderImagePicker(card) {
       const b = state.builder;
       const choices = Array.from(new Set(builderImageChoices().concat(card.image ? [card.image] : []).concat((card.ids || []).map(function (id) { const p = builderProduct(id); return p && p.image; }).filter(Boolean))));
-      const tiles = choices.map(function (src) {
-        const on = src === card.image;
-        return '<button type="button" class="img' + (on ? ' is-on' : '') + (b.uploads[src] ? ' is-up' : '') + '" data-b="card-image" data-src="' + escapeHtml(src) + '" aria-pressed="' + on + '" title="' + escapeHtml(builderImageLabel(src)) + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy"></button>';
-      }).join('');
-      return '<div class="imgs">' + builderSwitch('カードの上に画像を出す', 'useImage', !!card.image) + (card.image || card.useImage ? builderImportButton('card') + '<div class="img-grid">' + tiles + '</div><small>取り込んだ画像（緑の枠）、トップのカードで使っている画像、選んだ商品の画像から選べます。</small>' : '') + '</div>';
+      const tiles = choices.map(function (src) { return builderImgTile(src, src === card.image); }).join('');
+      return '<div class="imgs">' + builderSwitch('カードの上に画像を出す', 'useImage', !!card.image) + (card.image || card.useImage ? builderImportButton('card') + '<div class="img-grid">' + tiles + '</div><small>「取り込み」の札が付いた画像は、ここで取り込んだものです。× で消せます（使っている場所があるときは消せません）。</small>' + (card.image ? builderImageSize(card) : '') : '') + '</div>';
     }
     function builderSlots(card) {
       return '<ol class="slots">' + (card.ids || ['', '', '', '']).map(function (id, i) {
