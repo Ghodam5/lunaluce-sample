@@ -267,3 +267,6 @@
     [data-part="builder-editor"] .plan-members small { display: block; color: #8a7f73; font-size: 11px; }
     [data-part="builder-preview"] .pv-plan { padding: 10px; border-radius: 10px; background: #fff; border: 1px solid var(--line, #e5dccf); }
     [data-part="builder-editor"] .hit .noimg { width: 40px; height: 40px; font-size: 10px; }
+    [data-part="builder-editor"] .plan-excluded { margin: 8px 0; padding: 8px 10px; border: 1px dashed var(--line, #d8d0c4); border-radius: 10px; background: #fbf9f5; }
+    [data-part="builder-editor"] .plan-excluded h4 { margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; font-size: 14px; }
+    [data-part="builder-editor"] .plan-excluded li { opacity: .85; }

@@ -108,10 +108,19 @@
           const viaCat = plan.ids.indexOf(item.id) < 0;
           return '<li>' + (item.image ? '<img src="' + escapeHtml(builderImg(item.image)) + '" alt="" loading="lazy">' : '<span class="noimg">本店</span>') + '<span class="nm">' + escapeHtml(item.title) + '<small>' + escapeHtml(item.id) + (viaCat ? '・カテゴリーで' : '・足した商品') + (item.src === 'w' ? '・新サイト未出店' : '') + '</small></span><button type="button" data-b="plan-item-remove" data-id="' + escapeHtml(item.id) + '">外す</button></li>';
         }).join('') + '</ol>' + (members.length > 60 ? '<p class="muted">ほか ' + (members.length - 60) + '件</p>' : '') +
-        (plan.exclude.length ? '<p class="muted">外した商品 ' + plan.exclude.length + '件 <button type="button" data-b="plan-exclude-clear">外したのを元に戻す</button></p>' : '') +
+        builderPlanExcluded(plan) +
         '<h3>トップのカード（任意）</h3>' + (card ? '<p>トップのカード「' + escapeHtml(card.title || '題名なし') + '」とつながっています。カードの表示期間はこの企画の期間にそろえます。</p><button type="button" data-b="plan-card-open">カードを開く</button>' :
           '<p class="muted">カードを出さなくても、企画の期間と商品の販売期間はそのまま使えます。</p><button type="button" class="add" data-b="plan-card">＋ この企画のカードをトップに作る</button>') +
         '<h3>メモ</h3><label class="fld wide"><span>メモ（社内用・サイトには出ません）</span><textarea data-plan="note" rows="2">' + escapeHtml(plan.note || '') + '</textarea></label>';
+    }
+    // 外した商品（カテゴリーで入ったものも、足したものも）。1つずつ戻すか、全部戻す
+    function builderPlanExcluded(plan) {
+      if (!plan.exclude.length) return '';
+      const all = builderListingItems();
+      return '<div class="plan-excluded"><h4>外した商品（' + plan.exclude.length + '件）<button type="button" data-b="plan-exclude-clear">全部戻す</button></h4><p class="muted">まちがえて外したときは「戻す」で企画に戻せます。</p><ol class="plan-members">' + plan.exclude.map(function (id) {
+        const item = all.find(function (x) { return x.id === id; }) || { id: id, title: '商品番号 ' + id, image: '' };
+        return '<li>' + (item.image ? '<img src="' + escapeHtml(builderImg(item.image)) + '" alt="" loading="lazy">' : '<span class="noimg">本店</span>') + '<span class="nm">' + escapeHtml(item.title) + '<small>' + escapeHtml(id) + '・外した商品</small></span><button type="button" data-b="plan-exclude-back" data-id="' + escapeHtml(id) + '">戻す</button></li>';
+      }).join('') + '</ol></div>';
     }
     function builderPlanHits(plan) {
       const q = foldText(state.builder.planQuery || '');
@@ -119,7 +128,7 @@
       const found = builderListingItems().filter(function (p) { return p.id.indexOf(q) === 0 || foldText(p.title).indexOf(q) >= 0 || foldText(p.code || '').indexOf(q) >= 0; }).slice(0, 8);
       if (!found.length) return '<p class="muted">見つかりません</p>';
       return found.map(function (p) {
-        const inPlan = plan.ids.indexOf(p.id) >= 0;
+        const inPlan = plan.ids.indexOf(p.id) >= 0 && plan.exclude.indexOf(p.id) < 0;
         return '<button type="button" class="hit" data-b="plan-item-add" data-id="' + escapeHtml(p.id) + '"' + (inPlan ? ' disabled' : '') + '>' + (p.image ? '<img src="' + escapeHtml(builderImg(p.image)) + '" alt="" loading="lazy">' : '<span class="noimg">本店</span>') + '<span>' + escapeHtml(p.title) + '<small>' + escapeHtml(p.id) + '・' + formatYen(p.price) + (p.src === 'w' ? '・新サイト未出店' : '') + (inPlan ? '・足し済み' : '') + '</small></span></button>';
       }).join('');
     }
@@ -152,14 +161,14 @@
       if (name === 'plan-cat-remove') { plan.cats.splice(index, 1); builderChanged(true); return true; }
       if (name === 'plan-item-add') { const id = el.dataset.id; if (plan.ids.indexOf(id) < 0) plan.ids.push(id); plan.exclude = plan.exclude.filter(function (x) { return x !== id; }); builderChanged(true); return true; }
       if (name === 'plan-item-remove') {
+        // 足した商品もカテゴリーで入った商品も「外した商品」に残す（あとで1つずつ戻せる）
         const id = el.dataset.id;
-        const i = plan.ids.indexOf(id);
-        if (i >= 0) plan.ids.splice(i, 1);
-        if (builderPlanMembers(plan).some(function (m) { return m.id === id; })) plan.exclude.push(id);
+        if (plan.exclude.indexOf(id) < 0) plan.exclude.push(id);
         builderChanged(true);
         return true;
       }
-      if (name === 'plan-exclude-clear') { plan.exclude = []; builderChanged(true); return true; }
+      if (name === 'plan-exclude-clear') { const n = plan.exclude.length; plan.exclude = []; builderChanged(true); showToast('外した商品 ' + n + '件をすべて戻しました。'); return true; }
+      if (name === 'plan-exclude-back') { const id = el.dataset.id; plan.exclude = plan.exclude.filter(function (x) { return x !== id; }); builderChanged(true); showToast('商品番号 ' + id + ' を企画に戻しました。'); return true; }
       if (name === 'plan-card-open') { const i = b.cards.findIndex(function (c) { return c.id === plan.cardId; }); if (i >= 0) { b.sel = { type: 'card', index: i }; builderChanged(true); } return true; }
       if (name === 'plan-card') {
         const site = builderPlanMembers(plan).filter(function (m) { return m.src === 'site'; }).slice(0, 4).map(function (m) { return m.id; });
