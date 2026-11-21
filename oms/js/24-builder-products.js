@@ -169,8 +169,10 @@
       const codes = state.builder.products.filter(function (x) { return x.id !== p.id; }).map(function (x) { return (x.code || '').toLowerCase(); });
       builderSyncPhotos(p);
       if (!(p.title || '').trim()) out.push('商品名を入れてください');
-      if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,40}$/.test(p.code || '')) out.push('商品コードを英数字で入れてください（楽天・Yahooと同じものにすると照合が楽です）');
-      else if (codes.indexOf(p.code.toLowerCase()) >= 0 || state.builder.newProducts.filter(function (x) { return (x.code || '').toLowerCase() === p.code.toLowerCase(); }).length > 1) out.push('同じ商品コードの商品がもうあります');
+      const cc = builderCodeCheck(p);
+      if (cc.level === 'error') out.push(cc.msg);
+      else if (cc.level === 'wait') out.push('商品コードの照合が終わるまで少し待ってください');
+      else if (codes.indexOf(codeKey(p.code)) >= 0) out.push('同じ商品コードの商品がもうあります');
       if (!builderImageOk(p.image)) out.push('商品の画像を選ぶか取り込んでください');
       if (!(Number(p.minq) >= 1)) out.push('最低数量は1以上にしてください');
       if (!p.skus.length) out.push('種類（価格）を1つ以上入れてください');
@@ -179,11 +181,11 @@
         if (p.skus.length > 1 && !(s.t || '').trim()) out.push('種類' + (i + 1) + 'の名前を入れてください');
       });
       const places = p.edit && !p.placesTouched ? [] : (p.places || []).filter(function (pl) { return pl.g; });
-      if (!places.length && !(p.edit && !p.placesTouched)) out.push('サイトのどこに並べるか（置き場所）を選んでください');
+      if (!places.length && !(p.edit && !p.placesTouched)) out.push('カテゴリー（大・中）を選んでください');
       places.forEach(function (pl) {
         const f = builderPlaceFind(pl);
-        if (!f.m) out.push(builderPlaceLabel(pl) + ': その中の分類まで選んでください');
-        else if (!f.rule || !f.rule.ok) out.push(builderPlaceLabel(pl) + ': この置き場所は自動で並べられません。別の置き場所を選んでください');
+        if (!f.m) out.push(builderPlaceLabel(pl) + ': 中カテゴリーまで選んでください');
+        else if (!f.rule || !f.rule.ok) out.push(builderPlaceLabel(pl) + ': このカテゴリーには自動で並べられません。別のカテゴリーを選んでください');
         else if (f.rule.titleHint && (p.title || '').indexOf(f.rule.titleHint) < 0) out.push(builderPlaceLabel(pl) + 'に並べるには、商品名に「' + f.rule.titleHint + '」を入れてください');
       });
       if (!(p.description || '').trim()) out.push('商品の説明を入れてください');
@@ -279,12 +281,12 @@
       const placeRows = p.places.map(function (pl, i) {
         const f = builderPlaceFind(pl);
         const g = f.g, m = f.m;
-        let html = '<li class="place"><div class="row"><label class="fld"><span>大きな分類</span><select data-place="' + i + '" data-pp="g"><option value="">選んでください</option>' + b.links.categories.map(function (x) { return '<option value="' + escapeHtml(x.k) + '"' + (x.k === pl.g ? ' selected' : '') + '>' + escapeHtml(x.name) + '</option>'; }).join('') + '</select></label>';
-        if (g) html += '<label class="fld"><span>その中の分類</span><select data-place="' + i + '" data-pp="m"><option value="">選んでください</option>' + g.mids.map(function (x) { return '<option value="' + escapeHtml(x.k) + '"' + (x.k === pl.m ? ' selected' : '') + (x.place.ok ? '' : ' disabled') + '>' + escapeHtml(x.name) + '</option>'; }).join('') + '</select></label>';
-        if (m && m.subs.length) html += '<label class="fld"><span>さらに細かく（任意）</span><select data-place="' + i + '" data-pp="s"><option value="">' + escapeHtml(m.name) + '</option>' + m.subs.map(function (x) { return '<option value="' + escapeHtml(x[0]) + '"' + (x[0] === pl.s ? ' selected' : '') + (x[2].ok ? '' : ' disabled') + '>' + escapeHtml(x[1]) + '</option>'; }).join('') + '</select></label>';
+        let html = '<li class="place"><div class="row"><label class="fld"><span>大カテゴリー</span><select data-place="' + i + '" data-pp="g"><option value="">選んでください</option>' + b.links.categories.map(function (x) { return '<option value="' + escapeHtml(x.k) + '"' + (x.k === pl.g ? ' selected' : '') + '>' + escapeHtml(x.name) + '</option>'; }).join('') + '</select></label>';
+        if (g) html += '<label class="fld"><span>中カテゴリー</span><select data-place="' + i + '" data-pp="m"><option value="">選んでください</option>' + g.mids.map(function (x) { return '<option value="' + escapeHtml(x.k) + '"' + (x.k === pl.m ? ' selected' : '') + (x.place.ok ? '' : ' disabled') + '>' + escapeHtml(x.name) + '</option>'; }).join('') + '</select></label>';
+        if (m && m.subs.length) html += '<label class="fld"><span>小カテゴリー（任意）</span><select data-place="' + i + '" data-pp="s"><option value="">' + escapeHtml(m.name) + '</option>' + m.subs.map(function (x) { return '<option value="' + escapeHtml(x[0]) + '"' + (x[0] === pl.s ? ' selected' : '') + (x[2].ok ? '' : ' disabled') + '>' + escapeHtml(x[1]) + '</option>'; }).join('') + '</select></label>';
         html += '</div>';
-        if (f.rule && f.rule.titleHint) html += '<small class="muted">ここに並べるには、商品名に「' + escapeHtml(f.rule.titleHint) + '」が入っている必要があります。</small>';
-        if (p.places.length > 1) html += '<span class="tools"><button type="button" data-b="place-remove" data-index="' + i + '">この置き場所を外す</button></span>';
+        if (f.rule && f.rule.titleHint) html += '<small class="muted">このカテゴリーに並べるには、商品名に「' + escapeHtml(f.rule.titleHint) + '」が入っている必要があります。</small>';
+        if (p.places.length > 1) html += '<span class="tools"><button type="button" data-b="place-remove" data-index="' + i + '">このカテゴリーから外す</button></span>';
         return html + '</li>';
       }).join('');
       const st = p.stock;
@@ -292,19 +294,20 @@
       const head = p.edit ? '<h2>商品の編集</h2><p class="lead">いまの商品の内容を写しました。直したところは、書き出すとサイト（Welcart）と楽天・Yahoo用の一括登録ファイルに入ります。</p>' :
         '<h2>単品商品の登録</h2>' + (t ? '<p class="lead">お手本: ' + escapeHtml(t.title) + '（ここから写しました）</p>' : '<p class="lead">白紙から作っています。</p>');
       const placeBlock = p.edit && !p.placesTouched ?
-        '<p class="muted">いまの並び方のまま: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || '（分類の印で並んでいます）') + '</p><button type="button" class="add" data-b="place-edit">置き場所を変える</button>' :
-        '<ol class="places">' + placeRows + '</ol>' + (p.places.length < 3 ? '<button type="button" class="add" data-b="place-add">＋ 置き場所を足す</button>' : '');
+        '<p class="muted">いまのカテゴリー: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || '（分類の印で並んでいます）') + '</p><button type="button" class="add" data-b="place-edit">カテゴリーを変える</button>' :
+        '<ol class="places">' + placeRows + '</ol>' + (p.places.length < 3 ? '<button type="button" class="add" data-b="place-add">＋ 別のカテゴリーにも並べる</button>' : '');
       return head +
         '<div class="row">' + builderSwitch('サイトに出す', 'active', p.active !== false) + '<span class="tools"><button type="button" data-b="product-remove">' + (p.edit ? 'この編集をやめる（元のまま）' : 'この登録をやめる') + '</button></span></div>' +
         '<h3>基本</h3>' + builderField('商品名', 'title', p.title, { wide: true, max: 80 }) +
-        '<div class="row">' + builderField('商品コード', 'code', p.code, { placeholder: '例: kashi-xmas2', max: 40, hint: p.edit ? '変えると楽天・Yahooの商品と照合できなくなります。ふつうは変えません' : '楽天・Yahooと同じにすると、注文と在庫の照合が自動でできます' }) + builderField('最低数量', 'minq', String(p.minq), { type: 'number' }) + '</div>' +
+        '<h3>カテゴリー（大・中・小）</h3><p class="muted">サイトのどのカテゴリーに並べるかを選びます。2つ以上に並べることもできます。</p>' + placeBlock +
+        '<h3>商品コード</h3>' + builderCodeBlock(p) +
+        '<div class="row">' + builderField('最低数量', 'minq', String(p.minq), { type: 'number' }) + '</div>' +
         '<p class="muted">' + (p.edit ? '商品番号 ' + escapeHtml(p.id) + '（変わりません）' : '商品番号は自動で ' + escapeHtml(p.id) + ' になります。') + '</p>' +
         '<h3>種類と価格（税込）</h3><ol class="skus">' + p.skus.map(function (s, i) {
           return '<li class="row">' + builderField(p.skus.length > 1 ? '種類' + (i + 1) + 'の名前' : '種類の名前（1つだけなら空でよい）', 'skus.' + i + '.t', s.t, { placeholder: '例: Sサイズ / 白' }) + builderField('価格（円）', 'skus.' + i + '.price', String(s.price || ''), { type: 'number' }) + (p.skus.length > 1 ? '<span class="tools"><button type="button" data-b="sku-remove" data-index="' + i + '">外す</button></span>' : '') + '</li>';
         }).join('') + '</ol><button type="button" class="add" data-b="sku-add">＋ 種類を足す（サイズ・色など）</button>' +
         '<h3>写真（' + p.photos.length + '枚・1枚目がメイン）</h3>' + builderPhotoList(p) +
         '<div class="imgs"><p class="muted">下の画像を押すと写真に足します。取り込みは何枚でもまとめて選べます。</p>' + builderImportButton('photo') + '<div class="img-grid">' + builderProductImages(p) + '</div><small>「取り込み」の札が付いた画像は、ここで取り込んだものです。× で消せます。</small></div>' +
-        '<h3>サイトのどこに並べるか（置き場所）</h3>' + placeBlock +
         builderSwitch('名入れできる商品にする（「名入れできる」の絞り込みに出ます）', 'hasName', !!p.hasName) +
         (p.spec && p.spec.fields && p.spec.fields.length ? '<p class="muted">名入れなどの入力欄 ' + p.spec.fields.length + '項目は、お手本から写しています。</p>' : '') +
         '<h3>説明</h3>' + PRODUCT_TEXT_FIELDS.map(function (f) { return builderField(f[1], f[0], p[f[0]], { wide: true, area: f[2] }); }).join('') +
@@ -343,7 +346,7 @@
         (stk.status !== 'in' ? '<p class="pv-stock st-' + st.id + '">' + escapeHtml(st.short) + (stk.status === 'wait' && stk.eta ? '・' + escapeHtml(stk.eta.replace(/-/g, '/')) + '入荷予定' : '') + '</p>' : '') +
         (p.hasName ? '<p class="pv-tag">名入れできます</p>' : '') +
         '<p class="pv-desc">' + escapeHtml((p.description || '').slice(0, 120)) + ((p.description || '').length > 120 ? '…' : '') + '</p>' +
-        '<p class="pv-place">並ぶ場所: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || (p.edit ? 'いまのまま' : '未選択')) + '</p>' +
+        '<p class="pv-place">カテゴリー: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || (p.edit ? 'いまのまま' : '未選択')) + '</p>' +
         '<p class="pv-all">' + (stk.status === 'out' ? 'いまは注文できません' : 'カートに入れる') + '</p></article>';
     }
     function builderPhotoThumbs(list) {
@@ -373,7 +376,7 @@
         '<h4>' + escapeHtml(p.title) + '</h4><p class="pv-price">' + formatYen(p.price) + (p.skus.some(function (s) { return s.price !== p.price; }) ? '〜' : '') + '<small>（税込）</small></p>' +
         '<p class="pv-stock st-' + state0.id + '">' + escapeHtml(state0.short) + (st.eta ? '・' + escapeHtml(st.eta.replace(/-/g, '/')) + '入荷予定' : '') + '</p>' +
         '<dl class="pv-dl"><dt>商品番号</dt><dd>' + escapeHtml(String(p.id)) + '</dd><dt>商品コード</dt><dd>' + escapeHtml(p.code || '—') + '</dd><dt>最低数量</dt><dd>' + escapeHtml(String(p.minq || 1)) + '</dd>' +
-        '<dt>並ぶ場所</dt><dd>' + escapeHtml(places.join(' ／ ') || '—') + '</dd><dt>名入れ</dt><dd>' + (p.hasName ? 'できる' : 'なし') + '</dd>' +
+        '<dt>カテゴリー</dt><dd>' + escapeHtml(places.join(' ／ ') || '—') + '</dd><dt>名入れ</dt><dd>' + (p.hasName ? 'できる' : 'なし') + '</dd>' +
         rows.map(function (r) { return '<dt>' + escapeHtml(r[0]) + '</dt><dd>' + escapeHtml(r[1]) + '</dd>'; }).join('') + '</dl>' +
         (p.skus.length > 1 ? '<h5>種類と価格</h5><ul class="pv-ul">' + p.skus.map(function (s) { return '<li>' + escapeHtml(s.t) + '<b>' + formatYen(s.price) + '</b></li>'; }).join('') + '</ul>' : '') +
         (fields.length ? '<h5>注文時の入力欄（' + fields.length + '）</h5><ul class="pv-ul">' + fields.map(function (f) { return '<li>' + escapeHtml(f.label || f.k) + '<small>' + escapeHtml(f.form || '') + (f.req ? '・必須' : '') + '</small></li>'; }).join('') + '</ul>' : '') +

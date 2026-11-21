@@ -87,6 +87,7 @@
       if (name === 'photo-move' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); if (builderMove(p.photos, index, Number(el.dataset.dir)) !== false) { p.image = p.photos[0]; builderChanged(true); } return; }
       if (name === 'photo-main' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); p.photos.unshift(p.photos.splice(index, 1)[0]); p.image = p.photos[0]; builderChanged(true); return; }
       if (name === 'photo-remove' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); p.photos.splice(index, 1); p.image = p.photos[0] || ''; builderChanged(true); return; }
+      if (name === 'code-suggest' && b.sel.type === 'product') { const p = builderSelected(); p.code = el.dataset.code; p.codeAuto = el.dataset.code; builderChanged(true); return; }
       if (name === 'place-edit' && b.sel.type === 'product') { builderSelected().placesTouched = true; builderChanged(true); return; }
       if (name === 'channel-export') { builderChannelExport(); return; }
       if (name === 'product-remove' && b.sel.type === 'product') { b.newProducts.splice(b.sel.index, 1); b.sel = { type: 'stock', index: 0 }; builderChanged(true); return; }
@@ -244,6 +245,12 @@
           builderSave();
           return;
         }
+        if (el.dataset.f === 'code' && state.builder.sel.type === 'product') {
+          builderInput(el, false);
+          const out = host.querySelector('[data-codecheck]');
+          if (out) { const c = builderCodeCheck(builderSelected()); out.className = 'code-check is-' + c.level; out.textContent = c.msg; }
+          return;
+        }
         if (el.dataset.sq !== undefined) { state.builder.stockQuery = el.value; state.builder.stockPage = 1; builderRepaintKeepFocus(el); return; }
         if (el.dataset.tq !== undefined) { state.builder.templateQuery = el.value; builderRepaintKeepFocus(el); return; }
         if (el.dataset.lq !== undefined) {
@@ -263,6 +270,7 @@
       host.addEventListener('change', function (event) {
         const el = event.target;
         if (el.dataset.import !== undefined) { builderImportFrom(el); return; }
+        if (el.dataset.codesImport !== undefined) { builderImportCodes(el); return; }
         if (el.dataset.imgh !== undefined) { builderChanged(true); return; }
         if (el.dataset.linkCat !== undefined) { builderLinkCat(el); return; }
         if (el.dataset.stock !== undefined) { builderSetStock(el.dataset.stock, { status: el.value }); builderChanged(true); return; }
@@ -272,6 +280,7 @@
           pl[el.dataset.pp] = el.value;
           if (el.dataset.pp === 'g') { pl.m = ''; pl.s = ''; }
           if (el.dataset.pp === 'm') pl.s = '';
+          builderCodeAuto(builderSelected());
           builderChanged(true);
           return;
         }

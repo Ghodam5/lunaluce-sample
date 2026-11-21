@@ -124,17 +124,48 @@ function build() {
   return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets() };
 }
 
+// 使われている商品コードの台帳（商品コードの重複チェック用）。小文字にそろえ、どこで使っているかを文字で持つ
+// s=新サイト（site-src/products）、w=本店Welcart（oms-products.json）、r=楽天（oms-channel-match.json の楽天商品データ）
+function codeRegistry() {
+  const codes = {};
+  const add = (code, ch) => {
+    const k = String(code || '').trim().toLowerCase();
+    if (!k || k === 'normal-inventory') return;
+    if (!codes[k]) codes[k] = '';
+    if (!codes[k].includes(ch)) codes[k] += ch;
+  };
+  productRows().forEach((p) => { add(p.code, 's'); (p.skus || []).forEach((x) => add(x.code, 's')); });
+  const sources = { s: { name: '新サイト', count: productRows().length } };
+  const wf = path.join(root, 'oms/oms-products.json');
+  if (fs.existsSync(wf)) {
+    const w = read('oms/oms-products.json').products || [];
+    w.forEach((p) => { add(p.item_code, 'w'); add(p.sku, 'w'); });
+    sources.w = { name: '本店（Welcart）', count: w.length };
+  }
+  const mf = path.join(root, 'oms/oms-channel-match.json');
+  if (fs.existsSync(mf)) {
+    const m = read('oms/oms-channel-match.json');
+    (m.rakuten || []).forEach((r) => { add(r.manage_no, 'r'); add(r.item_no, 'r'); add(r.sku_no, 'r'); });
+    sources.r = { name: '楽天', count: (m.counts && m.counts.rakuten_products) || 0, asOf: m.as_of };
+    sources.w.asOf = m.welcart_as_of;
+  }
+  const sorted = {};
+  Object.keys(codes).sort().forEach((k) => { sorted[k] = codes[k]; });
+  return { note: 'tools/oms-builder-data.cjs で作る。直接編集しない。Yahooは画面からCSVを読み込んで足す。', sources, codes: sorted };
+}
+
 const outputs = [
   [out, JSON.stringify(build(), null, 2) + '\n'],
-  [path.join(root, 'oms', 'builder-products.json'), JSON.stringify({ note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', products: templateProducts() }) + '\n']
+  [path.join(root, 'oms', 'builder-products.json'), JSON.stringify({ note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', products: templateProducts() }) + '\n'],
+  [path.join(root, 'oms', 'builder-codes.json'), JSON.stringify(codeRegistry()) + '\n']
 ];
 if (process.argv.includes('--check')) {
   for (const [file, text] of outputs) {
     const now = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
     if (now !== text) { console.error(path.relative(root, file) + ' が古いです。node tools/oms-builder-data.cjs を実行してください。'); process.exit(1); }
   }
-  console.log('oms/builder-data.json・builder-products.json は最新です');
+  console.log('oms/builder-data.json・builder-products.json・builder-codes.json は最新です');
 } else {
   for (const [file, text] of outputs) fs.writeFileSync(file, text);
-  console.log('oms/builder-data.json・builder-products.json を書き出しました');
+  console.log('oms/builder-data.json・builder-products.json・builder-codes.json を書き出しました');
 }
