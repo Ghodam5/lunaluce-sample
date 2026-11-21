@@ -52,7 +52,7 @@
       if (name === 'select') { b.sel = { type: el.dataset.type, index: index }; b.query = {}; emit('oms:builder', { form: true }); return; }
       if (name === 'card-move') { const to = builderMove(b.cards, index, Number(el.dataset.dir)); if (to !== false) { b.sel = { type: 'card', index: to }; builderChanged(true); } return; }
       if (name === 'card-add') { b.cards.push(builderNewCard(el.dataset.kind)); b.sel = { type: 'card', index: b.cards.length - 1 }; builderChanged(true); showToast('新しいカードは「トップに表示する」が切れた状態で作りました。'); return; }
-      if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = card.id + '-copy'; copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
+      if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = builderUniqueId(card.id.replace(/-copy(-\d+)?$|-\d+$/, '') + '-copy', b.cards); copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
       if (name === 'card-remove' && card) { b.cards.splice(b.sel.index, 1); b.sel = { type: 'ticker', index: 0 }; builderChanged(true); showToast('カードを削除しました。「変更を取り消す」で元に戻せます。'); return; }
       if (name === 'card-theme' && card) { card.theme = el.dataset.theme; builderChanged(true); return; }
       if (name === 'card-image' && card) { card.image = el.dataset.src; builderChanged(true); return; }
@@ -65,8 +65,7 @@
       if (name === 'notice-move') { if (builderMove(b.notices, index, Number(el.dataset.dir)) !== false) builderChanged(true); return; }
       if (name === 'notice-remove') { b.notices.splice(index, 1); builderChanged(true); return; }
       if (name === 'theme-add') {
-        let id = 'custom-' + (b.themes.length + 1);
-        while (b.themes.some(function (t) { return t.id === id; })) id += '-2';
+        const id = builderUniqueId('custom', b.themes);
         b.themes.push({ id: id, name: '新しいテーマ', builtIn: false, background: '#fdf2e9', border: '#ecd5c0', top: '#e3a87a', accent: '#8a5530' });
         b.sel = { type: 'theme', index: b.themes.length - 1 };
         builderChanged(true);

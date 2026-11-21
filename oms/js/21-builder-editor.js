@@ -105,8 +105,7 @@
           body += '<h3>画像</h3>' + builderImagePicker(card) + '<h3>並べる商品（4つ）</h3>' + builderSlots(card);
         }
         body += '<h3>表示する期間</h3>' + builderPeriod(card, '', kind === 'campaign') +
-          (kind === 'campaign' ? builderSwitch('「あと○日」を出す', 'showCountdown', card.showCountdown !== false) : '') +
-          '<details class="adv"><summary>カードの名前（いつもは触らない）</summary>' + builderField('カードの名前', 'id', card.id, { hint: '英小文字・数字・-。書き出すファイル名になります' }) + '</details>';
+          (kind === 'campaign' ? builderSwitch('「あと○日」を出す', 'showCountdown', card.showCountdown !== false) : '');
         return body;
       }
       function themeForm(theme) {
@@ -117,7 +116,7 @@
           return '<label class="fld color"><span>' + label + '</span><input type="color" data-f="' + key + '" value="' + escapeHtml(theme[key]) + '"></label>';
         }
         return '<h2>テーマ: ' + escapeHtml(theme.name) + '</h2><p class="lead">追加したテーマは、どのカードでも選べるようになります。</p>' +
-          builderField('表示名', 'name', theme.name, { max: 12 }) + builderField('テーマの名前（英小文字）', 'id', theme.id, { max: 20 }) +
+          builderField('表示名', 'name', theme.name, { max: 12 }) +
           '<div class="colors">' + color('カードの背景', 'background') + color('ふちの線', 'border') + color('上の太い線', 'top') + color('題名・ボタンの文字', 'accent') + '</div>' +
           '<button type="button" data-b="theme-remove">このテーマを削除</button>';
       }

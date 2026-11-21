@@ -241,7 +241,7 @@
     function builderAllErrors() {
       const out = builderNoticeErrors();
       state.builder.cards.forEach(function (card) {
-        builderCardErrors(card).forEach(function (e) { out.push((card.title || card.id) + ': ' + e); });
+        builderCardErrors(card).forEach(function (e) { out.push((card.title || '題名なしのカード') + ': ' + e); });
       });
       state.builder.themes.filter(function (t) { return !t.builtIn; }).forEach(function (t) {
         builderThemeErrors(t).forEach(function (e) { out.push('テーマ ' + (t.name || t.id) + ': ' + e); });
@@ -249,13 +249,18 @@
       return out;
     }
 
+    // 内部の名前（書き出すファイル名）は担当者に見せず、自動で重ならない名前を付ける
+    function builderUniqueId(base, list) {
+      let id = base, n = 2;
+      while (list.some(function (x) { return x.id === id; })) { id = base + '-' + n; n += 1; }
+      return id;
+    }
     function builderNewCard(kind) {
-      const n = state.builder.cards.length + 1;
-      const card = { id: kind + '-' + n, active: false, kind: kind, theme: kind === 'campaign' ? 'rose' : 'cream', title: '', text: '', href: '', cta: '' };
+      const day = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10).replace(/-/g, '');
+      const card = { id: builderUniqueId(kind + '-' + day, state.builder.cards), active: false, kind: kind, theme: kind === 'campaign' ? 'rose' : 'cream', title: '', text: '', href: '', cta: '' };
       if (kind === 'features') { card.tiles = []; card.image = ''; }
       else { card.image = ''; card.ids = ['', '', '', '']; }
       if (kind === 'campaign') { card.badge = ''; card.showCountdown = true; card.startsAt = ''; card.endsAt = ''; card.timeZone = 'Asia/Tokyo'; }
-      while (state.builder.cards.some(function (c) { return c.id === card.id; })) card.id += '-2';
       return card;
     }
     function builderExportPayload() {
