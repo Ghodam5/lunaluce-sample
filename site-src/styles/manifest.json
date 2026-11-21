@@ -148,6 +148,12 @@
       "sources": [
         "site-src/styles/pages/noshi-1.css"
       ]
+    },
+    {
+      "output": "delivery-notes.css",
+      "sources": [
+        "site-src/styles/components/delivery-notes.css"
+      ]
     }
   ]
 }
