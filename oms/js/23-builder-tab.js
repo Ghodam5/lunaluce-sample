@@ -87,6 +87,9 @@
       if (name === 'sku-remove' && b.sel.type === 'product') { builderSelected().skus.splice(index, 1); builderChanged(true); return; }
       if (name === 'place-add' && b.sel.type === 'product') { builderSelected().places.push({ g: '', m: '', s: '' }); builderChanged(true); return; }
       if (name === 'place-remove' && b.sel.type === 'product') { builderSelected().places.splice(index, 1); builderChanged(true); return; }
+      if (name === 'stock-detail') { b.stockDetail = el.dataset.id; emit('oms:builder', { form: true }); const pv = document.querySelector('[data-part="builder-preview"]'); if (pv && el.dataset.id && window.innerWidth < 1100) pv.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
+      if (name === 'stock-filter') { b.stockFilter = el.dataset.filter; b.stockPage = 1; emit('oms:builder', { form: true }); return; }
+      if (name === 'stock-page') { b.stockPage = Number(el.dataset.page); emit('oms:builder', { form: true }); const top = document.querySelector('[data-part="builder-editor"] .stock-range'); if (top && el.closest('.pager') && el.closest('.pager').nextElementSibling === null) top.scrollIntoView({ block: 'start' }); return; }
       if (name === 'upload-remove') { builderRemoveUpload(el.dataset.src); return; }
       if (name === 'img-size' && card) { builderSetImgH(card, (card.imageHeight || 130) + Number(el.dataset.step)); builderChanged(true); return; }
       if (name === 'img-size-reset' && card) { delete card.imageHeight; builderChanged(true); return; }
@@ -204,7 +207,7 @@
           builderSave();
           return;
         }
-        if (el.dataset.sq !== undefined) { state.builder.stockQuery = el.value; builderRepaintKeepFocus(el); return; }
+        if (el.dataset.sq !== undefined) { state.builder.stockQuery = el.value; state.builder.stockPage = 1; builderRepaintKeepFocus(el); return; }
         if (el.dataset.tq !== undefined) { state.builder.templateQuery = el.value; builderRepaintKeepFocus(el); return; }
         if (el.dataset.lq !== undefined) {
           state.builder.linkQuery = el.value;
@@ -225,7 +228,6 @@
         if (el.dataset.import !== undefined) { builderImportFrom(el); return; }
         if (el.dataset.imgh !== undefined) { builderChanged(true); return; }
         if (el.dataset.linkCat !== undefined) { builderLinkCat(el); return; }
-        if (el.dataset.sonly !== undefined) { state.builder.stockOnly = el.checked; emit('oms:builder', { form: true }); return; }
         if (el.dataset.stock !== undefined) { builderSetStock(el.dataset.stock, { status: el.value }); builderChanged(true); return; }
         if (el.dataset.stockEta !== undefined) { builderSetStock(el.dataset.stockEta, { eta: el.value }); builderChanged(true); return; }
         if (el.dataset.place !== undefined) {

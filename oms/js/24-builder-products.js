@@ -164,27 +164,44 @@
     }
 
     // ---- 真ん中の列 ----
+    const STOCK_PAGE_SIZE = 20;
+    // 在庫の一覧: 上の数字（すべて・販売中・欠品…）を押すとその状態だけに絞り、ページ送りで全部を順に見られる
     function builderStockForm() {
       const b = state.builder;
       const q = foldText(b.stockQuery || '');
-      const only = b.stockOnly;
+      const filter = b.stockFilter || '';
       const list = b.products.filter(function (p) {
-        if (only && builderStockOf(p.id).status === 'in') return false;
+        if (filter && builderStockOf(p.id).status !== filter) return false;
         return !q || p.id.indexOf(q) === 0 || foldText(p.title).indexOf(q) >= 0 || foldText(p.code || '').indexOf(q) >= 0;
       });
-      const shown = list.slice(0, 40);
-      const counts = STOCK_STATES.map(function (s) { return [s, b.products.filter(function (p) { return builderStockOf(p.id).status === s.id; }).length]; });
+      const pages = Math.max(1, Math.ceil(list.length / STOCK_PAGE_SIZE));
+      const page = Math.min(Math.max(1, b.stockPage || 1), pages);
+      const shown = list.slice((page - 1) * STOCK_PAGE_SIZE, page * STOCK_PAGE_SIZE);
+      const chips = [['', 'すべて', b.products.length]].concat(STOCK_STATES.map(function (s) { return [s.id, s.short, b.products.filter(function (p) { return builderStockOf(p.id).status === s.id; }).length]; }));
+      const nav = function (where) {
+        if (pages <= 1) return '';
+        const nums = [];
+        for (let n = 1; n <= pages; n += 1) {
+          if (n === 1 || n === pages || Math.abs(n - page) <= 2) nums.push(n);
+          else if (nums[nums.length - 1] !== '…') nums.push('…');
+        }
+        return '<nav class="pager" aria-label="ページ送り（' + where + '）"><button type="button" data-b="stock-page" data-page="' + (page - 1) + '"' + (page === 1 ? ' disabled' : '') + '>‹ 前へ</button>' +
+          nums.map(function (n) { return n === '…' ? '<span class="gap">…</span>' : '<button type="button" data-b="stock-page" data-page="' + n + '"' + (n === page ? ' aria-current="page" class="is-on"' : '') + '>' + n + '</button>'; }).join('') +
+          '<button type="button" data-b="stock-page" data-page="' + (page + 1) + '"' + (page === pages ? ' disabled' : '') + '>次へ ›</button></nav>';
+      };
+      const range = list.length ? ((page - 1) * STOCK_PAGE_SIZE + 1) + '〜' + Math.min(page * STOCK_PAGE_SIZE, list.length) + '件目 ／ ' + list.length + '件' : '0件';
       return '<h2>在庫の状態（欠品・入荷待ち）</h2><p class="lead">商品ごとに「いま売れるか」を切り替えます。楽天・Yahoo・本店の在庫をまとめた OMS の状態が正になります。</p>' +
-        '<p class="stock-sum">' + counts.map(function (c) { return '<span class="st st-' + c[0].id + '">' + escapeHtml(c[0].short) + ' ' + c[1] + '</span>'; }).join('') + '</p>' +
-        '<div class="row"><label class="fld"><span>商品名・商品番号・商品コードで探す</span><input type="search" data-sq value="' + escapeHtml(b.stockQuery || '') + '" placeholder="例: シフォン / 48734"></label>' +
-        builderSwitchRaw('販売中以外だけ表示', 'data-sonly', only) + '</div>' +
+        '<div class="stock-sum" role="group" aria-label="状態で絞り込む">' + chips.map(function (c) {
+          return '<button type="button" class="st st-' + (c[0] || 'all') + (c[0] === filter ? ' is-on' : '') + '" data-b="stock-filter" data-filter="' + c[0] + '" aria-pressed="' + (c[0] === filter) + '">' + escapeHtml(c[1]) + ' <b>' + c[2] + '</b></button>';
+        }).join('') + '</div>' +
+        '<label class="fld"><span>商品名・商品番号・商品コードで探す（空なら全部）</span><input type="search" data-sq value="' + escapeHtml(b.stockQuery || '') + '" placeholder="例: シフォン / 48734"></label>' +
+        '<p class="stock-range">' + escapeHtml((filter ? stockState(filter).short + 'の商品' : 'すべての商品') + '・' + range) + '</p>' + nav('上') +
         '<ol class="stock-list">' + shown.map(function (p) {
           const st = builderStockOf(p.id);
-          return '<li class="stock-row st-' + st.status + '"><img src="' + escapeHtml(builderImg(p.image)) + '" alt="" loading="lazy"><span class="nm"><b>' + escapeHtml(p.title) + '</b><small>商品番号 ' + escapeHtml(p.id) + (p.code ? '・' + escapeHtml(p.code) : '') + '・' + formatYen(p.price) + '</small></span>' +
+          return '<li class="stock-row st-' + st.status + (b.stockDetail === p.id ? ' is-open' : '') + '"><button type="button" class="open" data-b="stock-detail" data-id="' + escapeHtml(p.id) + '" title="商品の詳細を見る"><img src="' + escapeHtml(builderImg(p.image)) + '" alt="" loading="lazy"><span class="nm"><b>' + escapeHtml(p.title) + '</b><small>商品番号 ' + escapeHtml(p.id) + (p.code ? '・' + escapeHtml(p.code) : '') + '・' + formatYen(p.price) + '</small><em>詳細を見る ›</em></span></button>' +
             '<span class="ctl"><select data-stock="' + escapeHtml(p.id) + '" aria-label="在庫の状態">' + STOCK_STATES.map(function (s) { return '<option value="' + s.id + '"' + (s.id === st.status ? ' selected' : '') + '>' + escapeHtml(s.label) + '</option>'; }).join('') + '</select>' +
             (st.status === 'wait' ? '<label class="eta"><span>入荷予定日</span><input type="date" data-stock-eta="' + escapeHtml(p.id) + '" value="' + escapeHtml(st.eta || '') + '"></label>' : '') + '</span></li>';
-        }).join('') + '</ol>' +
-        (list.length > shown.length ? '<p class="muted">ほか ' + (list.length - shown.length) + '件。探す欄で絞り込んでください。</p>' : list.length ? '' : '<p class="muted">見つかりません</p>') +
+        }).join('') + '</ol>' + (list.length ? nav('下') : '<p class="muted">' + (filter ? stockState(filter).short + 'の商品はありません' : '見つかりません') + '</p>') +
         '<p class="muted">' + STOCK_STATES.map(function (s) { return s.short + ': ' + s.hint; }).join(' ／ ') + '</p>';
     }
     function builderSwitchRaw(label, attr, on) {
@@ -256,8 +273,40 @@
         '<p class="pv-place">並ぶ場所: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || '未選択') + '</p>' +
         '<p class="pv-all">' + (p.stock.status === 'out' ? 'いまは注文できません' : 'カートに入れる') + '</p></article>';
     }
+    // 商品の詳細（右の列）。お手本用の商品データ（builder-products.json）から、説明・種類・名入れの入力欄まで出す
+    function builderStockDetail(id) {
+      const b = state.builder;
+      builderLoadTemplates();
+      const p = builderTemplate(id);
+      const sum = builderProduct(id);
+      if (!p) return '<p class="pv-note">' + (b.templatesError ? escapeHtml(b.templatesError) : sum ? '商品の詳細を読み込み中…' : 'この商品の詳細はありません') + '</p>';
+      const st = builderStockOf(id);
+      const state0 = stockState(st.status);
+      const places = [];
+      b.links.categories.forEach(function (g) {
+        g.mids.forEach(function (m) {
+          const r = m.place;
+          if (r.ok && r.categories.every(function (c) { return p.categories.indexOf(c) >= 0; }) && r.subs.every(function (x) { return p.subs.indexOf(x) >= 0; }) && (!r.titleHint || p.title.indexOf(r.titleHint) >= 0)) places.push(g.name + ' › ' + m.name);
+        });
+      });
+      const rows = [['内容', p.contents], ['サイズ', p.size], ['素材', p.material], ['賞味期限', p.expiry], ['アレルギー', p.allergens], ['保存方法', p.storage]].filter(function (r) { return r[1]; });
+      const fields = (p.spec && p.spec.fields) || [];
+      return '<div class="pv-detail"><p class="pv-note"><button type="button" data-b="stock-detail" data-id="">‹ 切り替えた商品の一覧に戻る</button></p>' +
+        '<article class="pv-item">' + (p.image ? '<img src="' + escapeHtml(builderImg(p.image)) + '" alt="">' : '') +
+        '<h4>' + escapeHtml(p.title) + '</h4><p class="pv-price">' + formatYen(p.price) + (p.skus.some(function (s) { return s.price !== p.price; }) ? '〜' : '') + '<small>（税込）</small></p>' +
+        '<p class="pv-stock st-' + state0.id + '">' + escapeHtml(state0.short) + (st.eta ? '・' + escapeHtml(st.eta.replace(/-/g, '/')) + '入荷予定' : '') + '</p>' +
+        '<dl class="pv-dl"><dt>商品番号</dt><dd>' + escapeHtml(String(p.id)) + '</dd><dt>商品コード</dt><dd>' + escapeHtml(p.code || '—') + '</dd><dt>最低数量</dt><dd>' + escapeHtml(String(p.minq || 1)) + '</dd>' +
+        '<dt>並ぶ場所</dt><dd>' + escapeHtml(places.join(' ／ ') || '—') + '</dd><dt>名入れ</dt><dd>' + (p.hasName ? 'できる' : 'なし') + '</dd>' +
+        rows.map(function (r) { return '<dt>' + escapeHtml(r[0]) + '</dt><dd>' + escapeHtml(r[1]) + '</dd>'; }).join('') + '</dl>' +
+        (p.skus.length > 1 ? '<h5>種類と価格</h5><ul class="pv-ul">' + p.skus.map(function (s) { return '<li>' + escapeHtml(s.t) + '<b>' + formatYen(s.price) + '</b></li>'; }).join('') + '</ul>' : '') +
+        (fields.length ? '<h5>注文時の入力欄（' + fields.length + '）</h5><ul class="pv-ul">' + fields.map(function (f) { return '<li>' + escapeHtml(f.label || f.k) + '<small>' + escapeHtml(f.form || '') + (f.req ? '・必須' : '') + '</small></li>'; }).join('') + '</ul>' : '') +
+        (p.description ? '<h5>説明</h5><p class="pv-desc">' + escapeHtml(p.description) + '</p>' : '') +
+        (p.notice ? '<h5>注意事項</h5><p class="pv-desc">' + escapeHtml(p.notice) + '</p>' : '') +
+        '</article><p class="pv-actions"><button type="button" data-b="product-new" data-template="' + escapeHtml(String(p.id)) + '">この商品をお手本に新しい商品を登録</button></p></div>';
+    }
     function builderStockPreview() {
       const b = state.builder;
+      if (b.stockDetail) return builderStockDetail(b.stockDetail);
       const ids = Object.keys(b.stock);
       if (!ids.length) return '<p class="pv-note">まだ切り替えた商品はありません。</p>';
       return '<p class="pv-note">切り替えた商品 ' + ids.length + '件（書き出すとサイトへ反映できます）</p><ul class="pv-stock-list">' + ids.map(function (id) {

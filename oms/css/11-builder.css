@@ -162,3 +162,25 @@
     [data-part="builder-preview"] .pv-img img { width: 100%; height: 100%; object-fit: contain; background: #fff; border-radius: 10px; display: block; }
     [data-part="builder-preview"] .pv-resize { position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%); width: 56px; height: 14px; border-radius: 7px; background: var(--champagne, #b8955a); cursor: ns-resize; touch-action: none; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
     [data-part="builder-preview"] .pv-resize::before { content: ""; position: absolute; left: 14px; right: 14px; top: 5px; height: 4px; border-top: 1px solid #fff; border-bottom: 1px solid #fff; }
+    /* 在庫の一覧: 状態の数字で絞り込み・ページ送り・詳細 */
+    [data-part="builder-editor"] .stock-sum { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+    [data-part="builder-editor"] .stock-sum .st { border: 1px solid transparent; min-height: 0; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+    [data-part="builder-editor"] .stock-sum .st.st-all { background: #f1efe9; color: #3d3a33; }
+    [data-part="builder-editor"] .stock-sum .st.is-on { border-color: currentColor; box-shadow: 0 0 0 2px currentColor inset; }
+    [data-part="builder-editor"] .stock-range { margin: 8px 0 2px; font-size: 13px; color: var(--taupe); }
+    [data-part="builder-editor"] .pager { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 6px 0; }
+    [data-part="builder-editor"] .pager button { min-height: 0; padding: 5px 10px; font-size: 13px; }
+    [data-part="builder-editor"] .pager button.is-on { background: var(--ink, #2b2b2b); color: #fff; }
+    [data-part="builder-editor"] .pager .gap { padding: 0 2px; color: var(--taupe-light); }
+    [data-part="builder-editor"] .stock-row .open { flex: 1 1 220px; min-width: 0; display: flex; gap: 8px; align-items: center; text-align: left; background: none; border: 0; padding: 0; min-height: 0; cursor: pointer; }
+    [data-part="builder-editor"] .stock-row .open em { display: block; font-style: normal; font-size: 11px; color: var(--champagne, #b8955a); }
+    [data-part="builder-editor"] .stock-row .open:hover b { text-decoration: underline; }
+    [data-part="builder-editor"] .stock-row.is-open { box-shadow: 0 0 0 2px var(--champagne) inset; }
+    [data-part="builder-preview"] .pv-dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 12px; margin: 4px 0; }
+    [data-part="builder-preview"] .pv-dl dt { color: var(--taupe-light); }
+    [data-part="builder-preview"] .pv-dl dd { margin: 0; overflow-wrap: anywhere; }
+    [data-part="builder-preview"] .pv-item h5 { font-size: 13px; margin: 8px 0 2px; }
+    [data-part="builder-preview"] .pv-ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 3px; font-size: 12px; }
+    [data-part="builder-preview"] .pv-ul li { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dotted var(--line); padding-bottom: 2px; }
+    [data-part="builder-preview"] .pv-ul small { color: var(--taupe-light); white-space: nowrap; }
+    [data-part="builder-preview"] .pv-actions button, [data-part="builder-preview"] .pv-note button { font-size: 13px; }
