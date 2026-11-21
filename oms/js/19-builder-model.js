@@ -20,18 +20,24 @@
       ['news.html', 'お知らせ']
     ];
     const BUILDER_STORE_KEY = 'luna-oms-builder-draft-v1';
+    const BUILDER_UPLOAD_KEY = 'luna-oms-builder-uploads-v1';
+    const BUILDER_TILE_MAX = 8;
 
-    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '' };
+    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {} };
 
     function builderSnapshot() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort() });
     }
     function builderDirty() {
       return state.builder.ready && builderSnapshot() !== state.builder.base;
     }
     function builderSave() {
       try { localStorage.setItem(BUILDER_STORE_KEY, builderSnapshot()); } catch (e) { /* 保存できない環境では何もしない */ }
+    }
+    // 取り込んだ画像は下書きとは別の場所に一時保存する（容量が大きいため）。入りきらない時は画面を閉じるまでだけ保持。
+    function builderSaveUploads() {
+      try { localStorage.setItem(BUILDER_UPLOAD_KEY, JSON.stringify(state.builder.uploads)); return true; } catch (e) { return false; }
     }
     function builderChanged(repaintForm) {
       builderSave();
@@ -48,7 +54,12 @@
         b.notices = cloneData(data.notices.notices || []);
         b.products = data.products;
         b.images = data.images;
+        b.uploads = {};
         b.base = builderSnapshot();
+        try {
+          const ups = JSON.parse(localStorage.getItem(BUILDER_UPLOAD_KEY) || 'null');
+          if (ups && typeof ups === 'object') Object.keys(ups).forEach(function (k) { if (builderUploadPath(k) && /^data:image\/(jpeg|png);base64,/.test(ups[k].dataUrl || '')) b.uploads[k] = ups[k]; });
+        } catch (e) { /* 壊れていたら取り込み画像なし */ }
         try {
           const saved = JSON.parse(localStorage.getItem(BUILDER_STORE_KEY) || 'null');
           if (saved && Array.isArray(saved.cards)) {
@@ -65,7 +76,7 @@
       });
     }
     function builderResetDraft() {
-      try { localStorage.removeItem(BUILDER_STORE_KEY); } catch (e) { /* 何もしない */ }
+      try { localStorage.removeItem(BUILDER_STORE_KEY); localStorage.removeItem(BUILDER_UPLOAD_KEY); } catch (e) { /* 何もしない */ }
       state.builder.ready = false;
       state.builder.sel = { type: 'ticker', index: 0 };
       loadBuilder();
@@ -78,7 +89,63 @@
       return state.builder.products.find(function (p) { return p.id === String(id); });
     }
     function builderImg(src) {
-      return src ? BUILDER_IMAGE_BASE + src : '';
+      if (!src) return '';
+      const up = state.builder.uploads[src];
+      return up ? up.dataUrl : BUILDER_IMAGE_BASE + src;
+    }
+    function builderUploadPath(src) {
+      return /^images\/uploads\/[a-z0-9][a-z0-9-]{0,60}\.(jpg|png)$/.test(src || '');
+    }
+    // 選べる画像: 取り込んだ画像（新しい順）→ サイトにある画像
+    function builderImageChoices() {
+      const b = state.builder;
+      const ups = Object.keys(b.uploads).sort(function (x, y) { return (b.uploads[y].at || '').localeCompare(b.uploads[x].at || ''); });
+      return ups.concat(b.images.filter(function (src) { return !b.uploads[src]; }));
+    }
+    function builderImageOk(src) {
+      return !!src && (state.builder.images.indexOf(src) >= 0 || !!state.builder.uploads[src]);
+    }
+    // 画像の取り込み: 長い辺を1600pxまでに縮め、写真はJPEG・透過のあるPNGはPNGのまま。ファイル名は英数字に置き換える。
+    function builderImportImage(file) {
+      return new Promise(function (resolve, reject) {
+        if (!file || !/^image\/(jpeg|png|webp|gif)$/.test(file.type)) { reject(new Error('JPEG・PNG・WebP・GIFの画像を選んでください')); return; }
+        if (file.size > 20 * 1024 * 1024) { reject(new Error('20MBより大きい画像は取り込めません')); return; }
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = function () {
+          URL.revokeObjectURL(url);
+          const scale = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+          const w = Math.max(1, Math.round(img.naturalWidth * scale));
+          const h = Math.max(1, Math.round(img.naturalHeight * scale));
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          let png = false;
+          if (file.type === 'image/png') {
+            const px = ctx.getImageData(0, 0, w, h).data;
+            for (let i = 3; i < px.length; i += 4) { if (px[i] < 255) { png = true; break; } }
+          }
+          if (!png) { ctx.globalCompositeOperation = 'destination-over'; ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h); }
+          const dataUrl = png ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.85);
+          const stem = (file.name.replace(/\.[^.]*$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30)) || 'image';
+          const day = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10).replace(/-/g, '');
+          let path = 'images/uploads/' + stem + '-' + day + '.' + (png ? 'png' : 'jpg');
+          let n = 2;
+          while (state.builder.uploads[path] || state.builder.images.indexOf(path) >= 0) { path = 'images/uploads/' + stem + '-' + day + '-' + n + '.' + (png ? 'png' : 'jpg'); n += 1; }
+          state.builder.uploads[path] = { name: file.name, width: w, height: h, at: new Date().toISOString(), dataUrl: dataUrl };
+          resolve({ path: path, stored: builderSaveUploads() });
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('画像を読めませんでした')); };
+        img.src = url;
+      });
+    }
+    function builderUsedUploads() {
+      const used = {};
+      state.builder.cards.forEach(function (c) {
+        [c.image].concat((c.tiles || []).map(function (t) { return t.image; })).forEach(function (src) { if (state.builder.uploads[src]) used[src] = true; });
+      });
+      return Object.keys(used).sort();
     }
     function builderSelected() {
       const s = state.builder.sel;
@@ -137,10 +204,12 @@
       if (!(card.cta || '').trim()) out.push('ボタンの文字を入れてください');
       if (!builderLocalLink(card.href)) out.push('ボタンのリンク先を選んでください');
       if (!state.builder.themes.some(function (t) { return t.id === card.theme; })) out.push('色のテーマを選んでください');
+      if (card.image && !builderImageOk(card.image)) out.push('カードの上の画像が見つかりません。選び直してください');
       if (card.kind === 'features') {
         if (!(card.tiles || []).length) out.push('特集を1つ以上入れてください');
+        if ((card.tiles || []).length > BUILDER_TILE_MAX) out.push('特集は' + BUILDER_TILE_MAX + 'つまでにしてください');
         (card.tiles || []).forEach(function (tile, i) {
-          if (!(tile.label || '').trim() || !builderLocalLink(tile.href) || !tile.image) out.push('特集' + (i + 1) + 'の名前・リンク・画像を確認してください');
+          if (!(tile.label || '').trim() || !builderLocalLink(tile.href) || !builderImageOk(tile.image)) out.push('特集' + (i + 1) + 'の名前・リンク・画像を確認してください');
         });
       } else {
         const ids = (card.ids || []).filter(Boolean);
@@ -183,7 +252,7 @@
     function builderNewCard(kind) {
       const n = state.builder.cards.length + 1;
       const card = { id: kind + '-' + n, active: false, kind: kind, theme: kind === 'campaign' ? 'rose' : 'cream', title: '', text: '', href: '', cta: '' };
-      if (kind === 'features') card.tiles = [];
+      if (kind === 'features') { card.tiles = []; card.image = ''; }
       else { card.image = ''; card.ids = ['', '', '', '']; }
       if (kind === 'campaign') { card.badge = ''; card.showCountdown = true; card.startsAt = ''; card.endsAt = ''; card.timeZone = 'Asia/Tokyo'; }
       while (state.builder.cards.some(function (c) { return c.id === card.id; })) card.id += '-2';
@@ -199,6 +268,7 @@
         cards: b.cards.map(function (c) {
           const out = cloneData(c);
           if (out.kind === 'products') delete out.kind;
+          if (out.kind === 'features' && !out.image) delete out.image;
           ['startsAt', 'endsAt'].forEach(function (k) { if (!out[k]) delete out[k]; });
           if (!out.startsAt && !out.endsAt) delete out.timeZone;
           return out;
@@ -210,6 +280,11 @@
         }),
         themes: b.themes.filter(function (t) { return !t.builtIn; }).map(function (t) {
           return { id: t.id, name: t.name, background: t.background, border: t.border, top: t.top, accent: t.accent };
+        }),
+        // 取り込んだ画像（カードで使っているものだけ）。反映ツールが path の場所に書き出す。
+        uploads: builderUsedUploads().map(function (src) {
+          const u = b.uploads[src];
+          return { path: src, originalName: u.name, width: u.width, height: u.height, dataUrl: u.dataUrl };
         })
       };
     }

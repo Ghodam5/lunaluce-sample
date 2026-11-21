@@ -58,8 +58,9 @@
       if (name === 'card-image' && card) { card.image = el.dataset.src; builderChanged(true); return; }
       if (name === 'slot-pick' && card) { card.ids[Number(el.dataset.slot)] = el.dataset.id; b.query = {}; builderChanged(true); return; }
       if (name === 'slot-clear' && card) { card.ids[Number(el.dataset.slot)] = ''; builderChanged(true); return; }
-      if (name === 'tile-add' && card) { card.tiles.push({ label: '', href: '', image: b.images[0] || '' }); builderChanged(true); return; }
+      if (name === 'tile-add' && card) { if (card.tiles.length >= BUILDER_TILE_MAX) return; card.tiles.push({ label: '', href: '', image: b.images[0] || '' }); builderChanged(true); return; }
       if (name === 'tile-remove' && card) { card.tiles.splice(Number(el.dataset.tile), 1); builderChanged(true); return; }
+      if (name === 'tile-move' && card) { if (builderMove(card.tiles, Number(el.dataset.tile), Number(el.dataset.dir)) !== false) builderChanged(true); return; }
       if (name === 'notice-add') { b.notices.push({ id: 'notice-' + Date.now().toString(36), active: true, text: '', href: '' }); builderChanged(true); return; }
       if (name === 'notice-move') { if (builderMove(b.notices, index, Number(el.dataset.dir)) !== false) builderChanged(true); return; }
       if (name === 'notice-remove') { b.notices.splice(index, 1); builderChanged(true); return; }
@@ -82,6 +83,20 @@
       if (name === 'export') { downloadJson('site-builder-draft.json', builderExportPayload()); showToast('site-builder-draft.json を書き出しました。サイトへの反映は担当者が確認してから行います。'); return; }
       if (name === 'reset') { builderResetDraft(); showToast('変更を取り消して、いまのサイトの内容に戻しました。'); }
     }
+    // 画像の取り込み: 選んだ画像を縮めて一時保存し、そのままカード（または特集）に使う
+    function builderImportFrom(el) {
+      const card = builderSelected();
+      const file = el.files && el.files[0];
+      const target = el.dataset.import;
+      el.value = '';
+      if (!file || state.builder.sel.type !== 'card' || !card) return;
+      builderImportImage(file).then(function (res) {
+        if (target === 'card') card.image = res.path;
+        else if (card.tiles && card.tiles[Number(target)]) card.tiles[Number(target)].image = res.path;
+        builderChanged(true);
+        showToast(res.stored ? '画像を取り込みました。' : '画像を取り込みましたが、このブラウザに保存しきれません。画面を閉じる前に下書きを書き出してください。');
+      }).catch(function (err) { showToast(err.message); });
+    }
     function renderBuilderTab(host) {
       host.innerHTML = '<p class="builder-lead">左で直したい部品を選び、真ん中で直し、右で見え方を確かめます。JSONやCSSを触る必要はありません。</p><div class="builder-cols"></div>';
       mountOrdered(host.querySelector('.builder-cols'), BUILDER_PARTS);
@@ -101,6 +116,7 @@
       });
       host.addEventListener('change', function (event) {
         const el = event.target;
+        if (el.dataset.import !== undefined) { builderImportFrom(el); return; }
         if (el.dataset.f && (el.type === 'checkbox' || el.tagName === 'SELECT' || el.type === 'date')) builderInput(el, true);
       });
       loadBuilder();

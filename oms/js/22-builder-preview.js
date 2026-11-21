@@ -6,8 +6,9 @@
       const style = 'background:' + t.background + ';border-color:' + t.border + ';border-top-color:' + t.top + ';--accent:' + t.accent;
       let html = '<article class="pv-card" style="' + escapeHtml(style) + '">';
       if (kind === 'features') {
-        html += '<div class="pv-head"><h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-tiles">' +
-          (card.tiles || []).map(function (tile) {
+        if (card.image) html += '<div class="pv-banner"><img src="' + escapeHtml(builderImg(card.image)) + '" alt=""><h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-tiles">';
+        else html += '<div class="pv-head"><h4>' + escapeHtml(card.title || '題名') + '</h4><p>' + escapeHtml(card.text || '') + '</p></div><div class="pv-tiles">';
+        html += (card.tiles || []).map(function (tile) {
             return '<span><img src="' + escapeHtml(builderImg(tile.image)) + '" alt=""><em>' + escapeHtml(tile.label) + '</em></span>';
           }).join('') + '</div>';
       } else {

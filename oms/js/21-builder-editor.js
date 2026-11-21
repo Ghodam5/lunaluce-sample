@@ -29,14 +29,22 @@
         return '<button type="button" role="radio" aria-checked="' + on + '" class="theme' + (on ? ' is-on' : '') + '" data-b="card-theme" data-theme="' + escapeHtml(t.id) + '" style="background:' + escapeHtml(t.background) + ';border-top-color:' + escapeHtml(t.top) + ';color:' + escapeHtml(t.accent) + '">' + escapeHtml(t.name) + '</button>';
       }).join('') + '</div>';
     }
+    // 画像を取り込むボタン（パソコン・スマホの画像を選ぶ）。data-import の行き先: card=カードの上 / tile番号=その特集
+    function builderImportButton(target) {
+      return '<label class="import"><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-import="' + escapeHtml(String(target)) + '"><span>＋ 画像を取り込む</span></label>';
+    }
+    function builderImageLabel(src) {
+      const up = state.builder.uploads[src];
+      return up ? '取り込み: ' + up.name : src.replace(/^images\//, '');
+    }
     function builderImagePicker(card) {
       const b = state.builder;
-      const choices = Array.from(new Set(b.images.concat(card.image ? [card.image] : []).concat((card.ids || []).map(function (id) { const p = builderProduct(id); return p && p.image; }).filter(Boolean))));
+      const choices = Array.from(new Set(builderImageChoices().concat(card.image ? [card.image] : []).concat((card.ids || []).map(function (id) { const p = builderProduct(id); return p && p.image; }).filter(Boolean))));
       const tiles = choices.map(function (src) {
         const on = src === card.image;
-        return '<button type="button" class="img' + (on ? ' is-on' : '') + '" data-b="card-image" data-src="' + escapeHtml(src) + '" aria-pressed="' + on + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy"></button>';
+        return '<button type="button" class="img' + (on ? ' is-on' : '') + (b.uploads[src] ? ' is-up' : '') + '" data-b="card-image" data-src="' + escapeHtml(src) + '" aria-pressed="' + on + '" title="' + escapeHtml(builderImageLabel(src)) + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy"></button>';
       }).join('');
-      return '<div class="imgs">' + builderSwitch('カードの上に画像を出す', 'useImage', !!card.image) + (card.image || card.useImage ? '<div class="img-grid">' + tiles + '</div><small>トップのカードで使っている画像と、選んだ商品の画像から選べます。</small>' : '') + '</div>';
+      return '<div class="imgs">' + builderSwitch('カードの上に画像を出す', 'useImage', !!card.image) + (card.image || card.useImage ? builderImportButton('card') + '<div class="img-grid">' + tiles + '</div><small>取り込んだ画像（緑の枠）、トップのカードで使っている画像、選んだ商品の画像から選べます。</small>' : '') + '</div>';
     }
     function builderSlots(card) {
       return '<ol class="slots">' + (card.ids || ['', '', '', '']).map(function (id, i) {
@@ -61,11 +69,16 @@
       }).join('');
     }
     function builderTiles(card) {
-      return '<ol class="tiles">' + (card.tiles || []).map(function (t, i) {
-        return '<li class="tile"><div class="row">' + builderField('特集の名前', 'tiles.' + i + '.label', t.label) + builderPageSelect('リンク先', 'tiles.' + i + '.href', t.href) + '</div><div class="row"><label class="fld"><span>画像</span><select data-f="tiles.' + i + '.image">' + state.builder.images.map(function (src) {
-          return '<option value="' + escapeHtml(src) + '"' + (src === t.image ? ' selected' : '') + '>' + escapeHtml(src.replace(/^images\//, '')) + '</option>';
-        }).join('') + '</select></label><button type="button" data-b="tile-remove" data-tile="' + i + '">この特集を外す</button></div></li>';
-      }).join('') + '</ol><button type="button" class="add" data-b="tile-add">＋ 特集を足す</button>';
+      const list = card.tiles || [];
+      const full = list.length >= BUILDER_TILE_MAX;
+      return '<p class="muted">いま' + list.length + 'つ（1〜' + BUILDER_TILE_MAX + 'つ）。2列に並び、数が奇数のときは最後の1つが真ん中に来ます。</p><ol class="tiles">' + list.map(function (t, i) {
+        const opts = builderImageChoices().concat(builderImageOk(t.image) || !t.image ? [] : [t.image]).map(function (src) {
+          return '<option value="' + escapeHtml(src) + '"' + (src === t.image ? ' selected' : '') + '>' + escapeHtml(builderImageLabel(src)) + '</option>';
+        }).join('');
+        return '<li class="tile"><div class="row"><b class="tile-no">' + (i + 1) + '</b>' + builderField('特集の名前', 'tiles.' + i + '.label', t.label) + builderPageSelect('リンク先', 'tiles.' + i + '.href', t.href) + '</div>' +
+          '<div class="row"><img class="tile-thumb" src="' + escapeHtml(builderImg(t.image)) + '" alt=""><label class="fld"><span>画像</span><select data-f="tiles.' + i + '.image">' + opts + '</select></label>' + builderImportButton(i) + '</div>' +
+          '<div class="row"><span class="tools"><button type="button" data-b="tile-move" data-tile="' + i + '" data-dir="-1"' + (i === 0 ? ' disabled' : '') + '>↑</button><button type="button" data-b="tile-move" data-tile="' + i + '" data-dir="1"' + (i === list.length - 1 ? ' disabled' : '') + '>↓</button><button type="button" data-b="tile-remove" data-tile="' + i + '">この特集を外す</button></span></div></li>';
+      }).join('') + '</ol><button type="button" class="add" data-b="tile-add"' + (full ? ' disabled' : '') + '>＋ 特集を足す</button>' + (full ? '<small class="muted">' + BUILDER_TILE_MAX + 'つまでです。</small>' : '');
     }
 
     function renderBuilderEditor(host) {
@@ -87,7 +100,7 @@
           builderField('題名', 'title', card.title, { wide: true, max: 40 }) + builderField('一文', 'text', card.text, { wide: true, max: 60, area: true }) +
           '<div class="row">' + builderField('ボタンの文字', 'cta', card.cta, { max: 24 }) + builderPageSelect('ボタンのリンク先', 'href', card.href) + '</div>';
         if (kind === 'features') {
-          body += '<h3>並べる特集</h3>' + builderTiles(card);
+          body += '<h3>画像</h3>' + builderImagePicker(card) + '<h3>並べる特集</h3>' + builderTiles(card);
         } else {
           body += '<h3>画像</h3>' + builderImagePicker(card) + '<h3>並べる商品（4つ）</h3>' + builderSlots(card);
         }

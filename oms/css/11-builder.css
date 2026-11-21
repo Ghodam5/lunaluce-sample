@@ -47,6 +47,14 @@
     [data-part="builder-editor"] .img { padding: 4px; min-height: 0; }
     [data-part="builder-editor"] .img img { width: 100%; height: 64px; object-fit: contain; display: block; }
     [data-part="builder-editor"] .img.is-on { outline: 3px solid var(--champagne); }
+    [data-part="builder-editor"] .img.is-up { border-color: #2f8f6a; box-shadow: inset 0 0 0 1px #2f8f6a; }
+    [data-part="builder-editor"] .import { display: inline-flex; align-items: center; cursor: pointer; margin: 6px 0 2px; }
+    [data-part="builder-editor"] .import input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    [data-part="builder-editor"] .import span { border: 1px dashed var(--champagne); border-radius: 10px; padding: 6px 12px; font-size: 13px; background: #fff; }
+    [data-part="builder-editor"] .import input:focus-visible + span { outline: 3px solid var(--champagne); }
+    [data-part="builder-editor"] .tile-no { min-width: 22px; height: 22px; border-radius: 50%; background: var(--champagne-soft); display: inline-grid; place-items: center; font-size: 12px; align-self: center; }
+    [data-part="builder-editor"] .tile-thumb { width: 72px; height: 48px; object-fit: contain; background: #fff; border-radius: 6px; border: 1px solid var(--line); align-self: center; }
+    [data-part="builder-preview"] .pv-tiles span:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc((100% - 8px) / 2); }
     [data-part="builder-editor"] .imgs > small { display: block; color: var(--taupe-light); font-size: 12px; margin-top: 4px; }
     [data-part="builder-editor"] .slots, [data-part="builder-editor"] .tiles, [data-part="builder-editor"] .notices { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
     [data-part="builder-editor"] .slot, [data-part="builder-editor"] .tile, [data-part="builder-editor"] .notice { border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; background: var(--ivory); }
