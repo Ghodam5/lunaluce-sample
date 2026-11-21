@@ -7,14 +7,15 @@ function sa(it,a){return a.some(function(x){return s(it,x)})}
 function re(r){return function(it){return r.test(it.t)}}
 var GROUPS=[
  {k:'food',name:'食べ物・飲み物',desc:'結婚式のお見送り、引菓子、引出物、手土産に。お菓子・シフォン・グルメを集めました。',mids:[
-  {k:'petit',name:'プチギフト',f:function(it){return h(it,'petit')&&sa(it,['cookie','candy','wafu','choco','tea','other'])},subs:[['cookie','クッキー'],['candy','キャンディー・金平糖'],['dragee','ドラジェ'],['wafu','和風'],['choco','チョコレート'],['tea','紅茶＆コーヒー'],['other','その他']],sf:function(it,x){return x==='dragee'?/ドラジェ/.test(it.t):x==='candy'?s(it,x)&&!/ドラジェ/.test(it.t):s(it,x)}},
+  {k:'petit',name:'プチギフト',f:function(it){return h(it,'petit')&&!s(it,'goods')&&sa(it,['cookie','candy','wafu','choco','tea','other'])},subs:[['cookie','クッキー'],['candy','キャンディー・金平糖'],['dragee','ドラジェ'],['wafu','和風'],['choco','チョコレート'],['tea','紅茶＆コーヒー'],['other','その他']],sf:function(it,x){return x==='dragee'?/ドラジェ/.test(it.t):x==='candy'?s(it,x)&&!/ドラジェ/.test(it.t):s(it,x)}},
   {k:'hikigashi',name:'引菓子',f:function(it){return h(it,'hikigashi')&&!h(it,'hikidemono')},subs:[]},
-  {k:'gourmet',name:'引出物グルメ',f:function(it){return h(it,'hikidemono')},subs:[['sweets','バーム・パン・スイーツ'],['gourmet','パスタ・スープ・調味料'],['gohan','お米・ごはん'],['bousai','防災・保存食']],sf:function(it,x){return s(it,x)}},
+  {k:'gourmet',name:'引出物グルメ',f:function(it){return h(it,'hikidemono')&&!s(it,'goods')},subs:[['sweets','バーム・パン・スイーツ'],['gourmet','パスタ・スープ・調味料'],['gohan','お米・ごはん'],['bousai','防災・保存食']],sf:function(it,x){return s(it,x)}},
   {k:'chiffon',name:'シフォンケーキ',f:function(it){return h(it,'chiffon')},subs:[]}]},
- {k:'goods',name:'雑貨・実用品',desc:'耳かき、カイロなど毎日使える実用品や、ギフトセットなど。',mids:[
+ {k:'goods',name:'雑貨・実用品',desc:'耳かき、カイロ、タオルなど毎日使える実用品や、ディズニーのタオルなど。',mids:[
   {k:'goods',name:'実用品プチギフト',f:function(it){return h(it,'petit')&&s(it,'goods')},subs:[]},
-  {k:'set',name:'セット商品',f:function(it){return h(it,'petit')&&s(it,'set')},subs:[]},
-  {k:'disney',name:'ディズニー',f:function(it){return h(it,'petit')&&s(it,'disney')},subs:[]}]},
+  {k:'towel',name:'タオル・引出物の雑貨',f:function(it){return h(it,'hikidemono')&&s(it,'goods')&&!h(it,'parents')},subs:[]},
+  {k:'set',name:'セット商品',f:function(it){return s(it,'set')&&s(it,'goods')},subs:[]},
+  {k:'disney',name:'ディズニー',f:function(it){return s(it,'disney')&&s(it,'goods')},subs:[]}]},
  {k:'welcome',name:'ウェルカム飾り',desc:'ウェルカムスペースを彩るボードや小物。受付で渡すウェルカムプチギフトもこちら。',mids:[
   {k:'board',name:'ウェルカムボード',f:function(it){return h(it,'board')},subs:[['mirror','ミラー',/ミラー/],['clock','クロック',/クロック/],['bb','黒板・サムシングフォー',/黒板|サムシング/],['flower','フラワー・花',/フラワー|花/]]},
   {k:'wpetit',name:'ウェルカムプチギフト',f:function(it){return h(it,'petit')&&s(it,'welcome')},subs:[]},
@@ -34,7 +35,7 @@ var GROUPS=[
   {k:'shikisai',name:'SHIKISAI ONE',f:function(it){return h(it,'catalog')&&s(it,'shikisai')},subs:[]},
   {k:'ocean',name:'OCEAN&TERRE',f:function(it){return h(it,'catalog')&&s(it,'ocean')},subs:[]}]},
  {k:'season',name:'季節・特集',desc:'クリスマス、バレンタインなど、季節のアイテム。',mids:[
-  {k:'xmas',name:'クリスマス',f:function(it){return h(it,'season')&&/クリスマス|サンタ|スノー/.test(it.t)},subs:[['petit','クリスマスのプチギフト']],sf:function(it,x){return x==='petit'?h(it,'petit'):true}},
+  {k:'xmas',name:'クリスマス',f:function(it){return h(it,'season')&&!h(it,'board')&&/クリスマス|サンタ|スノー/.test(it.t)},subs:[['petit','クリスマスのプチギフト']],sf:function(it,x){return x==='petit'?h(it,'petit'):true}},
   {k:'val',name:'バレンタイン',f:function(it){return h(it,'season')&&/バレンタイン/.test(it.t)},subs:[]},
   {k:'hal',name:'ハロウィン',f:function(it){return h(it,'season')&&/ハロウィン/.test(it.t)},subs:[]},
   {k:'other',name:'お年賀・そのほか',f:function(it){return h(it,'season')&&!/クリスマス|サンタ|スノー|バレンタイン|ハロウィン/.test(it.t)},subs:[]}]}
