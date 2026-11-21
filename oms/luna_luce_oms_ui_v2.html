@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.18.1
+Luna Luce OMS 2.19
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -49,6 +49,7 @@ Luna Luce OMS 2.18.1
 2.16 で営業日（毎週のお休み・お休みにする日・営業する日）をOMSで決められるようにし（js/27-builder-days）、書き出しに businessDays と在庫の商品コードを入れた。Welcart側は wordpress/luna-oms-receiver（ツール → OMSから取り込む）。
 2.17 で商品の登録・編集の写真欄からカード用画像の一覧を外し、取り込んだ写真がメインの右に並ぶ形にした。右の見え方に全部の写真を出し、押すと大きく出る。カテゴリー（大・中・小）をその場で新しく作れるようにし（js/28-builder-categories）、書き出しに newCategories と商品ごとの places を入れた。
 2.18 で在庫の画面に「出店」の絞り込み（出店中・未出店・出さない・期間つき）と、商品ごとの出す・出さない・販売期間を足した（js/29-builder-listing）。本店にあって新サイトにない商品も未出店として並べる。企画（季節・イベント・セール）を作れるようにし、期間を決めると対象の商品の販売期間がそろう。トップのカードは任意で、作ると表示期間も企画にそろう（js/30-builder-plans）。
+2.19 でトップのカードの商品（4つ）の並び順を ← → で変えられるようにし、「別の商品に替える」と、リンク先のカテゴリー（つながった企画があればその商品）の候補から押して選べるようにした。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
 
@@ -119,7 +120,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.18.1｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.19｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />

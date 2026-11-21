@@ -96,15 +96,44 @@
       const tiles = choices.map(function (src) { return builderImgTile(src, src === card.image); }).join('');
       return '<div class="imgs">' + builderSwitch('カードの上に画像を出す', 'useImage', !!card.image) + (card.image || card.useImage ? builderImportButton('card') + '<div class="img-grid">' + tiles + '</div><small>「取り込み」の札が付いた画像は、ここで取り込んだものです。× で消せます（使っている場所があるときは消せません）。</small>' + (card.image ? builderImageSize(card) : '') : '') + '</div>';
     }
+    // 並べる商品（4つ）。← → で並び順を変え、「別の商品に替える」で入れ替え、下の候補から押して選べる
     function builderSlots(card) {
-      return '<ol class="slots">' + (card.ids || ['', '', '', '']).map(function (id, i) {
+      const b = state.builder;
+      const ids = card.ids || ['', '', '', ''];
+      const search = function (i, label) {
+        const q = b.query[i] || '';
+        return '<label class="fld"><span>' + label + '</span><input type="search" data-q="' + i + '" value="' + escapeHtml(q) + '" placeholder="商品名か商品番号"></label><div class="hits" data-hits="' + i + '">' + builderHits(i) + '</div>';
+      };
+      return '<p class="muted">左上から順に並びます（1・2が上の段、3・4が下の段）。← → で並び順を変えられます。</p><ol class="slots">' + ids.map(function (id, i) {
         const p = id ? builderProduct(id) : null;
+        const move = '<span class="slot-move"><button type="button" data-b="slot-move" data-slot="' + i + '" data-dir="-1" aria-label="' + (i + 1) + 'つ目を前へ"' + (i === 0 ? ' disabled' : '') + '>←</button><button type="button" data-b="slot-move" data-slot="' + i + '" data-dir="1" aria-label="' + (i + 1) + 'つ目を後ろへ"' + (i === ids.length - 1 ? ' disabled' : '') + '>→</button></span>';
         if (p) {
-          return '<li class="slot"><img src="' + escapeHtml(builderImg(p.image)) + '" alt=""><span><b>' + escapeHtml(p.title) + '</b><small>商品番号 ' + escapeHtml(p.id) + '・' + formatYen(p.price) + '</small></span><button type="button" data-b="slot-clear" data-slot="' + i + '">外す</button></li>';
+          const swapping = b.slotSwap === i;
+          return '<li class="slot' + (swapping ? ' is-swap' : '') + '"><b class="slot-no">' + (i + 1) + '</b><img src="' + escapeHtml(builderImg(p.image)) + '" alt=""><span><b>' + escapeHtml(p.title) + '</b><small>商品番号 ' + escapeHtml(p.id) + '・' + formatYen(p.price) + '</small></span>' +
+            '<span class="slot-tools">' + move + '<button type="button" data-b="slot-swap" data-slot="' + i + '">' + (swapping ? 'やめる' : '別の商品に替える') + '</button><button type="button" data-b="slot-clear" data-slot="' + i + '">外す</button></span>' +
+            (swapping ? '<div class="slot-search">' + search(i, (i + 1) + 'つ目と入れ替える商品を探す（下の候補を押しても替わります）') + '</div>' : '') + '</li>';
         }
-        const q = state.builder.query[i] || '';
-        return '<li class="slot empty"><label class="fld"><span>' + (i + 1) + 'つ目の商品を探す</span><input type="search" data-q="' + i + '" value="' + escapeHtml(q) + '" placeholder="商品名か商品番号"></label><div class="hits" data-hits="' + i + '">' + builderHits(i) + '</div></li>';
-      }).join('') + '</ol>';
+        return '<li class="slot empty"><b class="slot-no">' + (i + 1) + '</b>' + search(i, (i + 1) + 'つ目の商品を探す') + move + '</li>';
+      }).join('') + '</ol>' + builderSlotCandidates(card);
+    }
+    // 候補: つながっている企画の商品、なければボタンのリンク先のカテゴリーの商品
+    function builderSlotCandidates(card) {
+      const b = state.builder;
+      const plan = b.plans.find(function (p) { return p.cardId === card.id; });
+      let src = null, label = '';
+      if (plan) { src = plan; label = '企画「' + (plan.name || '名前なし') + '」の商品'; }
+      else {
+        const l = builderLinkParse(card.href || '');
+        if (l.type === 'category' && l.g && l.g !== 'all') { src = { cats: [{ g: l.g, m: l.m || '', s: l.s || '' }], ids: [], exclude: [] }; label = 'リンク先のカテゴリー（' + builderPlanCatLabel(src.cats[0]) + '）の商品'; }
+      }
+      if (!src) return '<p class="muted">ボタンのリンク先をカテゴリーにすると、ここにそのカテゴリーの商品が候補として並びます。</p>';
+      const list = builderPlanMembers(src).filter(function (m) { return m.src === 'site'; });
+      if (!list.length) return '<p class="muted">' + escapeHtml(label) + ': 候補を読み込み中か、まだありません。</p>';
+      const target = b.slotSwap !== undefined && b.slotSwap !== null && card.ids[b.slotSwap] ? b.slotSwap : card.ids.indexOf('');
+      return '<details class="slot-cands" open><summary>候補から選ぶ: ' + escapeHtml(label) + ' ' + list.length + '件</summary><p class="muted">' + (target >= 0 ? '押すと ' + (target + 1) + 'つ目に入ります。' : '4つ埋まっています。「別の商品に替える」を押してから選ぶと、その場所と入れ替わります。') + '</p><div class="cand-grid">' + list.slice(0, 40).map(function (m) {
+        const used = card.ids.indexOf(m.id) >= 0;
+        return '<button type="button" class="cand' + (used ? ' is-used' : '') + '" data-b="slot-cand" data-id="' + escapeHtml(m.id) + '"' + (used || target < 0 ? ' disabled' : '') + ' title="' + escapeHtml(m.title) + '"><img src="' + escapeHtml(builderImg(m.image)) + '" alt="" loading="lazy"><span>' + escapeHtml(m.title) + '</span>' + (used ? '<i>' + (card.ids.indexOf(m.id) + 1) + 'つ目</i>' : '') + '</button>';
+      }).join('') + '</div></details>';
     }
     function builderHits(slot) {
       const q = foldText(state.builder.query[slot] || '');

@@ -73,7 +73,7 @@
       if (name === 'link-open') { b.linkOpen = b.linkOpen === el.dataset.field ? '' : el.dataset.field; b.linkTab = ''; b.linkQuery = ''; emit('oms:builder', { form: true }); return; }
       if (name === 'link-tab') { b.linkTab = el.dataset.tab; emit('oms:builder', { form: true }); return; }
       if (name === 'link-set') { builderSetField(el.dataset.field, el.dataset.href); b.linkOpen = ''; b.linkTab = ''; b.linkQuery = ''; builderChanged(true); return; }
-      if (name === 'select') { b.linkOpen = ''; b.sel = { type: el.dataset.type, index: index }; b.query = {}; emit('oms:builder', { form: true }); return; }
+      if (name === 'select') { b.linkOpen = ''; b.sel = { type: el.dataset.type, index: index }; b.query = {}; b.slotSwap = null; emit('oms:builder', { form: true }); return; }
       if (name === 'card-move') { const to = builderMove(b.cards, index, Number(el.dataset.dir)); if (to !== false) { b.sel = { type: 'card', index: to }; builderChanged(true); } return; }
       if (name === 'card-add') { b.cards.push(builderNewCard(el.dataset.kind)); b.sel = { type: 'card', index: b.cards.length - 1 }; builderChanged(true); showToast('新しいカードは「トップに表示する」が切れた状態で作りました。'); return; }
       if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = builderUniqueId(card.id.replace(/-copy(-\d+)?$|-\d+$/, '') + '-copy', b.cards); copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
@@ -81,8 +81,15 @@
       if (name === 'card-theme' && card) { card.theme = el.dataset.theme; builderChanged(true); return; }
       if (name === 'card-image' && b.sel.type === 'product') { builderAddPhotos(builderSelected(), [el.dataset.src]); builderChanged(true); return; }
       if (name === 'card-image' && card) { card.image = el.dataset.src; builderChanged(true); return; }
-      if (name === 'slot-pick' && card) { card.ids[Number(el.dataset.slot)] = el.dataset.id; b.query = {}; builderChanged(true); return; }
-      if (name === 'slot-clear' && card) { card.ids[Number(el.dataset.slot)] = ''; builderChanged(true); return; }
+      if (name === 'slot-pick' && card) { card.ids[Number(el.dataset.slot)] = el.dataset.id; b.query = {}; b.slotSwap = null; builderChanged(true); return; }
+      if (name === 'slot-clear' && card) { card.ids[Number(el.dataset.slot)] = ''; b.slotSwap = null; builderChanged(true); return; }
+      if (name === 'slot-move' && card) { if (builderMove(card.ids, Number(el.dataset.slot), Number(el.dataset.dir)) !== false) { b.slotSwap = null; builderChanged(true); } return; }
+      if (name === 'slot-swap' && card) { const i = Number(el.dataset.slot); b.slotSwap = b.slotSwap === i ? null : i; b.query = {}; emit('oms:builder', { form: true }); return; }
+      if (name === 'slot-cand' && card) {
+        const i = b.slotSwap !== null && b.slotSwap !== undefined && card.ids[b.slotSwap] ? b.slotSwap : card.ids.indexOf('');
+        if (i < 0) { showToast('4つ埋まっています。替えたい商品の「別の商品に替える」を押してから選んでください。'); return; }
+        card.ids[i] = el.dataset.id; b.slotSwap = null; b.query = {}; builderChanged(true); return;
+      }
       if (name === 'tile-add' && card) { if (card.tiles.length >= BUILDER_TILE_MAX) return; card.tiles.push({ label: '', href: '', image: b.images[0] || '' }); builderChanged(true); return; }
       if (name === 'tile-remove' && card) { card.tiles.splice(Number(el.dataset.tile), 1); builderChanged(true); return; }
       if (name === 'tile-move' && card) { if (builderMove(card.tiles, Number(el.dataset.tile), Number(el.dataset.dir)) !== false) builderChanged(true); return; }
