@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.16
+Luna Luce OMS 2.17
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -33,6 +33,7 @@ Luna Luce OMS 2.16
   js/25-channel-export 楽天・Yahoo用の一括登録CSV（Shift_JIS）と写真の名前の対応表を作る
   js/26-product-codes 商品コードの法則（ll-中カテゴリー-番号）と重複チェック（builder-codes.json＋読み込んだYahoo/楽天CSV）
   js/27-builder-days 営業日（発送のお休み）。OMSが正で、書き出しの businessDays をWelcartの受け取りプラグインが反映
+  js/28-builder-categories カテゴリー（大・中・小）を新しく作る。英字の名前は URL と商品コード（ll-<中>-001）に使う。書き出しの newCategories
   js/90-start           起動（必ず最後）
 新しい部品は新しい番号のファイルとして足し、既存ファイルに詰め込まない。
 2.8 でサイトビルダー（7のタブ）を追加。builder-data.json は tools/oms-builder-data.cjs で作り、直接編集しない。
@@ -44,6 +45,7 @@ Luna Luce OMS 2.16
 2.14 で商品の詳細から「この商品を編集する」で登録済みの商品を直せるようにした（書き出しの edits）。写真は1商品20枚まで、並べ替え・メイン指定・まとめて取り込み。下書きの商品を楽天・Yahoo用の一括登録CSVに書き出す（js/25-channel-export、試作）。
 2.15 で商品の登録・編集の「置き場所」を大・中・小カテゴリーとして上に出し、商品コードの法則の候補（ll-中カテゴリー-番号）と、新サイト・本店・楽天・読み込んだYahooのコードとの重複チェック（js/26-product-codes）を入れた。
 2.16 で営業日（毎週のお休み・お休みにする日・営業する日）をOMSで決められるようにし（js/27-builder-days）、書き出しに businessDays と在庫の商品コードを入れた。Welcart側は wordpress/luna-oms-receiver（ツール → OMSから取り込む）。
+2.17 で商品の登録・編集の写真欄からカード用画像の一覧を外し、取り込んだ写真がメインの右に並ぶ形にした。右の見え方に全部の写真を出し、押すと大きく出る。カテゴリー（大・中・小）をその場で新しく作れるようにし（js/28-builder-categories）、書き出しに newCategories と商品ごとの places を入れた。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
 
@@ -114,7 +116,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.16｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.17｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -158,6 +160,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/25-channel-export.js"></script>
   <script src="js/26-product-codes.js"></script>
   <script src="js/27-builder-days.js"></script>
+  <script src="js/28-builder-categories.js"></script>
   <script src="js/23-builder-tab.js"></script>
   <script src="js/90-start.js"></script>
 </body>

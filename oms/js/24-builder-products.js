@@ -212,7 +212,7 @@
         minq: Number(p.minq), minnote: p.orig ? p.orig.minnote : '', hasName: !!p.hasName, petit: tags.categories.indexOf('petit') >= 0, seal: !!p.seal, pack: Number(p.pack) || 1
       });
       const st = builderProductStock(p);
-      return { active: p.active !== false && st.status !== 'end', product: product, photos: p.photos.slice(), stock: p.edit || st.status === 'in' ? undefined : cloneData(st), template: p.edit ? undefined : p.from || undefined, edit: p.edit ? true : undefined };
+      return { active: p.active !== false && st.status !== 'end', product: product, photos: p.photos.slice(), places: keep ? undefined : (p.places || []).filter(function (pl) { return pl.g; }).map(function (pl) { const f = builderPlaceFind(pl); return { g: pl.g, m: pl.m || '', s: pl.s || '', label: builderPlaceLabel(pl), isNew: !!((f.g && f.g.isNew) || (f.m && f.m.isNew) || (f.sub && f.sub[2].isNew)) }; }), stock: p.edit || st.status === 'in' ? undefined : cloneData(st), template: p.edit ? undefined : p.from || undefined, edit: p.edit ? true : undefined };
     }
 
     // ---- 真ん中の列 ----
@@ -299,7 +299,7 @@
       return head +
         '<div class="row">' + builderSwitch('サイトに出す', 'active', p.active !== false) + '<span class="tools"><button type="button" data-b="product-remove">' + (p.edit ? 'この編集をやめる（元のまま）' : 'この登録をやめる') + '</button></span></div>' +
         '<h3>基本</h3>' + builderField('商品名', 'title', p.title, { wide: true, max: 80 }) +
-        '<h3>カテゴリー（大・中・小）</h3><p class="muted">サイトのどのカテゴリーに並べるかを選びます。2つ以上に並べることもできます。</p>' + placeBlock +
+        '<h3>カテゴリー（大・中・小）</h3><p class="muted">サイトのどのカテゴリーに並べるかを選びます。2つ以上に並べることもできます。ないカテゴリーは下の「新しいカテゴリーを作る」で作れます。</p>' + placeBlock + builderCatCreator(p) +
         '<h3>商品コード</h3>' + builderCodeBlock(p) +
         '<div class="row">' + builderField('最低数量', 'minq', String(p.minq), { type: 'number' }) + '</div>' +
         '<p class="muted">' + (p.edit ? '商品番号 ' + escapeHtml(p.id) + '（変わりません）' : '商品番号は自動で ' + escapeHtml(p.id) + ' になります。') + '</p>' +
@@ -307,7 +307,7 @@
           return '<li class="row">' + builderField(p.skus.length > 1 ? '種類' + (i + 1) + 'の名前' : '種類の名前（1つだけなら空でよい）', 'skus.' + i + '.t', s.t, { placeholder: '例: Sサイズ / 白' }) + builderField('価格（円）', 'skus.' + i + '.price', String(s.price || ''), { type: 'number' }) + (p.skus.length > 1 ? '<span class="tools"><button type="button" data-b="sku-remove" data-index="' + i + '">外す</button></span>' : '') + '</li>';
         }).join('') + '</ol><button type="button" class="add" data-b="sku-add">＋ 種類を足す（サイズ・色など）</button>' +
         '<h3>写真（' + p.photos.length + '枚・1枚目がメイン）</h3>' + builderPhotoList(p) +
-        '<div class="imgs"><p class="muted">下の画像を押すと写真に足します。取り込みは何枚でもまとめて選べます。</p>' + builderImportButton('photo') + '<div class="img-grid">' + builderProductImages(p) + '</div><small>「取り込み」の札が付いた画像は、ここで取り込んだものです。× で消せます。</small></div>' +
+        '<p class="muted">「＋ 写真を取り込む」で選んだ写真は、右にどんどん並びます（何枚でもまとめて選べます。20枚まで）。</p>' +
         builderSwitch('名入れできる商品にする（「名入れできる」の絞り込みに出ます）', 'hasName', !!p.hasName) +
         (p.spec && p.spec.fields && p.spec.fields.length ? '<p class="muted">名入れなどの入力欄 ' + p.spec.fields.length + '項目は、お手本から写しています。</p>' : '') +
         '<h3>説明</h3>' + PRODUCT_TEXT_FIELDS.map(function (f) { return builderField(f[1], f[0], p[f[0]], { wide: true, area: f[2] }); }).join('') +
@@ -318,20 +318,15 @@
     }
     // 登録する写真の並び: 1枚目がメイン。← → で並べ替え、★でメインに、外すで写真から外す（画像そのものは消えない）
     function builderPhotoList(p) {
-      if (!p.photos.length) return '<p class="muted photo-empty">まだ写真がありません。下から選ぶか取り込んでください。</p>';
+      const add = p.photos.length < 20 ? '<li class="photo photo-add"><label class="import"><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-import="photo" multiple><span>＋<br>写真を取り込む<small>（複数可）</small></span></label></li>' : '';
       return '<ol class="photo-list">' + p.photos.map(function (src, i) {
-        return '<li class="photo' + (i === 0 ? ' is-main' : '') + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy">' + (i === 0 ? '<em class="main-badge">メイン</em>' : '') +
+        const up = state.builder.uploads[src];
+        return '<li class="photo' + (i === 0 ? ' is-main' : '') + '"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy">' + (i === 0 ? '<em class="main-badge">メイン</em>' : '<em class="num-badge">' + (i + 1) + '</em>') + (up ? '<em class="up-badge">取り込み</em>' : '') +
           '<span class="photo-tools"><button type="button" data-b="photo-move" data-index="' + i + '" data-dir="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="前へ">←</button>' +
           (i ? '<button type="button" data-b="photo-main" data-index="' + i + '" title="この写真をメインにする">★メイン</button>' : '') +
           '<button type="button" data-b="photo-move" data-index="' + i + '" data-dir="1"' + (i === p.photos.length - 1 ? ' disabled' : '') + ' aria-label="後ろへ">→</button>' +
           '<button type="button" data-b="photo-remove" data-index="' + i + '" title="写真から外す">外す</button></span></li>';
-      }).join('') + '</ol>';
-    }
-    function builderProductImages(p) {
-      const b = state.builder;
-      const t = p.from ? builderTemplate(p.from) : null;
-      const choices = Array.from(new Set(builderImageChoices().concat(p.photos).concat(t && t.photos ? t.photos : []).concat(p.from && builderProduct(p.from) ? [builderProduct(p.from).image] : []))).filter(Boolean);
-      return choices.map(function (src) { return builderImgTile(src, p.photos.indexOf(src) >= 0); }).join('');
+      }).join('') + add + '</ol>';
     }
 
     // ---- 右の列（見え方） ----
@@ -349,10 +344,21 @@
         '<p class="pv-place">カテゴリー: ' + escapeHtml(p.places.filter(function (pl) { return pl.g; }).map(builderPlaceLabel).join(' ／ ') || (p.edit ? 'いまのまま' : '未選択')) + '</p>' +
         '<p class="pv-all">' + (stk.status === 'out' ? 'いまは注文できません' : 'カートに入れる') + '</p></article>';
     }
+    // 登録した写真をすべて並べる。押すと上の大きい写真がその写真に変わる
     function builderPhotoThumbs(list) {
-      if (!list || list.length < 2) return '';
-      return '<div class="pv-thumbs">' + list.map(function (src) { return '<img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy">'; }).join('') + '</div>';
+      if (!list || !list.length) return '';
+      return '<p class="pv-photo-count">写真 ' + list.length + '枚' + (list.length > 1 ? '（押すと上に大きく出ます）' : '') + '</p><div class="pv-thumbs">' + list.map(function (src, i) {
+        return '<button type="button" class="pv-thumb' + (i === 0 ? ' is-on' : '') + '" data-pv-photo="' + escapeHtml(builderImg(src)) + '" aria-label="写真' + (i + 1) + 'を大きく見る"><img src="' + escapeHtml(builderImg(src)) + '" alt="" loading="lazy"><span>' + (i === 0 ? 'メイン' : i + 1) + '</span></button>';
+      }).join('') + '</div>';
     }
+    document.addEventListener('click', function (event) {
+      const btn = event.target.closest && event.target.closest('[data-pv-photo]');
+      if (!btn) return;
+      const box = btn.closest('.pv-item');
+      const main = box && box.querySelector(':scope > img');
+      if (main) main.src = btn.dataset.pvPhoto;
+      box.querySelectorAll('.pv-thumb').forEach(function (x) { x.classList.toggle('is-on', x === btn); });
+    });
     // 商品の詳細（右の列）。お手本用の商品データ（builder-products.json）から、説明・種類・名入れの入力欄まで出す
     function builderStockDetail(id) {
       const b = state.builder;
