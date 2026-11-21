@@ -103,6 +103,8 @@ const LATER = [
   ['listing', '出す・出さないと販売期間', d => Object.keys(d.listing || {}).length],
   ['plans', '企画', d => (d.plans || []).length],
   ['newCategories', '新しいカテゴリー', d => (d.newCategories || []).length],
+  ['categoryNames', 'カテゴリーの名前', d => (d.categoryNames || []).length],
+  ['noticeTemplates', '注意事項の定型文', d => (d.noticeTemplates || []).length],
   ['businessDays', '営業日', d => (d.businessDays && d.businessDays.holidays ? d.businessDays.holidays.length : 0)]
 ];
 
