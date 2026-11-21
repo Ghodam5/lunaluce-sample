@@ -1,0 +1,41 @@
+# 部品: oms-reflect（OMSの「反映」ボタンの受け手。GitHubにプルリクエストを作る・Welcartのテスト環境へ送る）
+# 外には出さない。oms-app の /api/ からだけ呼ばれる（oms-app のパスワードの内側）。
+# 起動時に GitHub の Ghodam5/lunaluce-sample から ops/vps/oms-reflect/server.js を取り込んで動かす。
+# 環境欄に入れるもの（値はGitHub・記録に書かない。林さんが入力）:
+#   GITHUB_TOKEN               … lunaluce-sample だけに「Contents 読み書き」「Pull requests 読み書き」を付けた fine-grained トークン
+#   任意: WELCART_TEST_URL      … Welcartのテスト環境の住所（例 https://lunaluce.s196.coreserver.jp）。本番の住所は断る
+#         WELCART_TEST_USER / WELCART_TEST_APP_PASSWORD … テスト環境のWordPressのユーザー名とアプリケーションパスワード
+#         REFLECT_REF          … 取り込むブランチ（省略時 main）
+services:
+  app:
+    image: node:22-alpine
+    restart: unless-stopped
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      WELCART_TEST_URL: ${WELCART_TEST_URL:-}
+      WELCART_TEST_USER: ${WELCART_TEST_USER:-}
+      WELCART_TEST_APP_PASSWORD: ${WELCART_TEST_APP_PASSWORD:-}
+      REFLECT_REF: ${REFLECT_REF:-main}
+      DATA_DIR: /data
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        apk add --no-cache git >/dev/null
+        mkdir -p /srv/src
+        wget -qO- "https://codeload.github.com/Ghodam5/lunaluce-sample/tar.gz/refs/heads/$${REFLECT_REF}" | tar -xz -C /srv/src
+        cp /srv/src/*/ops/vps/oms-reflect/server.js /srv/server.js
+        exec node /srv/server.js
+    volumes:
+      - reflect-data:/data
+    networks:
+      oms-net:
+        aliases: [oms-reflect]
+    mem_limit: 384m
+
+volumes:
+  reflect-data:
+
+networks:
+  oms-net:
+    external: true
