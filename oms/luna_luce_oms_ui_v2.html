@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.7
+Luna Luce OMS 2.8
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
 このHTMLは外枠だけ。中身は css/ と js/ にあり、番号順に読み込む（順番を入れ替えない）。
-  css/01-base … 10-drawer-additions   各ファイル内の /* owner: renderX */ がその部品のCSS
+  css/01-base … 11-builder   各ファイル内の /* owner: renderX */ がその部品のCSS
   js/01-settings        日付・締め時刻・部品キー・書体
   js/02-miniseal-match  ミニシール図柄・グループ・受注文字からの自動判定
   js/03-core            デザイン型・工程・販路・state・共通関数・料金と送料の式
@@ -24,8 +24,14 @@ Luna Luce OMS 2.7
   js/16-drawer          受注詳細(ドロワー)の各部品
   js/17-modal-toast     手動登録・通知・全体の並び(APP_PARTS)
   js/18-actions         ボタン操作(runAction)とイベント
-  js/19-start           起動
+  js/19-builder-model   サイトビルダーのデータ・検査・書き出し（データは builder-data.json）
+  js/20-builder-list    サイトビルダー左列（一覧・並べ替え・追加）
+  js/21-builder-editor  サイトビルダー真ん中（選んだ部品を直す）
+  js/22-builder-preview サイトビルダー右列（見え方・確認・書き出し）
+  js/23-builder-tab     サイトビルダーの3列の枠と操作
+  js/90-start           起動（必ず最後）
 新しい部品は新しい番号のファイルとして足し、既存ファイルに詰め込まない。
+2.8 でサイトビルダー（7のタブ）を追加。builder-data.json は tools/oms-builder-data.cjs で作り、直接編集しない。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
 
@@ -96,7 +102,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.7｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.8｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -110,6 +116,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <link rel="stylesheet" href="css/08-channel-match.css" />
   <link rel="stylesheet" href="css/09-site.css" />
   <link rel="stylesheet" href="css/10-drawer-additions.css" />
+  <link rel="stylesheet" href="css/11-builder.css" />
 </head>
 <body>
   <div id="app"></div>
@@ -131,6 +138,11 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/16-drawer.js"></script>
   <script src="js/17-modal-toast.js"></script>
   <script src="js/18-actions.js"></script>
-  <script src="js/19-start.js"></script>
+  <script src="js/19-builder-model.js"></script>
+  <script src="js/20-builder-list.js"></script>
+  <script src="js/21-builder-editor.js"></script>
+  <script src="js/22-builder-preview.js"></script>
+  <script src="js/23-builder-tab.js"></script>
+  <script src="js/90-start.js"></script>
 </body>
 </html>
