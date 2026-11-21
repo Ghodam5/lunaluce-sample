@@ -7,6 +7,7 @@ const styleFiles=require('./styles.cjs').build(args.has('--check'));
 const pageContract=require('./page-contract.cjs'),contract=pageContract.load(root);
 require('./components.cjs').check();
 require('./products.cjs').build(args.has('--check'));
+require('./home-sections.cjs').build(args.has('--check'));
 require('./site-content.cjs').build(args.has('--check'));
 pageContract.checkScripts(root);
 const version=JSON.parse(read(path.join(src,'version.json'))).version;

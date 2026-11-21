@@ -5,6 +5,11 @@
     "file": "site-src/sections/top/ranking.html"
   },
   {
+    "id": "finder",
+    "title": "3つの方法でさがす シーン・アイテム・予算",
+    "file": "site-src/sections/top/finder.html"
+  },
+  {
     "id": "popular-petit",
     "title": "いま人気のプチギフト 今日のおすすめ・売れている30点から毎日入れ替え",
     "file": "site-src/sections/top/popular-petit.html"
