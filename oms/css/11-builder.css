@@ -296,7 +296,7 @@
     [data-part="builder-editor"] .img-arch .danger { color: #9b2c1f; }
     [data-part="builder-preview"] .pv-products { grid-template-columns: repeat(6, minmax(0, 1fr)); }
     [data-part="builder-preview"] .pv-products > * { grid-column: span 3; }
-    [data-part="builder-preview"] .pv-products[data-count="3"] > *, [data-part="builder-preview"] .pv-products[data-count="6"] > *, [data-part="builder-preview"] .pv-products[data-count="5"] > :nth-child(-n+3) { grid-column: span 2; }
+    [data-part="builder-preview"] .pv-products > :last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc((100% - 8px) / 2); } /* 2.25: 奇数のときは最後の1つを同じ大きさで真ん中に（3は上2・下1、5は2・2・1） */
     /* 2.21 営業日: 何件でも足せる・カレンダーで1日ずつ切り替え */
     [data-part="builder-editor"] .days-cal-nav { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 8px; }
     [data-part="builder-editor"] .days-cal-nav button { min-height: 32px; font-size: 13px; padding: 2px 10px; }

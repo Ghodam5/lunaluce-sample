@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.24
+Luna Luce OMS 2.25
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -57,6 +57,7 @@ Luna Luce OMS 2.24
 2.22 でサイトビルダーに「↶ 元に戻す」「↷ やり直す」を付けた（js/31-builder-history）。触るたびに前の形を覚え、1つずつ戻せる（最大60回、画面を開いている間）。文字を打っている間は1回分にまとめる。「変更を取り消す」も元に戻せる。
 2.23 で「5 サイト掲載」タブをなくし、サイトビルダーにまとめた（特集＝トップのカード、流れる文言、営業日はもとからビルダーにある。お知らせ本文は js/32-builder-news に移した）。タブの番号は 5 契約送料・6 サイトビルダー になった。営業日のカレンダーを1か月ずつにし「次の月」で1年先まで決められるようにした（第1週〜の行、日を押すたびに 営業→お休み→午前だけ→営業）。長期休暇（お正月・GW・お盆・秋の連休など）を登録すると、その日はお休みになり、お知らせ本文と流れる文言に自動で載る（出し始めは1〜4か月前から選ぶ。出さないこともできる）。
 2.24 でサイトビルダーに「トップの商品の段」を足した（js/33-builder-sections）。売れ筋TOP10〜ウェルカムボードの段を↑↓で並べ替え、「表示する」で出す/出さない、期間つきにできる。企画（クリスマス・GW・お盆・セールなど）・カテゴリー・選んだ商品から段を足せ、足した段は削除できる。企画の画面からも「トップにこの企画の段を出す」。営業日のカレンダーに日本の祝日を赤い字で表示（目印だけ）し、「1年分の祝日をまとめてお休みにする」ボタンを付けた。
+2.25 でカードの商品の見え方を直した。いつも同じ大きさで2つずつ並べ、奇数のときは最後の1つを真ん中に（3は上2・下1、5は2・2・1）。サイト側 v63 と同じ。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
 
@@ -123,7 +124,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.24｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.25｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
