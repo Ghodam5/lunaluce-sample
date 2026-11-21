@@ -73,6 +73,7 @@
       if (builderCatAction(name, el)) return;
       if (builderPlanAction(name, el)) return;
       if (builderReflectAction(name, el)) return;
+      if (builderCatNamesAction(name, el)) return;
       if (name === 'list-filter') { b.listFilter = el.dataset.filter; b.stockPage = 1; emit('oms:builder', { form: true }); return; }
       if (name === 'link-open') { b.linkOpen = b.linkOpen === el.dataset.field ? '' : el.dataset.field; b.linkTab = ''; b.linkQuery = ''; emit('oms:builder', { form: true }); return; }
       if (name === 'link-tab') { b.linkTab = el.dataset.tab; emit('oms:builder', { form: true }); return; }
@@ -199,7 +200,7 @@
     }
     // 検索欄の入力で一覧を描き直しても、入力中の欄から抜けないようにする
     function builderRepaintKeepFocus(el) {
-      const attr = el.dataset.sq !== undefined ? 'data-sq' : 'data-tq';
+      const attr = el.dataset.sq !== undefined ? 'data-sq' : el.dataset.catnameQ !== undefined ? 'data-catname-q' : 'data-tq';
       const pos = el.selectionStart;
       emit('oms:builder', { form: true });
       const again = document.querySelector('[' + attr + ']');
@@ -266,6 +267,7 @@
       host.addEventListener('input', function (event) {
         const el = event.target;
         if (builderSectionInput(el, false)) return;
+        if (builderCatNamesInput(el, false)) return;
         if (el.dataset.catd !== undefined && el.type !== 'radio' && el.tagName !== 'SELECT') { builderCatInput(el, false); return; }
         if ((el.dataset.plan !== undefined && el.type !== 'radio' && el.type !== 'date') || el.dataset.planq !== undefined) { builderPlanInput(el, false); return; }
         if (el.dataset.news !== undefined && el.type !== 'checkbox' && el.type !== 'date') { builderNewsInput(el, false); return; }
@@ -307,6 +309,7 @@
         if (el.dataset.import !== undefined) { builderImportFrom(el); return; }
         if (el.dataset.codesImport !== undefined) { builderImportCodes(el); return; }
         if (builderSectionInput(el, true)) return;
+        if (builderCatNamesInput(el, true)) return;
         if (el.dataset.catd !== undefined) { builderCatInput(el, true); return; }
         if (el.dataset.plan !== undefined || el.dataset.planCat !== undefined) { if (el.type === 'text' || el.tagName === 'TEXTAREA') return; builderPlanInput(el, true); return; }
         if (builderListingChange(el)) return;

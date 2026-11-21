@@ -11,11 +11,11 @@
     const BUILDER_UPLOAD_KEY = 'luna-oms-builder-uploads-v1';
     const BUILDER_TILE_MAX = 8;
 
-    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], newCats: [], days: null, news: [], sections: [], secOpen: '', secQuery: '', listing: {}, plans: [], planQuery: '', listFilter: '', stockQuery: '', stockFilter: '', stockPage: 1, templateQuery: '' };
+    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], newCats: [], catNames: {}, catNameQuery: '', days: null, news: [], sections: [], secOpen: '', secQuery: '', listing: {}, plans: [], planQuery: '', listFilter: '', stockQuery: '', stockFilter: '', stockPage: 1, templateQuery: '' };
 
     function builderSnapshot() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans });
     }
     function builderDirty() {
       return state.builder.ready && builderSnapshot() !== state.builder.base;
@@ -48,6 +48,7 @@
         b.stock = {};
         b.newProducts = [];
         b.newCats = [];
+        b.catNames = {};
         b.days = { weekly: [0, 6], off: [], on: [], am: [], long: [] }; // 営業日はOMSで管理するのが基本（2.21）
         b.news = [];
         b.sections = cloneData(data.homeSections || []); // トップの商品の段（2.24）
@@ -69,12 +70,14 @@
             b.news = saved.news || [];
             if (Array.isArray(saved.sections)) b.sections = saved.sections;
             b.newCats = saved.newCats || [];
+            b.catNames = saved.catNames && typeof saved.catNames === 'object' ? saved.catNames : {};
             b.listing = saved.listing || {};
             b.plans = saved.plans || [];
             b.themes = b.themes.filter(function (t) { return t.builtIn; }).concat(saved.themes || []);
           }
         } catch (e) { /* 下書きが壊れていたら元データのまま */ }
         builderApplyNewCats();
+        builderApplyCatNames(); // 35-builder-catnames: 変えた名前を当てる
         b.ready = true;
         builderHistStart();
         emit('oms:builder', { form: true });
@@ -324,7 +327,7 @@
       return out;
     }
     function builderAllErrors() {
-      const out = builderNoticeErrors().concat(builderStockErrors()).concat(builderDaysErrors()).concat(builderNewsErrors()).concat(builderSectionsErrors()).concat(builderListingErrors()).concat(builderPlanErrors());
+      const out = builderNoticeErrors().concat(builderStockErrors()).concat(builderDaysErrors()).concat(builderNewsErrors()).concat(builderSectionsErrors()).concat(builderListingErrors()).concat(builderPlanErrors()).concat(builderCatNamesErrors());
       state.builder.newProducts.forEach(function (p) {
         builderProductErrors(p).forEach(function (e) { out.push((p.edit ? '編集中の商品 ' : '新しい商品 ') + (p.title || p.id) + ': ' + e); });
       });
@@ -385,6 +388,8 @@
         businessDays: builderDaysExport(),
         // OMSで新しく作ったカテゴリー（level g/m/s、k は英字の名前）。反映ツールとWelcartの受け取りプラグインが作る
         newCategories: (b.newCats || []).map(cloneData),
+        // カテゴリーの名前を変えたもの（level g/m/s・k は英字の名前・before は元の名前）。英字の名前は変えない
+        categoryNames: builderCatNamesExport(),
         // 出す・出さないと販売期間（source: site=新サイト / w=本店だけ / new=新しい商品）。企画に入った商品は企画の期間
         listing: builderListingExport(),
         // 企画（季節・イベント・セール）。members は書き出した時点の対象の商品

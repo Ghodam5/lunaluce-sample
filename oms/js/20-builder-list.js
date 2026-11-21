@@ -19,18 +19,26 @@
         const themes = b.themes.map(function (t, i) {
           return item({ type: 'theme', index: i }, true, t.name, t.builtIn ? '標準' : '追加', t);
         }).join('');
-        host.innerHTML = builderHistBar() + '<ul class="reflect-item">' + item({ type: 'reflect', index: 0 }, true, '反映（GitHub・Welcart・楽天・Yahoo）', builderReflectSub()) + '</ul>' + '<h3>サイトの上の帯</h3><ul>' + ticker + '</ul>' +
-          '<h3>お知らせ本文</h3><ul>' + item({ type: 'news', index: 0 }, true, 'お知らせ本文', builderNewsList().length + '件' + (builderDaysLongNotices().length ? '＋長期休暇' + builderDaysLongNotices().length + '件（自動）' : '')) + '</ul>' +
-          '<h3>トップのカード <small>上から順に表示</small></h3><ul>' + cards + '</ul>' +
-          '<div class="adds"><button type="button" data-b="card-add" data-kind="products">＋ 商品</button><button type="button" data-b="card-add" data-kind="campaign">＋ キャンペーン</button><button type="button" data-b="card-add" data-kind="features">＋ 特集一覧</button></div>' +
-          '<h3>トップの商品の段</h3><ul>' + item({ type: 'sections', index: 0 }, true, 'トップの商品の段（並び・表示）', builderSections().filter(function (x) { return x.active; }).length + '段を表示・全' + builderSections().length + '段') + '</ul>' +
-          '<h3>商品</h3><ul>' + item({ type: 'stock', index: 0 }, true, '在庫と出店（出す・出さない・期間）', Object.keys(b.stock).length ? Object.keys(b.stock).length + '件を切り替え中' : '販売中以外 ' + b.products.filter(function (p) { return p.stock && p.stock.status !== 'in'; }).length + '件') +
-          b.newProducts.map(function (p, i) { return item({ type: 'product', index: i }, p.active, p.title || '（商品名なし）', (p.edit ? '編集中' : '新しい商品') + '・' + stockState(builderProductStock(p).status).short); }).join('') + '</ul>' +
-          '<div class="adds"><button type="button" data-b="select" data-type="product-start" data-index="0">＋ 単品商品を登録</button>' + (b.newProducts.length ? '<button type="button" data-b="channel-export">楽天・Yahoo用に書き出す</button>' : '') + '</div>' +
-          '<h3>企画（季節・イベント・セール）</h3><ul>' + b.plans.map(function (p, i) { return item({ type: 'plan', index: i }, true, p.name || '（名前なし）', builderPlanKind(p.kind) + '・' + builderPeriodText(p.from, p.to) + '・' + builderPlanStatus(p, builderDaysToday())); }).join('') + '</ul>' +
-          '<div class="adds">' + PLAN_KINDS.map(function (k) { return '<button type="button" data-b="plan-add" data-kind="' + k[0] + '">＋ ' + k[1] + '</button>'; }).join('') + '</div>' +
-          '<h3>営業日</h3><ul>' + item({ type: 'days', index: 0 }, true, '営業日（発送のお休み）', b.days ? 'OMSで管理中' : 'Welcartの設定のまま') + '</ul>' +
-          '<h3>色のテーマ</h3><ul>' + themes + '</ul><div class="adds"><button type="button" data-b="theme-add">＋ テーマを追加</button></div>';
+        // 2.27 項目ごとに枠で区切る（いまどこを操作しているかが分かるように、選んでいる枠は色を付ける）
+        const sel = b.sel.type;
+        function grp(types, title, inner) {
+          return '<section class="grp' + (types.indexOf(sel) >= 0 ? ' is-on' : '') + '"><h3>' + title + '</h3>' + inner + '</section>';
+        }
+        host.innerHTML = builderHistBar() +
+          grp(['reflect'], '反映', '<ul class="reflect-item">' + item({ type: 'reflect', index: 0 }, true, '反映（GitHub・Welcart・楽天・Yahoo）', builderReflectSub()) + '</ul>') +
+          grp(['ticker'], 'サイトの上の帯', '<ul>' + ticker + '</ul>') +
+          grp(['news'], 'お知らせ本文', '<ul>' + item({ type: 'news', index: 0 }, true, 'お知らせ本文', builderNewsList().length + '件' + (builderDaysLongNotices().length ? '＋長期休暇' + builderDaysLongNotices().length + '件（自動）' : '')) + '</ul>') +
+          grp(['card'], 'トップのカード <small>上から順に表示</small>', '<ul>' + cards + '</ul>' +
+            '<div class="adds"><button type="button" data-b="card-add" data-kind="products">＋ 商品</button><button type="button" data-b="card-add" data-kind="campaign">＋ キャンペーン</button><button type="button" data-b="card-add" data-kind="features">＋ 特集一覧</button></div>') +
+          grp(['sections'], 'トップの商品の段', '<ul>' + item({ type: 'sections', index: 0 }, true, 'トップの商品の段（並び・表示）', builderSections().filter(function (x) { return x.active; }).length + '段を表示・全' + builderSections().length + '段') + '</ul>') +
+          grp(['stock', 'product', 'product-start', 'cats'], '商品', '<ul>' + item({ type: 'stock', index: 0 }, true, '在庫と出店（出す・出さない・期間）', Object.keys(b.stock).length ? Object.keys(b.stock).length + '件を切り替え中' : '販売中以外 ' + b.products.filter(function (p) { return p.stock && p.stock.status !== 'in'; }).length + '件') +
+            item({ type: 'cats', index: 0 }, true, 'カテゴリーの名前（大・中・小）', builderCatRenameCount() ? builderCatRenameCount() + '件を変更中' : '名前を変える') +
+            b.newProducts.map(function (p, i) { return item({ type: 'product', index: i }, p.active, p.title || '（商品名なし）', (p.edit ? '編集中' : '新しい商品') + '・' + stockState(builderProductStock(p).status).short); }).join('') + '</ul>' +
+            '<div class="adds"><button type="button" data-b="select" data-type="product-start" data-index="0">＋ 単品商品を登録</button>' + (b.newProducts.length ? '<button type="button" data-b="channel-export">楽天・Yahoo用に書き出す</button>' : '') + '</div>') +
+          grp(['plan'], '企画（季節・イベント・セール）', '<ul>' + b.plans.map(function (p, i) { return item({ type: 'plan', index: i }, true, p.name || '（名前なし）', builderPlanKind(p.kind) + '・' + builderPeriodText(p.from, p.to) + '・' + builderPlanStatus(p, builderDaysToday())); }).join('') + '</ul>' +
+            '<div class="adds">' + PLAN_KINDS.map(function (k) { return '<button type="button" data-b="plan-add" data-kind="' + k[0] + '">＋ ' + k[1] + '</button>'; }).join('') + '</div>') +
+          grp(['days'], '営業日', '<ul>' + item({ type: 'days', index: 0 }, true, '営業日（発送のお休み）', b.days ? 'OMSで管理中' : 'Welcartの設定のまま') + '</ul>') +
+          grp(['theme'], '色のテーマ', '<ul>' + themes + '</ul><div class="adds"><button type="button" data-b="theme-add">＋ テーマを追加</button></div>');
       }
       paint();
       on('oms:builder', paint);

@@ -53,6 +53,8 @@
           main = builderNewsPreview();
         } else if (s.type === 'sections') {
           main = builderSectionsPreview();
+        } else if (s.type === 'cats') {
+          main = builderCatNamesPreview();
         } else if (s.type === 'reflect') {
           main = builderReflectPreview();
         } else if (s.type === 'stock') {

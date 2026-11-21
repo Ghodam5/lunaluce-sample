@@ -399,7 +399,10 @@
       });
       const rows = [['内容', p.contents], ['サイズ', p.size], ['素材', p.material], ['賞味期限', p.expiry], ['アレルギー', p.allergens], ['保存方法', p.storage]].filter(function (r) { return r[1]; });
       const fields = (p.spec && p.spec.fields) || [];
-      return '<div class="pv-detail"><p class="pv-note"><button type="button" data-b="stock-detail" data-id="">‹ 切り替えた商品の一覧に戻る</button></p>' +
+      // 2.27 「編集する」「お手本に登録」は詳細の一番上に（下まで見なくても押せるように）
+      const actions = '<p class="pv-actions"><button type="button" class="primary" data-b="product-edit" data-id="' + escapeHtml(String(p.id)) + '">' + (b.newProducts.some(function (x) { return x.edit && x.id === String(p.id); }) ? '編集の続きを開く' : 'この商品を編集する（写真・説明・価格など）') + '</button>' +
+        '<button type="button" data-b="product-new" data-template="' + escapeHtml(String(p.id)) + '">この商品をお手本に新しい商品を登録</button></p>';
+      return '<div class="pv-detail"><p class="pv-note"><button type="button" data-b="stock-detail" data-id="">‹ 切り替えた商品の一覧に戻る</button></p>' + actions.replace('class="pv-actions"', 'class="pv-actions pv-actions-top"') +
         '<article class="pv-item">' + (p.image ? '<img src="' + escapeHtml(builderImg(p.image)) + '" alt="">' : '') + builderPhotoThumbs(p.photos) +
         '<h4>' + escapeHtml(p.title) + '</h4><p class="pv-price">' + formatYen(p.price) + (p.skus.some(function (s) { return s.price !== p.price; }) ? '〜' : '') + '<small>（税込）</small></p>' +
         '<p class="pv-stock st-' + state0.id + '">' + escapeHtml(state0.short) + (st.eta ? '・' + escapeHtml(st.eta.replace(/-/g, '/')) + '入荷予定' : '') + '</p>' +
@@ -410,8 +413,7 @@
         (fields.length ? '<h5>注文時の入力欄（' + fields.length + '）</h5><ul class="pv-ul">' + fields.map(function (f) { return '<li>' + escapeHtml(f.label || f.k) + '<small>' + escapeHtml(f.form || '') + (f.req ? '・必須' : '') + '</small></li>'; }).join('') + '</ul>' : '') +
         (p.description ? '<h5>説明</h5><p class="pv-desc">' + escapeHtml(p.description) + '</p>' : '') +
         (p.notice ? '<h5>注意事項</h5><p class="pv-desc">' + escapeHtml(p.notice) + '</p>' : '') +
-        '</article><p class="pv-actions"><button type="button" class="primary" data-b="product-edit" data-id="' + escapeHtml(String(p.id)) + '">' + (b.newProducts.some(function (x) { return x.edit && x.id === String(p.id); }) ? '編集の続きを開く' : 'この商品を編集する（写真・説明・価格など）') + '</button>' +
-        '<button type="button" data-b="product-new" data-template="' + escapeHtml(String(p.id)) + '">この商品をお手本に新しい商品を登録</button></p></div>';
+        '</article></div>';
     }
     function builderStockPreview() {
       const b = state.builder;

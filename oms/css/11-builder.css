@@ -417,3 +417,27 @@
     [data-part="builder-preview"] .reflect-log { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 12px; }
     [data-part="builder-preview"] .reflect-log li { display: grid; gap: 2px; padding: 6px 8px; border-radius: 8px; background: #fff; border: 1px solid var(--line, #e5dccf); overflow-wrap: anywhere; }
     [data-part="builder-preview"] .reflect-log li.is-bad { background: #fdf0ef; }
+    /* 2.27 左の一覧を項目ごとに枠で区切る・選んでいる枠に色 */
+    [data-part="builder-list"] .grp { border: 1px solid var(--line, #e5dccf); border-radius: 12px; padding: 8px 10px 10px; margin: 0 0 10px; background: #fcfaf7; }
+    [data-part="builder-list"] .grp > h3 { margin: 0 0 6px; padding: 0 0 6px; border-bottom: 1px dashed var(--line, #e5dccf); }
+    [data-part="builder-list"] .grp.is-on { border-color: var(--accent, #b06a3b); background: #fff6ee; box-shadow: 0 0 0 2px rgba(176, 106, 59, .15); }
+    [data-part="builder-list"] .grp.is-on > h3 { color: var(--accent, #b06a3b); }
+    [data-part="builder-list"] .grp ul { margin: 0; }
+    /* 2.27 伸ばせる入力欄は縦だけ。中央の編集エリアからはみ出さない */
+    [data-part="builder-editor"] { min-width: 0; }
+    [data-part="builder-editor"] textarea { resize: vertical; max-width: 100%; box-sizing: border-box; }
+    [data-part="builder-editor"] input, [data-part="builder-editor"] select { max-width: 100%; box-sizing: border-box; }
+    /* 2.27 右の見え方は画面の高さに収め、中だけスクロール（ページを下げても付いてくる） */
+    @media (min-width: 1280px) {
+      [data-part="tab-builder"] .builder-cols > [data-part="builder-preview"] { max-height: calc(100vh - 24px); overflow-y: auto; overscroll-behavior: contain; }
+    }
+    [data-part="builder-preview"] .pv-actions-top { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+    /* 2.27 カテゴリーの名前 */
+    [data-part="builder-editor"] .catnames, [data-part="builder-editor"] .catnames ul { list-style: none; margin: 0; padding: 0; }
+    [data-part="builder-editor"] .catnames ul { padding-left: 18px; border-left: 2px solid #efe7dc; margin-left: 8px; }
+    [data-part="builder-editor"] .catnames .cat-g { border: 1px solid var(--line, #e5dccf); border-radius: 10px; padding: 8px; margin: 8px 0; background: #fff; }
+    [data-part="builder-editor"] .catname { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 4px 8px; align-items: center; margin: 4px 0; }
+    [data-part="builder-editor"] .catname .lv { font-size: 12px; text-align: center; border-radius: 6px; background: #f2ede6; padding: 2px 0; }
+    [data-part="builder-editor"] .catname small, [data-part="builder-editor"] .catname button { grid-column: 2; justify-self: start; }
+    [data-part="builder-editor"] .catname small { color: var(--taupe-light, #8a7f73); font-size: 12px; }
+    [data-part="builder-editor"] .catname.is-changed input { border-color: var(--accent, #b06a3b); background: #fff9f3; }

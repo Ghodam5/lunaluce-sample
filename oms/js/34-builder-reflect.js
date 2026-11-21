@@ -9,11 +9,11 @@
     const REFLECT_PARTS = [
       ['cards', 'トップのカード'], ['notices', '流れる文言'], ['news', 'お知らせ本文'], ['homeSections', 'トップの商品の段'],
       ['themes', '色のテーマ'], ['plans', '企画'], ['listing', '出す・出さないと販売期間'], ['stock', '在庫の状態'],
-      ['newCategories', '新しいカテゴリー'], ['products', '新しい商品'], ['edits', '商品の直し'], ['businessDays', '営業日'], ['uploads', '取り込んだ画像']
+      ['newCategories', '新しいカテゴリー'], ['categoryNames', 'カテゴリーの名前'], ['products', '新しい商品'], ['edits', '商品の直し'], ['businessDays', '営業日'], ['uploads', '取り込んだ画像']
     ];
     const REFLECT_DESTS = [
-      { id: 'site', name: '新サイト（GitHub）', parts: ['cards', 'notices', 'news', 'homeSections', 'themes', 'plans', 'listing', 'stock', 'newCategories', 'products', 'edits', 'uploads'], lead: '変わったファイルをプルリクエストにします。中身を確かめてマージすると、見本サイトに出ます。' },
-      { id: 'welcart', name: '本店 Welcart（テスト環境）', parts: ['products', 'edits', 'stock', 'businessDays', 'newCategories', 'uploads'], lead: 'テスト環境の本店に、商品・在庫・営業日を入れます。本番にはまだつなぎません。' },
+      { id: 'site', name: '新サイト（GitHub）', parts: ['cards', 'notices', 'news', 'homeSections', 'themes', 'plans', 'listing', 'stock', 'newCategories', 'categoryNames', 'products', 'edits', 'uploads'], lead: '変わったファイルをプルリクエストにします。中身を確かめてマージすると、見本サイトに出ます。' },
+      { id: 'welcart', name: '本店 Welcart（テスト環境）', parts: ['products', 'edits', 'stock', 'businessDays', 'newCategories', 'categoryNames', 'uploads'], lead: 'テスト環境の本店に、商品・在庫・営業日を入れます。本番にはまだつなぎません。' },
       { id: 'rakuten', name: '楽天', parts: ['products', 'edits', 'businessDays'], lead: 'API の申請がすむまでは、CSVとお休み一覧をダウンロードして楽天の管理画面に入れます。' },
       { id: 'yahoo', name: 'Yahoo', parts: ['products', 'edits', 'businessDays'], lead: 'API の申請がすむまでは、CSVとお休み一覧をダウンロードしてYahooの管理画面に入れます。' }
     ];
@@ -59,7 +59,7 @@
         if (key === 'cards') { (v || []).forEach(function (c) { items[c.id] = reflectHash(c); }); order = payload.manifest || []; }
         else if (key === 'uploads') { (v || []).forEach(function (u) { items[u.path] = reflectHash([u.width, u.height, (u.dataUrl || '').length, (u.dataUrl || '').slice(-64)]); }); }
         else if (key === 'businessDays') { v = v || {}; (v.holidays || []).forEach(function (d) { items[d] = '休'; }); (v.halfDays || []).forEach(function (d) { items[d] = '午前'; }); }
-        else if (Array.isArray(v)) { v.forEach(function (x, i) { const k = x && (x.id || x.code || x.path) || String(i); items[k] = reflectHash(x); order.push(k); }); }
+        else if (Array.isArray(v)) { v.forEach(function (x, i) { const k = x && (x.id || x.code || x.path || x.k) || String(i); items[k] = reflectHash(x); order.push(k); }); }
         else if (v && typeof v === 'object') { Object.keys(v).forEach(function (k) { items[k] = reflectHash(v[k]); }); }
         out[key] = { items: items, order: reflectHash(order) };
       });
