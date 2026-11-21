@@ -1,5 +1,5 @@
 # 部品: oms-app（OMSの画面。いまは試作のOMS画面をパスワード付きで置くだけ）
-# 起動時に GitHub の Ghodam5/lunaluce-sample から oms/ フォルダを取り込んで表示する。
+# 起動時に GitHub の Ghodam5/lunaluce-sample から oms/ と images/（ビルダーの見本用）を取り込んで表示する。
 # 住所: 当面は https://oms.srv2050136.hstgr.cloud
 #       luna-luce.jp のDNSが触れるようになったら OMS_HOST を oms.luna-luce.jp に変える。
 # 環境欄に入れるもの: OMS_PASSWORD（林さんが入力。記録・GitHubには書かない）
@@ -17,12 +17,13 @@ services:
     command:
       - |
         set -e
-        mkdir -p /srv/oms /tmp/src
+        mkdir -p /srv/oms /srv/images /tmp/src
         wget -qO- "https://codeload.github.com/Ghodam5/lunaluce-sample/tar.gz/refs/heads/$${OMS_REF}" | tar -xz -C /tmp/src
         cp -R /tmp/src/*/oms/. /srv/oms/
+        cp -R /tmp/src/*/images/. /srv/images/
         cp /srv/oms/luna_luce_oms_ui_v2.html /srv/oms/index.html
         HASH=$$(caddy hash-password --plaintext "$$OMS_PASSWORD")
-        printf ':8080 {\n  basic_auth {\n    %s %s\n  }\n  header X-Robots-Tag "noindex, nofollow"\n  root * /srv/oms\n  file_server\n}\n' "$$OMS_USER" "$$HASH" > /etc/caddy/Caddyfile
+        printf ':8080 {\n  basic_auth {\n    %s %s\n  }\n  header X-Robots-Tag "noindex, nofollow"\n  redir / /oms/ 302\n  root * /srv\n  file_server\n}\n' "$$OMS_USER" "$$HASH" > /etc/caddy/Caddyfile
         echo "OMS画面を取り込みました（$${OMS_REF}）"
         exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
     labels:
