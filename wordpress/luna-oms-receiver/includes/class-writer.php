@@ -153,10 +153,6 @@ class Luna_OMS_Writer {
 		if ( ( $item['itemName'] ?? '' ) !== $next['itemName'] && 'update' === $out['action'] ) {
 			$c[] = 'Welcartの商品名を変更';
 		}
-		if ( ! $dry ) {
-			unset( $next['post_id'] );
-			wel_update_item_data( $next, $post_id );
-		}
 		// 種類（SKU）: コードで突き合わせる。Welcart にだけある種類は消さずに知らせる（消すのは担当者が画面で）
 		$current = wel_get_skus( $post_id, 'sort', false );
 		$current = is_array( $current ) ? $current : array();
@@ -208,16 +204,23 @@ class Luna_OMS_Writer {
 		// 写真: 並びが変わったときだけ入れ直す（このプラグインが入れた写真だけを差し替える）
 		$before = get_post_meta( $post_id, '_luna_oms_photos', true );
 		$before = is_array( $before ) ? $before : array();
-		if ( $before !== $m['photos'] ) {
+		$no_picts = $m['photos'] && empty( array_filter( (array) ( $item['itemPicts'] ?? array() ) ) );
+		if ( $before !== $m['photos'] || $no_picts ) {
 			if ( 'update' === $out['action'] ) {
 				$c[] = '写真を入れ直す（' . count( $before ) . '枚 → ' . count( $m['photos'] ) . '枚）';
 			}
 			if ( ! $dry ) {
 				$res = self::photos( $post_id, $m['code'], $m['photos'], $uploads, isset( $opts['image_base'] ) ? $opts['image_base'] : '' );
-				foreach ( $res as $msg ) {
+				foreach ( $res['msgs'] as $msg ) {
 					$c[] = $msg;
 				}
+				// Welcart 2.x は商品の写真を itemPicts（メディアの番号の並び。1つ目がメイン）で持つ
+				$next['itemPicts'] = $res['ids'];
 			}
+		}
+		if ( ! $dry ) {
+			unset( $next['post_id'] );
+			wel_update_item_data( $next, $post_id );
 		}
 		foreach ( $m['meta'] as $k => $v ) {
 			if ( 'update' === $out['action'] && '_luna_oms_minq' === $k && (string) get_post_meta( $post_id, $k, true ) !== (string) $v && '' !== (string) get_post_meta( $post_id, $k, true ) ) {
@@ -247,6 +250,7 @@ class Luna_OMS_Writer {
 			wp_delete_attachment( $aid, true );
 		}
 		$done = array();
+		$ids  = array();
 		foreach ( array_values( $photos ) as $i => $src ) {
 			$tmp = self::fetch_image( $src, $uploads, $image_base );
 			if ( is_wp_error( $tmp ) ) {
@@ -268,9 +272,10 @@ class Luna_OMS_Writer {
 				set_post_thumbnail( $post_id, $aid );
 			}
 			$done[] = $src;
+			$ids[]  = (int) $aid;
 		}
 		update_post_meta( $post_id, '_luna_oms_photos', $done === $photos ? $photos : $done );
-		return $msgs;
+		return array( 'msgs' => $msgs, 'ids' => $ids );
 	}
 
 	/** 写真の中身: 取り込み画像は下書きの中のデータから、サイトの画像は取り寄せ元（image_base）から */

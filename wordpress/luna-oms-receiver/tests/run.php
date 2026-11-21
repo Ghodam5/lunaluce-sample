@@ -69,6 +69,7 @@ check( '写真2枚（コード・コード__1）、1枚目はサイトから・2
 $titles = array();
 foreach ( $GLOBALS['db']['posts'] as $p ) { if ( ( $p->post_type ?? '' ) === 'attachment' ) { $titles[] = $p->post_title; } }
 check( '写真の題名', array( 'll-doll-001', 'll-doll-001__1' ) === $titles );
+check( 'Welcartの itemPicts に写真の番号（1つ目がメイン）', 2 === count( wel_get_item( $id )['itemPicts'] ) && wel_get_item( $id )['itemPicts'][0] === get_post_meta( $id, '_thumbnail_id' ) );
 check( '入荷予定日・最低数量を記録', '2026-12-10' === get_post_meta( $id, '_luna_oms_eta' ) && 2 === get_post_meta( $id, '_luna_oms_minq' ) );
 $bd = get_option( 'usces' )['business_days'];
 check( '営業日: 12/29休み・1/2営業・12/31休み', 0 === $bd[2026][12][29] && 1 === $bd[2027][1][2] && 0 === $bd[2026][12][31] );

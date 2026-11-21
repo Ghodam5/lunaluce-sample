@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Luna OMS Receiver（OMSからの受け取り）
  * Description: ルナルーチェOMSで作った商品・在庫の状態・営業日を、Welcartに登録します。まずテスト環境で使い、本番に入れるのは担当者の確認後。
- * Version: 0.1.0
+ * Version: 0.1.1
  * Requires PHP: 7.4
  * Author: Luna Luce
  * Text Domain: luna-oms-receiver
@@ -16,7 +16,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-define( 'LUNA_OMS_RECEIVER_VERSION', '0.1.0' );
+define( 'LUNA_OMS_RECEIVER_VERSION', '0.1.1' );
 define( 'LUNA_OMS_RECEIVER_DIR', __DIR__ );
 
 require_once __DIR__ . '/includes/class-mapper.php';
