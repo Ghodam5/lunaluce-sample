@@ -212,7 +212,7 @@
         if (!b.ready) { host.innerHTML = ''; return; }
         const s = b.sel;
         const target = builderSelected();
-        host.innerHTML = s.type === 'ticker' ? tickerForm() : s.type === 'card' && target ? cardForm(target) : s.type === 'stock' ? builderStockForm() : s.type === 'days' ? builderDaysForm() : s.type === 'news' ? builderNewsForm() : s.type === 'plan' && target ? builderPlanForm(target) : s.type === 'product-start' ? builderProductStart() : s.type === 'product' && target ? builderProductForm(target) : s.type === 'theme' && target ? themeForm(target) : '<p class="muted">左の一覧から選んでください。</p>';
+        host.innerHTML = s.type === 'ticker' ? tickerForm() : s.type === 'card' && target ? cardForm(target) : s.type === 'stock' ? builderStockForm() : s.type === 'days' ? builderDaysForm() : s.type === 'news' ? builderNewsForm() : s.type === 'sections' ? builderSectionsForm() : s.type === 'plan' && target ? builderPlanForm(target) : s.type === 'product-start' ? builderProductStart() : s.type === 'product' && target ? builderProductForm(target) : s.type === 'theme' && target ? themeForm(target) : '<p class="muted">左の一覧から選んでください。</p>';
       }
       paint();
       on('oms:builder', function (detail) { if (!detail || detail.form) paint(); });

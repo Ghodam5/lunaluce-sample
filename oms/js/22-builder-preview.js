@@ -51,6 +51,8 @@
           main = builderDaysPreview();
         } else if (s.type === 'news') {
           main = builderNewsPreview();
+        } else if (s.type === 'sections') {
+          main = builderSectionsPreview();
         } else if (s.type === 'stock') {
           main = builderStockPreview();
         } else if (s.type === 'product-start') {

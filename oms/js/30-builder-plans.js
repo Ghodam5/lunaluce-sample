@@ -111,6 +111,7 @@
         builderPlanExcluded(plan) +
         '<h3>トップのカード（任意）</h3>' + (card ? '<p>トップのカード「' + escapeHtml(card.title || '題名なし') + '」とつながっています。カードの表示期間はこの企画の期間にそろえます。</p><button type="button" data-b="plan-card-open">カードを開く</button>' :
           '<p class="muted">カードを出さなくても、企画の期間と商品の販売期間はそのまま使えます。</p><button type="button" class="add" data-b="plan-card">＋ この企画のカードをトップに作る</button>') +
+        builderSectionPlanHint(plan) +
         '<h3>メモ</h3><label class="fld wide"><span>メモ（社内用・サイトには出ません）</span><textarea data-plan="note" rows="2">' + escapeHtml(plan.note || '') + '</textarea></label>';
     }
     // 外した商品（カテゴリーで入ったものも、足したものも）。1つずつ戻すか、全部戻す

@@ -3071,5 +3071,73 @@
         ]
       }
     ]
-  }
+  },
+  "homeSections": [
+    {
+      "title": "売れ筋 TOP10",
+      "id": "ranking",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "3つの方法でさがす",
+      "id": "finder",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "いま人気のプチギフト",
+      "id": "popular-petit",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "FLAVOR シフォンケーキ",
+      "id": "flavor",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "ご両親への贈呈品",
+      "id": "parents",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "クッキーのプチギフト",
+      "id": "cookie",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "金平糖・キャンディ",
+      "id": "candy",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "ドラジェ",
+      "id": "dragee",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "和風プチギフト",
+      "id": "japanese-gifts",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "バームクーヘン・引き菓子",
+      "id": "hikigashi",
+      "kind": "fixed",
+      "active": true
+    },
+    {
+      "title": "ウェルカムボード",
+      "id": "welcome-board",
+      "kind": "fixed",
+      "active": true
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // OMSサイトビルダー用のデータ(oms/builder-data.json)を、サイトの元データから作る。
-// 読むだけ: site-src/home-promos/*.json, site-src/site-notices.json, site-src/products/*.json, home-promos.css,
+// 読むだけ: site-src/home-promos/*.json, site-src/site-notices.json, site-src/sections/top/manifest.json・pages/top.html（トップの商品の段）, site-src/products/*.json, home-promos.css,
 //          cat2.js（カテゴリの並び）, feature-data.js（特集ページ）, site-src/pages/*.html（ページの題名）
 // 使い方: node tools/oms-builder-data.cjs          … 書き出し
 //         node tools/oms-builder-data.cjs --check  … 書き出し済みの内容が最新か確認
@@ -113,6 +113,26 @@ function templateProducts() {
   return JSON.parse(fs.readFileSync(path.join(root, 'site-src/products/manifest.json'), 'utf8')).map((id) => read('site-src/products/' + id + '.json')).filter((r) => r.active && r.product).map((r) => { const p = Object.assign({}, r.product); const photos = ((r.detail && r.detail.photos) || []).map((x) => x.src).filter(Boolean); const base = (x) => path.basename(x || ''); if (photos.length) p.photos = [p.image].concat(photos.filter((x) => base(x) !== base(p.image))).filter(Boolean); return p; });
 }
 
+// トップ本文の商品の段（いまの並び）。site-src/home-sections.json があればそれ、なければ top.html の並びから作る
+const SECTION_NAMES = { finder: '3つの方法でさがす' };
+function homeSections() {
+  const titleOf = (id) => {
+    if (SECTION_NAMES[id]) return SECTION_NAMES[id];
+    const f = path.join(root, 'site-src/sections/top', id + '.html');
+    const m = fs.existsSync(f) && fs.readFileSync(f, 'utf8').match(/<h2>([^<]*)/);
+    return m ? m[1].trim() : id;
+  };
+  let rows;
+  if (fs.existsSync(path.join(root, 'site-src/home-sections.json'))) rows = read('site-src/home-sections.json').sections;
+  else {
+    const top = fs.readFileSync(path.join(root, 'site-src/pages/top.html'), 'utf8');
+    const ids = Array.from(top.matchAll(/\{\{@ top\/([a-z0-9-]+)\}\}/g)).map((m) => m[1]).filter((id) => id !== 'christmas');
+    ids.splice(1, 0, 'finder');
+    rows = ids.map((id) => ({ id: id, kind: 'fixed', active: true }));
+  }
+  return rows.map((r) => r.kind === 'fixed' ? Object.assign({ title: titleOf(r.id) }, r) : r);
+}
+
 function build() {
   const order = read('site-src/home-promos/manifest.json');
   const files = fs.readdirSync(path.join(root, 'site-src/home-promos')).filter((f) => f.endsWith('.json') && f !== 'manifest.json').map((f) => f.replace(/\.json$/, '')).sort();
@@ -121,7 +141,7 @@ function build() {
   const notices = read('site-src/site-notices.json');
   const products = fs.readdirSync(path.join(root, 'site-src/products')).filter((f) => /^\d+\.json$/.test(f)).map((f) => read('site-src/products/' + f)).filter((p) => p.active && p.product).map((p) => Object.assign({ id: String(p.product.id), code: p.product.code, title: p.product.title, price: p.product.price, image: p.product.image || '' }, p.stock ? { stock: p.stock } : {})).sort((a, b) => Number(a.id) - Number(b.id));
   const images = Array.from(new Set(cards.flatMap((c) => [c.image].concat((c.tiles || []).map((t) => t.image))).filter(Boolean))).sort();
-  return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets() };
+  return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets(), homeSections: homeSections() };
 }
 
 // 使われている商品コードの台帳（商品コードの重複チェック用）。小文字にそろえ、どこで使っているかを文字で持つ

@@ -69,6 +69,7 @@
       const index = Number(el.dataset.index);
       if (builderDaysAction(name, el)) return;
       if (builderNewsAction(name, el)) return;
+      if (builderSectionAction(name, el)) return;
       if (builderCatAction(name, el)) return;
       if (builderPlanAction(name, el)) return;
       if (name === 'list-filter') { b.listFilter = el.dataset.filter; b.stockPage = 1; emit('oms:builder', { form: true }); return; }
@@ -263,6 +264,7 @@
       });
       host.addEventListener('input', function (event) {
         const el = event.target;
+        if (builderSectionInput(el, false)) return;
         if (el.dataset.catd !== undefined && el.type !== 'radio' && el.tagName !== 'SELECT') { builderCatInput(el, false); return; }
         if ((el.dataset.plan !== undefined && el.type !== 'radio' && el.type !== 'date') || el.dataset.planq !== undefined) { builderPlanInput(el, false); return; }
         if (el.dataset.news !== undefined && el.type !== 'checkbox' && el.type !== 'date') { builderNewsInput(el, false); return; }
@@ -303,6 +305,7 @@
         const el = event.target;
         if (el.dataset.import !== undefined) { builderImportFrom(el); return; }
         if (el.dataset.codesImport !== undefined) { builderImportCodes(el); return; }
+        if (builderSectionInput(el, true)) return;
         if (el.dataset.catd !== undefined) { builderCatInput(el, true); return; }
         if (el.dataset.plan !== undefined || el.dataset.planCat !== undefined) { if (el.type === 'text' || el.tagName === 'TEXTAREA') return; builderPlanInput(el, true); return; }
         if (builderListingChange(el)) return;

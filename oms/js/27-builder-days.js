@@ -16,6 +16,39 @@
       { name: '秋の連休', from: '09-19', to: '09-23' },
       { name: 'その他の長期休暇', from: '', to: '' }
     ];
+    // 日本の祝日（国民の祝日に関する法律の今のきまりで計算。振替休日・国民の休日も）。お休みにはしない、目印だけ
+    const holidayCache = {};
+    function builderDaysHolidays(y) {
+      if (holidayCache[y]) return holidayCache[y];
+      const map = {};
+      const iso = function (m, d) { return y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0'); };
+      const nthMonday = function (m, n) { const first = new Date(Date.UTC(y, m - 1, 1)).getUTCDay(); return 1 + ((8 - first) % 7) + (n - 1) * 7; };
+      [[1, 1, '元日'], [2, 11, '建国記念の日'], [2, 23, '天皇誕生日'], [4, 29, '昭和の日'], [5, 3, '憲法記念日'], [5, 4, 'みどりの日'], [5, 5, 'こどもの日'], [8, 11, '山の日'], [11, 3, '文化の日'], [11, 23, '勤労感謝の日']].forEach(function (h) { map[iso(h[0], h[1])] = h[2]; });
+      map[iso(1, nthMonday(1, 2))] = '成人の日';
+      map[iso(7, nthMonday(7, 3))] = '海の日';
+      map[iso(9, nthMonday(9, 3))] = '敬老の日';
+      map[iso(10, nthMonday(10, 2))] = 'スポーツの日';
+      const k = y - 1980, leap = Math.floor(k / 4);
+      map[iso(3, Math.floor(20.8431 + 0.242194 * k - leap))] = '春分の日';
+      map[iso(9, Math.floor(23.2488 + 0.242194 * k - leap))] = '秋分の日';
+      // 国民の休日: 祝日にはさまれた平日
+      Object.keys(map).forEach(function (d) {
+        const mid = builderDaysAdd(d, 1), next = builderDaysAdd(d, 2);
+        if (map[next] && !map[mid] && new Date(mid + 'T00:00:00Z').getUTCDay() !== 0) map[mid] = '国民の休日';
+      });
+      // 振替休日: 日曜の祝日の次の、祝日でない日
+      Object.keys(map).sort().forEach(function (d) {
+        if (new Date(d + 'T00:00:00Z').getUTCDay() !== 0 || map[d] === '振替休日') return;
+        let n = builderDaysAdd(d, 1);
+        while (map[n]) n = builderDaysAdd(n, 1);
+        if (n.slice(0, 4) === String(y)) map[n] = '振替休日';
+      });
+      holidayCache[y] = map;
+      return map;
+    }
+    function builderDaysHoliday(iso) {
+      return builderDaysHolidays(Number(iso.slice(0, 4)))[iso] || '';
+    }
     function builderDaysToday() {
       return new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
     }
@@ -160,14 +193,29 @@
         const L = builderDaysLongOf(d, iso);
         const mark = (d.off.indexOf(iso) >= 0 ? ' is-extra' : '') + (d.on.indexOf(iso) >= 0 ? ' is-open' : '') + (L ? ' is-long' : '');
         const word = st === 'off' ? 'お休み' : st === 'am' ? '午前だけ' : '営業';
+        const hol = builderDaysHoliday(iso);
         cells.push(iso < today ? '<span class="past ' + st + '">' + day + '</span>' :
-          '<button type="button" class="' + st + mark + (iso === today ? ' today' : '') + '" data-b="days-toggle" data-date="' + iso + '" aria-label="' + escapeHtml(builderDaysLabel(iso) + ' ' + word + (L ? '（' + (L.name || '長期休暇') + '）' : '') + '。押すと切り替わります') + '"' + (L ? ' title="' + escapeHtml(L.name || '長期休暇') + '"' : '') + '>' + day + '<small>' + (st === 'off' ? '休' : st === 'am' ? '午前' : '') + '</small></button>');
+          '<button type="button" class="' + st + mark + (hol ? ' is-holiday' : '') + (iso === today ? ' today' : '') + '" data-b="days-toggle" data-date="' + iso + '" aria-label="' + escapeHtml(builderDaysLabel(iso) + (hol ? ' ' + hol : '') + ' ' + word + (L ? '（' + (L.name || '長期休暇') + '）' : '') + '。押すと切り替わります') + '"' + (L || hol ? ' title="' + escapeHtml([hol, L ? L.name || '長期休暇' : ''].filter(Boolean).join('・')) + '"' : '') + '>' + day + '<small>' + (st === 'off' ? '休' : st === 'am' ? '午前' : '') + '</small>' + (hol ? '<i class="hol">' + escapeHtml(hol) + '</i>' : '') + '</button>');
       }
       while (cells.length % 7) cells.push('<span></span>');
       let rows = '';
       for (let w = 0; w < cells.length / 7; w += 1) rows += '<em>第' + (w + 1) + '週</em>' + cells.slice(w * 7, w * 7 + 7).join('');
       html += '<div class="days-cal"><div class="days-cal-grid"><em></em>' + DAYS_WEEK.map(function (w) { return '<i>' + w + '</i>'; }).join('') + rows + '</div></div>';
-      return html + '<p class="muted days-legend"><span><span class="lg on"></span>営業</span><span><span class="lg off"></span>お休み</span><span><span class="lg am"></span>午前だけ営業</span><span><span class="lg is-long"></span>長期休暇</span><span><span class="lg is-open"></span>毎週のお休みだけど営業</span></p>';
+      return html + '<p class="muted days-legend"><span><span class="lg on"></span>営業</span><span><span class="lg off"></span>お休み</span><span><span class="lg am"></span>午前だけ営業</span><span><span class="lg is-long"></span>長期休暇</span><span><span class="lg is-open"></span>毎週のお休みだけど営業</span><span><span class="lg hol"></span>祝日（赤い字・目印だけ）</span></p>' + builderDaysHolidayTools(d, cur);
+    }
+    // 祝日の一覧と「まとめてお休みにする」
+    function builderDaysHolidayTools(d, month) {
+      const today = builderDaysToday();
+      const inMonth = [], year = [];
+      const end = builderDaysAdd(today, 365);
+      for (let iso = today; iso <= end; iso = builderDaysAdd(iso, 1)) {
+        const h = builderDaysHoliday(iso);
+        if (!h) continue;
+        if (builderDaysState(d, iso) !== 'off') year.push(iso);
+        if (iso.slice(0, 7) === month) inMonth.push(builderDaysLabel(iso) + ' ' + h + (builderDaysState(d, iso) === 'off' ? '（お休み）' : '（営業）'));
+      }
+      return '<div class="days-hol"><p class="muted">' + (inMonth.length ? 'この月の祝日: ' + escapeHtml(inMonth.join('、')) : 'この月は祝日がありません') + '</p>' +
+        (year.length ? '<button type="button" data-b="days-holidays-off">1年分の祝日をまとめてお休みにする（' + year.length + '日）</button>' : '<p class="muted">1年分の祝日は、すべてお休みになっています。</p>') + '</div>';
     }
     function builderDaysLongForm(d) {
       const rows = d.long.map(function (L, i) {
@@ -223,7 +271,8 @@
         for (let day = 1; day <= last; day += 1) {
           const iso = y + '-' + String(m).padStart(2, '0') + '-' + String(day).padStart(2, '0');
           const st = builderDaysState(d, iso);
-          cells += '<span class="' + (st === 'on' ? '' : st) + (iso === today ? ' today' : '') + (iso < today ? ' past' : '') + '">' + day + '</span>';
+          const hol = builderDaysHoliday(iso);
+          cells += '<span class="' + (st === 'on' ? '' : st) + (hol ? ' hol' : '') + (iso === today ? ' today' : '') + (iso < today ? ' past' : '') + '"' + (hol ? ' title="' + escapeHtml(hol) + '"' : '') + '>' + day + '</span>';
         }
         html += '<div class="pv-cal"><b>' + y + '年' + m + '月</b><div class="pv-cal-grid">' + DAYS_WEEK.map(function (w) { return '<i>' + w + '</i>'; }).join('') + cells + '</div></div>';
         m += 1;
@@ -286,6 +335,21 @@
           b.daysMonth = builderDaysAddMonths(cur + '-01', Number(el.dataset.step)).slice(0, 7);
         }
         emit('oms:builder', { form: true });
+        return true;
+      }
+      if (name === 'days-holidays-off' && b.days) {
+        const d = builderDaysNorm(b.days);
+        const today = builderDaysToday(), end = builderDaysAdd(today, 365);
+        let n = 0;
+        for (let iso = today; iso <= end; iso = builderDaysAdd(iso, 1)) {
+          if (!builderDaysHoliday(iso) || builderDaysState(d, iso) === 'off') continue;
+          ['on', 'am'].forEach(function (k) { const i = d[k].indexOf(iso); if (i >= 0) d[k].splice(i, 1); });
+          if (builderDaysState(d, iso) !== 'off') d.off.push(iso);
+          n += 1;
+        }
+        d.off.sort();
+        builderChanged(true);
+        showToast('祝日 ' + n + '日をお休みにしました。「↶ 元に戻す」で戻せます。');
         return true;
       }
       if (name === 'days-long-add' && b.days) {
