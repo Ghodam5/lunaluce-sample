@@ -117,7 +117,7 @@
         const seal = currentSeal();
         const title = seal ? seal.label : '未選択';
         const size = '約35×25mm。再構築サイト option.html のミニシール表。';
-        return '<div class="seal-frame">' + sealFrameInner(seal) + '</div><div><p class="cap">' + escapeHtml(title) + '</p><p class="sub">角丸スクエア。円ではありません。' + escapeHtml(size) + '</p></div>';
+        return '<div class="seal-frame">' + sealFrameInner(seal) + '</div><div><p class="cap">' + escapeHtml(title) + '</p><p class="sub">角丸スクエア。円ではありません。' + escapeHtml(size) + '</p>' + (seal ? '<button type="button" class="clear" data-action="clear-seal">図柄を外す（未指定に戻す）</button>' : '') + '</div>';
       }
       function names(ids) {
         return ids.map(function (id) { return SEAL_BY_ID[id] ? SEAL_BY_ID[id].label : id; }).join('、');
@@ -128,6 +128,7 @@
         if (!order || !order.sealText || !line || !line.sealMatch) return '';
         const m = line.sealMatch;
         const said = '受注の指定「' + escapeHtml(m.text) + '」';
+        if (line.sealPickedBy === 'staff-clear') return '<p class="match is-warn">' + said + '。担当者が図柄を外しました（未指定）。下の一覧から選び直せます。</p>';
         const picked = line.sealPickedBy === 'staff' && line.designId;
         if (picked) {
           const same = line.designId === m.id;
@@ -155,7 +156,7 @@
         }).join('');
         const count = SEAL_GROUPS.reduce(function (n, g) { return n + g.ids.filter(function (id) { return SEAL_BY_ID[id]; }).length; }, 0);
         // 図柄の一覧は普段は畳む。押したときだけ開く（開いたかどうかは注文を替えても覚えておく）
-        host.innerHTML = '<div class="head"><h3>ミニシールの図柄</h3><p class="sub">この端末の画像</p></div><div data-seal-match>' + matchBlock() + '</div><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div><details class="fold" data-seal-fold' + (sealFoldOpen ? ' open' : '') + '><summary>図柄の見本一覧<span class="cnt">' + count + '種類・押すと開きます</span></summary><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。押すとこの注文の図柄になります。</p>' + groups + '</details>';
+        host.innerHTML = '<div class="head"><h3>ミニシールの図柄</h3><p class="sub">この端末の画像</p></div><div data-seal-match>' + matchBlock() + '</div><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div><details class="fold" data-seal-fold' + (sealFoldOpen ? ' open' : '') + '><summary>図柄の見本一覧<span class="cnt">' + count + '種類・押すと開きます</span></summary><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。押すとこの注文の図柄になります。選んでいる図柄をもう一度押すと外れます。</p>' + groups + '</details>';
         host.querySelector('[data-seal-fold]').addEventListener('toggle', function (e) { sealFoldOpen = e.target.open; });
       }
       function refresh() {

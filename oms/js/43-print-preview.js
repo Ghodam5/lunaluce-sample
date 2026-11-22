@@ -8,6 +8,12 @@
     ];
     const LASER_TEST = /ウェルカムボード|ウェルカム|証明書|時計|リングピロー|彫刻|レーザー|アクリル|木製|ボード/;
     function printNoshiKind(order) {
+      // のしの見本一覧で担当者が選んだ／外したときはそれに従う（js/44-option-catalog）
+      if (order.optionPick && Object.prototype.hasOwnProperty.call(order.optionPick, 'noshi')) {
+        const chosen = optionChosen(order, 'noshi');
+        if (!chosen) return null;
+        return NOSHI_KINDS.find(function (k) { return k.test.test(chosen.label); }) || NOSHI_KINDS[1];
+      }
       const text = String(order.noshiType || order.noshiSeal || '');
       if (!/熨斗|のし|結び切り|蝶結び|ハート/.test(text)) return null;
       return NOSHI_KINDS.find(function (k) { return k.test.test(text); }) || null;

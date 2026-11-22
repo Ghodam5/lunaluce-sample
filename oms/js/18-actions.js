@@ -71,14 +71,18 @@
       emit('oms:change');
       showToast('注文 ' + order.id + ' の工程を「' + order.status + '」に更新しました');
     }
+    // 図柄を選ぶ。選ばれている図柄をもう一度押すと外れる（未指定に戻る）
     function pickMiniSeal(id) {
       if (!id || !SEAL_BY_ID[id]) return;
       const order = currentOrder();
       if (!order) return;
+      if (state.sealPickId === id) { clearMiniSeal(); return; }
       state.sealPickId = id;
       const line = order.line;
       const diy = line && line.templateId === 'paper-diy-blanc';
       if (line && !diy) {
+        // 担当者が初めて触る前のテンプレートを覚えておく（外したときに戻すため）
+        if (!line.sealBefore) line.sealBefore = { templateId: line.templateId || '', templateVersion: line.templateVersion || '' };
         line.designId = id;
         line.sealPickedBy = 'staff';
         if (!line.templateId) {
@@ -88,6 +92,34 @@
       }
       emit('oms:seal');
     }
+    // 図柄を外して未指定に戻す。自動で入った図柄も外せる
+    function clearMiniSeal() {
+      const order = currentOrder();
+      if (!order) return;
+      state.sealPickId = '';
+      const line = order.line;
+      if (line && line.templateId !== 'paper-diy-blanc') {
+        if (!line.sealBefore) line.sealBefore = { templateId: line.templateId || '', templateVersion: line.templateVersion || '' };
+        line.designId = '';
+        line.sealPickedBy = 'staff-clear';
+        // 図柄を選んだときに入れたテンプレートだけを元に戻す
+        if (line.sealBefore.templateId !== 'mini-seal-d30' && line.templateId === 'mini-seal-d30') {
+          line.templateId = line.sealBefore.templateId;
+          line.templateVersion = line.sealBefore.templateVersion;
+        }
+      }
+      emit('oms:seal');
+    }
+    // のし・包装紙・小袋の見本を選ぶ。選ばれているものをもう一度押すと外れる
+    function pickOption(group, file) {
+      const order = currentOrder();
+      if (!order || !group) return;
+      const now = optionChosen(order, group);
+      if (!order.optionPick) order.optionPick = {};
+      order.optionPick[group] = (now && now.file === file) || !file ? '' : file;
+      emit('oms:seal');
+    }
+
     function openOrderDrawer(id) {
       const order = state.orders.find(function (item) { return item.id === id; });
       if (!order) return;
@@ -330,6 +362,8 @@
       else if (name === 'carrier-size') setCarrierSize(el);
       else if (carrierAction(name, el)) return; // 36-carrier-rates: 契約送料を直す
       else if (name === 'pick-seal') pickMiniSeal(el.dataset.sealId);
+      else if (name === 'clear-seal') clearMiniSeal();
+      else if (name === 'pick-option') pickOption(el.dataset.group, el.dataset.file || '');
     }
     document.addEventListener('click', function (event) {
       const interactive = event.target.closest('button, a, input, select, textarea, label');

@@ -20,9 +20,18 @@
         { file: 'opt-giftbag.jpg', label: 'ギフト用紙袋', test: /紙袋/ }
       ] }
     ];
-    // 注文の文字（のし・包装の欄）に名前が入っている見本に「この注文」を付ける
+    // 注文の文字（のし・包装の欄）
     function catalogOrderText(order) {
       return [order.noshiType, order.noshiSeal, order.wrap, order.wrapping, order.bag].filter(Boolean).join(' ');
+    }
+    // この注文の見本。担当者が選んだ（または外した）ものが優先、無ければ注文の文字から見つけたもの
+    function optionChosen(order, groupId) {
+      const group = OPTION_CATALOG.find(function (g) { return g.id === groupId; });
+      if (!order || !group) return null;
+      const pick = order.optionPick && Object.prototype.hasOwnProperty.call(order.optionPick, groupId) ? order.optionPick[groupId] : null;
+      if (pick !== null) return group.items.find(function (it) { return it.file === pick; }) || null;
+      const text = catalogOrderText(order);
+      return (text && group.items.find(function (it) { return it.test.test(text); })) || null;
     }
     function renderDrawerCatalog(host) {
       const opened = {};
@@ -33,22 +42,22 @@
       host.addEventListener('error', function (event) {
         const img = event.target;
         if (!img || img.tagName !== 'IMG') return;
-        const fig = img.closest('figure');
-        if (fig) img.replaceWith(Object.assign(document.createElement('p'), { className: 'miss', textContent: '画像なし' }));
+        img.replaceWith(Object.assign(document.createElement('span'), { className: 'miss', textContent: '画像なし' }));
       }, true);
       function paint() {
         const order = currentOrder();
         if (!order) { host.innerHTML = ''; return; }
-        const text = catalogOrderText(order);
         host.innerHTML = '<div class="head"><h3>のし・包装の見本</h3><p class="sub">押すと開きます</p></div>' + OPTION_CATALOG.map(function (group) {
-          const hits = group.items.filter(function (it) { return text && it.test.test(text); });
+          const chosen = optionChosen(order, group.id);
           const figs = group.items.map(function (it) {
-            const hit = hits.indexOf(it) >= 0;
-            return '<figure class="' + (hit ? 'is-on' : '') + '"><img src="../images/' + escapeHtml(it.file) + '" alt="' + escapeHtml(it.label) + '" loading="lazy"><figcaption>' + escapeHtml(it.label) + (hit ? '<b>この注文</b>' : '') + '</figcaption></figure>';
+            const hit = chosen === it;
+            return '<button type="button" data-action="pick-option" data-group="' + group.id + '" data-file="' + escapeHtml(it.file) + '" class="' + (hit ? 'is-on' : '') + '" aria-pressed="' + (hit ? 'true' : 'false') + '"><img src="../images/' + escapeHtml(it.file) + '" alt="' + escapeHtml(it.label) + '" loading="lazy"><span class="nm">' + escapeHtml(it.label) + (hit ? '<b>この注文</b>' : '') + '</span></button>';
           }).join('');
-          const sum = escapeHtml(group.title) + '<span class="cnt">' + group.items.length + '種類' + (hits.length ? '・この注文：' + escapeHtml(hits.map(function (h) { return h.label; }).join('、')) : '') + '</span>';
-          return '<details class="fold" data-catalog="' + group.id + '"' + (opened[group.id] ? ' open' : '') + '><summary>' + sum + '</summary><p class="note">' + escapeHtml(group.note) + '</p><div class="grid">' + figs + '</div></details>';
+          const sum = escapeHtml(group.title) + '<span class="cnt">' + group.items.length + '種類・' + (chosen ? 'この注文：' + escapeHtml(chosen.label) : '未指定') + '</span>';
+          const clear = chosen ? '<button type="button" class="clear" data-action="pick-option" data-group="' + group.id + '" data-file="">' + escapeHtml(group.title) + 'を外す（未指定に戻す）</button>' : '';
+          return '<details class="fold" data-catalog="' + group.id + '"' + (opened[group.id] ? ' open' : '') + '><summary>' + sum + '</summary><p class="note">' + escapeHtml(group.note) + ' 押すとこの注文に選びます。選んでいるものをもう一度押すと外れます。</p>' + clear + '<div class="grid">' + figs + '</div></details>';
         }).join('');
       }
       on('oms:open', paint);
+      on('oms:seal', paint);
     }
