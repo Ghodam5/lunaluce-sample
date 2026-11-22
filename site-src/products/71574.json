@@ -116,7 +116,45 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/71574.jpg",
+        "alt": "メープル ダブルレモン チョコ いちご 4種から選べる FLAVOR こいのぼり シフォンケーキペアセット 端午の節句 子どもの日 フレイバー 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71574/fla506koi-01.jpg",
+        "alt": "メープル ダブルレモン チョコ いちご 4種から選べる FLAVOR こいのぼり シフォンケーキペアセット 端午の節句 子どもの日 フレイバー 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71574/fla506koi-02.jpg",
+        "alt": "メープル ダブルレモン チョコ いちご 4種から選べる FLAVOR こいのぼり シフォンケーキペアセット 端午の節句 子どもの日 フレイバー 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71574/flavor-img.jpg",
+        "alt": "メープル ダブルレモン チョコ いちご 4種から選べる FLAVOR こいのぼり シフォンケーキペアセット 端午の節句 子どもの日 フレイバー 商品写真4",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/71574/fla-hako202410.jpg",
+        "alt": "メープル ダブルレモン チョコ いちご 4種から選べる FLAVOR こいのぼり シフォンケーキペアセット 端午の節句 子どもの日 フレイバー 商品写真5",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "feature": {
     "id": "71574",

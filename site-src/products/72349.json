@@ -94,7 +94,14 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    }
   },
   "detail": {
     "photos": [

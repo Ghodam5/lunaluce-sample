@@ -231,7 +231,58 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/d24mocamoko.jpg",
+        "alt": "刺繍内容が選べる MOCAもこベア 本店限定価格 お名前漢字料金込み 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/54932/d24mocamokonew.jpg",
+        "alt": "刺繍内容が選べる MOCAもこベア 本店限定価格 お名前漢字料金込み 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/54932/d24mocamoko-01.jpg",
+        "alt": "刺繍内容が選べる MOCAもこベア 本店限定価格 お名前漢字料金込み 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/54932/d24mocamoko-02.jpg",
+        "alt": "刺繍内容が選べる MOCAもこベア 本店限定価格 お名前漢字料金込み 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/54932/d24mocamoko-03.jpg",
+        "alt": "刺繍内容が選べる MOCAもこベア 本店限定価格 お名前漢字料金込み 商品写真5",
+        "width": 701,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/54932/d24mocamoko-04.jpg",
+        "alt": "刺繍内容が選べる MOCAもこベア 本店限定価格 お名前漢字料金込み 商品写真6",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/54932/d24mocamoko-05.jpg",
+        "alt": "刺繍内容が選べる MOCAもこベア 本店限定価格 お名前漢字料金込み 商品写真7",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

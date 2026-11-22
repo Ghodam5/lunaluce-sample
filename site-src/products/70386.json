@@ -158,14 +158,50 @@
       "min": 14,
       "max": 14,
       "made": true,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "order-mail",
       "made-to-order",
       "cancel-if-late",
       "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb289smilebox.jpg",
+        "alt": "レインボースマイルボックス PB(こんぺいとう) スマイリー 販促・ノベルティ・クリスマス・御礼・御挨拶・お返し・ホワイトデー・お茶会 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70386/pb289smilebox-01.jpg",
+        "alt": "レインボースマイルボックス PB(こんぺいとう) スマイリー 販促・ノベルティ・クリスマス・御礼・御挨拶・お返し・ホワイトデー・お茶会 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70386/pb289smilebox-02.jpg",
+        "alt": "レインボースマイルボックス PB(こんぺいとう) スマイリー 販促・ノベルティ・クリスマス・御礼・御挨拶・お返し・ホワイトデー・お茶会 商品写真3",
+        "width": 702,
+        "height": 702
+      },
+      {
+        "src": "images/product-details/70386/pb289smilebox-03.jpg",
+        "alt": "レインボースマイルボックス PB(こんぺいとう) スマイリー 販促・ノベルティ・クリスマス・御礼・御挨拶・お返し・ホワイトデー・お茶会 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70386/pb289smilebox-04.jpg",
+        "alt": "レインボースマイルボックス PB(こんぺいとう) スマイリー 販促・ノベルティ・クリスマス・御礼・御挨拶・お返し・ホワイトデー・お茶会 商品写真5",
+        "width": 702,
+        "height": 689
+      }
     ]
   },
   "feature": {

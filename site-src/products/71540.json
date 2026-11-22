@@ -76,14 +76,32 @@
       "min": 14,
       "max": 14,
       "made": true,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "order-mail",
       "made-to-order",
       "cancel-if-late",
       "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb312kobomobox.jpg",
+        "alt": "HAPPY BOX(金平糖・こんぺいとう)和風 こいのぼり 鯉 端午の節句 5月5日 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71540/pb312kobomobox-01.jpg",
+        "alt": "HAPPY BOX(金平糖・こんぺいとう)和風 こいのぼり 鯉 端午の節句 5月5日 商品写真2",
+        "width": 700,
+        "height": 703
+      }
     ]
   },
   "feature": {

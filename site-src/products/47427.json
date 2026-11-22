@@ -93,7 +93,52 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/47427.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47427/coaster-wedding.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47427/costerbasic01.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47427/costerbasic02.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真4",
+        "width": 700,
+        "height": 508
+      },
+      {
+        "src": "images/product-details/47427/costerbasic03.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真5",
+        "width": 700,
+        "height": 819
+      },
+      {
+        "src": "images/product-details/47427/coaster50.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真6",
+        "width": 650,
+        "height": 280
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -293,7 +293,14 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    }
   },
   "detail": {
     "photos": [
@@ -318,6 +325,18 @@
       {
         "src": "images/product-details/42902/2024ag-d5as-03.jpg",
         "alt": "ベビープー（ブルースタイ）メッセージタイプ 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/42902/2024dwdkyotu-02.jpg",
+        "alt": "ベビープー（ブルースタイ）メッセージタイプ 商品写真5",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/42902/2024dwdkyotu-04.jpg",
+        "alt": "ベビープー（ブルースタイ）メッセージタイプ 商品写真6",
         "width": 700,
         "height": 700
       }

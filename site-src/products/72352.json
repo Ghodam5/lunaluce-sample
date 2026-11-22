@@ -148,14 +148,38 @@
       "min": 14,
       "max": 14,
       "made": true,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "order-mail",
       "made-to-order",
       "cancel-if-late",
       "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb318violinbox.jpg",
+        "alt": "お名入れ対応プチギフト love is like a violin BOX PB(こんぺいとう) バイオリンボックス 音楽会 演奏会 吹奏楽 鼓笛隊 私の心はバイオリン 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/72352/pb318violinbox-01.jpg",
+        "alt": "お名入れ対応プチギフト love is like a violin BOX PB(こんぺいとう) バイオリンボックス 音楽会 演奏会 吹奏楽 鼓笛隊 私の心はバイオリン 商品写真2",
+        "width": 700,
+        "height": 703
+      },
+      {
+        "src": "images/product-details/72352/pb318violinbox-02.jpg",
+        "alt": "お名入れ対応プチギフト love is like a violin BOX PB(こんぺいとう) バイオリンボックス 音楽会 演奏会 吹奏楽 鼓笛隊 私の心はバイオリン 商品写真3",
+        "width": 702,
+        "height": 704
+      }
     ]
   },
   "feature": {

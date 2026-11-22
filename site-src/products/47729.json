@@ -140,7 +140,51 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "min-qty",
+      "no-cancel-after",
+      "spec-change",
+      "no-noshi",
+      "free-ship-no-date",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb176namesheet.jpg",
+        "alt": "名入れリフレッシュシートPB（販促・夏フェス・スポーツ大会・参加賞） 商品写真1",
+        "width": 300,
+        "height": 300
+      },
+      {
+        "src": "images/product-details/47729/pb176-01.jpg",
+        "alt": "名入れリフレッシュシートPB（販促・夏フェス・スポーツ大会・参加賞） 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47729/pb176-02.jpg",
+        "alt": "名入れリフレッシュシートPB（販促・夏フェス・スポーツ大会・参加賞） 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47729/pb176-03.jpg",
+        "alt": "名入れリフレッシュシートPB（販促・夏フェス・スポーツ大会・参加賞） 商品写真4",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

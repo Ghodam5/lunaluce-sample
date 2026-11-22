@@ -106,7 +106,40 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 21,
+      "max": 21,
+      "made": true,
+      "source": "db",
+      "label": "約3週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/39208.jpg",
+        "alt": "【印刷代行】席次表+席札印刷（1名様分） 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/39208/p-agency-tn.jpg",
+        "alt": "【印刷代行】席次表+席札印刷（1名様分） 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/39208/p-agency-tn01.jpg",
+        "alt": "【印刷代行】席次表+席札印刷（1名様分） 商品写真3",
+        "width": 650,
+        "height": 1210
+      },
+      {
+        "src": "images/product-details/39208/p-agency-tn02.jpg",
+        "alt": "【印刷代行】席次表+席札印刷（1名様分） 商品写真4",
+        "width": 650,
+        "height": 2160
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

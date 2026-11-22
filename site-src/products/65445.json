@@ -63,7 +63,22 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/gm490.jpg",
+        "alt": "ムクノハナ 鰹節セットA GM490 商品写真1",
+        "width": 520,
+        "height": 520
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

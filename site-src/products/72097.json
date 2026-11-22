@@ -79,7 +79,53 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "notes": [
+      "order-mail",
+      "food-no-return",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/fla607flower.jpg",
+        "alt": "FLAVOR 選べる OHANA ラッピング メープルシフォン(… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/72097/fla607flower-01.jpg",
+        "alt": "FLAVOR 選べる OHANA ラッピング メープルシフォン(… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/72097/fla607flower-02.jpg",
+        "alt": "FLAVOR 選べる OHANA ラッピング メープルシフォン(… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/72097/flavor-img.jpg",
+        "alt": "FLAVOR 選べる OHANA ラッピング メープルシフォン(… 商品写真4",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/72097/fla-hako202410.jpg",
+        "alt": "FLAVOR 選べる OHANA ラッピング メープルシフォン(… 商品写真5",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

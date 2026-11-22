@@ -36,7 +36,58 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/19091.jpg",
+        "alt": "ディズニー席次表セット \"チェック ピンクサファイア\" 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/19091/adc7f9f55a655e64a69e6f02ae3f401f.jpg",
+        "alt": "ディズニー席次表セット \"チェック ピンクサファイア\" 商品写真2",
+        "width": 1000,
+        "height": 750
+      },
+      {
+        "src": "images/product-details/19091/843421410d23bb6ed3858dcf8e59c245.jpg",
+        "alt": "ディズニー席次表セット \"チェック ピンクサファイア\" 商品写真3",
+        "width": 1000,
+        "height": 750
+      },
+      {
+        "src": "images/product-details/19091/57eb1c867ec759a17b10bce2bee6b31f.jpg",
+        "alt": "ディズニー席次表セット \"チェック ピンクサファイア\" 商品写真4",
+        "width": 200,
+        "height": 70
+      },
+      {
+        "src": "images/product-details/19091/11.jpg",
+        "alt": "ディズニー席次表セット \"チェック ピンクサファイア\" 商品写真5",
+        "width": 600,
+        "height": 498
+      },
+      {
+        "src": "images/product-details/19091/w2008_30.jpg",
+        "alt": "ディズニー席次表セット \"チェック ピンクサファイア\" 商品写真6",
+        "width": 600,
+        "height": 424
+      },
+      {
+        "src": "images/product-details/19091/w2008_p.jpg",
+        "alt": "ディズニー席次表セット \"チェック ピンクサファイア\" 商品写真7",
+        "width": 600,
+        "height": 424
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

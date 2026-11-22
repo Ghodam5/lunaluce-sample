@@ -69,10 +69,31 @@
       "min": 7,
       "max": 7,
       "made": false,
-      "source": "本文"
+      "source": "db",
+      "label": "約1週間後"
     },
     "notes": [
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb-colorfulsnow.jpg",
+        "alt": "瞬間冷却!カラフルスノーボール(名入れ対応) 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/54930/pb-colorfulsnow.jpg",
+        "alt": "瞬間冷却!カラフルスノーボール(名入れ対応) 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/54930/pb-colorfulsnowimg.jpg",
+        "alt": "瞬間冷却!カラフルスノーボール(名入れ対応) 商品写真3",
+        "width": 700,
+        "height": 850
+      }
     ]
   },
   "commerce": {

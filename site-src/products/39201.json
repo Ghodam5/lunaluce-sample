@@ -106,7 +106,40 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 21,
+      "max": 21,
+      "made": true,
+      "source": "db",
+      "label": "約3週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/39201.jpg",
+        "alt": "【印刷代行】招待状印刷（1名様分） 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/39201/p-agency-i.jpg",
+        "alt": "【印刷代行】招待状印刷（1名様分） 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/39201/p-agency-i01.jpg",
+        "alt": "【印刷代行】招待状印刷（1名様分） 商品写真3",
+        "width": 650,
+        "height": 780
+      },
+      {
+        "src": "images/product-details/39201/p-agency-i02.jpg",
+        "alt": "【印刷代行】招待状印刷（1名様分） 商品写真4",
+        "width": 650,
+        "height": 660
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

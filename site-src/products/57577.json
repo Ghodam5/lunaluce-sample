@@ -76,14 +76,24 @@
       "min": 14,
       "max": 14,
       "made": true,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "order-mail",
       "made-to-order",
       "cancel-if-late",
       "no-cancel-after",
+      "bulk-100",
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb-nengakobako.jpg",
+        "alt": "お年賀小箱-PB(金平糖) 商品写真1",
+        "width": 520,
+        "height": 520
+      }
     ]
   },
   "commerce": {

@@ -78,7 +78,28 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/hf60801.jpg",
+        "alt": "セシル 48個セット 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/43374/HF60801-1.jpg",
+        "alt": "セシル 48個セット 商品写真2",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

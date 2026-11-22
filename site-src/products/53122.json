@@ -118,13 +118,28 @@
     "seal": false,
     "pack": 1,
     "delivery": {
-      "min": 7,
+      "min": 14,
       "max": 14,
       "made": false,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb-starbox.jpg",
+        "alt": "Star BOX PB(金平糖) おトク割対象商品 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/53122/pb-starbox2.jpg",
+        "alt": "Star BOX PB(金平糖) おトク割対象商品 商品写真2",
+        "width": 700,
+        "height": 700
+      }
     ]
   },
   "commerce": {

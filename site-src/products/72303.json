@@ -131,7 +131,46 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/72303.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カードタイプ＞ 商品写真1",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72303/cp0077_1.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カードタイプ＞ 商品写真2",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72303/cp0077_2.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カードタイプ＞ 商品写真3",
+        "width": 500,
+        "height": 501
+      },
+      {
+        "src": "images/product-details/72303/cp0077_3.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カードタイプ＞ 商品写真4",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72303/cp0077_4.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カードタイプ＞ 商品写真5",
+        "width": 500,
+        "height": 500
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

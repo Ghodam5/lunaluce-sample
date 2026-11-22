@@ -151,14 +151,38 @@
       "min": 14,
       "max": 14,
       "made": true,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "order-mail",
       "made-to-order",
       "cancel-if-late",
       "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb242pianobox.jpg",
+        "alt": "melody piano box pb こんぺいとう ピアノ 音楽祭 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69417/pb242pianobox-01.jpg",
+        "alt": "melody piano box pb こんぺいとう ピアノ 音楽祭 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69417/pb242pianobox-02.jpg",
+        "alt": "melody piano box pb こんぺいとう ピアノ 音楽祭 商品写真3",
+        "width": 700,
+        "height": 700
+      }
     ]
   },
   "listing": {

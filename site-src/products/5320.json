@@ -96,7 +96,34 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/000wb-m304.jpg",
+        "alt": "ローズレース(ミラー) 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/5320/000WB-M304-2.jpg",
+        "alt": "ローズレース(ミラー) 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/5320/000WB-M304-3.jpg",
+        "alt": "ローズレース(ミラー) 商品写真3",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -36,7 +36,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/features/21034.jpg",
+        "alt": "【ブライダルバッグ】レギュラー ML 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/21034/red.jpg",
+        "alt": "【ブライダルバッグ】レギュラー ML 商品写真2",
+        "width": 1000,
+        "height": 750
+      },
+      {
+        "src": "images/product-details/21034/bag_img01.jpg",
+        "alt": "【ブライダルバッグ】レギュラー ML 商品写真3",
+        "width": 630,
+        "height": 600
+      }
+    ]
   },
   "listing": {
     "image": "images/features/w-bag-r00.jpg"

@@ -36,7 +36,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 10,
+      "max": 10,
+      "made": false,
+      "source": "db",
+      "label": "10日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/69283.jpg",
+        "alt": "【演出用品】ゲストブック ホワイト 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69283/1835_1.jpg",
+        "alt": "【演出用品】ゲストブック ホワイト 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

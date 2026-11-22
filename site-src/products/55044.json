@@ -56,7 +56,47 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "free-ship-no-date",
+      "season-delay",
+      "nekopos"
+    ],
+    "photos": [
+      {
+        "src": "images/pb-kyoyuzenxkairo.jpg",
+        "alt": "京友禅クリスマスカイロPB 10個セット 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/55044/pb-kyoyuzenxkairo.jpg",
+        "alt": "京友禅クリスマスカイロPB 10個セット 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/55044/pb-kyoyuzenxkairo01.jpg",
+        "alt": "京友禅クリスマスカイロPB 10個セット 商品写真3",
+        "width": 700,
+        "height": 550
+      },
+      {
+        "src": "images/product-details/55044/pb-kyoyuzenxkairo02.jpg",
+        "alt": "京友禅クリスマスカイロPB 10個セット 商品写真4",
+        "width": 700,
+        "height": 680
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

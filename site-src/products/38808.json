@@ -122,7 +122,58 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/pb-wagaracho.jpg",
+        "alt": "お菓子が選べる 和柄蝶結び小箱 熨斗付きプチギフト 和柄小箱 出… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/38808/pb-wagaracho.jpg",
+        "alt": "お菓子が選べる 和柄蝶結び小箱 熨斗付きプチギフト 和柄小箱 出… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/38808/pb-wagaracho-01.jpg",
+        "alt": "お菓子が選べる 和柄蝶結び小箱 熨斗付きプチギフト 和柄小箱 出… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/38808/pb-wagaracho-02.jpg",
+        "alt": "お菓子が選べる 和柄蝶結び小箱 熨斗付きプチギフト 和柄小箱 出… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/38808/pb-wagaracho-03.jpg",
+        "alt": "お菓子が選べる 和柄蝶結び小箱 熨斗付きプチギフト 和柄小箱 出… 商品写真5",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/38808/pb-wagaracho-04.jpg",
+        "alt": "お菓子が選べる 和柄蝶結び小箱 熨斗付きプチギフト 和柄小箱 出… 商品写真6",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/38808/pb-wagaracho-05.jpg",
+        "alt": "お菓子が選べる 和柄蝶結び小箱 熨斗付きプチギフト 和柄小箱 出… 商品写真7",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

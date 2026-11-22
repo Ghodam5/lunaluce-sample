@@ -114,14 +114,38 @@
       "min": 14,
       "max": 14,
       "made": true,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "order-mail",
       "made-to-order",
       "cancel-if-late",
       "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb310nairehina.jpg",
+        "alt": "お名入れ ひなまつり小箱(金平糖・こんぺいとう) 和風 慶事 桃の節句 雛祭り 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71499/pb310nairehina-01.jpg",
+        "alt": "お名入れ ひなまつり小箱(金平糖・こんぺいとう) 和風 慶事 桃の節句 雛祭り 商品写真2",
+        "width": 700,
+        "height": 703
+      },
+      {
+        "src": "images/product-details/71499/pb310nairehina-02.jpg",
+        "alt": "お名入れ ひなまつり小箱(金平糖・こんぺいとう) 和風 慶事 桃の節句 雛祭り 商品写真3",
+        "width": 702,
+        "height": 704
+      }
     ]
   },
   "feature": {

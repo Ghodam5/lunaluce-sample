@@ -37,7 +37,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71171.jpg",
+        "alt": "【引菓子】缶入りデニッシュパン メープル 1個 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71171/a689_1.jpg",
+        "alt": "【引菓子】缶入りデニッシュパン メープル 1個 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "listing": {
     "image": "images/products/71171.jpg"

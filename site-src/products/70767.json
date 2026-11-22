@@ -62,7 +62,34 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 10,
+      "max": 10,
+      "made": false,
+      "source": "db",
+      "label": "10日後"
+    },
+    "photos": [
+      {
+        "src": "images/hf-1244.jpg",
+        "alt": "ハロウィンクッキー 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/70767/21item.jpg",
+        "alt": "ハロウィンクッキー 商品写真2",
+        "width": 700,
+        "height": 100
+      },
+      {
+        "src": "images/product-details/70767/hf-1244_1.jpg",
+        "alt": "ハロウィンクッキー 商品写真3",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -36,7 +36,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 2,
+      "max": 3,
+      "made": false,
+      "source": "db",
+      "label": "2～3日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/66946.jpg",
+        "alt": "【演出用品】ウッドゲストブック 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/66946/1715_1.jpg",
+        "alt": "【演出用品】ウッドゲストブック 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/66946/1715_2.jpg",
+        "alt": "【演出用品】ウッドゲストブック 商品写真3",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

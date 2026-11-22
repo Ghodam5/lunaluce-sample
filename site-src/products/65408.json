@@ -36,7 +36,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/gm485.jpg",
+        "alt": "パティシエ ドルチェ 練乳バームクーヘン木箱入 包装・熨斗対応 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/65408/gm485_1.jpg",
+        "alt": "パティシエ ドルチェ 練乳バームクーヘン木箱入 包装・熨斗対応 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

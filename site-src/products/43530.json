@@ -61,7 +61,28 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 10,
+      "max": 10,
+      "made": false,
+      "source": "db",
+      "label": "10日後"
+    },
+    "photos": [
+      {
+        "src": "images/hf61808.jpg",
+        "alt": "ブルージョイ 1本 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/43530/21item.jpg",
+        "alt": "ブルージョイ 1本 商品写真2",
+        "width": 700,
+        "height": 100
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

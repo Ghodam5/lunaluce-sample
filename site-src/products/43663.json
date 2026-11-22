@@ -74,7 +74,28 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 10,
+      "max": 10,
+      "made": false,
+      "source": "db",
+      "label": "10日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/43663.jpg",
+        "alt": "リボンワンズ・パステル 30本セット（バスケット付） 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/43663/HF63003-1.jpg",
+        "alt": "リボンワンズ・パステル 30本セット（バスケット付） 商品写真2",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

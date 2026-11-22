@@ -85,7 +85,40 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71442.jpg",
+        "alt": "ディズニー ミッキーハンド・ミニーハンド 寄せ書きミトン 油性ペン4本付【送料込】 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71442/ddhand-02.jpg",
+        "alt": "ディズニー ミッキーハンド・ミニーハンド 寄せ書きミトン 油性ペン4本付【送料込】 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71442/ddhand-03.jpg",
+        "alt": "ディズニー ミッキーハンド・ミニーハンド 寄せ書きミトン 油性ペン4本付【送料込】 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71442/ddhand-04.jpg",
+        "alt": "ディズニー ミッキーハンド・ミニーハンド 寄せ書きミトン 油性ペン4本付【送料込】 商品写真4",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

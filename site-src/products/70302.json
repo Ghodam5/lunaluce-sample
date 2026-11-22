@@ -200,7 +200,65 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "min-qty",
+      "bulk-100",
+      "spec-change",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb290disfmamori.jpg",
+        "alt": "disney friends の願掛けお守り PB 選べるお菓子… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/70302/pb290disfmamori-01.jpg",
+        "alt": "disney friends の願掛けお守り PB 選べるお菓子… 商品写真2",
+        "width": 686,
+        "height": 666
+      },
+      {
+        "src": "images/product-details/70302/pb290disfmamori-02.jpg",
+        "alt": "disney friends の願掛けお守り PB 選べるお菓子… 商品写真3",
+        "width": 702,
+        "height": 702
+      },
+      {
+        "src": "images/product-details/70302/pb290disfmamori-03.jpg",
+        "alt": "disney friends の願掛けお守り PB 選べるお菓子… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70302/pb290disfmamori-04.jpg",
+        "alt": "disney friends の願掛けお守り PB 選べるお菓子… 商品写真5",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70302/pb290disfmamori-05.jpg",
+        "alt": "disney friends の願掛けお守り PB 選べるお菓子… 商品写真6",
+        "width": 702,
+        "height": 694
+      },
+      {
+        "src": "images/product-details/70302/senjyaseal-kyotu.jpg",
+        "alt": "disney friends の願掛けお守り PB 選べるお菓子… 商品写真7",
+        "width": 702,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

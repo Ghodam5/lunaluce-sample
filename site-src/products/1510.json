@@ -184,7 +184,46 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/2024agq-d6.jpg",
+        "alt": "くまのプーさん ウェイトドール ベビープー(ピンクスタイ) イニ… 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/1510/2024agq-d6-01.jpg",
+        "alt": "くまのプーさん ウェイトドール ベビープー(ピンクスタイ) イニ… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/1510/2024dwdkyotu-03.jpg",
+        "alt": "くまのプーさん ウェイトドール ベビープー(ピンクスタイ) イニ… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/1510/2024dwdkyotu-02.jpg",
+        "alt": "くまのプーさん ウェイトドール ベビープー(ピンクスタイ) イニ… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/1510/2024dwdkyotu-04.jpg",
+        "alt": "くまのプーさん ウェイトドール ベビープー(ピンクスタイ) イニ… 商品写真5",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

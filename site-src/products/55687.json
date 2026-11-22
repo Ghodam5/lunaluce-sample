@@ -36,7 +36,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/features/water6set.jpg",
+        "alt": "7年保存可能水2L×6本セット 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/55687/water6set01.jpg",
+        "alt": "7年保存可能水2L×6本セット 商品写真2",
+        "width": 700,
+        "height": 490
+      },
+      {
+        "src": "images/product-details/55687/water6set02.jpg",
+        "alt": "7年保存可能水2L×6本セット 商品写真3",
+        "width": 700,
+        "height": 670
+      }
+    ]
   },
   "feature": {
     "id": "55687",

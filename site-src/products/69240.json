@@ -79,7 +79,28 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/1861.jpg",
+        "alt": "LOVE ♡ フレーバーバスケット(紅茶&クッキー)40個セット 商品写真1",
+        "width": 520,
+        "height": 390
+      },
+      {
+        "src": "images/product-details/69240/1861_1.jpg",
+        "alt": "LOVE ♡ フレーバーバスケット(紅茶&クッキー)40個セット 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

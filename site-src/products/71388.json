@@ -75,14 +75,32 @@
       "min": 14,
       "max": 14,
       "made": true,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "order-mail",
       "made-to-order",
       "cancel-if-late",
       "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb307nyanbox.jpg",
+        "alt": "ありがとにゃんボックス (つぶチョコ&おまかせチョコ) 猫 ねこの日 ぬこ にゃんにゃんデー Valentine 小分け チョコレート 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71388/pb307nyanbox-01.jpg",
+        "alt": "ありがとにゃんボックス (つぶチョコ&おまかせチョコ) 猫 ねこの日 ぬこ にゃんにゃんデー Valentine 小分け チョコレート 商品写真2",
+        "width": 700,
+        "height": 700
+      }
     ]
   },
   "feature": {

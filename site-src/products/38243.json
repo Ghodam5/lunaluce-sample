@@ -37,7 +37,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/features/000ds-2410.jpg",
+        "alt": "Disney ミッキー&ミニー ラブラブタイム ウォッシュタオル2P 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/38243/love2time-01.jpg",
+        "alt": "Disney ミッキー&ミニー ラブラブタイム ウォッシュタオル2P 商品写真2",
+        "width": 650,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/38243/love2time-02.jpg",
+        "alt": "Disney ミッキー&ミニー ラブラブタイム ウォッシュタオル2P 商品写真3",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "feature": {
     "id": "38243",

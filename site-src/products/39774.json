@@ -301,7 +301,64 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/features/monitor-fcb2.jpg",
+        "alt": "フラワークロックボード 2枚組 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/39774/monitor01.jpg",
+        "alt": "フラワークロックボード 2枚組 商品写真2",
+        "width": 650,
+        "height": 820
+      },
+      {
+        "src": "images/product-details/39774/monitor3000.jpg",
+        "alt": "フラワークロックボード 2枚組 商品写真3",
+        "width": 650,
+        "height": 300
+      },
+      {
+        "src": "images/product-details/39774/flower-cb2-01.jpg",
+        "alt": "フラワークロックボード 2枚組 商品写真4",
+        "width": 650,
+        "height": 790
+      },
+      {
+        "src": "images/product-details/39774/flower-cb2-02.jpg",
+        "alt": "フラワークロックボード 2枚組 商品写真5",
+        "width": 650,
+        "height": 1130
+      },
+      {
+        "src": "images/product-details/39774/flower-cb2-03.jpg",
+        "alt": "フラワークロックボード 2枚組 商品写真6",
+        "width": 650,
+        "height": 1040
+      },
+      {
+        "src": "images/product-details/39774/flower-cb2-04.jpg",
+        "alt": "フラワークロックボード 2枚組 商品写真7",
+        "width": 650,
+        "height": 695
+      },
+      {
+        "src": "images/product-details/39774/flower-cb2-05.jpg",
+        "alt": "フラワークロックボード 2枚組 商品写真8",
+        "width": 650,
+        "height": 690
+      }
+    ]
   },
   "feature": {
     "id": "39774",
