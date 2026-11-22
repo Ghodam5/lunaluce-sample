@@ -8,11 +8,13 @@
       ['recommend', 'こちらもおすすめ（ほかの商品）'], ['share', 'SNSでシェア'], ['trial', '名入れができる商品']
     ];
     const LAYOUT_DEFAULT = { side: ['delivery', 'buy', 'description', 'spec', 'notes', 'source'], below: ['recommend', 'share', 'trial'] };
-    function builderLayoutLabel(id) { const x = LAYOUT_PARTS.find(function (p) { return p[0] === id; }); return x ? x[1] : id; }
+    // 2.34: 注意事項の定型文を1つずつ置ける（note:定型文のid）。全商品・その商品に同じ文が出る
+    function builderLayoutNote(id) { if (!/^note:/.test(id)) return null; const k = id.slice(5); return builderNoteTemplates().find(function (t) { return t.id === k; }) || null; }
+    function builderLayoutLabel(id) { const n = builderLayoutNote(id); if (n) return '定型文: ' + n.label; const x = LAYOUT_PARTS.find(function (p) { return p[0] === id; }); return x ? x[1] : id; }
     function builderLayoutClean(l) {
       const ok = LAYOUT_PARTS.map(function (p) { return p[0]; });
       const seen = {};
-      const pick = function (list) { return (Array.isArray(list) ? list : []).filter(function (id) { if (ok.indexOf(id) < 0 || seen[id]) return false; seen[id] = true; return true; }); };
+      const pick = function (list) { return (Array.isArray(list) ? list : []).filter(function (id) { if ((ok.indexOf(id) < 0 && !builderLayoutNote(id)) || seen[id]) return false; seen[id] = true; return true; }); };
       const old = l && Array.isArray(l.side) && (l.side.concat(l.below || [])).every(function (id) { return id !== 'buy' && id !== 'delivery'; });
       const out = { side: pick(old ? ['delivery', 'buy'].concat(l.side) : l && l.side), below: pick(l && l.below) };
       // 2.30 までの並び（お届け日数・購入欄が無い）は、上に足す
@@ -49,7 +51,26 @@
       return '<p class="muted lay-how">項目は ↑↓ とボタンのほか、つかんで（ドラッグで）別の枠へも移せます。</p><div class="lay-cols"><div class="lay-col lay-at-photo"><div class="lay-photo-ph">写真</div><p class="muted">商品名・値段は写真の右のいちばん上に出ます</p></div>' +
         col('side', '写真の右', 'スマホでは写真の下に、この順で出ます') + col('below', '写真の下（横幅いっぱい）', 'おすすめ商品やSNSなど') + '</div>' +
         (hidden.length ? '<p class="lay-hidden">出さない部品: ' + hidden.map(function (id) { return '<button type="button" data-b="lay-show" data-scope="' + scope + '" data-id="' + id + '">＋ ' + escapeHtml(builderLayoutLabel(id)) + '</button>'; }).join('') + '</p>' : '') +
+        builderLayoutNoteAdd(l, scope) +
         '<p class="muted">「SNSでシェア」は全ページ共通の部品なので、外せません（場所は変えられます）。「購入欄」は写真の右のどこかに必ず出します。</p>';
+    }
+    // 注意事項の定型文を選んで置く（「ご注文の前に」の下に足す。並びはあとで動かせる）
+    function builderLayoutNoteAdd(l, scope) {
+      const on = l.side.concat(l.below);
+      const rest = builderNoteTemplates().filter(function (t) { return t.id && on.indexOf('note:' + t.id) < 0; });
+      return '<div class="lay-noteadd"><label class="fld"><span>注意事項の定型文を置く（' + (scope === 'page' ? '全部の商品' : 'この商品') + 'に同じ文が出ます）</span><select data-lay-note="' + scope + '"><option value="">定型文を選ぶ…</option>' +
+        rest.map(function (t) { return '<option value="' + escapeHtml(t.id) + '">' + escapeHtml(t.label) + '</option>'; }).join('') + '</select></label>' +
+        '<p class="muted">商品ごとに出す定型文は、商品の編集の「ご注文の前に」で選びます。ここに置いたものは、それとは別に毎回出ます。定型文の中身は「注意事項の定型文」で直せます。</p></div>';
+    }
+    function builderLayoutNoteInput(el) {
+      if (el.dataset.layNote === undefined) return false;
+      const id = el.value;
+      const l = builderLayoutTarget(el.dataset.layNote);
+      if (!id || !l) return true;
+      const key = 'note:' + id;
+      if (l.side.concat(l.below).indexOf(key) < 0) { const at = l.side.indexOf('notes'); if (at >= 0) l.side.splice(at + 1, 0, key); else l.side.push(key); }
+      builderChanged(true);
+      return true;
     }
     // ドラッグで移す（同じ枠の中の並べ替えも、写真の右⇔写真の下も）
     function builderLayoutMoveTo(l, from, i, to, j) {
@@ -125,6 +146,7 @@
       if (name === 'lay-move') { const to = i + Number(el.dataset.dir); if (to >= 0 && to < l[where].length) { const x = l[where].splice(i, 1)[0]; l[where].splice(to, 0, x); } }
       if (name === 'lay-swap') { if (l[where][i] !== 'buy') { const x = l[where].splice(i, 1)[0]; l[where === 'side' ? 'below' : 'side'].push(x); } }
       if (name === 'lay-hide') { if (l[where][i] !== 'share' && l[where][i] !== 'buy') l[where].splice(i, 1); }
+      if (name === 'lay-hide' && /^note:/.test(l[where][i] || '')) { /* 定型文は出さないと一覧から消える（選び直せる） */ }
       if (name === 'lay-show') { const id = el.dataset.id; if (l.side.concat(l.below).indexOf(id) < 0) { if (['recommend', 'share', 'trial'].indexOf(id) >= 0) l.below.push(id); else if (id === 'delivery') l.side.splice(Math.max(0, l.side.indexOf('buy')), 0, id); else l.side.push(id); } }
       builderChanged(true);
       return true;

@@ -317,6 +317,7 @@
         if (el.dataset.codesImport !== undefined) { builderImportCodes(el); return; }
         if (builderSectionInput(el, true)) return;
         if (builderCatNamesInput(el, true)) return;
+        if (builderLayoutNoteInput(el)) return;
         if (el.dataset.layown !== undefined) { const lp = state.builder.sel.type === 'product' ? builderSelected() : null; if (lp) { builderLayoutSwitch(lp, el.checked); builderChanged(true); } return; }
         if (builderTextsInput(el, true)) return;
         if (builderNotesInput(el, true) || builderDeliveryInput(el, true)) return;

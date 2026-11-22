@@ -106,7 +106,7 @@
           return '<li class="note-tpl tone-' + escapeHtml(t.tone) + '"><div class="row"><b>' + (i + 1) + '</b><span class="tools"><button type="button" data-b="note-move" data-index="' + i + '" data-dir="-1" aria-label="上へ">↑</button><button type="button" data-b="note-move" data-index="' + i + '" data-dir="1" aria-label="下へ">↓</button><button type="button" data-b="note-remove" data-index="' + i + '"' + (n ? ' disabled title="下書きの商品で使っています"' : '') + '>削除</button></span></div>' +
             '<label class="fld wide"><span>名前（商品ページの小見出し）</span><input type="text" data-nt="' + i + '.label" value="' + escapeHtml(t.label) + '" maxlength="30"></label>' +
             '<label class="fld"><span>色</span><select data-nt="' + i + '.tone">' + NOTE_TONES.map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === t.tone ? ' selected' : '') + '>' + escapeHtml(x[1]) + '</option>'; }).join('') + '</select></label>' +
-            '<label class="fld wide"><span>文章（300文字まで）</span><textarea rows="3" data-nt="' + i + '.text" maxlength="300">' + escapeHtml(t.text) + '</textarea></label>' +
+            '<label class="fld wide"><span>文章（800文字まで）</span><textarea rows="3" data-nt="' + i + '.text" maxlength="800">' + escapeHtml(t.text) + '</textarea></label>' +
             (n ? '<p class="muted">下書きの商品 ' + n + '件で使っています。</p>' : '') + '</li>';
         }).join('') + '</ol><button type="button" class="add" data-b="note-add">＋ 定型文を足す</button>';
     }
