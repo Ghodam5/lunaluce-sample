@@ -88,7 +88,49 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "food-no-return",
+      "bulk-100",
+      "spec-change",
+      "no-noshi",
+      "free-ship-no-date",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb203n.jpg",
+        "alt": "ネコポスで 季節のなかよしハムスターのおかしバック PB 8個セット(こんぺいとう or ビスケット) 助六とジロ 助六の日常 ハロウィン 節分 運動会 七夕 ひなまつり こいのぼり 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/59688/pb203n-01.jpg",
+        "alt": "ネコポスで 季節のなかよしハムスターのおかしバック PB 8個セット(こんぺいとう or ビスケット) 助六とジロ 助六の日常 ハロウィン 節分 運動会 七夕 ひなまつり こいのぼり 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/59688/pb203n-02.jpg",
+        "alt": "ネコポスで 季節のなかよしハムスターのおかしバック PB 8個セット(こんぺいとう or ビスケット) 助六とジロ 助六の日常 ハロウィン 節分 運動会 七夕 ひなまつり こいのぼり 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/59688/pb203-01.jpg",
+        "alt": "ネコポスで 季節のなかよしハムスターのおかしバック PB 8個セット(こんぺいとう or ビスケット) 助六とジロ 助六の日常 ハロウィン 節分 運動会 七夕 ひなまつり こいのぼり 商品写真4",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "59688",

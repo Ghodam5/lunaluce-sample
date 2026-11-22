@@ -85,7 +85,38 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/71527.jpg",
+        "alt": "HAPPY イースターボックス(マシュマロ or こんぺいとう) 復活祭 うさぎ たまご 春 キリスト 復活の主日 春ギフト ラッキーチャーム 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71527/pb311earster-01.jpg",
+        "alt": "HAPPY イースターボックス(マシュマロ or こんぺいとう) 復活祭 うさぎ たまご 春 キリスト 復活の主日 春ギフト ラッキーチャーム 商品写真2",
+        "width": 700,
+        "height": 703
+      }
+    ]
   },
   "feature": {
     "id": "71527",

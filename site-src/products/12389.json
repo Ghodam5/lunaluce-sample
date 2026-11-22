@@ -5,7 +5,7 @@
     "code": "00000W1002",
     "title": "ディズニー招待状セット \"エレガンス\"",
     "price": 3080,
-    "image": "",
+    "image": "images/products/12389.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/00000w1002.html",
     "description": "高級感あふれるパール調の厚手の紙に、ハートとミッキーマウスがデザインされた窓が印象的。 エンボス加工やパール印刷の繊細な模様もありお二人の結婚式にふさわしい、 「ワンランク上」のデザインとなっています♪ ミッキーマウスの形の窓からお好きな画像や文字をのぞかせる事が出来る、 個性や遊び心の出せる招待状です。 ディズニーの正規ライセンス商品です。",
     "size": "",
@@ -36,7 +36,70 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/12389.jpg",
+        "alt": "ディズニー招待状セット \"エレガンス\" 商品写真1",
+        "width": 800,
+        "height": 639
+      },
+      {
+        "src": "images/product-details/12389/W1002-4.jpg",
+        "alt": "ディズニー招待状セット \"エレガンス\" 商品写真2",
+        "width": 1200,
+        "height": 1135
+      },
+      {
+        "src": "images/product-details/12389/W1002-3.jpg",
+        "alt": "ディズニー招待状セット \"エレガンス\" 商品写真3",
+        "width": 1200,
+        "height": 953
+      },
+      {
+        "src": "images/product-details/12389/W1002-21.jpg",
+        "alt": "ディズニー招待状セット \"エレガンス\" 商品写真4",
+        "width": 1199,
+        "height": 853
+      },
+      {
+        "src": "images/product-details/12389/W1001-04-21.jpg",
+        "alt": "ディズニー招待状セット \"エレガンス\" 商品写真5",
+        "width": 1200,
+        "height": 795
+      },
+      {
+        "src": "images/product-details/12389/W1001-10041.jpg",
+        "alt": "ディズニー招待状セット \"エレガンス\" 商品写真6",
+        "width": 1200,
+        "height": 875
+      },
+      {
+        "src": "images/product-details/12389/57eb1c867ec759a17b10bce2bee6b31f.jpg",
+        "alt": "ディズニー招待状セット \"エレガンス\" 商品写真7",
+        "width": 200,
+        "height": 70
+      },
+      {
+        "src": "images/product-details/12389/11.jpg",
+        "alt": "ディズニー招待状セット \"エレガンス\" 商品写真8",
+        "width": 600,
+        "height": 498
+      }
+    ],
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "season-delay",
+      "paper-read"
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

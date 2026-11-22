@@ -19,7 +19,9 @@
     "categories": [
       "hikidemono"
     ],
-    "subs": [],
+    "subs": [
+      "bousai"
+    ],
     "tags": [],
     "skus": [
       {
@@ -52,7 +54,64 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/features/54863.jpg",
+        "alt": "特価 7年保存食品 レトルト食品 3日分セット 非常食・災害・緊急・防災・備蓄・お歳暮・お中元・引出物 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/54863/completed01.jpg",
+        "alt": "特価 7年保存食品 レトルト食品 3日分セット 非常食・災害・緊急・防災・備蓄・お歳暮・お中元・引出物 商品写真2",
+        "width": 700,
+        "height": 880
+      },
+      {
+        "src": "images/product-details/54863/cv1-img01.jpg",
+        "alt": "特価 7年保存食品 レトルト食品 3日分セット 非常食・災害・緊急・防災・備蓄・お歳暮・お中元・引出物 商品写真3",
+        "width": 700,
+        "height": 330
+      },
+      {
+        "src": "images/product-details/54863/cv1-img02.jpg",
+        "alt": "特価 7年保存食品 レトルト食品 3日分セット 非常食・災害・緊急・防災・備蓄・お歳暮・お中元・引出物 商品写真4",
+        "width": 700,
+        "height": 440
+      },
+      {
+        "src": "images/product-details/54863/cv1-img03.jpg",
+        "alt": "特価 7年保存食品 レトルト食品 3日分セット 非常食・災害・緊急・防災・備蓄・お歳暮・お中元・引出物 商品写真5",
+        "width": 700,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/54863/cv1-img04.jpg",
+        "alt": "特価 7年保存食品 レトルト食品 3日分セット 非常食・災害・緊急・防災・備蓄・お歳暮・お中元・引出物 商品写真6",
+        "width": 700,
+        "height": 440
+      },
+      {
+        "src": "images/product-details/54863/completed02.jpg",
+        "alt": "特価 7年保存食品 レトルト食品 3日分セット 非常食・災害・緊急・防災・備蓄・お歳暮・お中元・引出物 商品写真7",
+        "width": 700,
+        "height": 250
+      }
+    ],
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "season-delay",
+      "bousai-6y"
+    ]
   },
   "feature": {
     "id": "54863",

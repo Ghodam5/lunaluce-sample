@@ -19,7 +19,9 @@
     "categories": [
       "hikidemono"
     ],
-    "subs": [],
+    "subs": [
+      "bousai"
+    ],
     "tags": [],
     "skus": [
       {
@@ -34,7 +36,64 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 21,
+      "max": 21,
+      "made": false,
+      "source": "db",
+      "label": "約3週間後"
+    },
+    "photos": [
+      {
+        "src": "images/features/3daybox2set.jpg",
+        "alt": "7年保存食品 レトルト食品 3日分×2ケース+7年保存可能水2L×4本セット 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/55685/3daybox01.jpg",
+        "alt": "7年保存食品 レトルト食品 3日分×2ケース+7年保存可能水2L×4本セット 商品写真2",
+        "width": 700,
+        "height": 880
+      },
+      {
+        "src": "images/product-details/55685/cv1-img01.jpg",
+        "alt": "7年保存食品 レトルト食品 3日分×2ケース+7年保存可能水2L×4本セット 商品写真3",
+        "width": 700,
+        "height": 330
+      },
+      {
+        "src": "images/product-details/55685/cv1-img02.jpg",
+        "alt": "7年保存食品 レトルト食品 3日分×2ケース+7年保存可能水2L×4本セット 商品写真4",
+        "width": 700,
+        "height": 440
+      },
+      {
+        "src": "images/product-details/55685/cv1-img03.jpg",
+        "alt": "7年保存食品 レトルト食品 3日分×2ケース+7年保存可能水2L×4本セット 商品写真5",
+        "width": 700,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/55685/cv1-img04.jpg",
+        "alt": "7年保存食品 レトルト食品 3日分×2ケース+7年保存可能水2L×4本セット 商品写真6",
+        "width": 700,
+        "height": 440
+      },
+      {
+        "src": "images/product-details/55685/completed02.jpg",
+        "alt": "7年保存食品 レトルト食品 3日分×2ケース+7年保存可能水2L×4本セット 商品写真7",
+        "width": 700,
+        "height": 250
+      }
+    ],
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "season-delay",
+      "bousai-6y"
+    ]
   },
   "feature": {
     "id": "55685",

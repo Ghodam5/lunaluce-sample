@@ -77,7 +77,52 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "bulk-100",
+      "spec-change",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb296wandafulnya.jpg",
+        "alt": "寄付付き ワンだふるニャ タオルギフト PB (クッキー or こんぺいとう ) 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/58085/pb296wandafulnya-01.jpg",
+        "alt": "寄付付き ワンだふるニャ タオルギフト PB (クッキー or こんぺいとう ) 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/58085/pb296wandafulnya-02.jpg",
+        "alt": "寄付付き ワンだふるニャ タオルギフト PB (クッキー or こんぺいとう ) 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/58085/pb296wandafulnya-03.jpg",
+        "alt": "寄付付き ワンだふるニャ タオルギフト PB (クッキー or こんぺいとう ) 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/58085/pb296wandafulnya-04.jpg",
+        "alt": "寄付付き ワンだふるニャ タオルギフト PB (クッキー or こんぺいとう ) 商品写真5",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "58085",

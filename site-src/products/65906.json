@@ -19,7 +19,9 @@
     "categories": [
       "hikidemono"
     ],
-    "subs": [],
+    "subs": [
+      "bousai"
+    ],
     "tags": [],
     "skus": [
       {
@@ -62,7 +64,31 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": true,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/gk12panset10.jpg",
+        "alt": "3日分 7年保存レトルトパンセット 4種10個セット 非常食 災害 緊急 防災 備蓄 商品写真1",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "65906",

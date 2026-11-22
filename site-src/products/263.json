@@ -175,7 +175,64 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/wb-c165n_c165b.jpg",
+        "alt": "スタイリッシュ ペンダントクロック 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/263/WB-C165N_C165B.jpg",
+        "alt": "スタイリッシュ ペンダントクロック 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/263/spc01.jpg",
+        "alt": "スタイリッシュ ペンダントクロック 商品写真3",
+        "width": 650,
+        "height": 930
+      },
+      {
+        "src": "images/product-details/263/spc02.jpg",
+        "alt": "スタイリッシュ ペンダントクロック 商品写真4",
+        "width": 650,
+        "height": 890
+      },
+      {
+        "src": "images/product-details/263/spc03.jpg",
+        "alt": "スタイリッシュ ペンダントクロック 商品写真5",
+        "width": 650,
+        "height": 1230
+      },
+      {
+        "src": "images/product-details/263/scene.jpg",
+        "alt": "スタイリッシュ ペンダントクロック 商品写真6",
+        "width": 650,
+        "height": 390
+      },
+      {
+        "src": "images/product-details/263/WB-C165N_C165B-01.jpg",
+        "alt": "スタイリッシュ ペンダントクロック 商品写真7",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/263/WB-C165N_C165B-02.jpg",
+        "alt": "スタイリッシュ ペンダントクロック 商品写真8",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

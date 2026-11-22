@@ -5,7 +5,7 @@
     "code": "a686",
     "title": "【引菓子】缶入りデニッシュパンセットA A686",
     "price": 1512,
-    "image": "images/features/a686.jpg",
+    "image": "images/products/71173.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/a686.html",
     "description": "長期保存可能なデニッシュパンです。 常備食としても魅力的!! ほっとする優しい甘さで、しっとり、ふっくらとした2種類の美味しいデニッシュパンをお召し上がりください。",
     "size": "商品サイズ:155×116×79mm",
@@ -37,10 +37,31 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71173.jpg",
+        "alt": "【引菓子】缶入りデニッシュパンセットA A686 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71173/a686_1.jpg",
+        "alt": "【引菓子】缶入りデニッシュパンセットA A686 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "listing": {
-    "image": ""
+    "image": "images/products/71173.jpg"
   },
   "feature": {
     "id": "71173",

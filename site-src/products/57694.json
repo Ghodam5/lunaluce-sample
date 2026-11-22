@@ -37,7 +37,35 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb-nyankyou.jpg",
+        "alt": "にゃんきゅ~ふぉ~ゆ~-PB(ハートクッキー5枚) 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/57694/pb-nyankyouimg.jpg",
+        "alt": "にゃんきゅ~ふぉ~ゆ~-PB(ハートクッキー5枚) 商品写真2",
+        "width": 700,
+        "height": 620
+      }
+    ]
   },
   "feature": {
     "id": "57694",

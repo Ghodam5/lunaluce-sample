@@ -5,7 +5,7 @@
     "code": "con1123_1124",
     "title": "【20％OFF】結婚証明書 人前式用（パールホワイト・ネイビー）",
     "price": 2560,
-    "image": "",
+    "image": "images/products/50449.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/con1123_1124.html",
     "description": "式を優雅に演出する必須アイテム。 シックなデザインで様々なシーンで幅広く活躍します。",
     "size": "サイズ:279×205×10mm、箱サイズ21.5×28.0×2.5cm",
@@ -66,7 +66,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 4,
+      "max": 6,
+      "made": false,
+      "source": "db",
+      "label": "4～6日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/50449.jpg",
+        "alt": "【20％OFF】結婚証明書 人前式用（パールホワイト・ネイビー） 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/50449/con1123_1124-02.jpg",
+        "alt": "【20％OFF】結婚証明書 人前式用（パールホワイト・ネイビー） 商品写真2",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

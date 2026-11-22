@@ -86,7 +86,47 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb-santacube.jpg",
+        "alt": "トゥインクルスター サンタキューブ(金平糖&苺チョコ) 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/48732/pb-santacube.jpg",
+        "alt": "トゥインクルスター サンタキューブ(金平糖&苺チョコ) 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/48732/pb-santacube01.jpg",
+        "alt": "トゥインクルスター サンタキューブ(金平糖&苺チョコ) 商品写真3",
+        "width": 700,
+        "height": 900
+      },
+      {
+        "src": "images/product-details/48732/pb-santacube02.jpg",
+        "alt": "トゥインクルスター サンタキューブ(金平糖&苺チョコ) 商品写真4",
+        "width": 700,
+        "height": 400
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

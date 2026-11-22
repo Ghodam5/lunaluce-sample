@@ -5,7 +5,7 @@
     "code": "kosodate-sepiabox",
     "title": "【子育て卒業証書】Sepia Gift Box（セピアギフトボックス）",
     "price": 13704,
-    "image": "",
+    "image": "images/products/47667.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/kosodate-sepiabox.html",
     "description": "幼少期と現在の写真2枚をセピア加工して、全面に大きく印刷した写真が目を惹く感謝状。 奥行き感のある前後印刷で世界に一つの感謝状をお作りします。 結婚式での贈呈セレモニーでも映えるよう、専用のラッピングBOXでお届けいたします。 白とセピアを基調とした落ち着いたトーンの子育て卒業証書です。 お部屋のインテリアとしてさりげなく飾っていただけます。 【期間限定特典】2枚同時購入すると、写真撮影で活躍するフォトプロップスボードをプレゼント♪",
     "size": "商品サイズ/約315×230×35mm(ガラス入りBOXフレーム)",
@@ -167,7 +167,52 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/47667.jpg",
+        "alt": "【子育て卒業証書】Sepia Gift Box（セピアギフトボックス） 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47667/kosodate-sepiabox.jpg",
+        "alt": "【子育て卒業証書】Sepia Gift Box（セピアギフトボックス） 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47667/kosodate-sepiabox01.jpg",
+        "alt": "【子育て卒業証書】Sepia Gift Box（セピアギフトボックス） 商品写真3",
+        "width": 650,
+        "height": 1290
+      },
+      {
+        "src": "images/product-details/47667/kosodate-sepiabox02.jpg",
+        "alt": "【子育て卒業証書】Sepia Gift Box（セピアギフトボックス） 商品写真4",
+        "width": 650,
+        "height": 1190
+      },
+      {
+        "src": "images/product-details/47667/kosodate-sepiabox03.jpg",
+        "alt": "【子育て卒業証書】Sepia Gift Box（セピアギフトボックス） 商品写真5",
+        "width": 650,
+        "height": 750
+      },
+      {
+        "src": "images/product-details/47667/kosodate-sepiabox04.jpg",
+        "alt": "【子育て卒業証書】Sepia Gift Box（セピアギフトボックス） 商品写真6",
+        "width": 650,
+        "height": 340
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

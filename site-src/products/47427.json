@@ -5,7 +5,7 @@
     "code": "coaster-wedding",
     "title": "オリジナル名入れコースター 挙式用10枚セット",
     "price": 3200,
-    "image": "",
+    "image": "images/products/47427.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/coaster-wedding.html",
     "description": "ゲストが座る席が一目でわかる、席札としてお使いいただけるコルク製の名入れコースターです。 コースターにお好きなお名前で製作いたします。 結婚式や各種パーティー、イベントやお店の名前を入れたり、入れるお名前によって様々な用途でお使いいただけます。 ※ノベルティグッズ・名入れ販促グッズ・企業PRににもお使いいただけます。 (結婚式・席札粗品・景品・プレゼント用品・開店記念品・周年記念品・卒業記念品 創立記念品・大会記念品・イベント景品等)",
     "size": "",
@@ -93,7 +93,52 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/47427.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47427/coaster-wedding.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47427/costerbasic01.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47427/costerbasic02.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真4",
+        "width": 700,
+        "height": 508
+      },
+      {
+        "src": "images/product-details/47427/costerbasic03.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真5",
+        "width": 700,
+        "height": 819
+      },
+      {
+        "src": "images/product-details/47427/coaster50.jpg",
+        "alt": "オリジナル名入れコースター 挙式用10枚セット 商品写真6",
+        "width": 650,
+        "height": 280
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -132,7 +132,53 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "notes": [
+      "order-mail",
+      "food-no-return",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/fla801nnnmaple.jpg",
+        "alt": "世界猫の日発売 FLAVOR NNN (ネコヌコニャン)チャリティ シフォンケーキ メープル ミドル(箱入り) 夏デザイン スイーツ フレイバー 猫 ミニTをシャツイメージ 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70679/fla801nnnmaple-01.jpg",
+        "alt": "世界猫の日発売 FLAVOR NNN (ネコヌコニャン)チャリティ シフォンケーキ メープル ミドル(箱入り) 夏デザイン スイーツ フレイバー 猫 ミニTをシャツイメージ 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70679/ecoflavor-104-101-01.jpg",
+        "alt": "世界猫の日発売 FLAVOR NNN (ネコヌコニャン)チャリティ シフォンケーキ メープル ミドル(箱入り) 夏デザイン スイーツ フレイバー 猫 ミニTをシャツイメージ 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70679/flavor-img.jpg",
+        "alt": "世界猫の日発売 FLAVOR NNN (ネコヌコニャン)チャリティ シフォンケーキ メープル ミドル(箱入り) 夏デザイン スイーツ フレイバー 猫 ミニTをシャツイメージ 商品写真4",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/70679/fla-hako202410.jpg",
+        "alt": "世界猫の日発売 FLAVOR NNN (ネコヌコニャン)チャリティ シフォンケーキ メープル ミドル(箱入り) 夏デザイン スイーツ フレイバー 猫 ミニTをシャツイメージ 商品写真5",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "feature": {
     "id": "70679",

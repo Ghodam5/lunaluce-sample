@@ -136,7 +136,14 @@
     "hasName": true,
     "petit": true,
     "seal": true,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    }
   },
   "detail": {
     "photos": [
@@ -145,6 +152,24 @@
         "alt": "GOEN PB (金平糖) 商品写真1",
         "width": 700,
         "height": 700
+      },
+      {
+        "src": "images/product-details/58190/pb-goen01.jpg",
+        "alt": "GOEN PB (金平糖) 商品写真2",
+        "width": 700,
+        "height": 850
+      },
+      {
+        "src": "images/product-details/58190/pb-goen02.jpg",
+        "alt": "GOEN PB (金平糖) 商品写真3",
+        "width": 700,
+        "height": 890
+      },
+      {
+        "src": "images/product-details/58190/pb-goen03.jpg",
+        "alt": "GOEN PB (金平糖) 商品写真4",
+        "width": 700,
+        "height": 190
       }
     ],
     "sections": [

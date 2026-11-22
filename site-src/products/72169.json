@@ -5,7 +5,7 @@
     "code": "cp0024_0028",
     "title": "OCEAN&TERRE GOURMET UMAI COURSE",
     "price": 6600,
-    "image": "",
+    "image": "images/products/72169.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/cp0024_0028.html",
     "description": "こだわりの食を産地直送でお届けする「OCEAN&TERRE GOURMET(オーシャンテールグルメ)」。 産地直送だからこそ、安心感や信頼を感じられ、生産者の「思い」と「美味い」がより伝わるカタログギフト。",
     "size": "《カタログタイプ》 カタログ:258 × 210 × 60mm パッケージ:290 × 215 × 22mm 《カードタイプ》 カード:50 × 90mm パッケージ:175 × 138 × 22mm",
@@ -116,7 +116,55 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/72169.jpg",
+        "alt": "OCEAN&TERRE GOURMET UMAI COURSE 商品写真1",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72169/cp0024_0028_1.jpg",
+        "alt": "OCEAN&TERRE GOURMET UMAI COURSE 商品写真2",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72169/cp0024_0028_2.jpg",
+        "alt": "OCEAN&TERRE GOURMET UMAI COURSE 商品写真3",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72169/cp0024_0028_3.jpg",
+        "alt": "OCEAN&TERRE GOURMET UMAI COURSE 商品写真4",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72169/cp0024_0028_img.jpg",
+        "alt": "OCEAN&TERRE GOURMET UMAI COURSE 商品写真5",
+        "width": 700,
+        "height": 1000
+      }
+    ],
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "spec-change",
+      "season-delay",
+      "catalog-fee"
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

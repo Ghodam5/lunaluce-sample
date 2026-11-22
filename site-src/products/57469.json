@@ -36,7 +36,28 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/1597.jpg",
+        "alt": "海乃福おかき 1個 商品写真1",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/57469/1597_1.jpg",
+        "alt": "海乃福おかき 1個 商品写真2",
+        "width": 500,
+        "height": 500
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

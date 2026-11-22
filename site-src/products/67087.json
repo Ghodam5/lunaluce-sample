@@ -19,7 +19,9 @@
     "categories": [
       "hikidemono"
     ],
-    "subs": [],
+    "subs": [
+      "bousai"
+    ],
     "tags": [],
     "skus": [
       {
@@ -111,7 +113,55 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": true,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/67087.jpg",
+        "alt": "選べるデザイン熨斗 長期保存食ギフトBOXセット 7年保存パン 5年保存おにぎり 贈答用 御歳暮 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/67087/gk15pankomegift-01.jpg",
+        "alt": "選べるデザイン熨斗 長期保存食ギフトBOXセット 7年保存パン 5年保存おにぎり 贈答用 御歳暮 商品写真2",
+        "width": 701,
+        "height": 701
+      },
+      {
+        "src": "images/product-details/67087/gk15pankomegift-02.jpg",
+        "alt": "選べるデザイン熨斗 長期保存食ギフトBOXセット 7年保存パン 5年保存おにぎり 贈答用 御歳暮 商品写真3",
+        "width": 701,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/67087/gk15pankomegift-03.jpg",
+        "alt": "選べるデザイン熨斗 長期保存食ギフトBOXセット 7年保存パン 5年保存おにぎり 贈答用 御歳暮 商品写真4",
+        "width": 701,
+        "height": 701
+      },
+      {
+        "src": "images/product-details/67087/gk15pankomegift-04n.jpg",
+        "alt": "選べるデザイン熨斗 長期保存食ギフトBOXセット 7年保存パン 5年保存おにぎり 贈答用 御歳暮 商品写真5",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "67087",

@@ -19,7 +19,10 @@
     "categories": [
       "hikidemono"
     ],
-    "subs": [],
+    "subs": [
+      "goods",
+      "set"
+    ],
     "tags": [],
     "skus": [
       {
@@ -72,7 +75,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/features/pb277pirotowel.jpg",
+        "alt": "ご挨拶 のし掛けボックス入りタオル 6個セット 引っ越し 出産内祝 上棟 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/53495/pb277pirotowel-01.jpg",
+        "alt": "ご挨拶 のし掛けボックス入りタオル 6個セット 引っ越し 出産内祝 上棟 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/53495/pb277pirotowel-02.jpg",
+        "alt": "ご挨拶 のし掛けボックス入りタオル 6個セット 引っ越し 出産内祝 上棟 商品写真3",
+        "width": 711,
+        "height": 675
+      }
+    ]
   },
   "feature": {
     "id": "53495",

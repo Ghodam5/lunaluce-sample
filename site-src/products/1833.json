@@ -144,7 +144,28 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/wb-c941_c942.jpg",
+        "alt": "フラワークロック 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/1833/imgWB-C941_C942.jpg",
+        "alt": "フラワークロック 商品写真2",
+        "width": 700,
+        "height": 680
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -103,7 +103,40 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/fla011iwai.jpg",
+        "alt": "FLAVOR お祝いシフォン メープル シフォンケーキ ミドルサ… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/72194/fla011iwai-01.jpg",
+        "alt": "FLAVOR お祝いシフォン メープル シフォンケーキ ミドルサ… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/72194/flavor-img.jpg",
+        "alt": "FLAVOR お祝いシフォン メープル シフォンケーキ ミドルサ… 商品写真3",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/72194/fla-hako202410.jpg",
+        "alt": "FLAVOR お祝いシフォン メープル シフォンケーキ ミドルサ… 商品写真4",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

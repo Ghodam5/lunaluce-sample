@@ -161,7 +161,50 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb275taikobox.jpg",
+        "alt": "ドコドンお祭り太鼓ボックス PB こんぺいとう 和太鼓 音楽祭 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/69301/pb275taikobox-01.jpg",
+        "alt": "ドコドンお祭り太鼓ボックス PB こんぺいとう 和太鼓 音楽祭 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69301/pb275taikobox-02.jpg",
+        "alt": "ドコドンお祭り太鼓ボックス PB こんぺいとう 和太鼓 音楽祭 商品写真3",
+        "width": 702,
+        "height": 702
+      },
+      {
+        "src": "images/product-details/69301/pb275taikobox-03.jpg",
+        "alt": "ドコドンお祭り太鼓ボックス PB こんぺいとう 和太鼓 音楽祭 商品写真4",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

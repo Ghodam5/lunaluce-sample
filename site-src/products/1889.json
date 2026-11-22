@@ -185,7 +185,28 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/wb-m903_m906.jpg",
+        "alt": "ツインミラーボード 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/1889/imgWB-M903_M906.jpg",
+        "alt": "ツインミラーボード 商品写真2",
+        "width": 700,
+        "height": 1150
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

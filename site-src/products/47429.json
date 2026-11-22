@@ -5,7 +5,7 @@
     "code": "coaster-data50",
     "title": "オリジナル名入れコースター 同一データ50枚セット【送料無料】",
     "price": 12500,
-    "image": "",
+    "image": "images/products/47429.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/coaster-data50.html",
     "description": "コルク製の名入れコースターに 「お名入れ」をしてお届けします。 飲食店様に大好評のコースター。 ”推し”のお名前を入れて、ミーティングイベントなどでのお友達への御挨拶にもオススメです。",
     "size": "",
@@ -93,7 +93,58 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/47429.jpg",
+        "alt": "オリジナル名入れコースター 同一データ50枚セット【送料無料】 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47429/coaster-data50.jpg",
+        "alt": "オリジナル名入れコースター 同一データ50枚セット【送料無料】 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47429/costerbasic01.jpg",
+        "alt": "オリジナル名入れコースター 同一データ50枚セット【送料無料】 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47429/costerbasic02.jpg",
+        "alt": "オリジナル名入れコースター 同一データ50枚セット【送料無料】 商品写真4",
+        "width": 700,
+        "height": 508
+      },
+      {
+        "src": "images/product-details/47429/costerbasic03.jpg",
+        "alt": "オリジナル名入れコースター 同一データ50枚セット【送料無料】 商品写真5",
+        "width": 700,
+        "height": 819
+      },
+      {
+        "src": "images/product-details/47429/costerbasic04.jpg",
+        "alt": "オリジナル名入れコースター 同一データ50枚セット【送料無料】 商品写真6",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47429/coaster10.jpg",
+        "alt": "オリジナル名入れコースター 同一データ50枚セット【送料無料】 商品写真7",
+        "width": 650,
+        "height": 280
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

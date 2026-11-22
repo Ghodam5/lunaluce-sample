@@ -20,7 +20,9 @@
       "hikidemono",
       "season"
     ],
-    "subs": [],
+    "subs": [
+      "sweets"
+    ],
     "tags": [],
     "skus": [
       {
@@ -60,7 +62,43 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "bulk-100",
+      "spec-change",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb-gk17disneypanvd.jpg",
+        "alt": "バレンタインギフト Minny’s Forever Valentine PB 7年保存マーブルチョコパン disney ミニーマウス ミッキーマウス 保存食 非常食 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/68651/pb-gk17disneypanvd-01.jpg",
+        "alt": "バレンタインギフト Minny’s Forever Valentine PB 7年保存マーブルチョコパン disney ミニーマウス ミッキーマウス 保存食 非常食 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/68651/pb-gk17disneypanvd-02.jpg",
+        "alt": "バレンタインギフト Minny’s Forever Valentine PB 7年保存マーブルチョコパン disney ミニーマウス ミッキーマウス 保存食 非常食 商品写真3",
+        "width": 701,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "68651",

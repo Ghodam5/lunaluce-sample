@@ -19,7 +19,9 @@
     "categories": [
       "hikidemono"
     ],
-    "subs": [],
+    "subs": [
+      "sweets"
+    ],
     "tags": [],
     "skus": [
       {
@@ -52,7 +54,46 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/features/59671.jpg",
+        "alt": "afternoon tea putit PB ぜ~んぶちがう12袋セット (紅茶) あったかギフト ストレートティー 出産 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/59671/teaputit-01.jpg",
+        "alt": "afternoon tea putit PB ぜ~んぶちがう12袋セット (紅茶) あったかギフト ストレートティー 出産 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/59671/teaputit-02.jpg",
+        "alt": "afternoon tea putit PB ぜ~んぶちがう12袋セット (紅茶) あったかギフト ストレートティー 出産 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/59671/teaputit-03.jpg",
+        "alt": "afternoon tea putit PB ぜ~んぶちがう12袋セット (紅茶) あったかギフト ストレートティー 出産 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/59671/teaputit-long.jpg",
+        "alt": "afternoon tea putit PB ぜ~んぶちがう12袋セット (紅茶) あったかギフト ストレートティー 出産 商品写真5",
+        "width": 700,
+        "height": 1400
+      }
+    ]
   },
   "feature": {
     "id": "59671",

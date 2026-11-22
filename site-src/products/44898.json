@@ -168,7 +168,64 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/kosodate-f.jpg",
+        "alt": "子育て卒業証書（フレーム）【期間限定キャンペーン価格】 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/44898/kosodatef01img.jpg",
+        "alt": "子育て卒業証書（フレーム）【期間限定キャンペーン価格】 商品写真2",
+        "width": 650,
+        "height": 480
+      },
+      {
+        "src": "images/product-details/44898/kosodatef02img.jpg",
+        "alt": "子育て卒業証書（フレーム）【期間限定キャンペーン価格】 商品写真3",
+        "width": 650,
+        "height": 1130
+      },
+      {
+        "src": "images/product-details/44898/kosodatef03img.jpg",
+        "alt": "子育て卒業証書（フレーム）【期間限定キャンペーン価格】 商品写真4",
+        "width": 650,
+        "height": 320
+      },
+      {
+        "src": "images/product-details/44898/kosodatef04img.jpg",
+        "alt": "子育て卒業証書（フレーム）【期間限定キャンペーン価格】 商品写真5",
+        "width": 650,
+        "height": 1280
+      },
+      {
+        "src": "images/product-details/44898/kosodatef05img.jpg",
+        "alt": "子育て卒業証書（フレーム）【期間限定キャンペーン価格】 商品写真6",
+        "width": 650,
+        "height": 740
+      },
+      {
+        "src": "images/product-details/44898/b_kosodate.jpg",
+        "alt": "子育て卒業証書（フレーム）【期間限定キャンペーン価格】 商品写真7",
+        "width": 650,
+        "height": 180
+      },
+      {
+        "src": "images/product-details/44898/rice-campaign.jpg",
+        "alt": "子育て卒業証書（フレーム）【期間限定キャンペーン価格】 商品写真8",
+        "width": 650,
+        "height": 1290
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

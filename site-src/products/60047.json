@@ -193,7 +193,72 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "bulk-100",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/60047.jpg",
+        "alt": "大願成就 KA MI守り 単品 オリジナルお守り作成 ドーナッツ おまもり 御守 絵馬 学業成就 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60047/pb221-01.jpg",
+        "alt": "大願成就 KA MI守り 単品 オリジナルお守り作成 ドーナッツ おまもり 御守 絵馬 学業成就 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60047/pb221-02.jpg",
+        "alt": "大願成就 KA MI守り 単品 オリジナルお守り作成 ドーナッツ おまもり 御守 絵馬 学業成就 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60047/pb221-03.jpg",
+        "alt": "大願成就 KA MI守り 単品 オリジナルお守り作成 ドーナッツ おまもり 御守 絵馬 学業成就 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60047/pb221-04.jpg",
+        "alt": "大願成就 KA MI守り 単品 オリジナルお守り作成 ドーナッツ おまもり 御守 絵馬 学業成就 商品写真5",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60047/pb-kamimamoriex-05.jpg",
+        "alt": "大願成就 KA MI守り 単品 オリジナルお守り作成 ドーナッツ おまもり 御守 絵馬 学業成就 商品写真6",
+        "width": 700,
+        "height": 703
+      },
+      {
+        "src": "images/product-details/60047/pb-kamimamoriex-01.jpg",
+        "alt": "大願成就 KA MI守り 単品 オリジナルお守り作成 ドーナッツ おまもり 御守 絵馬 学業成就 商品写真7",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60047/senjyaseal-kyotu.jpg",
+        "alt": "大願成就 KA MI守り 単品 オリジナルお守り作成 ドーナッツ おまもり 御守 絵馬 学業成就 商品写真8",
+        "width": 702,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "60047",

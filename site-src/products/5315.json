@@ -96,7 +96,34 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/000wb-m303.jpg",
+        "alt": "ハートリボン(ミラー) 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/5315/000WB-M303-2.jpg",
+        "alt": "ハートリボン(ミラー) 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/5315/000WB-M303-3.jpg",
+        "alt": "ハートリボン(ミラー) 商品写真3",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

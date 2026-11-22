@@ -143,7 +143,50 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb278welovepiano.jpg",
+        "alt": "We Love Piano Rusk PB ラスク2枚 ピアノ 音楽祭 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69406/pb278welovepiano-01.jpg",
+        "alt": "We Love Piano Rusk PB ラスク2枚 ピアノ 音楽祭 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69406/pb278welovepiano-02.jpg",
+        "alt": "We Love Piano Rusk PB ラスク2枚 ピアノ 音楽祭 商品写真3",
+        "width": 702,
+        "height": 702
+      },
+      {
+        "src": "images/product-details/69406/pb278welovepiano-03.jpg",
+        "alt": "We Love Piano Rusk PB ラスク2枚 ピアノ 音楽祭 商品写真4",
+        "width": 623,
+        "height": 600
+      }
+    ]
   },
   "feature": {
     "id": "69406",

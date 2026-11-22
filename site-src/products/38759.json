@@ -36,7 +36,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/features/38759.jpg",
+        "alt": "【ブライダルバッグ】ゴールド S 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/38759/bag_img01.jpg",
+        "alt": "【ブライダルバッグ】ゴールド S 商品写真2",
+        "width": 630,
+        "height": 600
+      }
+    ]
   },
   "listing": {
     "image": "images/features/w-bag-gs00.jpg"

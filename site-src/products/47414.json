@@ -19,7 +19,9 @@
     "categories": [
       "hikidemono"
     ],
-    "subs": [],
+    "subs": [
+      "goods"
+    ],
     "tags": [],
     "skus": [
       {
@@ -101,7 +103,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 2,
+      "max": 3,
+      "made": false,
+      "source": "db",
+      "label": "2～3日後"
+    },
+    "photos": [
+      {
+        "src": "images/features/sp-towelgift.jpg",
+        "alt": "訳あり お試しタオル福袋 -プチギフト付き 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/47414/sp-towelgiftimg.jpg",
+        "alt": "訳あり お試しタオル福袋 -プチギフト付き 商品写真2",
+        "width": 650,
+        "height": 1050
+      }
+    ]
   },
   "feature": {
     "id": "47414",

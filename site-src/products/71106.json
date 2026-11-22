@@ -5,7 +5,7 @@
     "code": "a610",
     "title": "【引き出物】北海道 野菜ドレッシングセットE",
     "price": 1512,
-    "image": "",
+    "image": "images/products/71106.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/a610.html",
     "description": "北海道の美味しい野菜で作ったドレッシング。",
     "size": "商品サイズ:145×160×45mm",
@@ -37,7 +37,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71106.jpg",
+        "alt": "【引き出物】北海道 野菜ドレッシングセットE 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71106/a610_1.jpg",
+        "alt": "【引き出物】北海道 野菜ドレッシングセットE 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

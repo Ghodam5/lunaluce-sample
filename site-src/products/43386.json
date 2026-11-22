@@ -64,7 +64,28 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 10,
+      "max": 10,
+      "made": false,
+      "source": "db",
+      "label": "10日後"
+    },
+    "photos": [
+      {
+        "src": "images/hf60902.jpg",
+        "alt": "スノー・ジュエル(ハートクッキー&紅茶) 1個 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/43386/21item.jpg",
+        "alt": "スノー・ジュエル(ハートクッキー&紅茶) 1個 商品写真2",
+        "width": 700,
+        "height": 100
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

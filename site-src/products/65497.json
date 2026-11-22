@@ -20,7 +20,9 @@
       "hikidemono",
       "season"
     ],
-    "subs": [],
+    "subs": [
+      "bousai"
+    ],
     "tags": [],
     "skus": [
       {
@@ -63,7 +65,55 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "spec-change",
+      "season-delay",
+      "nekopos"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb-lllpan.jpg",
+        "alt": "Long Love Life 7年保存レトルトパン2個セット ご挨拶 保存食 非常食 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/65497/pb-lllpan-01.jpg",
+        "alt": "Long Love Life 7年保存レトルトパン2個セット ご挨拶 保存食 非常食 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/65497/pb-lllpan-02.jpg",
+        "alt": "Long Love Life 7年保存レトルトパン2個セット ご挨拶 保存食 非常食 商品写真3",
+        "width": 701,
+        "height": 701
+      },
+      {
+        "src": "images/product-details/65497/pb-lllpan-03.jpg",
+        "alt": "Long Love Life 7年保存レトルトパン2個セット ご挨拶 保存食 非常食 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/65497/pb-lllpan-04.jpg",
+        "alt": "Long Love Life 7年保存レトルトパン2個セット ご挨拶 保存食 非常食 商品写真5",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "65497",

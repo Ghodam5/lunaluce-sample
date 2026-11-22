@@ -5,7 +5,7 @@
     "code": "a658",
     "title": "【引き出物】TSUTSUMI 瑞穂の恵みC",
     "price": 6048,
-    "image": "",
+    "image": "images/products/71095.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/a658.html",
     "description": "日本人の体に深く染み渡る瑞穂の恵みの豊かで繊細な優しい風味を、おもてなしの心で包みました。",
     "size": "商品サイズ:300×190×71mm",
@@ -37,7 +37,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71095.jpg",
+        "alt": "【引き出物】TSUTSUMI 瑞穂の恵みC 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71095/a658_1.jpg",
+        "alt": "【引き出物】TSUTSUMI 瑞穂の恵みC 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71095/a658_2.jpg",
+        "alt": "【引き出物】TSUTSUMI 瑞穂の恵みC 商品写真3",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

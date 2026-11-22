@@ -5,7 +5,7 @@
     "code": "a672",
     "title": "【引菓子】Speciality Coffee＆バームセットB",
     "price": 3240,
-    "image": "",
+    "image": "images/products/71139.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/a672.html",
     "description": "世界各国の厳選された、希少価値あるスペシャルティコーヒーとバームクーヘンのセット。 ほっとする憩いの時間をお楽しみください。",
     "size": "商品サイズ:383×315×75mm",
@@ -37,7 +37,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71139.jpg",
+        "alt": "【引菓子】Speciality Coffee＆バームセットB 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71139/a672_1.jpg",
+        "alt": "【引菓子】Speciality Coffee＆バームセットB 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",
