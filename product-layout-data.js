@@ -1,0 +1,2 @@
+/* 編集元 site-src/product-layout.json（OMSのサイトビルダー「商品ページの段組み」） */
+window.PRODUCT_LAYOUT={"parts":[{"id":"description","label":"商品の説明"},{"id":"spec","label":"内容量・サイズなどの表"},{"id":"notes","label":"ご注文の前に（注意事項）"},{"id":"source","label":"本店の商品情報へのリンク"},{"id":"recommend","label":"こちらもおすすめ（ほかの商品）"},{"id":"share","label":"SNSでシェア"},{"id":"trial","label":"名入れを試せる商品"}],"side":["description","spec","notes","source"],"below":["recommend","share","trial"]};

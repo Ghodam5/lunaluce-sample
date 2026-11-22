@@ -5,7 +5,7 @@ const root = path.resolve(__dirname, '..');
 const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 function sandbox() {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'luna-apply-oms-'));
-  for (const f of ['tools/apply-oms-export.cjs', 'tools/home-sections.cjs', 'tools/promos.cjs', 'site-src/home-sections.json', 'site-src/site-notices.json', 'site-src/home-promos', 'site-src/pages', 'site-src/sections/top', 'site-src/products']) {
+  for (const f of ['tools/apply-oms-export.cjs', 'tools/home-sections.cjs', 'tools/promos.cjs', 'tools/product-layout.cjs', 'tools/notice-templates.cjs', 'site-src/product-layout.json', 'site-src/notice-templates.json', 'site-src/home-sections.json', 'site-src/site-notices.json', 'site-src/home-promos', 'site-src/pages', 'site-src/sections/top', 'site-src/products']) {
     fs.mkdirSync(path.dirname(path.join(tmp, f)), { recursive: true });
     fs.cpSync(path.join(root, f), path.join(tmp, f), { recursive: true });
   }
@@ -95,5 +95,27 @@ test('置き場の外の画像や、サイトにないリンク先は入れな�
     const r = run(tmp, d);
     a.deepEqual(r.errors.map(x => x.part).sort(), ['cards', 'notices']);
     a.ok(!fs.existsSync(path.join(tmp, '..', 'evil.png')));
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
+test('v66 商品ページの段組みと注意事項の定型文を入れる（SNSを外す段組みは断って元に戻す）', () => {
+  const tmp = sandbox();
+  try {
+    const d = draftOf(tmp);
+    d.productLayout = { side: ['notes', 'description', 'spec', 'source'], below: ['share', 'recommend', 'trial'] };
+    d.noticeTemplates = read(path.join(tmp, 'site-src/notice-templates.json')).templates.slice(0, 3);
+    let r = run(tmp, d);
+    a.deepEqual(r.errors, []);
+    a.deepEqual(read(path.join(tmp, 'site-src/product-layout.json')).side.slice(0, 2), ['notes', 'description']);
+    const nt = read(path.join(tmp, 'site-src/notice-templates.json'));
+    a.equal(nt.templates.length, 3);
+    a.ok(nt.auto, '自動で出す決まりは残す');
+    const before = fs.readFileSync(path.join(tmp, 'site-src/product-layout.json'), 'utf8');
+    d.productLayout = { side: ['notes'], below: ['recommend'] };
+    d.noticeTemplates = [];
+    r = run(tmp, d);
+    a.equal(r.errors.length, 1);
+    a.equal(r.errors[0].part, 'productLayout');
+    a.equal(fs.readFileSync(path.join(tmp, 'site-src/product-layout.json'), 'utf8'), before);
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 });

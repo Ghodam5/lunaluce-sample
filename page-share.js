@@ -6,7 +6,7 @@ const host=document.getElementById('sample-item');
 if(host){
  const buy=host.querySelector('#product-buy');if(!buy)return;
  product=window.ShopCatalog&&ShopCatalog.get(query.get('id')||'ecoflavor-104-101');if(!product)return;
- bar=document.createElement('div');bar.className='page-share';bar.dataset.sharePage='item';buy.after(bar);
+ bar=document.createElement('div');bar.className='page-share';bar.dataset.sharePage='item';const slot=host.querySelector('[data-share-slot]');if(slot){slot.replaceWith(bar);bar.classList.add('page-share-below');}else buy.after(bar);
 }
 if(!bar){
  const heading=document.querySelector('main h1,.review-wrap h1,h1');if(!heading)return;
