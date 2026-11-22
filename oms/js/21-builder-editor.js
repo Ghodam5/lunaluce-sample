@@ -170,13 +170,17 @@
 
     function renderBuilderEditor(host) {
       function tickerForm() {
-        const rows = state.builder.notices.map(function (n, i) {
-          return '<li class="notice"><div class="row">' + builderSwitch('表示する', 'n.' + i + '.active', n.active !== false) +
-            '<span class="tools"><button type="button" data-b="notice-move" data-index="' + i + '" data-dir="-1">↑</button><button type="button" data-b="notice-move" data-index="' + i + '" data-dir="1">↓</button><button type="button" data-b="notice-remove" data-index="' + i + '">削除</button></span></div>' +
+        const row = function (n, i) {
+          return '<li class="notice' + (n.active === false ? ' is-off' : '') + '"><div class="row">' + builderSwitch('表示する', 'n.' + i + '.active', n.active !== false) +
+            '<span class="tools"><button type="button" data-b="notice-move" data-index="' + i + '" data-dir="-1">↑</button><button type="button" data-b="notice-move" data-index="' + i + '" data-dir="1">↓</button><button type="button" data-b="notice-remove" data-index="' + i + '" title="しまっておけば後でまた使えます">完全に消す</button></span></div>' +
             builderField('流れる文', 'n.' + i + '.text', n.text, { wide: true, max: 60, hint: '60文字まで。商品の価格・在庫・注文のことは書かない' }) +
             builderLinkPicker('押したときに開くページ', 'n.' + i + '.href', n.href || '', true) + builderPeriod(n, 'n.' + i + '.', false) + '</li>';
-        }).join('');
-        return '<h2>流れる文言</h2><p class="lead">サイトの一番上に流れる一文です。上から順に流れます。</p><ol class="notices">' + rows + '</ol><button type="button" class="add" data-b="notice-add">＋ 文言を足す</button>' + builderAutoBandsForm();
+        };
+        const on = [], off = [];
+        state.builder.notices.forEach(function (n, i) { (n.active === false ? off : on).push(row(n, i)); });
+        // 「表示する」を外した文言は消さずに下へしまう。チェックを入れ直せば、また使える
+        return '<h2>流れる文言</h2><p class="lead">サイトの一番上に流れる一文です。上から順に流れます。「表示する」を外すと、消さずにしまっておけます。</p><ol class="notices">' + (on.join('') || '<li class="muted">いま出す文言はありません。</li>') + '</ol><button type="button" class="add" data-b="notice-add">＋ 文言を足す</button>' + builderAutoBandsForm() +
+          (off.length ? '<details class="notices-kept"' + (off.length ? ' open' : '') + '><summary>しまってある文言（' + off.length + '件・再利用できます）</summary><ol class="notices">' + off.join('') + '</ol></details>' : '');
       }
       function cardForm(card) {
         const kind = card.kind || 'products';

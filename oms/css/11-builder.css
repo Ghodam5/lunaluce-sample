@@ -524,3 +524,8 @@
     [data-part="builder-preview"] .lay-box { border: 1px dashed #cfc4b6; border-radius: 6px; padding: 6px; background: #fff; }
     [data-part="builder-preview"] .lay-box.lay-fixed { background: #f6f1ea; border-style: solid; }
     [data-part="builder-preview"] .lay-box.lay-share { border-color: #8fc6c0; }
+    /* 流れる文言: 「表示する」を外した文言はしまっておく（再利用できる） */
+    [data-part="builder-editor"] .notice.is-off { background: #f6f3ee; }
+    [data-part="builder-editor"] .notices-kept { margin-top: 14px; }
+    [data-part="builder-editor"] .notices-kept > summary { cursor: pointer; font-weight: 700; color: var(--taupe, #6b5f53); }
+    [data-part="builder-editor"] .news-autos li.is-off b { color: var(--taupe-light, #8a7f73); text-decoration: line-through; }

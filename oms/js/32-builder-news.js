@@ -75,12 +75,17 @@
         return { id: n.id, auto: 'days', active: true, text: n.band, startsAt: n.startsAt, endsAt: n.endsAt };
       });
     }
+    // 長期休暇から自動で作る文言も、1つずつ「出す・出さない」を選べる（自動でも必ず出るわけではない）
     function builderAutoBandsForm() {
-      const bands = builderAutoBands();
-      if (!bands.length) return '';
-      return '<h3>長期休暇から自動で出る文言</h3><ul class="news-autos">' + bands.map(function (n) {
-        return '<li><b>' + escapeHtml(n.text) + '</b><small>' + escapeHtml(builderDaysLabel(n.startsAt.slice(0, 10))) + 'から出ます（営業日の長期休暇で直す）</small></li>';
-      }).join('') + '</ul>';
+      const d = builderDaysNorm(state.builder.days);
+      if (!d) return '';
+      const rows = d.long.map(function (L, i) {
+        const n = builderDaysLongNotice(Object.assign({}, L, { band: true }), d);
+        if (!n) return '';
+        return '<li class="' + (L.band ? '' : 'is-off') + '"><label class="switch"><input type="checkbox" data-long="' + i + '.band"' + (L.band ? ' checked' : '') + '><span>表示する</span></label> <b>' + escapeHtml(n.band) + '</b><small>' + (L.band ? escapeHtml(builderDaysLabel(n.startsAt.slice(0, 10))) + 'から出ます' : '出しません（設定は残してあります）') + '・日付や名前は営業日の長期休暇で直す</small></li>';
+      }).join('');
+      if (!rows) return '';
+      return '<h3>長期休暇から自動で作る文言</h3><p class="muted">自動で作りますが、出すかどうかはここで1つずつ選べます。</p><ul class="news-autos">' + rows + '</ul>';
     }
     function builderNewsAction(name, el) {
       const list = builderNewsList();
