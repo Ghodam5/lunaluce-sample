@@ -133,7 +133,52 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/fla507mpair.jpg",
+        "alt": "本店ベストレート FLAVOR 選べるシフォンペアセット ミドル… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/64012/fla507mpair-01.jpg",
+        "alt": "本店ベストレート FLAVOR 選べるシフォンペアセット ミドル… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/64012/fla507mpair-02.jpg",
+        "alt": "本店ベストレート FLAVOR 選べるシフォンペアセット ミドル… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/64012/fla507mpair-03.jpg",
+        "alt": "本店ベストレート FLAVOR 選べるシフォンペアセット ミドル… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/64012/flavor-img.jpg",
+        "alt": "本店ベストレート FLAVOR 選べるシフォンペアセット ミドル… 商品写真5",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/64012/fla-hako202410.jpg",
+        "alt": "本店ベストレート FLAVOR 選べるシフォンペアセット ミドル… 商品写真6",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

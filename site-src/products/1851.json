@@ -173,7 +173,28 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/wb-y951_y956.jpg",
+        "alt": "京友禅和紙ボード 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/1851/imgWB-Y951_Y956.jpg",
+        "alt": "京友禅和紙ボード 商品写真2",
+        "width": 700,
+        "height": 1540
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

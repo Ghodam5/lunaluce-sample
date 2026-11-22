@@ -290,7 +290,64 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/39600.jpg",
+        "alt": "フラワークロックボード ウェルカム用1枚+両親贈呈用2枚組 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/39600/flower-cb3.jpg",
+        "alt": "フラワークロックボード ウェルカム用1枚+両親贈呈用2枚組 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/39600/20off.jpg",
+        "alt": "フラワークロックボード ウェルカム用1枚+両親贈呈用2枚組 商品写真3",
+        "width": 650,
+        "height": 220
+      },
+      {
+        "src": "images/product-details/39600/flower-cb3-01.jpg",
+        "alt": "フラワークロックボード ウェルカム用1枚+両親贈呈用2枚組 商品写真4",
+        "width": 650,
+        "height": 1110
+      },
+      {
+        "src": "images/product-details/39600/flower-cb3-02.jpg",
+        "alt": "フラワークロックボード ウェルカム用1枚+両親贈呈用2枚組 商品写真5",
+        "width": 650,
+        "height": 1160
+      },
+      {
+        "src": "images/product-details/39600/flower-cb3-03.jpg",
+        "alt": "フラワークロックボード ウェルカム用1枚+両親贈呈用2枚組 商品写真6",
+        "width": 650,
+        "height": 1060
+      },
+      {
+        "src": "images/product-details/39600/flower-cb3-04.jpg",
+        "alt": "フラワークロックボード ウェルカム用1枚+両親贈呈用2枚組 商品写真7",
+        "width": 650,
+        "height": 725
+      },
+      {
+        "src": "images/product-details/39600/flower-cb3-05.jpg",
+        "alt": "フラワークロックボード ウェルカム用1枚+両親贈呈用2枚組 商品写真8",
+        "width": 650,
+        "height": 690
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

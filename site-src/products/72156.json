@@ -116,7 +116,46 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/72156.jpg",
+        "alt": "OCEAN&TERRE GOURMET YUMMY COURSE 商品写真1",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72156/cp0023_0027_1.jpg",
+        "alt": "OCEAN&TERRE GOURMET YUMMY COURSE 商品写真2",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72156/cp0023_0027_2.jpg",
+        "alt": "OCEAN&TERRE GOURMET YUMMY COURSE 商品写真3",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72156/cp0023_0027_3.jpg",
+        "alt": "OCEAN&TERRE GOURMET YUMMY COURSE 商品写真4",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72156/cp0023_0027_img.jpg",
+        "alt": "OCEAN&TERRE GOURMET YUMMY COURSE 商品写真5",
+        "width": 700,
+        "height": 1000
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -34,7 +34,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/47696.jpg",
+        "alt": "【A3ミラー対応】A3アンティークフレーム 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47696/a3frame.jpg",
+        "alt": "【A3ミラー対応】A3アンティークフレーム 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47696/a3frame01.jpg",
+        "alt": "【A3ミラー対応】A3アンティークフレーム 商品写真3",
+        "width": 700,
+        "height": 310
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -91,7 +91,40 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/features/58915.jpg",
+        "alt": "節分 豆まきにも 和柄般若小箱(金平糖 こんぺいとう) 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/58915/pb-hannyahako-03.jpg",
+        "alt": "節分 豆まきにも 和柄般若小箱(金平糖 こんぺいとう) 商品写真2",
+        "width": 701,
+        "height": 701
+      },
+      {
+        "src": "images/product-details/58915/pb-hannyahako-02.jpg",
+        "alt": "節分 豆まきにも 和柄般若小箱(金平糖 こんぺいとう) 商品写真3",
+        "width": 701,
+        "height": 701
+      },
+      {
+        "src": "images/product-details/58915/pb-hannyahako-04.jpg",
+        "alt": "節分 豆まきにも 和柄般若小箱(金平糖 こんぺいとう) 商品写真4",
+        "width": 701,
+        "height": 701
+      }
+    ]
   },
   "feature": {
     "id": "58915",

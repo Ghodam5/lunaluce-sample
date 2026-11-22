@@ -114,7 +114,53 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "notes": [
+      "order-mail",
+      "food-no-return",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/fla111fufu.jpg",
+        "alt": "FLAVOR しあわせ感字 いいふうふ シフォンケーキ メープル ミドル(箱入り) いい夫婦の日 誕生 スイーツ フレイバー 11/22 11月22日 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71369/fla111fufu-01.jpg",
+        "alt": "FLAVOR しあわせ感字 いいふうふ シフォンケーキ メープル ミドル(箱入り) いい夫婦の日 誕生 スイーツ フレイバー 11/22 11月22日 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71369/fla111fufu-02.jpg",
+        "alt": "FLAVOR しあわせ感字 いいふうふ シフォンケーキ メープル ミドル(箱入り) いい夫婦の日 誕生 スイーツ フレイバー 11/22 11月22日 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71369/flavor-img.jpg",
+        "alt": "FLAVOR しあわせ感字 いいふうふ シフォンケーキ メープル ミドル(箱入り) いい夫婦の日 誕生 スイーツ フレイバー 11/22 11月22日 商品写真4",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/71369/fla-hako202410.jpg",
+        "alt": "FLAVOR しあわせ感字 いいふうふ シフォンケーキ メープル ミドル(箱入り) いい夫婦の日 誕生 スイーツ フレイバー 11/22 11月22日 商品写真5",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "feature": {
     "id": "71369",

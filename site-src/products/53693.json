@@ -120,7 +120,40 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/pb-xmaskonpei10.jpg",
+        "alt": "名入れ対応プチギフト クリスマススターPB(金平糖入り) 10個… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/53693/pb-xmaskonpei10.jpg",
+        "alt": "名入れ対応プチギフト クリスマススターPB(金平糖入り) 10個… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/53693/pb-xmaskonpeiimg.jpg",
+        "alt": "名入れ対応プチギフト クリスマススターPB(金平糖入り) 10個… 商品写真3",
+        "width": 700,
+        "height": 260
+      },
+      {
+        "src": "images/product-details/53693/pb-xmasdesign.jpg",
+        "alt": "名入れ対応プチギフト クリスマススターPB(金平糖入り) 10個… 商品写真4",
+        "width": 700,
+        "height": 910
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

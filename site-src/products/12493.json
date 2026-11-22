@@ -36,7 +36,40 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/12493.jpg",
+        "alt": "ディズニー席札 \"ハーティ\" 商品写真1",
+        "width": 800,
+        "height": 670
+      },
+      {
+        "src": "images/product-details/12493/W3001-2.jpg",
+        "alt": "ディズニー席札 \"ハーティ\" 商品写真2",
+        "width": 1200,
+        "height": 1102
+      },
+      {
+        "src": "images/product-details/12493/W1001-32.jpg",
+        "alt": "ディズニー席札 \"ハーティ\" 商品写真3",
+        "width": 1199,
+        "height": 1024
+      },
+      {
+        "src": "images/product-details/12493/57eb1c867ec759a17b10bce2bee6b31f.jpg",
+        "alt": "ディズニー席札 \"ハーティ\" 商品写真4",
+        "width": 200,
+        "height": 70
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

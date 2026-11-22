@@ -76,7 +76,53 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "notes": [
+      "order-mail",
+      "food-no-return",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/71558.jpg",
+        "alt": "FLAVOR ECOらぶバック ラッピングメープルシフォン 地域別 マザーズデイ 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71558/fla511ecolove-01.jpg",
+        "alt": "FLAVOR ECOらぶバック ラッピングメープルシフォン 地域別 マザーズデイ 商品写真2",
+        "width": 701,
+        "height": 701
+      },
+      {
+        "src": "images/product-details/71558/fla511ecolove-02.jpg",
+        "alt": "FLAVOR ECOらぶバック ラッピングメープルシフォン 地域別 マザーズデイ 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71558/flavor-img.jpg",
+        "alt": "FLAVOR ECOらぶバック ラッピングメープルシフォン 地域別 マザーズデイ 商品写真4",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/71558/fla-hako202410.jpg",
+        "alt": "FLAVOR ECOらぶバック ラッピングメープルシフォン 地域別 マザーズデイ 商品写真5",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "feature": {
     "id": "71558",

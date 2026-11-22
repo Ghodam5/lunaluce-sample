@@ -171,7 +171,55 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "min-qty",
+      "bulk-100",
+      "spec-change",
+      "no-noshi",
+      "free-ship-no-date",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/70670.jpg",
+        "alt": "お名入れだるまボックス PB (こんぺいとう) 願掛け 紅白だるま 御年賀 差し入れ 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70670/251namedaruma1.jpg",
+        "alt": "お名入れだるまボックス PB (こんぺいとう) 願掛け 紅白だるま 御年賀 差し入れ 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70670/251namedaruma2.jpg",
+        "alt": "お名入れだるまボックス PB (こんぺいとう) 願掛け 紅白だるま 御年賀 差し入れ 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70670/251namedaruma3.jpg",
+        "alt": "お名入れだるまボックス PB (こんぺいとう) 願掛け 紅白だるま 御年賀 差し入れ 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/70670/251namedaruma4.jpg",
+        "alt": "お名入れだるまボックス PB (こんぺいとう) 願掛け 紅白だるま 御年賀 差し入れ 商品写真5",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "70670",

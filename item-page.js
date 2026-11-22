@@ -18,7 +18,7 @@ function recoHtml(p){var list=recoList(p);if(!list.length)return '';return '<h2>
 function partHtml(id,p){
  if(id==='delivery')return leadHtml(p);
  if(id==='description')return '<h2>'+esc(T('item.description','商品の説明'))+'</h2><p class="product-description">'+esc(p.description||'商品情報は本店ページでもご確認いただけます。')+'</p>';
- if(id==='spec'){var rows=spec('内容量',p.contents)+spec('サイズ',p.size)+spec('材質',p.material)+spec('賞味期限',p.expiry)+spec('アレルゲン',p.allergens)+spec('保存方法',p.storage);return rows?'<table class="spec">'+rows+'</table>':''}
+ if(id==='spec'){var rows=spec('内容量',p.contents)+spec('サイズ',p.size)+spec('材質',p.material)+spec('賞味期限',p.expiry)+spec('原材料',p.ingredients)+spec('アレルゲン',p.allergens)+spec('保存方法',p.storage);return rows?'<table class="spec">'+rows+'</table>':''}
  if(id==='notes')return notesHtml(p);
  if(id==='source')return p.sourceUrl?'<a class="source-link" href="'+esc(p.sourceUrl)+'" target="_blank" rel="noopener">'+esc(T('item.source','本店の商品情報を見る ↗'))+'</a>':'';
  if(id==='recommend')return recoHtml(p);
@@ -44,6 +44,8 @@ if(detail){
  host.querySelector('.pdp').insertAdjacentHTML('afterend',ProductDetail.backLink(detail)+ProductDetail.content(detail,p)+keepNotes+ProductDetail.help(p)+ProductDetail.related(detail));
  ProductDetail.bind(host,p,detail);
 }
+// 本店の商品ページの写真（1枚目はメイン、続けて本店の並び順の説明写真）。詳細表示のない商品も切り替え・拡大できる。
+if(!detail&&p.photos&&p.photos.length>1){var photoSet={photos:p.photos};host.querySelector('.gal').innerHTML=ProductDetail.gallery(p,photoSet);ProductDetail.bind(host,p,photoSet)}
 var q=document.getElementById('qq'),select=document.getElementById('product-sku');
 function unit(){return window.ShopServices?ShopServices.unit(p,select?Number(select.value):0,Number(q.value)||1):p.price}
 function update(){var n=Number(q.value),valid=Number.isInteger(n)&&n>0&&n<=999,total=valid?n*unit():0;document.getElementById('product-price').innerHTML=money(unit())+'<small> 税込'+(p.pack===50?'／50個セット':'')+'</small>';document.getElementById('sum2').textContent=valid?money(total):'数量を確認してください';document.getElementById('bar2').style.width=Math.min(100,total/20000*100)+'%';document.getElementById('ship2').textContent=total>=20000?'送料無料になりました':'あと'+money(20000-total)+'で送料無料';document.getElementById('spp').innerHTML=valid?money(total)+'<small>税込・'+n+(p.pack===50?'セット':'個')+'</small>':'数量を確認してください'}

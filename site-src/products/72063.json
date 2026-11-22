@@ -36,7 +36,28 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 1,
+      "max": 2,
+      "made": false,
+      "source": "db",
+      "label": "1～2日後"
+    },
+    "photos": [
+      {
+        "src": "images/1891.jpg",
+        "alt": "祝かるた(ハートせんべい) 商品写真1",
+        "width": 520,
+        "height": 390
+      },
+      {
+        "src": "images/product-details/72063/1891_1.jpg",
+        "alt": "祝かるた(ハートせんべい) 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

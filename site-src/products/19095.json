@@ -36,7 +36,58 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/19095.jpg",
+        "alt": "ディズニー席次表セット \"和風モダン 桜ピンク\" 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/19095/ae4ea8d5559cb1d363d8181a4287acd0.jpg",
+        "alt": "ディズニー席次表セット \"和風モダン 桜ピンク\" 商品写真2",
+        "width": 1000,
+        "height": 750
+      },
+      {
+        "src": "images/product-details/19095/e5e7a129a8c83f8cdc00f2ace0f3d373.jpg",
+        "alt": "ディズニー席次表セット \"和風モダン 桜ピンク\" 商品写真3",
+        "width": 1000,
+        "height": 750
+      },
+      {
+        "src": "images/product-details/19095/57eb1c867ec759a17b10bce2bee6b31f.jpg",
+        "alt": "ディズニー席次表セット \"和風モダン 桜ピンク\" 商品写真4",
+        "width": 200,
+        "height": 70
+      },
+      {
+        "src": "images/product-details/19095/11.jpg",
+        "alt": "ディズニー席次表セット \"和風モダン 桜ピンク\" 商品写真5",
+        "width": 600,
+        "height": 498
+      },
+      {
+        "src": "images/product-details/19095/w2005_30.jpg",
+        "alt": "ディズニー席次表セット \"和風モダン 桜ピンク\" 商品写真6",
+        "width": 600,
+        "height": 424
+      },
+      {
+        "src": "images/product-details/19095/w2005_p.jpg",
+        "alt": "ディズニー席次表セット \"和風モダン 桜ピンク\" 商品写真7",
+        "width": 600,
+        "height": 424
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

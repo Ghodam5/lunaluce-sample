@@ -131,7 +131,58 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/38791.jpg",
+        "alt": "子育て卒業証書 ピンク【送料無料】 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/38791/j-b05p_main.jpg",
+        "alt": "子育て卒業証書 ピンク【送料無料】 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/38791/kosodate01.jpg",
+        "alt": "子育て卒業証書 ピンク【送料無料】 商品写真3",
+        "width": 650,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/38791/kosodate05p.jpg",
+        "alt": "子育て卒業証書 ピンク【送料無料】 商品写真4",
+        "width": 650,
+        "height": 570
+      },
+      {
+        "src": "images/product-details/38791/kosodate02-l.jpg",
+        "alt": "子育て卒業証書 ピンク【送料無料】 商品写真5",
+        "width": 650,
+        "height": 1280
+      },
+      {
+        "src": "images/product-details/38791/kosodate03-l.jpg",
+        "alt": "子育て卒業証書 ピンク【送料無料】 商品写真6",
+        "width": 650,
+        "height": 740
+      },
+      {
+        "src": "images/product-details/38791/b_kosodate.jpg",
+        "alt": "子育て卒業証書 ピンク【送料無料】 商品写真7",
+        "width": 650,
+        "height": 180
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

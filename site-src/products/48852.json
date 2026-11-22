@@ -148,7 +148,41 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "min-qty",
+      "bulk-100",
+      "spec-change",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb302oiwaikairo.jpg",
+        "alt": "名入れ対応プチギフト 御祝カイロPB(かいろ1枚入り) 1個 お年賀 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/48852/pb302oiwaikairo-01.jpg",
+        "alt": "名入れ対応プチギフト 御祝カイロPB(かいろ1枚入り) 1個 お年賀 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/48852/pb302oiwaikairo-02.jpg",
+        "alt": "名入れ対応プチギフト 御祝カイロPB(かいろ1枚入り) 1個 お年賀 商品写真3",
+        "width": 702,
+        "height": 705
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

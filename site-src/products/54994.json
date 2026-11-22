@@ -36,7 +36,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/features/emergencytrunk.jpg",
+        "alt": "保存食2日分 トランクギフト(バスタオル付き) 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/54994/emergencytrunkimg01.jpg",
+        "alt": "保存食2日分 トランクギフト(バスタオル付き) 商品写真2",
+        "width": 700,
+        "height": 840
+      },
+      {
+        "src": "images/product-details/54994/emergencytrunkimg02.jpg",
+        "alt": "保存食2日分 トランクギフト(バスタオル付き) 商品写真3",
+        "width": 700,
+        "height": 850
+      }
+    ]
   },
   "feature": {
     "id": "54994",

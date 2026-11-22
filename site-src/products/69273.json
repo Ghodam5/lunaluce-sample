@@ -36,7 +36,21 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "photos": [
+      {
+        "src": "images/products/69273.jpg",
+        "alt": "【演出用品】ゲストブック シャイニー ホワイト 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69273/1843_1.jpg",
+        "alt": "【演出用品】ゲストブック シャイニー ホワイト 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

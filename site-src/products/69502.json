@@ -121,14 +121,54 @@
       "min": 14,
       "max": 14,
       "made": true,
-      "source": "本文"
+      "source": "db",
+      "label": "約2週間後"
     },
     "notes": [
       "order-mail",
       "made-to-order",
       "cancel-if-late",
       "no-cancel-after",
+      "bulk-100",
       "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb281mickeypoche.jpg",
+        "alt": "disney ミッキー&フレンズのスイーツポシェットPB(ハニー… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/69502/pb281mickeypoche-01.jpg",
+        "alt": "disney ミッキー&フレンズのスイーツポシェットPB(ハニー… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69502/pb281mickeypoche-02.jpg",
+        "alt": "disney ミッキー&フレンズのスイーツポシェットPB(ハニー… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69502/dseal05-kyotu1.jpg",
+        "alt": "disney ミッキー&フレンズのスイーツポシェットPB(ハニー… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69502/dseal05-kyotu2n.jpg",
+        "alt": "disney ミッキー&フレンズのスイーツポシェットPB(ハニー… 商品写真5",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69502/dseal05-tuika.jpg",
+        "alt": "disney ミッキー&フレンズのスイーツポシェットPB(ハニー… 商品写真6",
+        "width": 700,
+        "height": 999
+      }
     ]
   },
   "commerce": {

@@ -94,7 +94,46 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/72305.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カタログタイプ＞ 商品写真1",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72305/cp0087_1.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カタログタイプ＞ 商品写真2",
+        "width": 501,
+        "height": 501
+      },
+      {
+        "src": "images/product-details/72305/cp0087_2.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カタログタイプ＞ 商品写真3",
+        "width": 500,
+        "height": 501
+      },
+      {
+        "src": "images/product-details/72305/cp0087_3.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カタログタイプ＞ 商品写真4",
+        "width": 500,
+        "height": 500
+      },
+      {
+        "src": "images/product-details/72305/cp0087_4.jpg",
+        "alt": "SHIKISAI ONE オレンジカラーコース＜カタログタイプ＞ 商品写真5",
+        "width": 501,
+        "height": 500
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

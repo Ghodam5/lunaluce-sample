@@ -37,7 +37,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71175.jpg",
+        "alt": "【引菓子】缶入りデニッシュパンセットB A690 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71175/a690_1.jpg",
+        "alt": "【引菓子】缶入りデニッシュパンセットB A690 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "listing": {
     "image": "images/products/71175.jpg"

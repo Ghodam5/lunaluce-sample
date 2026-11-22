@@ -175,7 +175,28 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/wb-p971_p975.jpg",
+        "alt": "和風色紙ボード 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/2259/imgWB-P971_P975.jpg",
+        "alt": "和風色紙ボード 商品写真2",
+        "width": 700,
+        "height": 890
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

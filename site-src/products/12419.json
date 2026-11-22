@@ -36,7 +36,64 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/12419.jpg",
+        "alt": "ディズニー招待状セット \"シルエット\" 商品写真1",
+        "width": 800,
+        "height": 589
+      },
+      {
+        "src": "images/product-details/12419/W1004-4.jpg",
+        "alt": "ディズニー招待状セット \"シルエット\" 商品写真2",
+        "width": 1200,
+        "height": 1105
+      },
+      {
+        "src": "images/product-details/12419/W1004-3.jpg",
+        "alt": "ディズニー招待状セット \"シルエット\" 商品写真3",
+        "width": 1200,
+        "height": 929
+      },
+      {
+        "src": "images/product-details/12419/W1004-21.jpg",
+        "alt": "ディズニー招待状セット \"シルエット\" 商品写真4",
+        "width": 1200,
+        "height": 779
+      },
+      {
+        "src": "images/product-details/12419/W1001-10043.jpg",
+        "alt": "ディズニー招待状セット \"シルエット\" 商品写真5",
+        "width": 1200,
+        "height": 875
+      },
+      {
+        "src": "images/product-details/12419/W1001-04-23.jpg",
+        "alt": "ディズニー招待状セット \"シルエット\" 商品写真6",
+        "width": 1200,
+        "height": 795
+      },
+      {
+        "src": "images/product-details/12419/57eb1c867ec759a17b10bce2bee6b31f.jpg",
+        "alt": "ディズニー招待状セット \"シルエット\" 商品写真7",
+        "width": 200,
+        "height": 70
+      },
+      {
+        "src": "images/product-details/12419/11.jpg",
+        "alt": "ディズニー招待状セット \"シルエット\" 商品写真8",
+        "width": 600,
+        "height": 498
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",
