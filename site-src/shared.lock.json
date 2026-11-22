@@ -1,6 +1,7 @@
 {
   "cart.css": "de142ed54104392d584ae32e31dd7a3a8c4a360fa5566b82e3517aa0c1e6a20d",
   "catico.js": "cefc47c8062099f0c11c3fee860946488333697e3827081ced44b37e0eb87434",
+  "delivery-notes.css": "d4a97d7300af35fe56d1366f4046f6b41c7620dd29d4d043c7774809dd99987d",
   "features.css": "2065a46f5e1adf0ea058a0e92afed95c0999082d73a7a967da312df677a6b8e0",
   "header-scroll.js": "e647f045d4e185cc526372cf5a01394dffc3d253b3311e164850989efc7faad3",
   "home-guides.css": "f3a150bff00249f0c1b863d87e9596bc93fbe45313b2c8a20e7bc80120f87d3b",
@@ -52,7 +53,7 @@
   "site-src/shared/share-head.html": "8debec697f5d97411d175754bca05dbabd226ab838c51ec02bba6a6a9a2df089",
   "site-src/shared/share-script.html": "03a3fbdc2729bac152b9e385dba13d4abb5bf2701205759eebc01dd992220ab5",
   "site-src/shared/shipping.html": "5e697968f7d370907073472da553c8bb5d4723690019b37f9da14d96e57178e4",
-  "site-src/styles/manifest.json": "b2edb309a54ab57e444b2fa96a5e18ec4d008e740eeb213f4482aa03c45a0661",
+  "site-src/styles/manifest.json": "6697c8d5dfa4d723fe6447bec03857fc5fa33f4d3d216afd208cf1b76dde7c14",
   "style.css": "b37729fce6a1957adbfc9e6d01acc6c0558a082e170a87c6995ce8e5fb6528b9",
   "support.css": "de9f5b75903d67bdc7c36929d0a4b212c95b6d12ad2cc8a2371a2f1231ae70c6",
   "touch-guard.js": "de6445726ca495907f16a0c745ad083a7bac500800d9df009459426d304f84b2",

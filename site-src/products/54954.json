@@ -98,7 +98,16 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "本文"
+    },
+    "notes": [
+      "season-delay"
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",
