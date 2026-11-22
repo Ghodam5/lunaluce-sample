@@ -350,7 +350,7 @@
     [data-part="builder-editor"] .days-cal-nav { align-items: center; justify-content: space-between; flex-wrap: nowrap; }
     [data-part="builder-editor"] .days-cal-nav button { min-height: 40px; padding: 4px 14px; }
     [data-part="builder-editor"] .days-cal-title { font-size: 17px; }
-    [data-part="builder-editor"] .days-months { display: flex; gap: 4px; overflow-x: auto; padding: 2px 0 8px; scrollbar-width: thin; }
+    [data-part="builder-editor"] .days-months { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 0 8px; scrollbar-width: thin; }
     [data-part="builder-editor"] .days-months button { flex: 0 0 auto; min-height: 30px; font-size: 12px; padding: 2px 9px; border-radius: 14px; }
     [data-part="builder-editor"] .days-months button.is-on { background: var(--ink, #2b2620); color: #fff; border-color: var(--ink, #2b2620); }
     [data-part="builder-editor"] .days-cal .days-cal-grid { grid-template-columns: 44px repeat(7, minmax(0, 1fr)); gap: 4px; }
@@ -511,8 +511,10 @@
     [data-part="builder-editor"] .lay-col h4 { margin: 0; font-size: 14px; }
     [data-part="builder-editor"] .lay-col .muted { margin: 2px 0 6px; font-size: 12px; }
     [data-part="builder-editor"] .lay-list { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
-    [data-part="builder-editor"] .lay-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
-    [data-part="builder-editor"] .lay-name { flex: 1 1 140px; min-width: 0; overflow-wrap: anywhere; }
+    [data-part="builder-editor"] .lay-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 4px 8px; padding: 4px 0; border-bottom: 1px dashed #eee5d8; }
+    [data-part="builder-editor"] .lay-list li.muted { display: list-item; border: 0; }
+    [data-part="builder-editor"] .lay-name { min-width: 0; overflow-wrap: anywhere; }
+    [data-part="builder-editor"] .lay-list .lay-tools { grid-column: 2; }
     [data-part="builder-editor"] .lay-tools { display: flex; flex-wrap: wrap; gap: 4px; }
     [data-part="builder-editor"] .lay-tools button, [data-part="builder-editor"] .lay-hidden button { font-size: 12px; padding: 3px 9px; min-height: 30px; border-radius: 999px; border: 1px solid #d8cfc2; background: #fff; cursor: pointer; }
     [data-part="builder-editor"] .lay-tools button:disabled { opacity: .4; cursor: default; }
@@ -533,7 +535,42 @@
     [data-part="builder-editor"] .store-tbl, [data-part="builder-preview"] .store-tbl { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
     .store-tbl th, .store-tbl td { border: 1px solid #e6dccb; padding: 6px; text-align: left; vertical-align: middle; }
     .store-tbl thead th { background: #f6f1e8; }
-    .store-tbl input[type="number"] { width: 6.5em; }
+    .store-tbl input[type="number"] { width: 6.5em; min-width: 5em; }
+    .store-tbl select { min-width: 5.5em; }
+    .store-tbl button, .store-tbl .switch, .store-tbl th { white-space: nowrap; }
+    .store-tbl .switch span { white-space: nowrap; }
+    .store-tbl td:has(> .store-now) { white-space: nowrap; }
+    .store-tbl .store-now { display: block; margin-top: 2px; }
+    .store-tbl-wrap { overflow-x: auto; container-type: inline-size; }
+    .store-taxes { container-type: inline-size; }
+    @container (max-width: 720px) {
+      .store-rates thead { display: none; }
+      .store-rates, .store-rates tbody { display: block; }
+      .store-rates tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 10px; border: 1px solid #e6dccb; border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+      .store-rates tr.is-now { background: #eef8f1; } .store-rates tr.is-off { background: #f6f3ee; }
+      .store-rates td { border: 0; padding: 0; min-width: 0; background: transparent !important; }
+      .store-rates td[data-l]::before { content: attr(data-l); display: block; font-size: 11px; color: #7a6f63; margin-bottom: 2px; }
+      .store-rates td.del { align-self: end; text-align: right; }
+      .store-rates input[type="date"], .store-rates input[type="text"] { width: 100%; min-width: 0; }
+      .store-rates input[type="number"] { width: 100%; min-width: 3.5em; }
+    }
+    @container (max-width: 440px) {
+      .store-rates td:first-child { grid-column: 1 / -1; }
+      .store-rates td.use { align-self: center; }
+    }
+    @container (max-width: 520px) {
+      .store-regions thead { display: none; }
+      .store-regions, .store-regions tbody { display: block; }
+      .store-regions tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px 10px; border: 1px solid #e6dccb; border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+      .store-regions th, .store-regions td { border: 0; padding: 0; min-width: 0; background: transparent; }
+      .store-regions [data-l]::before { content: attr(data-l); display: block; font-size: 11px; color: #7a6f63; margin-bottom: 2px; font-weight: 400; }
+      .store-regions input[type="text"], .store-regions input[type="number"], .store-regions select { width: 100%; min-width: 0; }
+    }
+    @container (max-width: 720px) {
+      .store-tax { grid-template-columns: minmax(0, 1fr) auto; }
+      .store-tax .nm { grid-column: 1 / -1; }
+      .store-tax select { min-width: 0; width: 100%; }
+    }
     .store-tbl input[type="text"] { width: 100%; min-width: 6em; }
     .store-tbl tr.is-off td { background: #f6f3ee; color: var(--taupe-light, #8a7f73); }
     .store-tbl tr.is-now td { background: #eef8f1; }
@@ -548,3 +585,5 @@
     .pv-storebar b { background: #7a5c3e; color: #fff; border-radius: 4px; padding: 1px 5px; margin-right: 4px; font-size: 11px; }
     .pv-storeft { border: 1px solid #e6dccb; border-radius: 8px; padding: 8px 10px; font-size: 12px; background: #fbf8f2; }
     .pv-storeft ul { margin: 4px 0 0; padding-left: 1.2em; }
+    .unit-in { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .unit-in input { flex: 1 1 auto; min-width: 0; }
