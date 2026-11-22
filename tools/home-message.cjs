@@ -5,6 +5,8 @@
 const fs = require('node:fs'), path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const STYLES = { main: 'co', sub: 'wh' };
+// 写真の上の演出（CSS は home-promos.css の data-fx）。書いていなければ花びら
+const EFFECTS = ['petals', 'snow', 'confetti', 'sparkle', 'none'];
 // 写真の縦横（ページの揺れを防ぐ width/height 用）。JPEG・PNG だけ読む。読めなければ null
 function imageSize(file) {
   try {
@@ -46,6 +48,7 @@ function check(row, id, ok) {
   if (row.badge !== undefined && (typeof row.badge !== 'string' || row.badge.length > 30)) throw Error(id + ': バッジは30文字まで');
   if (row.alt !== undefined && (typeof row.alt !== 'string' || row.alt.length > 120)) throw Error(id + ': 写真の説明は120文字まで');
   if (!ok.image(row.image)) throw Error(id + ': 写真がありません');
+  if (row.effect !== undefined && !EFFECTS.includes(row.effect)) throw Error(id + ': 写真の上の演出が不正');
   if (!Array.isArray(row.buttons) || row.buttons.length < 1 || row.buttons.length > 2) throw Error(id + ': ボタンは1〜2つ');
   for (const b of row.buttons) {
     if (!b || typeof b.label !== 'string' || !b.label.trim() || b.label.length > 30) throw Error(id + ': ボタンの文字を1〜30文字で入れてください');
@@ -58,9 +61,10 @@ function card(row, first) {
   const tag = first ? 'h1' : 'h2';
   const wh = imageSize(row.image);
   const img = '<img src="' + esc(row.image) + '" alt="' + esc(row.alt || '') + '"' + (wh ? ' width="' + wh[0] + '" height="' + wh[1] + '"' : '') + (first ? ' fetchpriority="high"' : ' loading="lazy"') + '>';
-  const petals = ['l1', 'l2', 'l3', 'r1', 'r2', 'r3'].map(c => '<i class="pt ' + c + '"></i>').join('');
+  const fx = row.effect || 'petals';
+  const petals = fx === 'none' ? '' : ['l1', 'l2', 'l3', 'r1', 'r2', 'r3'].map(c => '<i class="pt ' + c + '"></i>').join('');
   const btns = row.buttons.map(b => '<a class="btn ' + STYLES[b.style] + '" href="' + esc(b.href) + '">' + esc(b.label) + '</a>').join('');
-  return '<div class="main-bn" data-promo-id="' + esc(row.id) + '"' + (row.theme && row.theme !== 'cream' ? ' data-theme="' + esc(row.theme) + '"' : '') + '><div class="ph">' + img + petals + '</div>\n' +
+  return '<div class="main-bn" data-promo-id="' + esc(row.id) + '"' + (row.theme && row.theme !== 'cream' ? ' data-theme="' + esc(row.theme) + '"' : '') + (fx !== 'petals' ? ' data-fx="' + fx + '"' : '') + '><div class="ph">' + img + petals + '</div>\n' +
     '  <div class="tx">' + (row.badge && row.badge.trim() ? '<span class="pill">' + esc(row.badge) + '</span>' : '') + '<' + tag + '>' + headlineHtml(row.headline, row.accent) + '</' + tag + '>\n' +
     '   <p>' + esc(row.text) + '</p>\n' +
     '   <div class="btns">' + btns + '</div></div></div>';
@@ -69,4 +73,4 @@ function card(row, first) {
 function html(rows) {
   return rows.filter(r => r.kind === 'message').map((r, i) => card(r, i === 0)).join('\n');
 }
-module.exports = { check, html, headlineHtml, accentRange };
+module.exports = { check, html, headlineHtml, accentRange, EFFECTS };

@@ -22,3 +22,13 @@ test('最初の1枚だけ h1、2枚目からは h2。ボタンは色の種類ご
   a.match(html, /<a class="btn co" href="name-preview.html">試す<\/a><a class="btn wh" href="#rank">売れ筋<\/a>/);
   a.equal((html.match(/class="pill"/g) || []).length, 1);
 });
+test('写真の上の演出: 書いていなければ花びら、none は粒を出さない、知らない名前は断る', () => {
+  a.match(m.html([row()]), /<i class="pt l1">/);
+  a.doesNotMatch(m.html([row()]), /data-fx/);
+  const snow = Object.assign(row(), { effect: 'snow' });
+  a.match(m.html([snow]), /data-fx="snow"/);
+  const none = Object.assign(row(), { effect: 'none' });
+  a.doesNotMatch(m.html([none]), /class="pt/);
+  a.throws(() => m.check(Object.assign(row(), { effect: 'fireworks' }), 'intro', ok));
+  for (const e of m.EFFECTS) m.check(Object.assign(row(), { effect: e }), 'intro', ok);
+});
