@@ -5,7 +5,7 @@
 // 商品ごとに変えるとき → 商品の layout（同じ形 { side, below }）。SNSでシェアは全ページ共通の必須部品なので外せない。
     const LAYOUT_PARTS = [
       ['delivery', 'お届けまでの日数'], ['buy', '購入欄（数量・カートに入れる）'], ['description', '商品の説明'], ['spec', '内容量・サイズなどの表'], ['notes', 'ご注文の前に（注意事項）'], ['source', '本店の商品情報へのリンク'],
-      ['recommend', 'こちらもおすすめ（ほかの商品）'], ['share', 'SNSでシェア'], ['trial', '名入れを試せる商品']
+      ['recommend', 'こちらもおすすめ（ほかの商品）'], ['share', 'SNSでシェア'], ['trial', '名入れができる商品']
     ];
     const LAYOUT_DEFAULT = { side: ['delivery', 'buy', 'description', 'spec', 'notes', 'source'], below: ['recommend', 'share', 'trial'] };
     function builderLayoutLabel(id) { const x = LAYOUT_PARTS.find(function (p) { return p[0] === id; }); return x ? x[1] : id; }

@@ -327,7 +327,17 @@
     [data-part="builder-editor"] .days-legend .lg { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid transparent; margin-left: 6px; }
     [data-part="builder-editor"] .days-add { align-items: flex-end; }
     [data-part="builder-editor"] textarea.days-copy { width: 100%; box-sizing: border-box; font-family: inherit; font-size: 13px; margin: 4px 0 6px; }
-    [data-part="builder-editor"] .days-stop { margin-top: 16px; }
+    [data-part="builder-editor"] .days-stop { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: flex-start; }
+    [data-part="builder-editor"] .days-stop-btn { color: #b42318; font-weight: 700; border: 2px solid #b42318; background: #fff; border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+    [data-part="builder-editor"] .days-stop-btn:hover { background: #fdecea; }
+    [data-part="builder-editor"] .days-stop-why { flex: 1 1 260px; margin: 0; font-size: 13px; line-height: 1.6; color: #7a271a; }
+    [data-part="builder-editor"] .days-stop-why b { color: #b42318; }
+    [data-part="builder-editor"] .txt-list { display: grid; gap: 8px; }
+    [data-part="builder-editor"] .txt-was { font-weight: 400; color: #8a6d3b; margin-left: 6px; }
+    [data-part="builder-preview"] .txt-pv { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 12px; }
+    [data-part="builder-preview"] .txt-pv li { border: 1px solid #e5dccf; border-radius: 8px; padding: 6px 8px; background: #fff; display: grid; gap: 2px; }
+    [data-part="builder-preview"] .txt-pv li.is-changed { border-color: #8fc6c0; background: #eef8f6; }
+    [data-part="builder-preview"] .txt-pv small { color: #7a6f63; }
     /* 2.22 元に戻す・やり直す（左の列の上に固定） */
     [data-part="builder-list"] .hist-bar { position: sticky; top: 0; z-index: 3; display: flex; gap: 6px; padding: 6px 0 8px; margin-bottom: 4px; background: var(--surface, #fff); border-bottom: 1px solid var(--line, #e5dccf); }
     [data-part="builder-list"] .hist-bar button { flex: 1; font-size: 13px; padding: 6px 8px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }

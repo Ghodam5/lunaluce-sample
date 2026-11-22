@@ -15,7 +15,7 @@
 
     function builderSnapshot() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, catHidden: b.catHidden, pageLayout: b.pageLayout, noteTemplates: b.noteTemplates, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, catHidden: b.catHidden, pageLayout: b.pageLayout, texts: b.texts, noteTemplates: b.noteTemplates, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans });
     }
     function builderDirty() {
       return state.builder.ready && builderSnapshot() !== state.builder.base;
@@ -52,6 +52,8 @@
         b.catHidden = {};
         b.pageLayoutBase = data.productLayout || null; // 39-builder-layout（サイトの site-src/product-layout.json）
         b.pageLayout = null;
+        b.textsBase = Array.isArray(data.siteTexts) ? data.siteTexts : null; // 40-builder-texts（サイトの site-src/site-texts.json）
+        b.texts = {};
         b.noteTemplates = Array.isArray(data.noticeTemplates) ? cloneData(data.noticeTemplates) : null; // 37-builder-delivery（無ければ標準の定型文）
         b.days = { weekly: [0, 6], off: [], on: [], am: [], long: [] }; // 営業日はOMSで管理するのが基本（2.21）
         b.news = [];
@@ -77,6 +79,7 @@
             b.catNames = saved.catNames && typeof saved.catNames === 'object' ? saved.catNames : {};
             b.catHidden = saved.catHidden && typeof saved.catHidden === 'object' ? saved.catHidden : {};
             if (saved.pageLayout && Array.isArray(saved.pageLayout.side)) b.pageLayout = builderLayoutClean(saved.pageLayout);
+            if (saved.texts && typeof saved.texts === 'object') b.texts = saved.texts;
             if (Array.isArray(saved.noteTemplates)) b.noteTemplates = saved.noteTemplates;
             b.listing = saved.listing || {};
             b.plans = saved.plans || [];
@@ -334,7 +337,7 @@
       return out;
     }
     function builderAllErrors() {
-      const out = builderNoticeErrors().concat(builderStockErrors()).concat(builderDaysErrors()).concat(builderNewsErrors()).concat(builderSectionsErrors()).concat(builderListingErrors()).concat(builderPlanErrors()).concat(builderCatNamesErrors()).concat(builderNotesErrors());
+      const out = builderTextsErrors().concat(builderNoticeErrors()).concat(builderStockErrors()).concat(builderDaysErrors()).concat(builderNewsErrors()).concat(builderSectionsErrors()).concat(builderListingErrors()).concat(builderPlanErrors()).concat(builderCatNamesErrors()).concat(builderNotesErrors());
       state.builder.newProducts.forEach(function (p) {
         builderProductErrors(p).forEach(function (e) { out.push((p.edit ? '編集中の商品 ' : '新しい商品 ') + (p.title || p.id) + ': ' + e); });
       });
@@ -401,6 +404,8 @@
         hiddenCategories: builderCatHiddenExport(),
         // 商品ページの段組み（side = 写真の右 / below = 写真の下）。サイトの site-src/product-layout.json
         productLayout: builderLayoutExport(),
+        // 表示する文字（{ key, text } の並び）。サイトの site-src/site-texts.json
+        texts: builderTextsExport(),
         // 注意事項の定型文（site-src/notice-templates.json の templates と同じ形）。商品の notes はこの id を並べる
         noticeTemplates: builderNotesExport(),
         // 出す・出さないと販売期間（source: site=新サイト / w=本店だけ / new=新しい商品）。企画に入った商品は企画の期間

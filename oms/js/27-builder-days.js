@@ -254,7 +254,8 @@
         '<h3>この日は営業する（毎週のお休みの例外）</h3>' + range('on', '営業する日', '営業日に足す') + builderDaysList(d.on, 'on') +
         '<h3>午前だけ営業（一部）</h3>' + range('am', '午前だけの日', '午前だけに足す') + builderDaysList(d.am, 'am') + '</details>' +
         '<h3>楽天・Yahoo用のお休み一覧</h3><p class="muted">今日から1年分のお休み（毎週のお休み・長期休暇も含む）です。各店の営業日設定に写すときに使ってください。' + (half.length ? '午前だけ営業の日は ' + half.map(function (x) { return x.replace(/-/g, '/'); }).join('・') + ' です。' : '') + '</p><textarea class="days-copy" rows="4" readonly>' + escapeHtml(copy) + '</textarea><button type="button" data-b="days-copy">一覧をコピー</button>' +
-        '<p class="days-stop"><button type="button" data-b="days-stop">OMSでの管理をやめる（本店のWelcartの設定のままにする）</button></p>';
+        '<div class="days-stop"><button type="button" class="days-stop-btn" data-b="days-stop">OMSでの管理をやめる（本店のWelcartの設定のままにする）</button>' +
+          '<p class="days-stop-why"><b>ふだんは押さないでください。</b>押すと、ここで決めたお休み（毎週のお休み・長期休暇・お休みにした日）がすべて消え、書き出しても本店・新サイトの営業日カレンダーとお届け日の計算に入らなくなります。長期休暇のお知らせも自動で出なくなります。押してしまったときは「↶ 元に戻す」で戻せます。</p></div>';
     }
     function builderDaysPreview() {
       const d = builderDaysNorm(state.builder.days);
