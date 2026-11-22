@@ -52,7 +52,7 @@
         const reset = (state.onlyUrgent || state.onlyWarning)
           ? '<button type="button" class="reset" data-action="reset-special">× 特別絞り込み解除</button>'
           : '';
-        host.innerHTML = '<div class="block"><span class="cap">販路:</span>' + channels + '</div><div class="block"><label class="search-wrap">検索<input data-action="search" type="search" placeholder="注文番号・顧客名・新郎新婦名・商品名" value="' + escapeHtml(search) + '"></label><button type="button" class="manual" data-action="open-manual">＋ 電話・FAX注文 手動登録</button></div><div class="block status"><span class="cap">工程:</span>' + statuses + reset + '</div>';
+        host.innerHTML = '<div class="block"><span class="cap">販路:</span>' + channels + '</div><div class="block"><label class="search-wrap">検索<input data-action="search" type="search" placeholder="注文番号・顧客名・新郎新婦名・商品名・SKU（あいまいでも探せます）" autocomplete="off" value="' + escapeHtml(search) + '"></label><button type="button" class="manual" data-action="open-manual">＋ 電話・FAX注文 手動登録</button></div><div class="block status"><span class="cap">工程:</span>' + statuses + reset + '</div>';
       }
       paint();
       on('oms:filters', paint);
@@ -78,7 +78,7 @@
           ['挙式日 / 残日数', escapeHtml(order.weddingDate || '—') + (when ? '<br>' + when : '') + (order.rushTicket ? ' <span class="mini rush">特急チケット</span>' : '')],
           ['納期', dueText],
           ['販路 / 注文番号', '<span class="badge ch-' + order.channel + '">' + escapeHtml(order.channelLabel) + '</span><br>' + escapeHtml(order.id)],
-          ['注文者 / 配送先', escapeHtml(order.customerName) + ' 様<br>' + escapeHtml(order.shippingTo)],
+          ['注文者 / 配送先', escapeHtml(order.customerName) + ' 様<br>' + escapeHtml(piiText(order.shippingTo))],
           ['商品・数量・金額', escapeHtml(order.productName) + '<br>' + escapeHtml(order.sku) + ' × ' + order.qty + '点 ' + formatYen(order.amount) + '<br>内訳 ' + PART_KEYS.map(function (part) { return part.short + counts[part.key]; }).join('・')],
           ['名入れ', escapeHtml(order.coupleNames) + (order.warning ? ' <span class="mini soon">要確認</span>' : ' <span class="mini done">正規化済</span>') + '<br>' + escapeHtml(order.fontStyle)],
           ['オプション・料金・印', escapeHtml(order.noshiSeal) + '<br>' + escapeHtml(extra) + '<br>のし ' + formatYen(fees.noshi) + ' / 包装 ' + formatYen(fees.wrapping) + (order.campaignMark ? '<br><span class="mini mark">「' + escapeHtml(order.campaignMark) + '」</span>' : '')],

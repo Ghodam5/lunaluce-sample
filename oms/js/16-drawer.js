@@ -255,7 +255,7 @@
         const rows = [
           ['販路', order.channelLabel],
           ['注文者', order.customerName + ' 様'],
-          ['お届け先', order.shippingTo],
+          ['お届け先', piiText(order.shippingTo)],
           ['商品', order.productName + ' / ' + order.sku],
           ['親数量', String(order.qty)],
           ['内訳', PART_KEYS.map(function (part) { return part.label + ' ' + counts[part.key]; }).join('、')],
@@ -346,7 +346,7 @@
     function renderDrawerRaw(host) {
       function paint() {
         const order = currentOrder();
-        if (!order) { host.innerHTML = ''; return; }
+        if (!order || piiHidden()) { host.innerHTML = ''; return; } // 原文には住所・電話が入ることがある
         host.innerHTML = '<h3>受信メモ</h3><p class="sub">ダミーの原文です。本番の取込ではありません</p><pre></pre>';
         host.querySelector('pre').textContent = JSON.stringify(order.rawPayload, null, 2);
       }
@@ -355,7 +355,11 @@
     function renderDrawerActions(host) {
       function paint() {
         if (!currentOrder()) { host.innerHTML = ''; return; }
-        host.innerHTML = '<h3>この注文の出力</h3><button type="button" class="wo-btn" data-action="work-order"><span>作業指示書を印刷・PDF保存</span><span>各部署に回す紙</span></button><div class="grid"><button type="button" class="a1" data-action="single" data-kind="laser"><span>レーザー加工用CSV出力</span><span>CSV</span></button><button type="button" class="a2" data-action="single" data-kind="yamato"><span>ヤマトB2クラウドCSV出力</span><span>B2</span></button><button type="button" class="a3" data-action="single" data-kind="email"><span>校正確認メールを記録</span><span>記録</span></button><button type="button" class="a4" data-action="single" data-kind="ship"><span>出荷済みにする（API送信なし）</span><span>状態</span></button></div>';
+        host.innerHTML = '<h3>この注文の出力</h3><p class="sub">作業指示書（各部署に回す紙）。右上のQRコードをiPhoneで写すと、その注文のスマホ作業画面が開きます</p><div class="wk-out">' +
+          '<button type="button" class="wo-btn" data-action="work-output" data-kind="pdf"><span>PDF保存</span><span>作業指示書をPDFにする</span></button>' +
+          '<button type="button" class="wo-btn" data-action="work-output" data-kind="print"><span>PDF印刷</span><span>作業指示書を紙に出す</span></button>' +
+          '<button type="button" class="wo-btn is-phone" data-action="work-output" data-kind="phone"><span>スマホで作業開始</span><span>QRコードを出す</span></button></div>' +
+          (piiHidden() ? '' : '<div class="grid"><button type="button" class="a1" data-action="single" data-kind="laser"><span>レーザー加工用CSV出力</span><span>CSV</span></button><button type="button" class="a2" data-action="single" data-kind="yamato"><span>ヤマトB2クラウドCSV出力</span><span>B2</span></button><button type="button" class="a3" data-action="single" data-kind="email"><span>校正確認メールを記録</span><span>記録</span></button><button type="button" class="a4" data-action="single" data-kind="ship"><span>出荷済みにする（API送信なし）</span><span>状態</span></button></div>');
       }
       on('oms:open', paint);
     }
@@ -376,7 +380,8 @@
       { name: 'drawer-stock', render: renderDrawerStock },
       { name: 'drawer-edit', render: renderDrawerEdit },
       { name: 'drawer-raw', render: renderDrawerRaw },
-      { name: 'drawer-actions', render: renderDrawerActions }
+      { name: 'drawer-actions', render: renderDrawerActions },
+      { name: 'drawer-worklog', render: function (host) { renderDrawerWorkLog(host); } } // 本体は js/52-work-log
     ];
     function renderDrawer(host) {
       host.innerHTML = '<div class="drawer-backdrop" data-action="close-drawer" hidden></div><aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden><div data-slot="head"></div><div class="drawer-body" data-slot="body"></div></aside>';

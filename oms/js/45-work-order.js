@@ -10,6 +10,12 @@
       { id: 'pack', label: '梱包', note: 'のし・ラッピング・袋を付けた' },
       { id: 'ship', label: '出荷', note: '送り状を貼って出した' }
     ];
+    // 右上のQRコード: iPhoneのカメラで写すと、この注文のスマホ作業画面（work.html）が開く（js/52-work-log）
+    function woQr(order) {
+      if (!workServerOn()) return '';
+      const svg = workQrSvg(workLink(order.id), 3);
+      return svg ? '<div class="wo-qr">' + svg + '<span>スマホで作業</span></div>' : '';
+    }
     function woBox(label, value, strong) {
       return '<div class="wo-box' + (strong ? ' is-strong' : '') + '"><span>' + escapeHtml(label) + '</span><b>' + escapeHtml(value || 'なし') + '</b></div>';
     }
@@ -22,7 +28,7 @@
       const rush = order.rushTicket
         ? '<div class="wo-rush">特急チケット　最優先で作業してください</div>'
         : '<div class="wo-rush is-off">特急チケットなし</div>';
-      const head = '<header class="wo-head"><div><p class="wo-title">作業指示書</p><p class="wo-id">' + escapeHtml(order.id) + '　' + escapeHtml(order.channelLabel || '') + '</p></div><div class="wo-made">出力 ' + escapeHtml(new Date().toLocaleString('ja-JP', { hour12: false })) + '</div></header>';
+      const head = '<header class="wo-head"><div><p class="wo-title">作業指示書</p><p class="wo-id">' + escapeHtml(order.id) + '　' + escapeHtml(order.channelLabel || '') + '</p></div><div class="wo-made">出力 ' + escapeHtml(new Date().toLocaleString('ja-JP', { hour12: false })) + '</div>' + woQr(order) + '</header>';
       const keys = '<div class="wo-keys">' + woBox('納期（納品日）', delivery, true) + woBox('挙式日', d.wedding || order.weddingDate) + woBox('賞味期限', order.bestBefore, !!order.bestBefore) + woBox('数量', String(order.qty)) + '</div>';
       const product = '<p class="wo-product">' + escapeHtml(order.productName) + '<span>' + escapeHtml(order.sku || '') + '</span></p>';
       const items = '<section class="wo-sec"><h2>ご注文の品</h2><div class="wo-items">' + orderedItems(order).map(function (it) {
@@ -41,7 +47,7 @@
       const size = '<section class="wo-sec"><h2>寸法</h2><p>' + escapeHtml(sizes.join('　／　')) + '</p></section>';
       const money = '<section class="wo-sec"><h2>この注文の料金</h2><p>文字数超過 ' + escapeHtml(formatYen(fees.extraTotal)) + '　のし ' + escapeHtml(formatYen(fees.noshi)) + '　ラッピング ' + escapeHtml(formatYen(fees.wrapping)) + '　オプション計 <b>' + escapeHtml(formatYen(fees.extraTotal + fees.noshi + fees.wrapping)) + '</b></p></section>';
       const sheet = '<section class="wo-sec"><h2>受注管理表</h2><table class="wo-table">' + [
-        ['販路', order.channelLabel], ['注文者', order.customerName ? order.customerName + ' 様' : ''], ['お届け先', order.shippingTo],
+        ['販路', order.channelLabel], ['注文者', order.customerName ? order.customerName + ' 様' : ''], ['お届け先', piiText(order.shippingTo)],
         ['受付', order.orderDate], ['校正', order.proofStatus], ['工程', d.status || order.status], ['図柄', view.headline],
         ['キャンペーン印', order.campaignMark ? '「' + order.campaignMark + '」' : ''], ['明細ID', order.line ? order.line.lineId : ''], ['入力原文', order.line ? order.line.sourceText : '']
       ].filter(function (r) { return r[1]; }).map(function (r) { return '<tr><th>' + escapeHtml(r[0]) + '</th><td>' + escapeHtml(r[1]) + '</td></tr>'; }).join('') + '</table></section>';

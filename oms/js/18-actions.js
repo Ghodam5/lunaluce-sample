@@ -1,6 +1,8 @@
 // Luna Luce OMS 部品JS: 18-actions（元は luna_luce_oms_ui_v2.html の <script>。並び順どおりに読み込む）
     function switchTab(tabName) {
+      if (piiHidden() && WORKER_TABS.indexOf(tabName) < 0) tabName = 'dashboard'; // 作業員が開けるタブ（js/52-work-log）
       state.activeTab = tabName;
+      if (tabName === 'worklog') emit('oms:worklog');
       document.querySelectorAll('[data-tab-panel]').forEach(function (panel) {
         panel.hidden = panel.dataset.tabPanel !== tabName;
       });
@@ -48,6 +50,7 @@
     function onSearch(el) {
       state.query = el.value;
       emit('oms:list');
+      renderSearchSuggest(el); // 候補（js/51-fuzzy）
     }
     function setOrderSort(sort) {
       if (sort !== 'due' && sort !== 'wedding' && sort !== 'ordered') return;
@@ -67,6 +70,7 @@
     function quickChangeStatus(el) {
       const order = state.orders.find(function (item) { return item.id === el.dataset.id; });
       if (!order) return;
+      workLogStatus(order, order.status, el.value); // 作業ログ（js/52-work-log）
       order.status = el.value;
       emit('oms:change');
       showToast('注文 ' + order.id + ' の工程を「' + order.status + '」に更新しました');
@@ -157,6 +161,7 @@
       order.headerMsg = state.draft.message;
       order.fontStyle = state.draft.font;
       order.noshiSeal = state.draft.noshi;
+      workLogStatus(order, order.status, state.draft.status);
       order.status = state.draft.status;
       if (state.draft.clearWarning) order.warning = null;
       emit('oms:change');
@@ -222,6 +227,7 @@
         return;
       }
       if (kind === 'ship') {
+        workLogStatus(order, order.status, '梱包・出荷済');
         order.status = '梱包・出荷済';
         emit('oms:change');
         closeOrderDrawer();
@@ -297,6 +303,7 @@
       switchTab('simulator');
     }
     function downloadSimulatedCsv(kind) {
+      if (kind !== 'laser' && piiHidden()) { showToast('作業員のログインでは送り状CSV（住所・電話番号入り）は出せません'); return; }
       const content = kind === 'laser' ? laserCsv() : yamatoCsv();
       const filename = kind === 'laser' ? 'lunaluce_laser_engraving_' + TODAY + '.csv' : 'lunaluce_yamato_b2_' + TODAY + '.csv';
       const blob = new Blob([new Uint8Array([0xef, 0xbb, 0xbf]), content], { type: 'text/csv;charset=utf-8;' });
@@ -364,6 +371,7 @@
       else if (name === 'pick-seal') pickMiniSeal(el.dataset.sealId);
       else if (name === 'clear-seal') clearMiniSeal();
       else if (name === 'work-order') printWorkOrder(); // 45-work-order
+      else if (name === 'work-output') workOutput(el.dataset.kind); // 52-work-log
       else if (name === 'pick-option') pickOption(el.dataset.group, el.dataset.file || '');
     }
     document.addEventListener('click', function (event) {

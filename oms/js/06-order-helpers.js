@@ -24,7 +24,7 @@
       return dueInfo(order).time;
     }
     function visibleOrders() {
-      const query = state.query.trim().toLowerCase();
+      const query = fuzzyWords(state.query); // あいまい検索（js/51-fuzzy）
       return state.orders.slice().sort(function (a, b) {
         return orderSortTime(a) - orderSortTime(b);
       }).filter(function (order) {
@@ -32,10 +32,7 @@
         if (state.activeStatus !== 'ALL' && order.status !== state.activeStatus) return false;
         if (state.onlyUrgent && !(daysUntil(order.weddingDate) <= 7 && order.status !== '梱包・出荷済')) return false;
         if (state.onlyWarning && !order.warning) return false;
-        if (query) {
-          const hay = [order.id, order.customerName, order.coupleNames, order.productName, order.shippingTo, order.campaignMark || ''].join(' ').toLowerCase();
-          if (hay.indexOf(query) === -1) return false;
-        }
+        if (query.length && !fuzzyMatch(orderSearchText(order), query)) return false;
         return true;
       });
     }

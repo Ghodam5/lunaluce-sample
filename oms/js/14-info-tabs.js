@@ -66,6 +66,7 @@
       return [header].concat(rows).join('\n');
     }
     function yamatoCsv() {
+      if (piiHidden()) return '作業員のログインでは、住所・電話番号が入る送り状CSVは出せません（js/52-work-log）';
       const header = 'お客様管理番号,送り状種類,お届け先郵便番号,お届け先住所,お届け先名称,お届け先電話番号,品名1,記事欄';
       const rows = csvTargets().map(function (order) {
         return [order.id, '0', order.postalCode, '"' + order.address + '"', '"' + order.shippingTo + '（' + order.customerName + '様）"', order.phone, '"' + order.productName + '"', '"【挙式日:' + order.weddingDate + '】' + order.coupleNames + '様分"'].join(',');

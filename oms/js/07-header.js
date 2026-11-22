@@ -1,6 +1,6 @@
 // Luna Luce OMS 部品JS: 07-header（元は luna_luce_oms_ui_v2.html の <script>。並び順どおりに読み込む）
     function renderHeaderBrand(host) {
-      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.49</span></h1><span class="who" data-slot="user"></span></div>';
+      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.50</span></h1><span class="who" data-slot="user"></span></div>';
       if (typeof renderHeaderUser === 'function') renderHeaderUser(host.querySelector('[data-slot="user"]')); // 42-header-user
     }
     function renderHeaderStatus(host) {
@@ -13,13 +13,15 @@
     function renderHeaderTabs(host) {
       function paint() {
         host.setAttribute('role', 'tablist');
-        host.innerHTML = HEADER_TABS.map(function (tab) {
+        // 作業員は「1 統合受注」と「9 作業ログ」だけ（お客様の声・販路などに住所やメールが混じるため。js/52-work-log）
+        host.innerHTML = HEADER_TABS.filter(function (tab) { return !piiHidden() || WORKER_TABS.indexOf(tab.id) >= 0; }).map(function (tab) {
           const onTab = state.activeTab === tab.id;
           return '<button type="button" role="tab" data-action="switch-tab" data-tab="' + tab.id + '" aria-selected="' + (onTab ? 'true' : 'false') + '">' + escapeHtml(tab.label) + '</button>';
         }).join('');
       }
       paint();
       on('oms:tab', paint);
+      on('oms:me', paint);
     }
     const HEADER_PARTS = [
       { name: 'header-brand', render: renderHeaderBrand },

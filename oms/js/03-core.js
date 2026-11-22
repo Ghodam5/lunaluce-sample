@@ -40,7 +40,8 @@
       { id: 'carrier', label: '5 契約送料' },
       { id: 'builder', label: '6 サイトビルダー' },
       { id: 'channels', label: '7 販路と価格' },
-      { id: 'voice', label: '8 お客様の声' }
+      { id: 'voice', label: '8 お客様の声' },
+      { id: 'worklog', label: '9 作業ログ' }
     ];
     const CHANNELS = [
       { id: 'ALL', label: 'すべて' },
