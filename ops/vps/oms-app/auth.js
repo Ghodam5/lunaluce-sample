@@ -165,7 +165,7 @@ async function handle(req, res) {
     const s = session(req);
     if (s) { res.writeHead(200, { 'x-oms-user': s.user.name, 'x-oms-role': isAdmin(s.user) ? 'admin' : (s.user.role === 'worker' ? 'worker' : 'staff') }); return res.end(); }
     const uri = String(req.headers['x-forwarded-uri'] || '/');
-    if (uri.startsWith('/api/')) return send(res, 401, { ok: false, error: 'ログインが切れました。画面を読み込み直してログインしてください', login: true });
+    if (uri.startsWith('/api/') || uri.startsWith('/work-api/')) return send(res, 401, { ok: false, error: 'ログインが切れました。画面を読み込み直してログインしてください', login: true });
     res.writeHead(302, { location: '/login?next=' + encodeURIComponent(uri.startsWith('/') && !uri.startsWith('//') ? uri : '/oms/') });
     return res.end();
   }
