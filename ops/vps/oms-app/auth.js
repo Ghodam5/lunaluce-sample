@@ -14,7 +14,8 @@ const COOKIE = 'oms_s';
 const SESSION_IDLE = 14 * 864e5, SESSION_MAX = 30 * 864e5;
 const INVITE_TTL = 3 * 864e5, RESET_TTL = 864e5;
 const MIN_PASS = 10, MAX_FAILS = 5, LOCK_MS = 15 * 60e3;
-const ROLES = { admin: '管理者', staff: 'スタッフ' };
+// 作業員: 工程の記録とスマホの作業画面だけ。住所・電話・メールは見せない（林さん 2026-11-23）
+const ROLES = { admin: '管理者', staff: 'スタッフ', worker: '作業員' };
 const NAME_RE = /^[a-z0-9][a-z0-9._-]{2,31}$/;
 
 // ---- 保存（1ファイル。書くときは一時ファイル→名前を変える） ----
@@ -162,7 +163,7 @@ async function handle(req, res) {
   // Caddy の forward_auth から
   if (p === '/auth/check') {
     const s = session(req);
-    if (s) { res.writeHead(200, { 'x-oms-user': s.user.name, 'x-oms-role': isAdmin(s.user) ? 'admin' : 'staff' }); return res.end(); }
+    if (s) { res.writeHead(200, { 'x-oms-user': s.user.name, 'x-oms-role': isAdmin(s.user) ? 'admin' : (s.user.role === 'worker' ? 'worker' : 'staff') }); return res.end(); }
     const uri = String(req.headers['x-forwarded-uri'] || '/');
     if (uri.startsWith('/api/')) return send(res, 401, { ok: false, error: 'ログインが切れました。画面を読み込み直してログインしてください', login: true });
     res.writeHead(302, { location: '/login?next=' + encodeURIComponent(uri.startsWith('/') && !uri.startsWith('//') ? uri : '/oms/') });

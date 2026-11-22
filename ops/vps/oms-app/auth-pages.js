@@ -111,7 +111,7 @@ const pages = {
     '<button class="main">パスワードを変える</button><p class="msg" role="status"></p><p class="muted">変えると、ほかの端末ではログアウトします。</p></form>' +
     (d.admin ? '<div class="card"><h2>パスワードを忘れた人からの連絡</h2><div id="reqs" class="muted">なし</div><div id="resetbox"></div></div>' +
       '<div class="card"><h2>新しい人を招待する</h2><p class="muted">招待リンク（3日有効・1回だけ使える）を作って、本人だけに渡してください。受け取った人が自分でログイン名とパスワードを決めます。</p>' +
-      '<form id="fi" class="row"><div><label for="role">権限</label><select id="role" name="role"><option value="staff">スタッフ（OMSの作業）</option><option value="admin">管理者（アカウントの管理もできる）</option></select></div><button class="main" style="width:auto">招待リンクを作る</button><p class="msg" role="status"></p></form><div id="invbox"></div><div id="invites"></div></div>' +
+      '<form id="fi" class="row"><div><label for="role">権限</label><select id="role" name="role"><option value="staff">スタッフ（OMSの作業）</option><option value="worker">作業員（工程の記録・スマホの作業画面。住所・電話・メールは見えない）</option><option value="admin">管理者（アカウントの管理もできる）</option></select></div><button class="main" style="width:auto">招待リンクを作る</button><p class="msg" role="status"></p></form><div id="invbox"></div><div id="invites"></div></div>' +
       '<div class="card"><h2>アカウントの一覧</h2><div id="users">読み込み中…</div><p class="msg" id="um" role="status"></p></div>' +
       '<div class="card"><h2>ログインと操作の記録</h2><p class="muted">ログイン・ログアウト・アカウントの変更を残します（新しい順に100件）。反映ボタンを誰が押したかは、反映の画面の記録に名前で出ます。</p><ol class="log" id="log"></ol></div>' : '') +
     '<script>' + JS_POST + `
@@ -129,7 +129,7 @@ async function load(){ if(!ADMIN) return; const r=await fetch('/auth/api/users',
   document.getElementById('users').innerHTML='<table class="users"><thead><tr><th>名前</th><th>権限</th><th>状態</th><th>最後のログイン</th><th></th></tr></thead><tbody>'+r.users.map(u=>{
     const fixed=u.owner||u.name===r.me.name;
     return '<tr><td><b>'+E(u.display)+'</b><br><span class="muted">'+E(u.name)+(u.owner?'・オーナー':'')+'</span></td>'+
-      '<td>'+(fixed?E(u.roleLabel):'<select data-role="'+E(u.name)+'"><option value="staff"'+(u.role==='staff'?' selected':'')+'>スタッフ</option><option value="admin"'+(u.role==='admin'?' selected':'')+'>管理者</option></select>')+'</td>'+
+      '<td>'+(fixed?E(u.roleLabel):'<select data-role="'+E(u.name)+'"><option value="staff"'+(u.role==='staff'?' selected':'')+'>スタッフ</option><option value="worker"'+(u.role==='worker'?' selected':'')+'>作業員</option><option value="admin"'+(u.role==='admin'?' selected':'')+'>管理者</option></select>')+'</td>'+
       '<td>'+(u.active?'<span class="tag">使える</span>':'<span class="tag off">止めている</span>')+'</td><td>'+T(u.lastLogin)+'</td>'+
       '<td><div class="acts"><button class="small" data-reset="'+E(u.name)+'">再設定リンク</button>'+(fixed?'':'<button class="small" data-active="'+E(u.name)+'" data-to="'+(!u.active)+'">'+(u.active?'止める':'使えるようにする')+'</button><button class="small danger" data-del="'+E(u.name)+'">削除</button>')+'</div></td></tr>'; }).join('')+'</tbody></table>';
   document.getElementById('log').innerHTML=r.log.map(x=>'<li>'+T(x.at)+'　'+E(x.what)+'　'+E(x.by)+(x.note?'　<span class="muted">'+E(x.note)+'</span>':'')+'</li>').join('');

@@ -12,6 +12,8 @@
 	# 外から来た名前の見出しは捨てる（ログインの仕組みだけがつける）
 	request_header -X-OMS-User
 	request_header -X-OMS-Role
+	# ログインの仕組みがつけた権限が「作業員」のとき（forward_auth の後に見る）
+	@worker header X-OMS-Role worker
 
 	# ログインしていなくても開ける所
 	@open path /login /forgot /join /reset /auth/login /auth/logout /auth/forgot /auth/join /auth/reset
@@ -36,7 +38,13 @@
 		# ログアウトした後にブラウザの保存分で画面が開かないよう、毎回ログインを確かめさせる
 		header Cache-Control "no-cache, private"
 		redir / /oms/ 302
+		# 工程の状態と作業ログ（oms-work、同じ入れ物の 127.0.0.1:8071）
+		handle /work-api/* {
+			reverse_proxy 127.0.0.1:8071
+		}
+		# 作業員はサイトへの反映（oms-reflect）を使えない
 		handle /api/* {
+			respond @worker "作業員は使えません" 403
 			reverse_proxy oms-reflect:8090
 		}
 		handle {

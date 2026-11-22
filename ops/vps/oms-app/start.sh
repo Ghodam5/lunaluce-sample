@@ -1,6 +1,6 @@
 #!/bin/sh
 # oms-app の起動（docker-compose.yml の command から呼ぶ）。
-# 1) GitHub から OMS の画面（OMS_REF）を取り込む  2) ログインの仕組み（oms-auth）を動かす  3) Caddy で受け付ける
+# 1) GitHub から OMS の画面（OMS_REF）を取り込む  2) ログインの仕組み（oms-auth）と工程の記録（oms-work）を動かす  3) Caddy で受け付ける
 # 4) 自動入れ替え: GitHub のブランチが進んだら（マージ・push）、hPanel を触らなくても入れ替わる
 #    - OMS_REF（OMSの画面）が進んだ → 画面のファイルだけ入れ替える（止まらない。ログインもそのまま）
 #    - OPS_REF（この start.sh・ログインの仕組み）が進んだ → 入れ物ごと起こし直す（20秒ほど止まる）
@@ -38,6 +38,14 @@ OMS_SHA=$(ref_sha "$OMS_REF")
 OPS_SHA=$(ref_sha "$OPS_REF")
 put_oms "$OMS_SHA"
 echo "OMS画面を取り込みました（${OMS_REF} ${OMS_SHA%"${OMS_SHA#???????}"}）"
+
+# yaml が取り込むのは start.sh・auth.js・auth-pages.js・Caddyfile の4つだけなので、あとから足した部品はここで取り込む（yaml を変えずに済む）
+for f in work.js; do
+  [ -f "$SRC/$f" ] || cp /tmp/ops-src/*/ops/vps/oms-app/$f "$SRC/" 2>/dev/null || echo "$f がありません（工程の記録は使えません）"
+done
+
+# oms-work（工程の状態と作業ログ）も止まったら起こし直す。データは oms-auth-data の中の work/
+( while true; do node "$SRC/work.js" || true; echo "oms-work が止まったので起こし直します"; sleep 2; done ) &
 
 # oms-auth は止まってもすぐ起こし直す
 ( while true; do node "$SRC/auth.js" || true; echo "oms-auth が止まったので起こし直します"; sleep 2; done ) &
