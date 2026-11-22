@@ -6,7 +6,7 @@ const args=new Set(process.argv.slice(2));
 const styleFiles=require('./styles.cjs').build(args.has('--check'));
 const pageContract=require('./page-contract.cjs'),contract=pageContract.load(root);
 require('./components.cjs').check();
-require('./notice-templates.cjs').build(args.has('--check'));require('./product-layout.cjs').build(args.has('--check'));require('./site-texts.cjs').build(args.has('--check'));
+require('./notice-templates.cjs').build(args.has('--check'));require('./product-layout.cjs').build(args.has('--check'));require('./site-texts.cjs').build(args.has('--check'));require('./store-info.cjs').build(args.has('--check'));
 require('./products.cjs').build(args.has('--check'));
 require('./home-sections.cjs').build(args.has('--check'));
 require('./site-content.cjs').build(args.has('--check'));

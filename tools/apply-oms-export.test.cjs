@@ -5,7 +5,7 @@ const root = path.resolve(__dirname, '..');
 const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 function sandbox() {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'luna-apply-oms-'));
-  for (const f of ['tools/apply-oms-export.cjs', 'tools/home-sections.cjs', 'tools/promos.cjs', 'tools/product-layout.cjs', 'tools/notice-templates.cjs', 'tools/site-texts.cjs', 'site-src/site-texts.json', 'site-src/site-settings.json', 'site-src/product-layout.json', 'site-src/notice-templates.json', 'site-src/home-sections.json', 'site-src/site-notices.json', 'site-src/home-promos', 'site-src/pages', 'site-src/sections/top', 'site-src/products']) {
+  for (const f of ['tools/apply-oms-export.cjs', 'tools/home-sections.cjs', 'tools/promos.cjs', 'tools/product-layout.cjs', 'tools/notice-templates.cjs', 'tools/site-texts.cjs', 'tools/store-info.cjs', 'site-src/store-info.json', 'site-src/product-tax.json', 'site-src/site-texts.json', 'site-src/site-settings.json', 'site-src/product-layout.json', 'site-src/notice-templates.json', 'site-src/home-sections.json', 'site-src/site-notices.json', 'site-src/home-promos', 'site-src/pages', 'site-src/sections/top', 'site-src/products']) {
     fs.mkdirSync(path.dirname(path.join(tmp, f)), { recursive: true });
     fs.cpSync(path.join(root, f), path.join(tmp, f), { recursive: true });
   }
@@ -140,5 +140,25 @@ test('営業日と表示する文字を入れる（無いキー・おかしな�
     a.deepEqual(r.errors.map(e => e.part).sort(), ['businessDays', 'texts']);
     a.equal(fs.readFileSync(path.join(tmp, 'site-src/site-settings.json'), 'utf8'), before[0]);
     a.equal(fs.readFileSync(path.join(tmp, 'site-src/site-texts.json'), 'utf8'), before[1]);
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
+test('v69 お店の案内・送料・税率と商品の税の種類を入れる（おかしな値は断って元に戻す）', () => {
+  const tmp = sandbox();
+  try {
+    const d = draftOf(tmp);
+    const info = read(path.join(tmp, 'site-src/store-info.json'));
+    info.shipping.freeThreshold = 15000; info.bar[0].active = false;
+    d.storeInfo = info;
+    d.productTax = { products: { '72383': { class: 'food', checked: true } } };
+    let r = run(tmp, d);
+    a.deepEqual(r.errors, []);
+    a.equal(read(path.join(tmp, 'site-src/store-info.json')).shipping.freeThreshold, 15000);
+    a.deepEqual(read(path.join(tmp, 'site-src/product-tax.json')).products, { '72383': { class: 'food', checked: true } });
+    const before = fs.readFileSync(path.join(tmp, 'site-src/store-info.json'), 'utf8');
+    info.shipping.freeBasis = 'nope';
+    r = run(tmp, d);
+    a.deepEqual(r.errors.map(e => e.part), ['storeInfo']);
+    a.equal(fs.readFileSync(path.join(tmp, 'site-src/store-info.json'), 'utf8'), before);
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 });

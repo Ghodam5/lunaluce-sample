@@ -2,6 +2,8 @@
 (function(){
 'use strict';
 var data=window.SAMPLE_CATALOG,products=data.products;
+// v69 食品の税率が変わった日からは、お店の税率表（store-info.js）で価格を税込にし直す
+if(window.LunaStore){LunaStore.applyCatalog(products);LunaStore.applyCatalog(data.featureProducts)}
 function get(id){id=String(id);id=data.featureMap[id]||id;return products.find(function(p){return p.id===id||p.code.toLowerCase()===id.toLowerCase()})}
 function link(p){return 'item.html?id='+encodeURIComponent(typeof p==='object'?p.id:p)}
 window.ShopCatalog={products:products,get:get,link:link};

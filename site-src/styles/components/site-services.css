@@ -7,3 +7,21 @@
 
 /* 期間外・移動済みの掲載枠は、個別のdisplay指定より優先して隠す。 */
 [data-placement-id][hidden]{display:none!important}
+/* v69 ヘッダーの案内バー・フッターの「お届けと送料」・送料表（store-info.js が中身を描く） */
+.store-bar{background:#f6f1e8;border-bottom:1px solid #e6dccb;font-size:12.5px}
+.store-bar-in{display:flex;gap:6px 18px;align-items:center;justify-content:center;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;padding-top:6px;padding-bottom:6px;scrollbar-width:none}
+.store-bar-in::-webkit-scrollbar{display:none}
+.store-bar a{color:#5b4a3a;text-decoration:none;display:inline-flex;gap:6px;align-items:center;min-height:28px}
+.store-bar a:hover{text-decoration:underline}
+.store-bar b{background:#7a5c3e;color:#fff;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700}
+@media(max-width:700px){.store-bar-in{justify-content:flex-start}}
+.store-ft{margin-top:22px;padding:14px 16px;border:1px solid #e6dccb;border-radius:10px;background:#fbf8f2}
+.store-ft h5{margin:0 0 6px}
+.store-ft ul{margin:0;padding-left:1.2em;font-size:13px;line-height:1.8}
+.store-ft-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin:8px 0 0;font-size:13px}
+.store-ship{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+.store-ship th,.store-ship td{border:1px solid #e0d6c6;padding:8px;text-align:center}
+.store-ship thead th{background:#f6f1e8}
+.store-ship tbody th{text-align:left;background:#fbf8f2}
+.store-ship td b{color:#c2185b}
+@media(max-width:600px){.store-ship td[data-l]::before{content:attr(data-l)"：";display:block;font-size:12px;color:#7a6a5a}}
