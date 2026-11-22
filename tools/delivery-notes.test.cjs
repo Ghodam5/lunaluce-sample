@@ -29,8 +29,10 @@ test('v66 商品ページの段組みは部品の重なり・無い部品・SNS�
   const pl = require('./product-layout.cjs');
   const d = pl.load();
   a.ok(d.below.includes('share'));
-  pl.checkProduct({ id: 'ok', layout: { side: ['notes', 'description'], below: ['share', 'recommend'] } }, d);
-  a.throws(() => pl.checkProduct({ id: 'a', layout: { side: ['notes'], below: ['notes', 'share'] } }, d), /2回/);
-  a.throws(() => pl.checkProduct({ id: 'b', layout: { side: ['nope'], below: ['share'] } }, d), /無い部品/);
-  a.throws(() => pl.checkProduct({ id: 'c', layout: { side: ['notes'], below: ['recommend'] } }, d), /外せません/);
+  pl.checkProduct({ id: 'ok', layout: { side: ['buy', 'notes', 'description'], below: ['share', 'recommend', 'delivery'] } }, d);
+  a.throws(() => pl.checkProduct({ id: 'a', layout: { side: ['buy', 'notes'], below: ['notes', 'share'] } }, d), /2回/);
+  a.throws(() => pl.checkProduct({ id: 'b', layout: { side: ['buy', 'nope'], below: ['share'] } }, d), /無い部品/);
+  a.throws(() => pl.checkProduct({ id: 'c', layout: { side: ['buy', 'notes'], below: ['recommend'] } }, d), /外せません/);
+  a.throws(() => pl.checkProduct({ id: 'e', layout: { side: ['notes'], below: ['buy', 'share'] } }, d), /購入欄/);
+  a.ok(d.parts.some(x => x.id === 'delivery') && d.side.indexOf('delivery') < d.side.indexOf('buy'), 'お届け日数は購入欄の上が最初の並び');
 });
