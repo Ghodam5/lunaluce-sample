@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.44
+Luna Luce OMS 2.45
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -84,6 +84,7 @@ Luna Luce OMS 2.44
 2.42 で選んだ見本を外せるようにした。ミニシールは選んでいる図柄をもう一度押すか「図柄を外す」で未指定に戻る（自動で入った図柄も外せる。図柄を選んだときに入れたテンプレートも元に戻す。js/18-actions clearMiniSeal）。のし・包装紙・小袋も押して選び、もう一度押すか「〜を外す」で未指定に戻る（order.optionPick、pickOption）。熨斗の印刷イメージは選んだのしに従う。
 2.43 で受注明細の「ミニシールの図柄」を「ミニシール・ラッピングの図柄」にし、ミニシールの横にラッピング（包装紙）の図柄を並べた（js/16-drawer wrapBlock）。注文で包装紙が指定されているか担当者が選んだときに出し、「ラッピングを外す」で未指定に戻せる。
 2.44 で受注明細の図柄欄を「ご注文の品」にし、受けた品（商品・ミニシール・のし・ラッピング・小袋・紙袋/ブライダルバッグ）の画像を全部並べた（js/44-option-catalog orderedItems）。小袋の季節限定とギフト用紙袋の宣伝画像を外し、紙袋は実物写真に替えた。作業指示書（js/45-work-order・css/13-work-order）を追加。受注明細の「作業指示書を印刷・PDF保存」で、特急を一番上、納期・挙式日・賞味期限・数量、注文品の縮小画像、入れる文字、部品内訳（チェック欄付き）、寸法、料金、工程チェック（大きめの□・担当・日付）、印刷イメージ、受注管理表をA4に組み直して印刷する。図柄の見本一覧・実寸PDFの注意などは載せない。
+2.45 で商品の登録・編集の写真（2枚目以降・サムネイル）が出ない不具合を直した。原因は2つ: サイトの商品データの写真が {src, alt…} の形になっていたのに、ビルダーが文字列として扱っていた（tools/oms-builder-data.cjs と js/24-builder-products で src を取り出すように）。もう1つは商品の詳しい写真 images/product-details/ がこのブランチに無く、VPSに届いていなかった（main から684枚を取り込み）。
 2.29 で商品の登録・編集に「お届けまでの日数」（必須・最短〜最長・受注生産）と「ご注文の前に」の定型文の選択を足した（js/37-builder-delivery）。定型文はサイトビルダー「注意事項の定型文」で直す。在庫と出店の一覧に「お届け日数なし」の目印と絞り込み。サイト側は v64。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
@@ -150,7 +151,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.44｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.45｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />

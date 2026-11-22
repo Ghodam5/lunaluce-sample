@@ -124,6 +124,8 @@
     // 写真は photos（1枚目がメイン）。image はいつも photos[0] にそろえる（古い下書きは image だけなので写す）
     function builderSyncPhotos(p) {
       if (!Array.isArray(p.photos)) p.photos = [];
+      // 写真は画像の場所（文字列）。サイトの商品データは {src, alt…} の形なので src を取り出す
+      p.photos = p.photos.map(function (x) { return typeof x === 'string' ? x : (x && x.src) || ''; });
       p.photos = p.photos.filter(function (src, i, a) { return src && a.indexOf(src) === i; });
       if (!p.photos.length && p.image) p.photos = [p.image];
       p.image = p.photos[0] || '';
@@ -140,7 +142,7 @@
       const p = {
         id: String(t.id), edit: true, active: true, from: String(t.id),
         code: t.code || '', title: t.title || '', price: t.price, minq: t.minq || 1, image: t.image || '',
-        photos: (t.photos && t.photos.length ? t.photos.slice() : t.image ? [t.image] : []),
+        photos: (t.photos && t.photos.length ? t.photos.map(function (x) { return typeof x === 'string' ? x : (x && x.src) || ''; }).filter(Boolean) : t.image ? [t.image] : []),
         places: [], placesTouched: false, hasName: !!t.hasName,
         skus: t.skus.map(function (s) { return { code: s.code, t: t.skus.length > 1 ? s.t : (s.t === t.title ? '' : s.t), price: s.price }; }),
         spec: t.spec ? cloneData(t.spec) : null, pack: t.pack || 1, seal: !!t.seal,
