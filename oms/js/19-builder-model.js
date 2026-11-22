@@ -11,11 +11,11 @@
     const BUILDER_UPLOAD_KEY = 'luna-oms-builder-uploads-v1';
     const BUILDER_TILE_MAX = 8;
 
-    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], newCats: [], catNames: {}, catNameQuery: '', noteTemplates: null, days: null, news: [], sections: [], secOpen: '', secQuery: '', listing: {}, plans: [], planQuery: '', listFilter: '', stockQuery: '', stockFilter: '', stockPage: 1, templateQuery: '' };
+    state.builder = { ready: false, error: '', themes: [], cards: [], notices: [], products: [], images: [], sel: { type: 'ticker', index: 0 }, query: {}, base: '', uploads: {}, links: { categories: [], features: [], pageGroups: [] }, linkOpen: '', linkTab: '', linkQuery: '', stock: {}, newProducts: [], newCats: [], catNames: {}, catHidden: {}, pageLayout: null, pageLayoutBase: null, catNameQuery: '', noteTemplates: null, days: null, news: [], sections: [], secOpen: '', secQuery: '', listing: {}, plans: [], planQuery: '', listFilter: '', stockQuery: '', stockFilter: '', stockPage: 1, templateQuery: '' };
 
     function builderSnapshot() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, noteTemplates: b.noteTemplates, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, catHidden: b.catHidden, pageLayout: b.pageLayout, noteTemplates: b.noteTemplates, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans });
     }
     function builderDirty() {
       return state.builder.ready && builderSnapshot() !== state.builder.base;
@@ -49,6 +49,9 @@
         b.newProducts = [];
         b.newCats = [];
         b.catNames = {};
+        b.catHidden = {};
+        b.pageLayoutBase = data.productLayout || null; // 39-builder-layout（サイトの site-src/product-layout.json）
+        b.pageLayout = null;
         b.noteTemplates = Array.isArray(data.noticeTemplates) ? cloneData(data.noticeTemplates) : null; // 37-builder-delivery（無ければ標準の定型文）
         b.days = { weekly: [0, 6], off: [], on: [], am: [], long: [] }; // 営業日はOMSで管理するのが基本（2.21）
         b.news = [];
@@ -72,6 +75,8 @@
             if (Array.isArray(saved.sections)) b.sections = saved.sections;
             b.newCats = saved.newCats || [];
             b.catNames = saved.catNames && typeof saved.catNames === 'object' ? saved.catNames : {};
+            b.catHidden = saved.catHidden && typeof saved.catHidden === 'object' ? saved.catHidden : {};
+            if (saved.pageLayout && Array.isArray(saved.pageLayout.side)) b.pageLayout = builderLayoutClean(saved.pageLayout);
             if (Array.isArray(saved.noteTemplates)) b.noteTemplates = saved.noteTemplates;
             b.listing = saved.listing || {};
             b.plans = saved.plans || [];
@@ -392,6 +397,10 @@
         newCategories: (b.newCats || []).map(cloneData),
         // カテゴリーの名前を変えたもの（level g/m/s・k は英字の名前・before は元の名前）。英字の名前は変えない
         categoryNames: builderCatNamesExport(),
+        // 消すカテゴリー（商品0件のものだけ。level g/m/s・k は英字の名前）。サイトのメニューと一覧に出さない
+        hiddenCategories: builderCatHiddenExport(),
+        // 商品ページの段組み（side = 写真の右 / below = 写真の下）。サイトの site-src/product-layout.json
+        productLayout: builderLayoutExport(),
         // 注意事項の定型文（site-src/notice-templates.json の templates と同じ形）。商品の notes はこの id を並べる
         noticeTemplates: builderNotesExport(),
         // 出す・出さないと販売期間（source: site=新サイト / w=本店だけ / new=新しい商品）。企画に入った商品は企画の期間

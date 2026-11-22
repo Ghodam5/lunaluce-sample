@@ -84,7 +84,7 @@
     }
     function builderCatAction(name, el) {
       const b = state.builder;
-      if (name === 'cat-open') { b.catOpen = true; b.catDraft = { level: 'm', g: '', m: '' }; emit('oms:builder', { form: true }); return true; }
+      if (name === 'cat-open') { b.catOpen = true; b.catFrom = ''; b.catDraft = { level: 'm', g: '', m: '' }; emit('oms:builder', { form: true }); return true; }
       if (name === 'cat-cancel') { b.catOpen = false; b.catDraft = null; emit('oms:builder', { form: true }); return true; }
       if (name === 'cat-remove') {
         const c = b.newCats[Number(el.dataset.index)];

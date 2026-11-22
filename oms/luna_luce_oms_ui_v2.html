@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.29
+Luna Luce OMS 2.30
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -39,6 +39,8 @@ Luna Luce OMS 2.29
   js/32-builder-news お知らせ本文（手で書く記事＋営業日の長期休暇から自動の記事）。2.23で「サイト掲載」タブから移した
   js/34-builder-reflect 反映（前回からの変更点・新サイトはGitHubにプルリクエスト・Welcartはテスト環境・楽天/YahooはCSV・記録）
   js/37-builder-delivery お届けまでの日数（必須）と注意事項の定型文。書き出しの products/edits の delivery・notes と noticeTemplates
+  js/38-builder-fixlist 「直すところ」をカード・商品ごとにまとめ、開いて直す・作りかけのカードを消す
+  js/39-builder-layout 商品ページの段組み（写真の右・写真の下の並び）。書き出しの productLayout と商品の layout
   js/36-carrier-rates 契約送料（ヤマト・ネコポス）の数字を画面で直す。この端末に保存
   js/35-builder-catnames カテゴリーの名前（大・中・小）を変える。書き出しの categoryNames
   js/33-builder-sections トップの商品の段（並べ替え・表示する/しない・期間・企画やカテゴリーから段を足す）。書き出しの homeSections
@@ -65,6 +67,7 @@ Luna Luce OMS 2.29
 2.26 でサイトビルダーに「反映」を足した（js/34-builder-reflect）。前回反映したときからの変更点を行き先ごとに出し、「試しに見る」「反映する」を押す。新サイトはOMSのサーバー（ops/vps/oms-reflect）がGitHubにプルリクエストを作る（マージは人が確かめてから）。Welcartはテスト環境だけ。楽天・YahooはCSVとお休み一覧をダウンロードして「入れました」で記録。状態（未反映・反映済み・失敗）と記録を残す。
 2.27 でサイトビルダーの左の一覧を項目ごとに枠で区切り、選んでいる枠に色を付けた。「商品」に「カテゴリーの名前（大・中・小）」を足した（js/35-builder-catnames、英字の名前は変えない）。在庫と出店の商品の詳細は「編集する」「お手本に登録」を一番上に出し、右の見え方は画面の高さに収めてページを下げても付いてくる。伸ばせる入力欄は縦だけにして中央からはみ出さない。
 2.28 で「5 契約送料」の数字を「料金を直す」で変えられるようにした（js/36-carrier-rates）。ヤマトの区分×サイズとネコポス、いつからの料金か。直したところは色付き、「最初の料金に戻す」あり。お問い合わせの見積もり用で、お客様の送料には使わない。
+2.30 で「直すところ」をカード・商品ごとにまとめ、「開いて直す」と、中身が空の作りかけカードの「このカードを消す」を付けた（js/38-builder-fixlist）。カテゴリー（大・中・小）の画面で足す・消す（商品0件だけ。書き出しの hiddenCategories）。サイトビルダー「商品ページの段組み」と商品ごとの「この商品のページの並び」（js/39-builder-layout、書き出しの productLayout と商品の layout）。サイト側は v66。
 2.29 で商品の登録・編集に「お届けまでの日数」（必須・最短〜最長・受注生産）と「ご注文の前に」の定型文の選択を足した（js/37-builder-delivery）。定型文はサイトビルダー「注意事項の定型文」で直す。在庫と出店の一覧に「お届け日数なし」の目印と絞り込み。サイト側は v64。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
@@ -132,7 +135,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.29｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.30｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -185,6 +188,8 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/35-builder-catnames.js"></script>
   <script src="js/36-carrier-rates.js"></script>
   <script src="js/37-builder-delivery.js"></script>
+  <script src="js/38-builder-fixlist.js"></script>
+  <script src="js/39-builder-layout.js"></script>
   <script src="js/23-builder-tab.js"></script>
   <script src="js/90-start.js"></script>
 </body>

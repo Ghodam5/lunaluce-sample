@@ -53,6 +53,8 @@
           main = builderNewsPreview();
         } else if (s.type === 'sections') {
           main = builderSectionsPreview();
+        } else if (s.type === 'layout') {
+          main = builderLayoutPreview();
         } else if (s.type === 'notes') {
           main = builderNotesPreview();
         } else if (s.type === 'cats') {
@@ -72,7 +74,7 @@
         const errs = builderAllErrors();
         const dirty = builderDirty();
         host.innerHTML = '<div class="pv-phone">' + ticker + main + '</div>' +
-          '<div class="pv-check' + (errs.length ? ' is-bad' : '') + '">' + (errs.length ? '<b>直すところ ' + errs.length + '件</b><ul>' + errs.slice(0, 8).map(function (e) { return '<li>' + escapeHtml(e) + '</li>'; }).join('') + '</ul>' : '<b>確認OK</b>') + '</div>' +
+          builderFixListHtml() +
           '<div class="pv-actions"><button type="button" class="export" data-b="export"' + (errs.length || !dirty ? ' disabled' : '') + '>下書きを書き出す</button><button type="button" data-b="reset"' + (dirty ? '' : ' disabled') + '>変更を取り消す</button></div>' +
           '<p class="muted">' + (dirty ? '変更はこのブラウザに一時保存しています。' : '変更はありません。') + '保存先（本番サイト）にはまだつないでいません。</p>';
       }

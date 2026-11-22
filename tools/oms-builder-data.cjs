@@ -115,6 +115,13 @@ function leadOf(p) {
   const k = m[3] === '週間' ? 7 : 1;
   return { min: Number(m[1]) * k, max: Number(m[2] || m[1]) * k, made: /受注|製造|生産|制作/.test(text), source: '本文' };
 }
+// 商品ページの段組み。サイトに site-src/product-layout.json があればそれ（無ければOMSの標準を使う）
+function productLayout() {
+  const f = path.join(root, 'site-src/product-layout.json');
+  if (!fs.existsSync(f)) return undefined;
+  const d = read('site-src/product-layout.json');
+  return { side: d.side, below: d.below };
+}
 // 注意事項の定型文。サイトに site-src/notice-templates.json があればそれ（無ければOMSの標準を使う）
 function noticeTemplates() {
   const f = path.join(root, 'site-src/notice-templates.json');
@@ -157,7 +164,7 @@ function build() {
   const notices = read('site-src/site-notices.json');
   const products = fs.readdirSync(path.join(root, 'site-src/products')).filter((f) => /^\d+\.json$/.test(f)).map((f) => read('site-src/products/' + f)).filter((p) => p.active && p.product).map((p) => Object.assign({ id: String(p.product.id), code: p.product.code, title: p.product.title, price: p.product.price, image: p.product.image || '', lead: !!leadOf(p.product) }, p.stock ? { stock: p.stock } : {})).sort((a, b) => Number(a.id) - Number(b.id));
   const images = Array.from(new Set(cards.flatMap((c) => [c.image].concat((c.tiles || []).map((t) => t.image))).filter(Boolean))).sort();
-  return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets(), homeSections: homeSections(), noticeTemplates: noticeTemplates() };
+  return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets(), homeSections: homeSections(), noticeTemplates: noticeTemplates(), productLayout: productLayout() };
 }
 
 // 使われている商品コードの台帳（商品コードの重複チェック用）。小文字にそろえ、どこで使っているかを文字で持つ

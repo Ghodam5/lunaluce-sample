@@ -6,7 +6,7 @@
     const BUILDER_HIST_MAX = 60;
     function builderHistData() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, noteTemplates: b.noteTemplates, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans, links: b.links });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, catHidden: b.catHidden, pageLayout: b.pageLayout, noteTemplates: b.noteTemplates, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans, links: b.links });
     }
     function builderHist() {
       const b = state.builder;
@@ -57,7 +57,7 @@
       const b = state.builder;
       const d = JSON.parse(entry.data);
       b.themes = b.themes.filter(function (t) { return t.builtIn; }).concat(d.themes || []);
-      b.cards = d.cards; b.notices = d.notices; b.stock = d.stock; b.newProducts = d.newProducts; b.newCats = d.newCats; b.catNames = d.catNames || {}; b.noteTemplates = d.noteTemplates || null;
+      b.cards = d.cards; b.notices = d.notices; b.stock = d.stock; b.newProducts = d.newProducts; b.newCats = d.newCats; b.catNames = d.catNames || {}; b.catHidden = d.catHidden || {}; b.pageLayout = d.pageLayout || null; b.noteTemplates = d.noteTemplates || null;
       b.days = d.days; b.news = d.news || []; b.sections = d.sections || b.sections; b.listing = d.listing; b.plans = d.plans; b.links = d.links;
       b.templatesById = null; b.plansIndex = null;
       const sel = entry.sel || { type: 'ticker', index: 0 };

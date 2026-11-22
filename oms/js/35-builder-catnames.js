@@ -1,6 +1,7 @@
 // Luna Luce OMS 部品JS: 35-builder-catnames（カテゴリーの名前を変える: 大・中・小）
 // 2.27 で追加。サイトに出るカテゴリーの名前だけを変える。英字の名前（URL・商品コードに使う）は変えない。
 // 下書きの catNames に { 英字の名前: 新しい名前 } で持ち、書き出しの categoryNames に入る（反映ツール・Welcartの受け取りプラグインが使う）。
+// 2.30: この画面からカテゴリーを足す（28 の作る画面を使う）・減らす（商品が0件のものだけ。下書きの catHidden → 書き出しの hiddenCategories）。
     const CATNAME_MAX = 20;
     function builderCatNames() {
       const b = state.builder;
@@ -32,6 +33,34 @@
         c.set(names[c.k] ? names[c.k] : orig);
       });
     }
+    function builderCatHidden() {
+      const b = state.builder;
+      if (!b.catHidden || typeof b.catHidden !== 'object') b.catHidden = {};
+      return b.catHidden;
+    }
+    // そのカテゴリーに入っている商品の数（大は中の合計）。新しく作ったものは下書きの商品で数える
+    function builderCatCount(c) {
+      if (c.level === 's') return (c.node[2] && c.node[2].count) || 0;
+      if (c.level === 'm') return (c.node.place && c.node.place.count) || 0;
+      return c.node.mids.reduce(function (n, m) { return n + ((m.place && m.place.count) || 0); }, 0);
+    }
+    function builderCatNewIndex(c) {
+      return (state.builder.newCats || []).findIndex(function (x) { return x.level === 'g' ? (c.level === 'g' && x.k === c.k) : x.level === c.level && x.k === c.k && (c.level === 'm' ? x.g === c.g : x.m === c.m); });
+    }
+    function builderCatTools(c) {
+      const hidden = !!builderCatHidden()[c.k];
+      const add = c.level === 'g' ? '<button type="button" data-b="catname-add" data-level="m" data-g="' + escapeHtml(c.k) + '">＋ 中を足す</button>' :
+        c.level === 'm' ? '<button type="button" data-b="catname-add" data-level="s" data-g="' + escapeHtml(c.g) + '" data-m="' + escapeHtml(c.k) + '">＋ 小を足す</button>' : '';
+      const ni = builderCatNewIndex(c);
+      let del;
+      if (ni >= 0) del = '<button type="button" data-b="cat-remove" data-index="' + ni + '">取り消す</button>';
+      else if (hidden) del = '<button type="button" data-b="catname-show" data-k="' + escapeHtml(c.k) + '">戻す</button>';
+      else {
+        const n = builderCatCount(c);
+        del = n ? '<button type="button" disabled title="入っている商品のカテゴリーを先に変えてください">消す（商品' + n + '件あり）</button>' : '<button type="button" class="danger" data-b="catname-hide" data-k="' + escapeHtml(c.k) + '">消す</button>';
+      }
+      return '<span class="cat-tools">' + add + del + '</span>';
+    }
     function builderCatOrig(c) { return c.level === 's' ? (c.node[3] !== undefined ? c.node[3] : c.node[1]) : (c.node.orig !== undefined ? c.node.orig : c.node.name); }
     function builderCatRenameCount() { return Object.keys(builderCatNames()).length; }
     function builderCatNamesForm() {
@@ -41,8 +70,10 @@
         const field = function (c, label) {
           const orig = builderCatOrig(c);
           const changed = !!names[c.k];
-          return '<div class="catname' + (changed ? ' is-changed' : '') + '"><span class="lv">' + label + '</span><input type="text" data-catname="' + escapeHtml(c.k) + '" value="' + escapeHtml(names[c.k] || orig) + '" maxlength="' + CATNAME_MAX + '" aria-label="' + escapeHtml(orig) + 'の名前">' +
-            (changed ? '<small>元: ' + escapeHtml(orig) + '</small><button type="button" data-b="catname-reset" data-k="' + escapeHtml(c.k) + '">元に戻す</button>' : '') + '</div>';
+          const hidden = !!builderCatHidden()[c.k];
+          return '<div class="catname' + (changed ? ' is-changed' : '') + (hidden ? ' is-hidden' : '') + (c.node.isNew || (c.level === 's' && c.node[2] && c.node[2].isNew) ? ' is-new' : '') + '"><span class="lv">' + label + '</span><input type="text" data-catname="' + escapeHtml(c.k) + '" value="' + escapeHtml(names[c.k] || orig) + '" maxlength="' + CATNAME_MAX + '" aria-label="' + escapeHtml(orig) + 'の名前"' + (hidden ? ' disabled' : '') + '>' +
+            (hidden ? '<small>消す予定（サイトに出しません）</small>' : '') +
+            (changed ? '<small>元: ' + escapeHtml(orig) + '</small><button type="button" data-b="catname-reset" data-k="' + escapeHtml(c.k) + '">元に戻す</button>' : '') + builderCatTools(c) + '</div>';
         };
         const nodes = builderCatNodes();
         const find = function (k) { return nodes.find(function (x) { return x.k === k; }); };
@@ -55,7 +86,10 @@
         }).join('');
         return mids || hit(gc) ? '<li class="cat-g">' + field(gc, '大') + (mids ? '<ul>' + mids + '</ul>' : '') + '</li>' : '';
       }).join('');
-      return '<h2>カテゴリーの名前（大・中・小）</h2><p class="lead">サイトのメニューやカテゴリーのページに出る名前を変えられます。URLや商品コードに使う英字の名前は変わりません。</p>' +
+      const b = state.builder;
+      const creator = b.catOpen && b.catFrom === 'names' ? builderCatCreator(null) : '<button type="button" class="add" data-b="catname-add" data-level="g">＋ 大カテゴリーを足す</button>';
+      return '<h2>カテゴリー（大・中・小）</h2><p class="lead">名前を変える・足す・消すができます。URLや商品コードに使う英字の名前は変わりません。商品が入っているカテゴリーは、商品のカテゴリーを先に変えてから消します。</p>' +
+        '<div class="catname-create">' + creator + '</div>' +
         '<label class="fld wide"><span>名前でさがす</span><input type="search" data-catname-q value="' + escapeHtml(q) + '" placeholder="例: タオル"></label>' +
         '<ul class="catnames">' + (rows || '<li class="muted">見つかりません。</li>') + '</ul>';
     }
@@ -63,10 +97,17 @@
       const names = builderCatNames();
       const nodes = builderCatNodes();
       const keys = Object.keys(names);
+      const hid = Object.keys(builderCatHidden());
+      const added = state.builder.newCats || [];
       return '<p class="pv-note">変えた名前 ' + keys.length + '件</p>' + (keys.length ? '<ul class="pv-ul">' + keys.map(function (k) {
         const c = nodes.find(function (x) { return x.k === k; });
         return '<li>' + escapeHtml(c ? builderCatOrig(c) : k) + ' → <b>' + escapeHtml(names[k]) + '</b></li>';
-      }).join('') + '</ul>' : '<p class="muted">まだ変えていません。</p>');
+      }).join('') + '</ul>' : '<p class="muted">まだ変えていません。</p>') +
+        '<p class="pv-note">足したカテゴリー ' + added.length + '件・消すカテゴリー ' + hid.length + '件</p>' +
+        (added.length || hid.length ? '<ul class="pv-ul">' + added.map(function (c) { return '<li>＋ ' + escapeHtml(builderCatLabel(c)) + '</li>'; }).join('') + hid.map(function (k) {
+          const c = nodes.find(function (x) { return x.k === k; });
+          return '<li>− ' + escapeHtml(c ? builderCatOrig(c) : k) + '</li>';
+        }).join('') + '</ul>' : '');
     }
     function builderCatNamesErrors() {
       const out = [];
@@ -87,7 +128,35 @@
         return row;
       });
     }
+    function builderCatHiddenExport() {
+      const nodes = builderCatNodes();
+      return Object.keys(builderCatHidden()).map(function (k) {
+        const c = nodes.find(function (x) { return x.k === k; });
+        const row = { level: c ? c.level : '', k: k, name: c ? builderCatOrig(c) : k };
+        if (c && c.g) row.g = c.g;
+        if (c && c.m) row.m = c.m;
+        return row;
+      });
+    }
     function builderCatNamesAction(name, el) {
+      const b = state.builder;
+      if (name === 'catname-add') {
+        b.catOpen = true; b.catFrom = 'names';
+        b.catDraft = { level: el.dataset.level, g: el.dataset.g || '', m: el.dataset.m || '' };
+        emit('oms:builder', { form: true });
+        setTimeout(function () { const box = document.querySelector('.catname-create'); if (box) box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }, 0);
+        return true;
+      }
+      if (name === 'catname-hide') {
+        const c = builderCatNodes().find(function (x) { return x.k === el.dataset.k; });
+        if (!c) return true;
+        if (builderCatCount(c)) { showToast('商品が入っているので消せません。先に商品のカテゴリーを変えてください。'); return true; }
+        builderCatHidden()[c.k] = true;
+        builderChanged(true);
+        showToast('「' + builderCatOrig(c) + '」を消す予定にしました。書き出すとサイトに出なくなります（「戻す」で取り消せます）。');
+        return true;
+      }
+      if (name === 'catname-show') { delete builderCatHidden()[el.dataset.k]; builderChanged(true); return true; }
       if (name !== 'catname-reset') return false;
       delete builderCatNames()[el.dataset.k];
       builderApplyCatNames();

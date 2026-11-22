@@ -213,7 +213,7 @@
         tags: (p.orig ? p.orig.tags.filter(function (x) { return x !== '名入れ'; }) : []).concat(p.hasName ? ['名入れ'] : []), skus: skus,
         spec: Object.assign({ fields: [], skus: [], minq: null, notes: [] }, p.spec || {}, { code: p.code, pid: p.id }),
         minq: Number(p.minq), minnote: p.orig ? p.orig.minnote : '', hasName: !!p.hasName, petit: tags.categories.indexOf('petit') >= 0, seal: !!p.seal, pack: Number(p.pack) || 1
-      }, builderDeliveryRow(p));
+      }, builderDeliveryRow(p), builderLayoutRow(p));
       const st = builderProductStock(p);
       return { active: p.active !== false && st.status !== 'end', product: product, photos: p.photos.slice(), sale: (function () { const l = builderListingOf({ id: p.id, src: p.edit ? 'site' : 'new' }); return l.from || l.to ? { from: l.from || undefined, to: l.to || undefined, plans: l.plans.map(function (x) { return x.id; }) } : undefined; })(), places: keep ? undefined : (p.places || []).filter(function (pl) { return pl.g; }).map(function (pl) { const f = builderPlaceFind(pl); return { g: pl.g, m: pl.m || '', s: pl.s || '', label: builderPlaceLabel(pl), isNew: !!((f.g && f.g.isNew) || (f.m && f.m.isNew) || (f.sub && f.sub[2].isNew)) }; }), stock: p.edit || st.status === 'in' ? undefined : cloneData(st), template: p.edit ? undefined : p.from || undefined, edit: p.edit ? true : undefined };
     }
@@ -337,7 +337,7 @@
         '<p class="muted">「＋ 写真を取り込む」で選んだ写真は、右にどんどん並びます（何枚でもまとめて選べます。20枚まで）。</p>' +
         builderSwitch('名入れできる商品にする（「名入れできる」の絞り込みに出ます）', 'hasName', !!p.hasName) +
         (p.spec && p.spec.fields && p.spec.fields.length ? '<p class="muted">名入れなどの入力欄 ' + p.spec.fields.length + '項目は、お手本から写しています。</p>' : '') +
-        '<h3>説明</h3>' + PRODUCT_TEXT_FIELDS.map(function (f) { return builderField(f[1], f[0], p[f[0]], { wide: true, area: f[2] }); }).join('') + builderDeliveryBlock(p) +
+        '<h3>説明</h3>' + PRODUCT_TEXT_FIELDS.map(function (f) { return builderField(f[1], f[0], p[f[0]], { wide: true, area: f[2] }); }).join('') + builderDeliveryBlock(p) + builderLayoutBlock(p) +
         (p.edit ? '<h3>在庫の状態</h3><p class="muted">いま: ' + escapeHtml(stockState(builderStockOf(p.id).status).short) + '。在庫の状態は「在庫の状態（欠品・入荷待ち）」の一覧で切り替えます。</p>' :
         '<h3>在庫の状態</h3><label class="fld"><span>いまの状態</span><select data-f="stock.status">' + STOCK_STATES.filter(function (s) { return s.id !== 'end'; }).map(function (s) { return '<option value="' + s.id + '"' + (s.id === st.status ? ' selected' : '') + '>' + escapeHtml(s.label) + '</option>'; }).join('') + '</select></label>' +
         (st.status === 'wait' ? builderField('入荷予定日', 'stock.eta', st.eta || '', { type: 'date' }) : '')) +
