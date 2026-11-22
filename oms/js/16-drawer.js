@@ -116,8 +116,15 @@
       function chosenBlock() {
         const seal = currentSeal();
         const title = seal ? seal.label : '未選択';
-        const size = '約35×25mm。再構築サイト option.html のミニシール表。';
-        return '<div class="seal-frame">' + sealFrameInner(seal) + '</div><div><p class="cap">' + escapeHtml(title) + '</p><p class="sub">角丸スクエア。円ではありません。' + escapeHtml(size) + '</p>' + (seal ? '<button type="button" class="clear" data-action="clear-seal">図柄を外す（未指定に戻す）</button>' : '') + '</div>';
+        const size = '約35×25mm。';
+        return '<div class="pick"><p class="kind">ミニシール</p><div class="seal-frame">' + sealFrameInner(seal) + '</div><p class="cap">' + escapeHtml(title) + '</p><p class="sub">角丸スクエア。' + escapeHtml(size) + '</p>' + (seal ? '<button type="button" class="clear" data-action="clear-seal">図柄を外す</button>' : '') + '</div>' + wrapBlock();
+      }
+      // ラッピング（包装紙）の図柄。注文で指定されているか、担当者が選んだときだけ出す（js/44-option-catalog）
+      function wrapBlock() {
+        const order = currentOrder();
+        const wrap = order ? optionChosen(order, 'wrap') : null;
+        if (!wrap) return '<div class="pick"><p class="kind">ラッピング</p><div class="wrap-frame is-none"><p class="miss">指定なし</p></div><p class="cap">指定なし</p><p class="sub">下の「のし・包装の見本」の包装紙から選べます。</p></div>';
+        return '<div class="pick"><p class="kind">ラッピング</p><div class="wrap-frame"><img src="../images/' + escapeHtml(wrap.file) + '" alt="' + escapeHtml(wrap.label) + '"></div><p class="cap">' + escapeHtml(wrap.label) + '</p><p class="sub">包装紙の図柄です。</p><button type="button" class="clear" data-action="pick-option" data-group="wrap" data-file="">ラッピングを外す</button></div>';
       }
       function names(ids) {
         return ids.map(function (id) { return SEAL_BY_ID[id] ? SEAL_BY_ID[id].label : id; }).join('、');
@@ -156,7 +163,7 @@
         }).join('');
         const count = SEAL_GROUPS.reduce(function (n, g) { return n + g.ids.filter(function (id) { return SEAL_BY_ID[id]; }).length; }, 0);
         // 図柄の一覧は普段は畳む。押したときだけ開く（開いたかどうかは注文を替えても覚えておく）
-        host.innerHTML = '<div class="head"><h3>ミニシールの図柄</h3><p class="sub">この端末の画像</p></div><div data-seal-match>' + matchBlock() + '</div><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div><details class="fold" data-seal-fold' + (sealFoldOpen ? ' open' : '') + '><summary>図柄の見本一覧<span class="cnt">' + count + '種類・押すと開きます</span></summary><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。押すとこの注文の図柄になります。選んでいる図柄をもう一度押すと外れます。</p>' + groups + '</details>';
+        host.innerHTML = '<div class="head"><h3>ミニシール・ラッピングの図柄</h3><p class="sub">この端末の画像</p></div><div data-seal-match>' + matchBlock() + '</div><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div><details class="fold" data-seal-fold' + (sealFoldOpen ? ' open' : '') + '><summary>図柄の見本一覧<span class="cnt">' + count + '種類・押すと開きます</span></summary><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。押すとこの注文の図柄になります。選んでいる図柄をもう一度押すと外れます。</p>' + groups + '</details>';
         host.querySelector('[data-seal-fold]').addEventListener('toggle', function (e) { sealFoldOpen = e.target.open; });
       }
       function refresh() {

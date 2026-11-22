@@ -1,6 +1,6 @@
 // Luna Luce OMS 部品JS: 07-header（元は luna_luce_oms_ui_v2.html の <script>。並び順どおりに読み込む）
     function renderHeaderBrand(host) {
-      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.42</span></h1><span class="who" data-slot="user"></span></div>';
+      host.innerHTML = '<div class="brand"><div class="mark" aria-hidden="true">L</div><h1>Luna Luce<span class="badge">OMS 2.43</span></h1><span class="who" data-slot="user"></span></div>';
       if (typeof renderHeaderUser === 'function') renderHeaderUser(host.querySelector('[data-slot="user"]')); // 42-header-user
     }
     function renderHeaderStatus(host) {

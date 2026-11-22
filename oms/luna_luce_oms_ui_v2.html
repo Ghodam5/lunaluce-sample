@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.42
+Luna Luce OMS 2.43
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -82,6 +82,7 @@ Luna Luce OMS 2.42
 2.40 で受注明細に「ご注文の印刷イメージ」を出すようにした（js/43-print-preview・css/12-print-preview）。ミニシールは図柄の画像、熨斗は種類（結び切り・蝶結び・ハート）の見本に表書きとお名前を重ねた絵、リボンシールは仮の形に名前と日付、レーザー彫刻（ウェルカムボード・証明書・時計・リングピローなど）は商品のサンプル画像。どれも横に、注文の名前・日付などを四角で囲んで出す。
 2.41 で受注明細の見本一覧を畳んだ。ミニシールの図柄一覧（59種類）は押したときだけ開く。のし・包装紙・小袋/紙袋の見本一覧（js/44-option-catalog の OPTION_CATALOG）を同じ場所に畳んで追加し、注文に当てはまる見本には「この注文」を付ける。
 2.42 で選んだ見本を外せるようにした。ミニシールは選んでいる図柄をもう一度押すか「図柄を外す」で未指定に戻る（自動で入った図柄も外せる。図柄を選んだときに入れたテンプレートも元に戻す。js/18-actions clearMiniSeal）。のし・包装紙・小袋も押して選び、もう一度押すか「〜を外す」で未指定に戻る（order.optionPick、pickOption）。熨斗の印刷イメージは選んだのしに従う。
+2.43 で受注明細の「ミニシールの図柄」を「ミニシール・ラッピングの図柄」にし、ミニシールの横にラッピング（包装紙）の図柄を並べた（js/16-drawer wrapBlock）。注文で包装紙が指定されているか担当者が選んだときに出し、「ラッピングを外す」で未指定に戻せる。
 2.29 で商品の登録・編集に「お届けまでの日数」（必須・最短〜最長・受注生産）と「ご注文の前に」の定型文の選択を足した（js/37-builder-delivery）。定型文はサイトビルダー「注意事項の定型文」で直す。在庫と出店の一覧に「お届け日数なし」の目印と絞り込み。サイト側は v64。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
@@ -148,7 +149,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.42｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.43｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />

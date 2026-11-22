@@ -79,3 +79,12 @@
     [data-part="drawer-catalog"] .miss { display: block; margin: 0; padding: 20px 4px; font-size: 12px; color: var(--taupe); text-align: center; }
     /* 選んだ図柄・のし・包装を外すボタン */
     [data-part="drawer-miniseal"] button.clear, [data-part="drawer-catalog"] button.clear { display: inline-block; width: auto; margin: 8px 0; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(217, 83, 79, 0.5); background: #fff; color: var(--urgent, #c0392b); font-size: 13px; cursor: pointer; }
+    /* ミニシールとラッピングの図柄を2枚並べる（js/16-drawer chosenBlock・wrapBlock） */
+    [data-part="drawer-miniseal"] .chosen { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+    [data-part="drawer-miniseal"] .chosen .pick { min-width: 0; }
+    [data-part="drawer-miniseal"] .chosen .kind { margin: 0 0 4px; font-size: 12px; font-weight: 700; color: var(--taupe); letter-spacing: 0.04em; }
+    [data-part="drawer-miniseal"] .chosen .seal-frame, [data-part="drawer-miniseal"] .wrap-frame { width: 100%; max-width: 200px; }
+    [data-part="drawer-miniseal"] .chosen .cap { margin: 6px 0 0; }
+    [data-part="drawer-miniseal"] .wrap-frame { aspect-ratio: 1 / 1; border: 1px solid var(--champagne, #b8965c); border-radius: 12px; overflow: hidden; background: #fff; display: grid; place-items: center; }
+    [data-part="drawer-miniseal"] .wrap-frame.is-none { border-style: dashed; }
+    [data-part="drawer-miniseal"] .wrap-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
