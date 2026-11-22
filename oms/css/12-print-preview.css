@@ -1,0 +1,35 @@
+/* owner: js/43-print-preview（受注明細の印刷イメージ） */
+    [data-part="drawer-preview"] .pp-list { display: grid; gap: 12px; }
+    [data-part="drawer-preview"] .pp-card { background: #fff; border: 1px solid rgba(184, 150, 92, 0.45); border-radius: 12px; padding: 12px; min-width: 0; }
+    [data-part="drawer-preview"] .pp-card h4 { margin: 0 0 10px; font-size: 15px; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="drawer-preview"] .pp-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 12px; align-items: center; }
+    @media (max-width: 560px) { [data-part="drawer-preview"] .pp-row { grid-template-columns: 1fr; } }
+    [data-part="drawer-preview"] .pp-pic { margin: 0; display: grid; justify-items: center; gap: 6px; min-width: 0; }
+    [data-part="drawer-preview"] .pp-pic img { width: 100%; max-width: 340px; height: auto; border-radius: 10px; border: 1px solid rgba(184, 150, 92, 0.35); background: #fff; display: block; }
+    [data-part="drawer-preview"] .pp-seal img { aspect-ratio: 35 / 25; object-fit: contain; }
+    [data-part="drawer-preview"] .pp-pic figcaption { font-size: 13px; color: var(--taupe); text-align: center; overflow-wrap: anywhere; }
+    [data-part="drawer-preview"] .pp-pic.is-empty { min-height: 140px; align-content: center; border: 1px dashed rgba(184, 150, 92, 0.6); border-radius: 10px; }
+    [data-part="drawer-preview"] .pp-text { border: 2px solid var(--forest); border-radius: 8px; padding: 10px 12px; background: var(--ivory, #faf8f5); min-width: 0; }
+    [data-part="drawer-preview"] .pp-text-title { margin: 0 0 6px; font-size: 12px; font-weight: 700; color: var(--taupe); letter-spacing: 0.04em; }
+    [data-part="drawer-preview"] .pp-line { margin: 4px 0; display: grid; gap: 1px; }
+    [data-part="drawer-preview"] .pp-line span { font-size: 11px; color: var(--taupe); }
+    [data-part="drawer-preview"] .pp-line b { font-size: 17px; color: #433936; font-weight: 600; overflow-wrap: anywhere; }
+    [data-part="drawer-preview"] .pp-miss { margin: 0; color: var(--taupe); font-size: 13px; }
+    [data-part="drawer-preview"] .pp-note { margin: 8px 0 0; font-size: 12px; color: var(--taupe); }
+    [data-part="drawer-preview"] .pp-ribbon { width: 100%; max-width: 340px; height: auto; display: block; justify-self: center; }
+    /* 熨斗: 見本画像（3種類が1枚に並んだ画像）から1枚を切り出し、表書きとお名前を縦書きで重ねる */
+    [data-part="drawer-preview"] .pp-noshi {
+      position: relative; width: 100%; max-width: 340px; aspect-ratio: 305 / 210; justify-self: center;
+      background-image: url("../../images/opt-nosi-mihon.jpg"); background-size: 229.5% auto; background-repeat: no-repeat;
+      border: 1px solid #e5ded3; border-radius: 4px; overflow: hidden;
+    }
+    [data-part="drawer-preview"] .pp-noshi span {
+      position: absolute; left: 50%; transform: translateX(-50%); writing-mode: vertical-rl; text-orientation: mixed;
+      font-family: "Noto Serif JP", serif; color: #1f1a18; white-space: nowrap; line-height: 1;
+    }
+    [data-part="drawer-preview"] .pp-noshi-up { top: 5%; max-height: 40%; font-size: 22px; letter-spacing: 0.12em; }
+    [data-part="drawer-preview"] .pp-noshi-up.is-long { font-size: 15px; letter-spacing: 0.04em; }
+    [data-part="drawer-preview"] .pp-noshi-name { top: 58%; max-height: 38%; font-size: 15px; letter-spacing: 0.08em; }
+    /* 英字のお名前は横書きで、水引の下に1行で */
+    [data-part="drawer-preview"] .pp-noshi .pp-noshi-name.is-latin { writing-mode: horizontal-tb; top: 66%; font-family: "Cormorant Garamond", serif; font-size: 17px; letter-spacing: 0.02em; }
+    [data-part="drawer-preview"] .pp-noshi .is-empty { color: #b8aca6; font-size: 12px; }

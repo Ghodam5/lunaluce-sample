@@ -11,13 +11,13 @@
         { id: 'WC-20261117-09', channel: 'WELCART', channelLabel: '自社Welcart', orderDate: '2026-11-17 11:10', weddingDate: '2026-11-29', customerName: '渡辺 麻衣', shippingTo: 'ご自宅配送（兵庫県神戸市中央区）', postalCode: '650-0021', address: '兵庫県神戸市中央区三宮町1-4-3', phone: '070-3322-9988', productName: '席次表・メニュー表 DIY印刷キット「Blanc」', sku: 'LL-PPR-031-WHT', qty: 80, amount: 22400, coupleNames: 'Naoki & Mai', headerMsg: 'WEDDING RECEPTION', fontStyle: 'クラシック明朝（トープ）', noshiSeal: 'ゴールドゴム紐付属', status: '梱包・出荷済', warning: null, selected: false, rawPayload: { source: 'WordPress Welcart REST', usces_order_id: 10831, tracking_number: '4912-8841-8810' } }
       ];
       const extras = {
-        'WC-20261119-01': { extraCharApplies: true, extraCharCount: 6, noshiFee: 20, wrappingFee: 0 },
+        'WC-20261119-01': { extraCharApplies: true, extraCharCount: 6, noshiFee: 20, wrappingFee: 0, noshiUpper: '内祝', noshiName: '拓也 美咲', productImage: 'images/products/39600.jpg' },
         'RK-394810-20261119': { wrappingFee: 90 },
         'YH-lunaluce-100492': { bestBefore: '2027-02-28', proofStatus: '送付済' },
-        'WC-20261119-02': { campaignMark: '5円ご縁', noshiFee: 20 },
+        'WC-20261119-02': { campaignMark: '5円ご縁', noshiFee: 20, noshiUpper: '寿', noshiName: '大輔 美咲' },
         'FAX-20261119-01': { extraCharApplies: true, extraCharCount: 2, bestBefore: '2027-04-30', proofStatus: '承認済' },
         'RK-394810-20261118': { wrappingFee: 90 },
-        'YH-lunaluce-100488': { proofStatus: '承認済' }
+        'YH-lunaluce-100488': { proofStatus: '承認済', productImage: 'images/products/50447.jpg' }
       };
       const deliveries = {
         'WC-20261119-01': '2026-11-21',

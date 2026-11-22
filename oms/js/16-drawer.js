@@ -75,12 +75,11 @@
         ].map(function (row) {
           return '<p>' + escapeHtml(row[0]) + ' ' + escapeHtml(row[1]) + '</p>';
         }).join('');
-        // 図柄が決まっていれば、その図柄の画像を大きく出す（受注した柄がひと目でわかるように）
-        const big = view.seal && view.seal.file && view.status !== 'diy';
-        if (big) {
-          host.innerHTML = '<div class="card"><p class="flag">' + escapeHtml(view.headline) + '</p><div class="preview-head"><h3>受注した図柄</h3><p class="sub">' + escapeHtml(view.detail) + '</p></div><div class="frame seal-big"><img data-seal-big src="' + sealSrc(view.seal.file) + '" alt="' + escapeHtml(view.seal.label) + '"><p class="seal-big-name">' + escapeHtml(view.seal.label) + '</p></div><div class="meta">' + meta + '</div></div>';
-          const img = host.querySelector('[data-seal-big]');
-          if (img) img.addEventListener('error', function () { img.replaceWith(Object.assign(document.createElement('p'), { className: 'miss', textContent: '画像なし' })); });
+        // 印刷イメージ（ミニシール・熨斗・リボンシール・レーザー彫刻）があれば、それを出す（js/43-print-preview）
+        const prints = printPreviewHtml(order, view);
+        if (prints) {
+          host.innerHTML = '<div class="card">' + (prints.indexOf('ミニシール ') >= 0 ? '<p class="flag">' + escapeHtml(view.headline) + '</p>' : '') + '<div class="preview-head"><h3>ご注文の印刷イメージ</h3><p class="sub">画面の見本です。製造原稿ではありません。名前・日付は下の入力欄の内容です。</p></div><div class="pp-list">' + prints + '</div><div class="meta">' + meta + '</div></div>';
+          printPreviewWire(host);
           return;
         }
         host.innerHTML = '<div class="card"><p class="flag">' + escapeHtml(view.headline) + '</p><div class="preview-head"><h3>画面の参考見本</h3><p class="sub">' + escapeHtml(view.detail) + '</p></div><div class="frame"><svg viewBox="0 0 460 210" role="img" aria-label="共通参考見本"><rect x="8" y="8" width="444" height="194" rx="12" fill="#FAF8F5" stroke="#B8965C" stroke-width="2"/><text data-sample="message" x="230" y="48" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="15" fill="#8A7B76"></text><text data-sample="name" x="230" y="112" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="30" fill="#433936"></text><text data-sample="date" x="230" y="148" text-anchor="middle" font-size="16" fill="#9E7B43"></text><text data-sample="note" x="230" y="178" text-anchor="middle" font-size="10" fill="#7A6B66"></text></svg></div><div class="meta">' + meta + '</div><p class="limit" data-limit></p></div>';
@@ -101,7 +100,7 @@
         if (limit) limit.textContent = max && String(draft.couple || '').length > max ? '文字数超過（上限 ' + max + '）' : '';
       }
       on('oms:open', paint);
-      on('oms:draft', function () { applyPreview(); });
+      on('oms:draft', function () { if (host.querySelector('.pp-list')) paint(); else applyPreview(); });
       on('oms:seal', paint);
     }
     function renderDrawerMiniseal(host) {

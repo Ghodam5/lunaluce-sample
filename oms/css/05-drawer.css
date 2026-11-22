@@ -97,11 +97,6 @@
     }
     [data-part="drawer-preview"] svg { width: 100%; height: auto; display: block; }
 
-    /* 受注した図柄を大きく（ミニシールは横長の角丸スクエア） */
-    [data-part="drawer-preview"] .seal-big { display: grid; justify-items: center; gap: 8px; padding: 16px; }
-    [data-part="drawer-preview"] .seal-big img { width: min(100%, 340px); height: auto; aspect-ratio: 35 / 25; object-fit: contain; border-radius: 14px; border: 1px solid rgba(184, 150, 92, 0.45); background: #fff; display: block; }
-    [data-part="drawer-preview"] .seal-big-name { margin: 0; font-size: 15px; font-weight: 700; color: var(--forest); text-align: center; overflow-wrap: anywhere; }
-    [data-part="drawer-preview"] .seal-big .miss { margin: 24px 0; color: var(--taupe); }
 
     /* owner: renderDrawerParts */
     [data-part="drawer-parts"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; }
