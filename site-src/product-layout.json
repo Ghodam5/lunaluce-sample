@@ -45,14 +45,14 @@
     "spec",
     "notes",
     "note:cancel-if-late",
-    "source",
-    "recommend"
+    "source"
   ],
   "below": [
     "note:made-to-order",
     "delivery",
     "note:free-ship-no-date",
     "trial",
-    "share"
+    "share",
+    "recommend"
   ]
 }

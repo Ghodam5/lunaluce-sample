@@ -71,14 +71,14 @@
         "name": "北海道・一部離島",
         "fee": 2000,
         "feeBasis": "excl",
-        "freeApplies": false
+        "freeApplies": true
       },
       {
         "id": "okinawa",
         "name": "沖縄",
         "fee": 2800,
         "feeBasis": "excl",
-        "freeApplies": false
+        "freeApplies": true
       }
     ],
     "notes": [
