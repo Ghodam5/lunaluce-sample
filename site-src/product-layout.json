@@ -40,16 +40,19 @@
     }
   ],
   "side": [
-    "delivery",
     "buy",
     "description",
     "spec",
     "notes",
-    "source"
+    "note:cancel-if-late",
+    "source",
+    "recommend"
   ],
   "below": [
-    "recommend",
-    "share",
-    "trial"
+    "note:made-to-order",
+    "delivery",
+    "note:free-ship-no-date",
+    "trial",
+    "share"
   ]
 }
