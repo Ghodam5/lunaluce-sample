@@ -267,6 +267,7 @@
       host.addEventListener('pointerdown', function (event) {
         if (event.target.closest('[data-resize]')) builderResizeStart(event, host);
       });
+      builderLayoutDnd(host);
       host.addEventListener('input', function (event) {
         const el = event.target;
         if (builderSectionInput(el, false)) return;

@@ -481,7 +481,19 @@
     [data-part="builder-editor"] .catname.is-new .lv { background: #dff1e8; color: #2f6b4f; }
     [data-part="builder-editor"] .catname-create { margin: 8px 0 12px; }
     /* 2.30 商品ページの段組み */
-    [data-part="builder-editor"] .lay-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 8px 0; }
+    [data-part="builder-editor"] .lay-cols { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); grid-template-areas: "photo side" "below below"; gap: 12px; margin: 8px 0; }
+    [data-part="builder-editor"] .lay-at-photo { grid-area: photo; background: #f6f1ea; }
+    [data-part="builder-editor"] .lay-at-side { grid-area: side; }
+    [data-part="builder-editor"] .lay-at-below { grid-area: below; }
+    [data-part="builder-editor"] .lay-photo-ph { background: #ece6dd; border-radius: 8px; min-height: 110px; display: flex; align-items: center; justify-content: center; color: #7a6f63; font-size: 13px; }
+    @media (max-width: 640px) { [data-part="builder-editor"] .lay-cols { grid-template-columns: minmax(0, 1fr); grid-template-areas: "photo" "side" "below"; } [data-part="builder-editor"] .lay-photo-ph { min-height: 56px; } }
+    [data-part="builder-editor"] .lay-list li[draggable] { cursor: grab; }
+    [data-part="builder-editor"] .lay-list li.is-dragging { opacity: .45; }
+    [data-part="builder-editor"] .lay-list.lay-drop-over { outline: 2px dashed #8fc6c0; outline-offset: 3px; border-radius: 6px; min-height: 40px; }
+    [data-part="builder-editor"] .lay-list li.is-fixed .lay-name { font-weight: 600; }
+    [data-part="builder-editor"] .lay-name small { display: block; font-weight: 400; color: #7a6f63; font-size: 11px; }
+    [data-part="builder-editor"] .lay-grip { color: #b3a796; font-size: 13px; }
+    [data-part="builder-editor"] .lay-how { margin: 4px 0 0; font-size: 12px; }
     [data-part="builder-editor"] .lay-col { border: 1px solid var(--line, #e5dccf); border-radius: 10px; padding: 8px 10px; background: #fff; min-width: 0; }
     [data-part="builder-editor"] .lay-col h4 { margin: 0; font-size: 14px; }
     [data-part="builder-editor"] .lay-col .muted { margin: 2px 0 6px; font-size: 12px; }
