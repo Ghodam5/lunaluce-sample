@@ -182,6 +182,15 @@
         "width": 650,
         "height": 180
       }
+    ],
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "spec-change",
+      "season-delay",
+      "photo-mail"
     ]
   },
   "commerce": {

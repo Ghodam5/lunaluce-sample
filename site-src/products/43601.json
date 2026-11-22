@@ -89,6 +89,13 @@
         "width": 650,
         "height": 650
       }
+    ],
+    "notes": [
+      "order-mail",
+      "min-qty",
+      "spec-change",
+      "season-delay",
+      "assort-color"
     ]
   },
   "commerce": {

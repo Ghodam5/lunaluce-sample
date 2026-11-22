@@ -8,7 +8,11 @@ function leadDays(d){return d?'約'+(d.min===d.max?d.min:d.min+'〜'+d.max)+'日
 function T(k,d){var t=window.SITE_TEXTS&&window.SITE_TEXTS[k];return typeof t==='string'&&t?t:d}
 function leadHtml(p){var d=p.delivery;if(!d)return '';return '<div class="lead-time"><span class="lead-time-label">'+esc(T('item.leadTime','ご注文からお届けまで'))+'</span><b>'+leadDays(d)+'</b>'+(d.made?'<span class="lead-time-tag">受注生産</span>':'')+(d.made?'<p>お急ぎの場合は、ご注文手続きで「お急ぎ制作を希望する」をお選びください（1,000円〜・日数によりお受けできない場合があります）。</p>':'')+'</div>'}
 function autoNotes(p){var a=window.NOTICE_AUTO||{},on={};(a.all||[]).forEach(function(id){on[id]=1});if(p.delivery&&p.delivery.made)(a.made||[]).forEach(function(id){on[id]=1});if(p.expiry||p.allergens)(a.food||[]).forEach(function(id){on[id]=1});if(p.minq>1)(a.minq||[]).forEach(function(id){on[id]=1});return (window.NOTICE_TEMPLATES||[]).map(function(t){return t.id}).filter(function(id){return on[id]})}
-function notesHtml(p){var all=window.NOTICE_TEMPLATES||[],ids=Array.isArray(p.notes)?p.notes:autoNotes(p),list=ids.map(function(id){return all.find(function(t){return t.id===id})}).filter(Boolean);if(!list.length)return p.notice?'<h2>'+esc(T('item.notes','ご注文の前に'))+'</h2><p class="product-description">'+esc(p.notice)+'</p>':'';return '<h2>'+esc(T('item.notes','ご注文の前に'))+'</h2><ul class="order-notes">'+list.map(function(t){return '<li class="order-note tone-'+esc(t.tone)+'"><b>'+esc(t.label)+'</b><span>'+esc(t.text.replace(/\{days\}/g,leadDays(p.delivery)||'数日'))+'</span></li>'}).join('')+'</ul>'+(p.notice?'<details class="order-notes-src"><summary>本店の注意書き（原文）</summary><p class="product-description">'+esc(p.notice)+'</p></details>':'')}
+function noteLi(t){return '<li class="order-note tone-'+esc(t.tone)+'"><b>'+esc(t.label)+'</b><span>'+esc(t.text.replace(/\{days\}/g,leadDays(NOTE_P&&NOTE_P.delivery)||'数日'))+'</span></li>'}
+var NOTE_P=null;
+/* 段組みに置いた定型文（note:定型文のid）。全商品に同じ文を出す */
+function noteOneHtml(id,p){var t=(window.NOTICE_TEMPLATES||[]).find(function(x){return x.id===id});NOTE_P=p;return t?'<ul class="order-notes">'+noteLi(t)+'</ul>':''}
+function notesHtml(p){NOTE_P=p;var all=window.NOTICE_TEMPLATES||[],ids=Array.isArray(p.notes)?p.notes:autoNotes(p),list=ids.map(function(id){return all.find(function(t){return t.id===id})}).filter(Boolean);if(!list.length)return p.notice?'<h2>'+esc(T('item.notes','ご注文の前に'))+'</h2><p class="product-description">'+esc(p.notice)+'</p>':'';var own=!Array.isArray(p.notes)&&p.notice?'<li class="order-note tone-caution"><b>'+esc(T('item.ownNotice','この商品のご注意'))+'</b><span>'+esc(p.notice)+'</span></li>':'';return '<h2>'+esc(T('item.notes','ご注文の前に'))+'</h2><ul class="order-notes">'+own+list.map(noteLi).join('')+'</ul>'+(p.notice&&!own?'<details class="order-notes-src"><summary>本店の注意書き（原文）</summary><p class="product-description">'+esc(p.notice)+'</p></details>':'')}
 /* 商品ページの段組み（v66）。buy（数量・カートに入れる）は写真の右に必ず置き、その前の部品は購入欄の上、後ろの部品は下に出す。site-src/product-layout.json → product-layout-data.js。商品ごとの layout があればそちらを使う */
 function layoutOf(p){var d=window.PRODUCT_LAYOUT||{side:['delivery','buy','description','spec','notes','source'],below:['recommend','share','trial']},l=p.layout&&Array.isArray(p.layout.side)&&Array.isArray(p.layout.below)?p.layout:d,side=l.side.filter(function(id){return id!=='buy'}),below=l.below.filter(function(id){return id!=='buy'}),at=l.side.indexOf('buy');side.splice(at<0?0:at,0,'buy');if(side.concat(below).indexOf('share')<0)below.push('share');return {side:side,below:below}}
 /* こちらもおすすめ: 同じ小カテゴリー→同じカテゴリーの順に、写真のある商品を10件まで */
@@ -17,6 +21,7 @@ function recoList(p){var all=(ShopCatalog.products||[]).filter(function(x){retur
 function recoHtml(p){var list=recoList(p);if(!list.length)return '';return '<h2>'+esc(T('item.recommend','こちらもおすすめ'))+'</h2><div class="rail-wrap reco-wrap"><button class="rail-nav prev" type="button" aria-label="前の商品へ">‹</button><div class="rail reco-rail" data-standard-rail>'+list.map(function(x){return '<a class="prod" href="item.html?id='+encodeURIComponent(x.id)+'"><div class="ph"><img src="'+esc(x.image)+'" alt="'+esc(x.title)+'" loading="lazy" width="520" height="520"></div><div class="b">'+(x.hasName?'<div class="tags"><span class="n">名入れ</span></div>':'')+'<h4>'+esc(x.title)+'</h4><div class="price">'+x.price.toLocaleString('ja-JP')+'円<small> 税込</small></div></div></a>'}).join('')+'</div><button class="rail-nav next" type="button" aria-label="次の商品へ">›</button></div>'}
 function partHtml(id,p){
  if(id==='delivery')return leadHtml(p);
+ if(id.indexOf('note:')===0)return noteOneHtml(id.slice(5),p);
  if(id==='description')return '<h2>'+esc(T('item.description','商品の説明'))+'</h2><p class="product-description">'+esc(p.description||'商品情報は本店ページでもご確認いただけます。')+'</p>';
  if(id==='spec'){var rows=spec('内容量',p.contents)+spec('サイズ',p.size)+spec('材質',p.material)+spec('賞味期限',p.expiry)+spec('原材料',p.ingredients)+spec('アレルゲン',p.allergens)+spec('保存方法',p.storage);return rows?'<table class="spec">'+rows+'</table>':''}
  if(id==='notes')return notesHtml(p);
@@ -25,8 +30,8 @@ function partHtml(id,p){
  if(id==='share')return '<div data-share-slot></div>';
  if(id==='trial')return '<h2>'+esc(T('item.trial','名入れができる商品'))+'</h2><div class="sample-trial-links"><a href="item.html?id=58190">GOEN PB（ふたりの名前・日付）</a><a href="item.html?id=69417">melody piano box（20文字・追加料金）</a><a href="item.html?id=42902">ウェイトドール（刺繍・メッセージ・お急ぎ）</a><a href="category.html?g=all&n=1">'+esc(T('item.trialAll','名入れできる商品一覧へ'))+'</a></div>';
  return ''}
-function sideHtml(p,l,ids){return (ids||l.side).map(function(id){var h=partHtml(id,p);return h?'<div class="pd-part pd-'+id+'">'+h+'</div>':''}).join('')}
-function belowHtml(p,l){return l.below.map(function(id){var h=partHtml(id,p);return h?'<section class="sec pd-below pd-'+id+'">'+h+'</section>':''}).join('')}
+function sideHtml(p,l,ids){return (ids||l.side).map(function(id){var h=partHtml(id,p);return h?'<div class="pd-part pd-'+id.replace(':','-')+'">'+h+'</div>':''}).join('')}
+function belowHtml(p,l){return l.below.map(function(id){var h=partHtml(id,p);return h?'<section class="sec pd-below pd-'+id.replace(':','-')+'">'+h+'</section>':''}).join('')}
 if(!p){host.innerHTML='<h1>商品が見つかりません</h1><p>商品一覧から選び直してください。</p><a class="btn wh" href="category.html?g=all">商品一覧へ</a>';document.querySelector('.sticky-buy').hidden=true;return}
 document.title=p.title+'｜ルナルーチェ（サンプル）';
 function money(n){return n.toLocaleString('ja-JP')+'円'}
@@ -38,7 +43,7 @@ if(detail){
  document.body.classList.add('rich-product');
  host.querySelector('.crumb').outerHTML=ProductDetail.crumbs(p,detail);
  host.querySelector('.gal').innerHTML=ProductDetail.gallery(p,detail);
- var keepNotes=host.querySelector('.pinfo .details .pd-notes');keepNotes=keepNotes?'<section class="sec pd-below pd-notes">'+keepNotes.innerHTML+'</section>':'';
+ var keepNotes=[].map.call(host.querySelectorAll('.pinfo .details .pd-notes,.pinfo .details [class*="pd-note-"]'),function(x){return '<section class="sec pd-below '+x.className.replace('pd-part','')+'">'+x.innerHTML+'</section>'}).join('');
  var keepLead=host.querySelector('.pinfo .details .pd-delivery');if(keepLead)host.querySelector('.pinfo .details').before(keepLead);
  host.querySelector('.pinfo .details').remove();
  host.querySelector('.pdp').insertAdjacentHTML('afterend',ProductDetail.backLink(detail)+ProductDetail.content(detail,p)+keepNotes+ProductDetail.help(p)+ProductDetail.related(detail));

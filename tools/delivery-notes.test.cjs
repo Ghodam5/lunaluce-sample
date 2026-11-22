@@ -36,3 +36,24 @@ test('v66 商品ページの段組みは部品の重なり・無い部品・SNS�
   a.throws(() => pl.checkProduct({ id: 'e', layout: { side: ['notes'], below: ['buy', 'share'] } }, d), /購入欄/);
   a.ok(d.parts.some(x => x.id === 'delivery') && d.side.indexOf('delivery') < d.side.indexOf('buy'), 'お届け日数は購入欄の上が最初の並び');
 });
+
+test('v68 定型文を段組みに1つずつ置ける（note:定型文のid）。無い定型文は断る', () => {
+  const pl = require('./product-layout.cjs');
+  const d = pl.load();
+  pl.checkProduct({ id: 'ok', layout: { side: ['buy', 'notes', 'note:order-mail'], below: ['share'] } }, d);
+  a.throws(() => pl.checkProduct({ id: 'x', layout: { side: ['buy', 'note:nope'], below: ['share'] } }, d), /無い部品/);
+});
+test('v68 本店の注意書きがある商品は、定型文か「この商品のご注意」のどちらかで必ず出す', () => {
+  const fs = require('node:fs'), path = require('node:path');
+  const nt = require('./notice-templates.cjs').load();
+  const ids = new Set(nt.templates.map(t => t.id));
+  const dir = path.join(__dirname, '..', 'site-src/products');
+  let n = 0;
+  for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.json'))) {
+    const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')), p = j.product || j;
+    if (!p.notice) continue;
+    n++;
+    if (Array.isArray(p.notes)) a.ok(p.notes.length && p.notes.every(id => ids.has(id)), p.id);
+  }
+  a.ok(n > 100);
+});

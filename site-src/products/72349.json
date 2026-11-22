@@ -101,7 +101,13 @@
       "made": false,
       "source": "db",
       "label": "約1週間後"
-    }
+    },
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "season-delay",
+      "catalog-fee"
+    ]
   },
   "detail": {
     "photos": [
