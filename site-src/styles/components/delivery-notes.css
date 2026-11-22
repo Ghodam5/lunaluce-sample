@@ -12,7 +12,8 @@
 .order-note.tone-caution{background:#f4f7fb;border-left-color:#7f9cc0}
 .order-note.tone-caution b{color:#3f5f86}
 .order-notes-src{margin:4px 0 12px;font-size:12px;color:#6b5f55}
-.order-notes-src summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.order-notes-src h3{font-size:13px;font-weight:700;color:#6b5f55;margin:14px 0 4px}
+.order-notes-src .product-description{margin:0}
 .rush-field{margin:10px 0;padding:10px 12px;border-radius:12px;background:#fdf5f0;border:1px solid #efd6c4}
 .rush-field label{display:flex;gap:8px;align-items:flex-start;font-weight:700;min-height:44px}
 .rush-field input{width:20px;height:20px;margin-top:2px;flex:none}
