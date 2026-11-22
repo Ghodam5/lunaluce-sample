@@ -36,7 +36,9 @@ let stale=[];for(const [file,settings] of Object.entries(pages)){
  pageContract.checkSource(file,source,contract);
  if(!source.includes('{{> services-head}}')||!source.includes('{{> services-script}}'))throw Error('サイト共通サービスが不足しています: '+file);
  if(!source.includes('{{> share-head}}')||!source.includes('{{> share-script}}'))throw Error('SNS共通パーツが不足しています: '+file);
- const out=render(source,{stripAttributes:'',...settings,version});
+ let out=render(source,{stripAttributes:'',...settings,version});
+ // トップのメッセージのカード（site-src/home-promos の kind: message）は最初からページに書く（見出しを検索に読ませるため）
+ if(out.includes('<!--home-message-cards-->'))out=out.replace('<!--home-message-cards-->',()=>require('./home-message.cjs').html(require('./promos.cjs').load()));
  pageContract.checkRendered(file,out,contract,root);
  const dest=path.join(root,file);
  if(args.has('--check')){if(!fs.existsSync(dest)||read(dest)!==out)stale.push(file);}
