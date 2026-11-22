@@ -76,7 +76,7 @@
         const errs = builderAllErrors();
         const dirty = builderDirty();
         host.innerHTML = '<div class="pv-phone">' + ticker + main + '</div>' +
-          builderFixListHtml() +
+          builderFixListHtml() + builderChecksHtml() +
           '<div class="pv-actions"><button type="button" class="export" data-b="export"' + (errs.length || !dirty ? ' disabled' : '') + '>下書きを書き出す</button><button type="button" data-b="reset"' + (dirty ? '' : ' disabled') + '>変更を取り消す</button></div>' +
           '<p class="muted">' + (dirty ? '変更はこのブラウザに一時保存しています。' : '変更はありません。') + '保存先（本番サイト）にはまだつないでいません。</p>';
       }

@@ -1,5 +1,5 @@
 // Luna Luce OMS 部品JS: 38-builder-fixlist（「直すところ」をどれの話か分かる形で出し、その場で開ける・作りかけのカードは消せる）
-// 2.30 で追加。直すところの文言は 19 の builderAllErrors と同じものを、カード・商品ごとにまとめて出す。
+// 2.30 で追加。2.33 で「要確認」（oms/builder-checks.json。反映は止めない）を足した。直すところの文言は 19 の builderAllErrors と同じものを、カード・商品ごとにまとめて出す。
     // 作りかけのカード: 題名・一文・ボタン・商品・特集がどれも空（「＋ 商品」などを押しただけ）
     function builderCardIsBlank(card) {
       const filled = function (v) { return String(v || '').trim() !== ''; };
@@ -46,7 +46,28 @@
             '<ul>' + g.errs.slice(0, 6).map(function (e) { return '<li>' + escapeHtml(e) + '</li>'; }).join('') + (g.errs.length > 6 ? '<li>ほか' + (g.errs.length - 6) + '件</li>' : '') + '</ul></li>';
         }).join('') + '</ol></div>';
     }
+
+    // 要確認（oms/builder-checks.json）。反映は止めない。「確認した」はこのブラウザに覚える
+    const CHECKS_DONE_KEY = 'luna-oms-builder-checks-done';
+    let builderChecksList = [];
+    function builderChecksDone() { try { return JSON.parse(localStorage.getItem(CHECKS_DONE_KEY) || '{}') || {}; } catch (e) { return {}; } }
+    function builderChecksOpen() { const done = builderChecksDone(); return builderChecksList.filter(function (c) { return !done[c.id]; }); }
+    function builderChecksLoad() {
+      fetch('builder-checks.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+        builderChecksList = d && Array.isArray(d.checks) ? d.checks.filter(function (c) { return c && c.id && c.text; }) : [];
+        if (builderChecksList.length) emit('oms:builder', { form: false });
+      }).catch(function () { /* 無くても動く */ });
+    }
+    function builderChecksHtml() {
+      const list = builderChecksOpen();
+      if (!list.length) return '';
+      return '<div class="pv-check is-warn"><b>要確認 ' + list.length + '件</b><p class="fix-hint">反映は止めません。決まったら直して「確認した」を押してください。</p><ol class="fix-groups">' + list.map(function (c) {
+        return '<li><div class="fix-head"><b>' + escapeHtml(c.title || c.productId || '') + '</b>' + (c.productId ? '<span class="fix-n">商品 ' + escapeHtml(c.productId) + '</span>' : '') +
+          '<span class="fix-tools">' + (c.url ? '<a class="btn-link" href="' + escapeHtml(c.url) + '" target="_blank" rel="noopener">本店で見る</a>' : '') + '<button type="button" data-b="check-done" data-id="' + escapeHtml(c.id) + '">確認した</button></span></div><p>' + escapeHtml(c.text) + '</p></li>';
+      }).join('') + '</ol></div>';
+    }
     function builderFixAction(name, el) {
+      if (name === 'check-done') { const d = builderChecksDone(); d[el.dataset.id] = new Date().toISOString(); try { localStorage.setItem(CHECKS_DONE_KEY, JSON.stringify(d)); } catch (e) { /* 覚えられない環境 */ } emit('oms:builder', { form: false }); showToast('確認済みにしました。'); return true; }
       if (name !== 'fix-card-del') return false;
       const b = state.builder;
       const i = Number(el.dataset.index);

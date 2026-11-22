@@ -33,6 +33,7 @@
       emit('oms:builder', { form: !!repaintForm });
     }
     function loadBuilder() {
+      builderChecksLoad(); // 38-builder-fixlist: 要確認
       fetch('builder-data.json').then(function (res) {
         if (!res.ok) throw new Error('builder-data.json を読めません');
         return res.json();

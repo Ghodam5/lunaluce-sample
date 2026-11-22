@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "note": "OMSの「直すところ」に「要確認」として出すもの（反映は止めない）。本店データの取り込みで見つかった、人が決めることだけを書く。確かめたら OMS で「確認した」を押す（このブラウザに覚える）。2026-11-22 林さん: 価格はそのままにして要確認に出す。",
+  "checks": [
+    {
+      "id": "price-53122",
+      "productId": "53122",
+      "title": "Star BOX PB(金平糖)",
+      "text": "価格が本店と違います（新HP 286円／本店 360円）。いまは新HPの価格のままです。どちらにするか決めたら、商品の編集で直してください。",
+      "url": "https://www.luna-luce.jp/item/pb-starbox.html"
+    },
+    {
+      "id": "price-70302",
+      "productId": "70302",
+      "title": "disney friends 願掛けお守り PB",
+      "text": "価格が本店と違います（新HP 220円／本店 240円）。いまは新HPの価格のままです。どちらにするか決めたら、商品の編集で直してください。",
+      "url": "https://www.luna-luce.jp/item/お名入れ対応-disney-friends-の願掛けお守り-pb-クッキー-※10個.html"
+    }
+  ]
+}

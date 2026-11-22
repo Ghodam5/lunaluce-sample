@@ -94,6 +94,9 @@
     [data-part="builder-preview"] .pv-all { margin: 6px 12px 12px; padding: 9px; border: 1px solid var(--accent); border-radius: 10px; text-align: center; font-size: 13px; font-weight: 700; color: var(--accent); background: rgba(255, 255, 255, 0.85); }
     [data-part="builder-preview"] .pv-check { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: #ecf7f1; color: #2f6b4f; font-size: 13px; }
     [data-part="builder-preview"] .pv-check.is-bad { background: #fdf0ef; color: #9b2c27; }
+    [data-part="builder-preview"] .pv-check.is-warn { background: #fff7e6; color: #7a4d00; }
+    [data-part="builder-preview"] .pv-check.is-warn p { margin: 4px 0 0; }
+    [data-part="builder-preview"] .btn-link { font-size: 12px; margin-right: 6px; }
     [data-part="builder-preview"] .pv-check ul { margin: 6px 0 0; padding-left: 18px; }
     [data-part="builder-preview"] .pv-check .fix-hint { margin: 6px 0 0; color: #6b3b37; font-size: 12px; line-height: 1.6; }
     [data-part="builder-preview"] .pv-check .fix-groups { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
