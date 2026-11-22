@@ -11,4 +11,4 @@ jobs:
         with:
           node-version: '22'
       - run: node tools/build-site.cjs --check
-      - run: node --test tools/build-site.test.cjs tools/products.test.cjs tools/purchase-history.test.cjs tools/site-services.test.cjs tools/promos.test.cjs tools/placement-visibility.test.cjs tools/site-notices.test.cjs tools/quantity-picker.test.cjs tools/standards.test.cjs tools/home-sections.test.cjs
+      - run: node --test tools/build-site.test.cjs tools/products.test.cjs tools/purchase-history.test.cjs tools/site-services.test.cjs tools/promos.test.cjs tools/placement-visibility.test.cjs tools/site-notices.test.cjs tools/quantity-picker.test.cjs tools/standards.test.cjs tools/home-sections.test.cjs tools/apply-oms-export.test.cjs
