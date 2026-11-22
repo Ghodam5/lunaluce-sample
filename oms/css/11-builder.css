@@ -8,6 +8,8 @@
     @media (min-width: 1280px) {
       [data-part="tab-builder"] .builder-cols { grid-template-columns: 260px minmax(0, 1fr) 380px; }
       [data-part="tab-builder"] .builder-cols > [data-part="builder-preview"] { position: sticky; top: 12px; }
+      /* 左の一覧は画面の高さに収めて、一覧の中でスクロール（項目を選んで編集欄の先頭へ移っても、一覧の位置は残る） */
+      [data-part="tab-builder"] .builder-cols > [data-part="builder-list"] { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; overscroll-behavior: contain; }
     }
 
     /* owner: renderBuilderList */
@@ -557,6 +559,7 @@
     @container (max-width: 440px) {
       .store-rates td:first-child { grid-column: 1 / -1; }
       .store-rates td.use { align-self: center; }
+      .store-rates td[data-l="メモ"] { grid-column: span 2; }
     }
     @container (max-width: 520px) {
       .store-regions thead { display: none; }
@@ -585,5 +588,15 @@
     .pv-storebar b { background: #7a5c3e; color: #fff; border-radius: 4px; padding: 1px 5px; margin-right: 4px; font-size: 11px; }
     .pv-storeft { border: 1px solid #e6dccb; border-radius: 8px; padding: 8px 10px; font-size: 12px; background: #fbf8f2; }
     .pv-storeft ul { margin: 4px 0 0; padding-left: 1.2em; }
-    .unit-in { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
-    .unit-in input { flex: 1 1 auto; min-width: 0; }
+    .unit-in, [data-part="builder-editor"] .fld > span.unit-in { display: flex; align-items: center; gap: 6px; white-space: nowrap; margin-bottom: 0; }
+    .unit-in input, [data-part="builder-editor"] .unit-in input:not([type="checkbox"]) { flex: 1 1 0; width: auto; min-width: 0; }
+    [data-part="builder-editor"] .store-tbl .unit-in input:not([type="checkbox"]) { min-width: 4.5em; }
+
+    /* スマホ（2.38）: プレビューの送料表は幅に収める。ビルダーは横に動かさない（上下スクロールだけ） */
+    [data-part="builder-preview"] .store-tbl { table-layout: fixed; }
+    [data-part="builder-preview"] .store-tbl th, [data-part="builder-preview"] .store-tbl td { overflow-wrap: anywhere; }
+    @media (max-width: 700px) {
+      [data-part="builder-preview"] .store-tbl { font-size: 12px; }
+      [data-part="builder-preview"] .store-tbl th, [data-part="builder-preview"] .store-tbl td { padding: 4px; }
+      [data-part="tab-builder"] { overflow-x: clip; }
+    }

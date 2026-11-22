@@ -42,6 +42,13 @@
       [data-part="header"] .header-spacer { transition: none; }
     }
 
+    /* owner: renderHeaderUser（42-header-user） */
+    [data-part="header-brand"] .who { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; }
+    [data-part="header-brand"] .who:empty { display: none; }
+    [data-part="header-brand"] .who-name { font-weight: 600; max-width: 10em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    [data-part="header-brand"] .who-link { color: inherit; }
+    [data-part="header-brand"] .who-out { font: inherit; font-size: 12px; padding: 4px 10px; min-height: 30px; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
+
     /* owner: renderHeaderBrand */
     [data-part="header-brand"] { flex: 1 1 240px; }
     [data-part="header-brand"] .brand {

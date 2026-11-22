@@ -83,11 +83,11 @@
       if (name === 'link-open') { b.linkOpen = b.linkOpen === el.dataset.field ? '' : el.dataset.field; b.linkTab = ''; b.linkQuery = ''; emit('oms:builder', { form: true }); return; }
       if (name === 'link-tab') { b.linkTab = el.dataset.tab; emit('oms:builder', { form: true }); return; }
       if (name === 'link-set') { builderSetField(el.dataset.field, el.dataset.href); b.linkOpen = ''; b.linkTab = ''; b.linkQuery = ''; builderChanged(true); return; }
-      if (name === 'select') { b.linkOpen = ''; b.sel = { type: el.dataset.type, index: index }; b.query = {}; b.slotSwap = null; emit('oms:builder', { form: true }); return; }
+      if (name === 'select') { b.linkOpen = ''; b.sel = { type: el.dataset.type, index: index }; b.query = {}; b.slotSwap = null; emit('oms:builder', { form: true }); builderScrollToEditor(); return; }
       if (name === 'card-move') { const to = builderMove(b.cards, index, Number(el.dataset.dir)); if (to !== false) { b.sel = { type: 'card', index: to }; builderChanged(true); } return; }
-      if (name === 'card-add') { b.cards.push(builderNewCard(el.dataset.kind)); b.sel = { type: 'card', index: b.cards.length - 1 }; builderChanged(true); showToast('新しいカードは「トップに表示する」が切れた状態で作りました。'); return; }
+      if (name === 'card-add') { b.cards.push(builderNewCard(el.dataset.kind)); b.sel = { type: 'card', index: b.cards.length - 1 }; builderChanged(true); builderScrollToEditor(); showToast('新しいカードは「トップに表示する」が切れた状態で作りました。'); return; }
       if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = builderUniqueId(card.id.replace(/-copy(-\d+)?$|-\d+$/, '') + '-copy', b.cards); copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
-      if (name === 'card-remove' && card) { b.cards.splice(b.sel.index, 1); b.sel = { type: 'ticker', index: 0 }; builderChanged(true); showToast('カードを削除しました。「↶ 元に戻す」で戻せます。'); return; }
+      if (name === 'card-remove' && card) { b.cards.splice(b.sel.index, 1); b.sel = { type: 'ticker', index: 0 }; builderChanged(true); builderScrollToEditor(); showToast('カードを削除しました。「↶ 元に戻す」で戻せます。'); return; }
       if (name === 'card-theme' && card) { card.theme = el.dataset.theme; builderChanged(true); return; }
       if (name === 'card-image' && b.sel.type === 'product') { builderAddPhotos(builderSelected(), [el.dataset.src]); builderChanged(true); return; }
       if (name === 'card-image' && card) { card.image = el.dataset.src; builderChanged(true); return; }
@@ -105,7 +105,7 @@
       if (name === 'tile-add' && card) { if (card.tiles.length >= BUILDER_TILE_MAX) return; card.tiles.push({ label: '', href: '', image: b.images[0] || '' }); builderChanged(true); return; }
       if (name === 'tile-remove' && card) { card.tiles.splice(Number(el.dataset.tile), 1); builderChanged(true); return; }
       if (name === 'tile-move' && card) { if (builderMove(card.tiles, Number(el.dataset.tile), Number(el.dataset.dir)) !== false) builderChanged(true); return; }
-      if (name === 'product-new') { b.newProducts.push(builderNewProduct(el.dataset.template)); b.sel = { type: 'product', index: b.newProducts.length - 1 }; b.templateQuery = ''; builderChanged(true); return; }
+      if (name === 'product-new') { b.newProducts.push(builderNewProduct(el.dataset.template)); b.sel = { type: 'product', index: b.newProducts.length - 1 }; b.templateQuery = ''; builderChanged(true); builderScrollToEditor(); return; }
       if (name === 'product-edit') { builderOpenEdit(el.dataset.id); return; }
       if (name === 'photo-move' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); if (builderMove(p.photos, index, Number(el.dataset.dir)) !== false) { p.image = p.photos[0]; builderChanged(true); } return; }
       if (name === 'photo-main' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); p.photos.unshift(p.photos.splice(index, 1)[0]); p.image = p.photos[0]; builderChanged(true); return; }
@@ -113,7 +113,7 @@
       if (name === 'code-suggest' && b.sel.type === 'product') { const p = builderSelected(); p.code = el.dataset.code; p.codeAuto = el.dataset.code; builderChanged(true); return; }
       if (name === 'place-edit' && b.sel.type === 'product') { builderSelected().placesTouched = true; builderChanged(true); return; }
       if (name === 'channel-export') { builderChannelExport(); return; }
-      if (name === 'product-remove' && b.sel.type === 'product') { b.newProducts.splice(b.sel.index, 1); b.sel = { type: 'stock', index: 0 }; builderChanged(true); return; }
+      if (name === 'product-remove' && b.sel.type === 'product') { b.newProducts.splice(b.sel.index, 1); b.sel = { type: 'stock', index: 0 }; builderChanged(true); builderScrollToEditor(); return; }
       if (name === 'sku-add' && b.sel.type === 'product') { builderSelected().skus.push({ t: '', price: 0 }); builderChanged(true); return; }
       if (name === 'sku-remove' && b.sel.type === 'product') { builderSelected().skus.splice(index, 1); builderChanged(true); return; }
       if (name === 'place-add' && b.sel.type === 'product') { builderSelected().places.push({ g: '', m: '', s: '' }); builderChanged(true); return; }
@@ -146,6 +146,7 @@
         b.themes.push({ id: id, name: '新しいテーマ', builtIn: false, background: '#fdf2e9', border: '#ecd5c0', top: '#e3a87a', accent: '#8a5530' });
         b.sel = { type: 'theme', index: b.themes.length - 1 };
         builderChanged(true);
+        builderScrollToEditor();
         return;
       }
       if (name === 'theme-remove') {
@@ -154,6 +155,7 @@
         b.themes.splice(b.sel.index, 1);
         b.sel = { type: 'ticker', index: 0 };
         builderChanged(true);
+        builderScrollToEditor();
         return;
       }
       if (name === 'export') { downloadJson('site-builder-draft.json', builderExportPayload()); showToast('site-builder-draft.json を書き出しました。サイトへの反映は担当者が確認してから行います。'); return; }
@@ -177,8 +179,16 @@
       b.sel = { type: 'product', index: i };
       b.stockDetail = '';
       builderChanged(true);
+      builderScrollToEditor();
+    }
+    // 別の項目を開いたときだけ、編集欄の先頭へ移す（↑↓の並べ替え・入力・保存などは、その場のまま）。
+    // 左の一覧は広い画面では自分の中でスクロールするので、一覧の位置はそのまま残る。
+    function builderScrollToEditor() {
       const ed = document.querySelector('[data-part="builder-editor"]');
-      if (ed && window.innerWidth < 1100) ed.scrollIntoView({ block: 'start' });
+      if (!ed) return;
+      const top = ed.getBoundingClientRect().top;
+      if (top >= 0 && top < 120) return; // もう先頭が見えている
+      window.scrollTo({ top: Math.max(0, window.scrollY + top - 12), behavior: 'auto' });
     }
     // 画像の取り込み: 選んだ画像を縮めて一時保存し、そのままカード（または特集）に使う。商品の写真は何枚でもまとめて取り込める
     function builderImportFrom(el) {

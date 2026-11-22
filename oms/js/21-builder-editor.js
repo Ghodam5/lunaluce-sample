@@ -217,6 +217,10 @@
         const s = b.sel;
         const target = builderSelected();
         host.innerHTML = s.type === 'ticker' ? tickerForm() : s.type === 'card' && target ? cardForm(target) : s.type === 'stock' ? builderStockForm() : s.type === 'days' ? builderDaysForm() : s.type === 'texts' ? builderTextsForm() : s.type === 'store' ? builderStoreForm() : s.type === 'news' ? builderNewsForm() : s.type === 'sections' ? builderSectionsForm() : s.type === 'reflect' ? builderReflectForm() : s.type === 'cats' ? builderCatNamesForm() : s.type === 'notes' ? builderNotesForm() : s.type === 'layout' ? builderLayoutForm() : s.type === 'plan' && target ? builderPlanForm(target) : s.type === 'product-start' ? builderProductStart() : s.type === 'product' && target ? builderProductForm(target) : s.type === 'theme' && target ? themeForm(target) : '<p class="muted">左の一覧から選んでください。</p>';
+        // 別の項目に変わったときだけ編集欄の先頭へ（並べ替えで番号が変わっただけなら動かさない）
+        const key = s.type + ':' + (target && (target.id || target.slug) || s.index);
+        if (paint.last && paint.last !== key) builderScrollToEditor();
+        paint.last = key;
       }
       paint();
       on('oms:builder', function (detail) { if (!detail || detail.form) paint(); });
