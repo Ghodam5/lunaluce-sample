@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.40
+Luna Luce OMS 2.41
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -80,6 +80,7 @@ Luna Luce OMS 2.40
 2.38 でスマホの「円以上」のはみ出し（.fld > span に負けていた）と送料表プレビューのはみ出しを直し、ビルダーは横に動かないようにした。サイトビルダーの項目を選んだら編集欄の先頭へ移すようにした（↑↓の並べ替え・入力・保存はその場のまま。広い画面では左の一覧が自分の中でスクロールし、位置が残る）。上の帯にログインしている人の名前・アカウント・ログアウトを出す（js/42-header-user。VPSのログインの仕組みがあるときだけ）。
 2.39 で受注の明細（ミニシール）の見本を、受注した図柄の画像を大きく出す形にした（js/16-drawer の renderDrawerPreview。図柄が決まっていないときだけ従来の共通見本）。ルナルーチェでは書体を指定されないので「書体の参考」（CALLIGRAPHY・明朝・筆記）を外した。
 2.40 で受注明細に「ご注文の印刷イメージ」を出すようにした（js/43-print-preview・css/12-print-preview）。ミニシールは図柄の画像、熨斗は種類（結び切り・蝶結び・ハート）の見本に表書きとお名前を重ねた絵、リボンシールは仮の形に名前と日付、レーザー彫刻（ウェルカムボード・証明書・時計・リングピローなど）は商品のサンプル画像。どれも横に、注文の名前・日付などを四角で囲んで出す。
+2.41 で受注明細の見本一覧を畳んだ。ミニシールの図柄一覧（59種類）は押したときだけ開く。のし・包装紙・小袋/紙袋の見本一覧（js/44-option-catalog の OPTION_CATALOG）を同じ場所に畳んで追加し、注文に当てはまる見本には「この注文」を付ける。
 2.29 で商品の登録・編集に「お届けまでの日数」（必須・最短〜最長・受注生産）と「ご注文の前に」の定型文の選択を足した（js/37-builder-delivery）。定型文はサイトビルダー「注意事項の定型文」で直す。在庫と出店の一覧に「お届け日数なし」の目印と絞り込み。サイト側は v64。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
@@ -146,7 +147,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.40｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.41｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -206,6 +207,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/41-builder-store.js"></script>
   <script src="js/42-header-user.js"></script>
   <script src="js/43-print-preview.js"></script>
+  <script src="js/44-option-catalog.js"></script>
   <script src="js/23-builder-tab.js"></script>
   <script src="js/90-start.js"></script>
 </body>

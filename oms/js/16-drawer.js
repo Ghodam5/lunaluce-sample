@@ -103,6 +103,7 @@
       on('oms:draft', function () { if (host.querySelector('.pp-list')) paint(); else applyPreview(); });
       on('oms:seal', paint);
     }
+    let sealFoldOpen = false;
     function renderDrawerMiniseal(host) {
       host.addEventListener('error', function (event) {
         const img = event.target;
@@ -152,7 +153,10 @@
           }).join('');
           return '<h4 class="group">' + escapeHtml(group.name) + '</h4><div class="grid">' + buttons + '</div>';
         }).join('');
-        host.innerHTML = '<div class="head"><h3>ミニシールの図柄</h3><p class="sub">この端末の画像</p></div><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。</p><div data-seal-match>' + matchBlock() + '</div><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div>' + groups;
+        const count = SEAL_GROUPS.reduce(function (n, g) { return n + g.ids.filter(function (id) { return SEAL_BY_ID[id]; }).length; }, 0);
+        // 図柄の一覧は普段は畳む。押したときだけ開く（開いたかどうかは注文を替えても覚えておく）
+        host.innerHTML = '<div class="head"><h3>ミニシールの図柄</h3><p class="sub">この端末の画像</p></div><div data-seal-match>' + matchBlock() + '</div><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div><details class="fold" data-seal-fold' + (sealFoldOpen ? ' open' : '') + '><summary>図柄の見本一覧<span class="cnt">' + count + '種類・押すと開きます</span></summary><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。押すとこの注文の図柄になります。</p>' + groups + '</details>';
+        host.querySelector('[data-seal-fold]').addEventListener('toggle', function (e) { sealFoldOpen = e.target.open; });
       }
       function refresh() {
         if (!host.querySelector('[data-seal-chosen]')) { paint(); return; }
@@ -350,6 +354,7 @@
       { name: 'drawer-warning', render: renderDrawerWarning },
       { name: 'drawer-preview', render: renderDrawerPreview },
       { name: 'drawer-miniseal', render: renderDrawerMiniseal },
+      { name: 'drawer-catalog', render: function (host) { renderDrawerCatalog(host); } }, // 本体は js/44-option-catalog
       { name: 'drawer-parts', render: renderDrawerParts },
       { name: 'drawer-fees', render: renderDrawerFees },
       { name: 'drawer-campaign', render: renderDrawerCampaign },
