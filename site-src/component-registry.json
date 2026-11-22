@@ -43,9 +43,10 @@
     },
     "home-intro": {
       "resources": [
-        "site-src/shared/home-promo-intro.html"
+        "site-src/home-promos/intro.json",
+        "tools/home-message.cjs"
       ],
-      "edit": "最初の写真・コピー・2CTA。共通部分を読み直さずこの部品のみ。"
+      "edit": "最初の写真・バッジ・見出し・説明・2CTA。kind: message のカード（OMSのサイトビルダーで編集）。見出しは改行そのまま、accentの言葉を強調色に。"
     },
     "home-rows": {
       "resources": [
