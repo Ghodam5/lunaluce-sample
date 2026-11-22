@@ -117,9 +117,12 @@ function noticeTemplates(draft, touch) {
   const ids = new Set(cur.templates.map(t => t.id));
   for (const k of ['all', 'made', 'food', 'minq']) if (cur.auto && Array.isArray(cur.auto[k])) cur.auto[k] = cur.auto[k].filter(id => ids.has(id));
   writeJson(p, cur);
+  // 段組みに置いた定型文（note:id）で消したものも外す
+  const lp = path.join(root, 'site-src/product-layout.json');
+  if (fs.existsSync(lp)) { touch(lp); const l = readJson(lp); for (const w of ['side', 'below']) l[w] = l[w].filter(id => !id.startsWith('note:') || ids.has(id.slice(5))); writeJson(lp, l); }
   delete require.cache[require.resolve('./notice-templates.cjs')];
   require('./notice-templates.cjs').load();
-  return [p];
+  return fs.existsSync(lp) ? [p, lp] : [p];
 }
 
 // 営業日（OMSの「営業日」）。サイトの営業日カレンダー（site-settings.json の calendar.oms）に入れる。本店から取った base/include は残す（期間外の月に使う）
@@ -172,8 +175,9 @@ function apply(draft) {
   if (Array.isArray(draft.homeSections) && draft.homeSections.length) part(report, 'homeSections', 'トップの商品の段', t => sections(draft, t));
   if (Array.isArray(draft.notices)) part(report, 'notices', '流れる文言', t => notices(draft, t));
   if (Array.isArray(draft.cards) && draft.cards.length) part(report, 'cards', 'トップのカード', t => cards(draft, t));
-  if (draft.productLayout && Array.isArray(draft.productLayout.side)) part(report, 'productLayout', '商品ページの段組み', t => productLayout(draft, t));
+  // 定型文を先に入れる（段組みに置いた定型文 note:id を確かめるため）
   if (Array.isArray(draft.noticeTemplates) && draft.noticeTemplates.length) part(report, 'noticeTemplates', '注意事項の定型文', t => noticeTemplates(draft, t));
+  if (draft.productLayout && Array.isArray(draft.productLayout.side)) part(report, 'productLayout', '商品ページの段組み', t => productLayout(draft, t));
   if (draft.businessDays && Array.isArray(draft.businessDays.holidays)) part(report, 'businessDays', '営業日', t => businessDays(draft, t));
   if (Array.isArray(draft.texts) && draft.texts.length) part(report, 'texts', '表示する文字', t => texts(draft, t));
   for (const [key, label, count] of LATER) { const n = count(draft); if (n) report.later.push({ part: key, label, count: n, reason: 'サイト側の受け口はこれから作ります' }); }

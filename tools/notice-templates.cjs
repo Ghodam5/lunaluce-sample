@@ -15,7 +15,7 @@ function load() {
     ids.add(t.id);
     if (!TONES.includes(t.tone)) throw Error('定型文の色（tone）は important / caution / info: ' + t.id);
     if (typeof t.label !== 'string' || !t.label.trim() || t.label.length > 30) throw Error('定型文の名前は1〜30文字: ' + t.id);
-    if (typeof t.text !== 'string' || !t.text.trim() || t.text.length > 300) throw Error('定型文の本文は1〜300文字: ' + t.id);
+    if (typeof t.text !== 'string' || !t.text.trim() || t.text.length > 800) throw Error('定型文の本文は1〜800文字: ' + t.id);
   }
   const auto = d.auto || {};
   for (const k of ['all', 'made', 'food', 'minq']) {

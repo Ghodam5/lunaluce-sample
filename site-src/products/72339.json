@@ -109,6 +109,12 @@
         "width": 700,
         "height": 700
       }
+    ],
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "season-delay",
+      "catalog-fee"
     ]
   },
   "commerce": {

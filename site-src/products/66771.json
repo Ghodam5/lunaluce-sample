@@ -101,6 +101,13 @@
         "width": 700,
         "height": 700
       }
+    ],
+    "notes": [
+      "order-mail",
+      "food-no-return",
+      "spec-change",
+      "season-delay",
+      "card-english"
     ]
   },
   "commerce": {

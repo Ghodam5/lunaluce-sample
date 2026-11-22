@@ -155,6 +155,15 @@
         "width": 700,
         "height": 1000
       }
+    ],
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "spec-change",
+      "season-delay",
+      "catalog-fee"
     ]
   },
   "commerce": {

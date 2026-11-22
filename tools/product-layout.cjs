@@ -7,11 +7,14 @@ const root = path.resolve(__dirname, '..');
 const SRC = path.join(root, 'site-src/product-layout.json');
 const OUT = path.join(root, 'product-layout-data.js');
 const REQUIRED = ['share'];
+// note:定型文のid は、注意事項の定型文を1つずつ段組みに置く部品（全商品・その商品に同じ文を出す）
+function noteIds() { try { return new Set(require('./notice-templates.cjs').load().templates.map(t => t.id)); } catch (e) { return new Set(); } }
 function checkLayout(l, ids, who) {
   if (!l || typeof l !== 'object' || !Array.isArray(l.side) || !Array.isArray(l.below)) throw Error(who + ': 段組みは side と below の並びで書いてください');
   const all = l.side.concat(l.below);
   if (new Set(all).size !== all.length) throw Error(who + ': 段組みに同じ部品が2回あります');
-  for (const id of all) if (!ids.has(id)) throw Error(who + ': 段組みに無い部品があります: ' + id);
+  const notes = noteIds();
+  for (const id of all) if (!ids.has(id) && !(id.startsWith('note:') && notes.has(id.slice(5)))) throw Error(who + ': 段組みに無い部品があります: ' + id);
   for (const id of REQUIRED) if (!all.includes(id)) throw Error(who + ': 「' + id + '」（SNSでシェア）は外せません');
   if (!l.side.includes('buy')) throw Error(who + ': 購入欄（buy）は写真の右（side）に入れてください');
 }
