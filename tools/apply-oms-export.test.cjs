@@ -5,7 +5,7 @@ const root = path.resolve(__dirname, '..');
 const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 function sandbox() {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'luna-apply-oms-'));
-  for (const f of ['tools/apply-oms-export.cjs', 'tools/home-sections.cjs', 'tools/promos.cjs', 'tools/product-layout.cjs', 'tools/notice-templates.cjs', 'tools/site-texts.cjs', 'tools/store-info.cjs', 'site-src/store-info.json', 'site-src/product-tax.json', 'site-src/site-texts.json', 'site-src/site-settings.json', 'site-src/product-layout.json', 'site-src/notice-templates.json', 'site-src/home-sections.json', 'site-src/site-notices.json', 'site-src/home-promos', 'site-src/pages', 'site-src/sections/top', 'site-src/products']) {
+  for (const f of ['tools/apply-oms-export.cjs', 'tools/home-sections.cjs', 'tools/promos.cjs', 'tools/home-message.cjs', 'tools/product-layout.cjs', 'tools/notice-templates.cjs', 'tools/site-texts.cjs', 'tools/store-info.cjs', 'site-src/store-info.json', 'site-src/product-tax.json', 'site-src/site-texts.json', 'site-src/site-settings.json', 'site-src/product-layout.json', 'site-src/notice-templates.json', 'site-src/home-sections.json', 'site-src/site-notices.json', 'site-src/home-promos', 'site-src/pages', 'site-src/sections/top', 'site-src/products']) {
     fs.mkdirSync(path.dirname(path.join(tmp, f)), { recursive: true });
     fs.cpSync(path.join(root, f), path.join(tmp, f), { recursive: true });
   }
