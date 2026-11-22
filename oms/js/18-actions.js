@@ -363,6 +363,7 @@
       else if (carrierAction(name, el)) return; // 36-carrier-rates: 契約送料を直す
       else if (name === 'pick-seal') pickMiniSeal(el.dataset.sealId);
       else if (name === 'clear-seal') clearMiniSeal();
+      else if (name === 'work-order') printWorkOrder(); // 45-work-order
       else if (name === 'pick-option') pickOption(el.dataset.group, el.dataset.file || '');
     }
     document.addEventListener('click', function (event) {

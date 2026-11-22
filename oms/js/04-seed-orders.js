@@ -14,8 +14,8 @@
         'WC-20261119-01': { extraCharApplies: true, extraCharCount: 6, noshiFee: 20, wrappingFee: 0, noshiUpper: '内祝', noshiName: '拓也 美咲', productImage: 'images/products/39600.jpg' },
         'RK-394810-20261119': { wrappingFee: 90 },
         'YH-lunaluce-100492': { bestBefore: '2027-02-28', proofStatus: '送付済' },
-        'WC-20261119-02': { campaignMark: '5円ご縁', noshiFee: 20, noshiUpper: '寿', noshiName: '大輔 美咲', wrap: '包装紙 07桜' },
-        'FAX-20261119-01': { extraCharApplies: true, extraCharCount: 2, bestBefore: '2027-04-30', proofStatus: '承認済' },
+        'WC-20261119-02': { campaignMark: '5円ご縁', noshiFee: 20, noshiUpper: '寿', noshiName: '大輔 美咲', wrap: '包装紙 07桜', bag: 'ブライダルバッグ' },
+        'FAX-20261119-01': { extraCharApplies: true, extraCharCount: 2, bestBefore: '2027-04-30', proofStatus: '承認済', rushTicket: true, bag: '小袋 キャンディベア／ギフト用紙袋' },
         'RK-394810-20261118': { wrappingFee: 90 },
         'YH-lunaluce-100488': { proofStatus: '承認済', productImage: 'images/products/50447.jpg' }
       };

@@ -11,13 +11,15 @@
         ['01', 'ブラウン'], ['02', 'ブルー'], ['03', 'ピンク'], ['04', '花畑'], ['05', 'オリビア'], ['06', 'ブルックリン'],
         ['07', '桜'], ['08', 'オレンジ'], ['09', 'ゴールドスター'], ['10', 'うぐいす'], ['11', '鶴'], ['12', '金銀振り白']
       ].map(function (w) { return { file: 'opt-wrap-' + w[0] + '.jpg', label: w[0] + w[1], test: new RegExp(w[1]) }; }) },
-      { id: 'bag', title: '小袋・紙袋', note: '小袋は1枚5円、ギフト用紙袋は1枚50円。', items: [
+      { id: 'minibag', title: '小袋（レジ袋）', note: '選べる小袋。1枚5円。', items: [
         { file: 'opt-bag-sakura.jpg', label: '小袋 さくら', test: /さくら/ },
         { file: 'opt-bag-lace.jpg', label: '小袋 レース', test: /レース/ },
         { file: 'opt-bag-bear.jpg', label: '小袋 キャンディベア', test: /キャンディベア/ },
-        { file: 'opt-bag-natural.jpg', label: '小袋 ナチュラルバイン', test: /ナチュラルバイン/ },
-        { file: 'opt-minibag.jpg', label: '小袋 季節限定', test: /季節限定/ },
-        { file: 'opt-giftbag.jpg', label: 'ギフト用紙袋', test: /紙袋/ }
+        { file: 'opt-bag-natural.jpg', label: '小袋 ナチュラルバイン', test: /ナチュラルバイン|ナチュラルパイン/ }
+      ] },
+      { id: 'paperbag', title: '紙袋・バッグ', note: 'ギフト用紙袋は1枚50円。ブライダルバッグは別売りの商品。', items: [
+        { file: 'opt-paperbag.jpg', label: 'ギフト用紙袋', test: /ギフト用紙袋|紙袋/ },
+        { file: 'bridal-bag-intro.png', label: 'ブライダルバッグ', test: /ブライダルバッグ/ }
       ] }
     ];
     // 注文の文字（のし・包装の欄）
@@ -60,4 +62,18 @@
       }
       on('oms:open', paint);
       on('oms:seal', paint);
+    }
+    // この注文で受けた品の画像を全部まとめる（受注明細の「ご注文の品の図柄」と作業指示書で使う）
+    // 返すもの: { kind: '商品' など, label, src（画像が無ければ ''）, group（外すボタン用。商品は無し） }
+    function orderedItems(order) {
+      if (!order) return [];
+      const out = [{ kind: '商品', label: order.productName + (order.sku ? '（' + order.sku + '）' : ''), src: order.productImage ? '../' + order.productImage : '', group: '' }];
+      const seal = order.line && order.line.designId && SEAL_BY_ID[order.line.designId] ? SEAL_BY_ID[order.line.designId] : null;
+      if (seal) out.push({ kind: 'ミニシール', label: seal.label, src: seal.file ? sealSrc(seal.file) : '', group: 'seal' });
+      const kinds = { noshi: 'のし', wrap: 'ラッピング', minibag: '小袋', paperbag: '紙袋・バッグ' };
+      OPTION_CATALOG.forEach(function (g) {
+        const it = optionChosen(order, g.id);
+        if (it) out.push({ kind: kinds[g.id] || g.title, label: it.label, src: '../images/' + it.file, group: g.id });
+      });
+      return out;
     }

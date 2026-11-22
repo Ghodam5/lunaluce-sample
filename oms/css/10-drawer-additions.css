@@ -79,12 +79,14 @@
     [data-part="drawer-catalog"] .miss { display: block; margin: 0; padding: 20px 4px; font-size: 12px; color: var(--taupe); text-align: center; }
     /* 選んだ図柄・のし・包装を外すボタン */
     [data-part="drawer-miniseal"] button.clear, [data-part="drawer-catalog"] button.clear { display: inline-block; width: auto; margin: 8px 0; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(217, 83, 79, 0.5); background: #fff; color: var(--urgent, #c0392b); font-size: 13px; cursor: pointer; }
-    /* ミニシールとラッピングの図柄を2枚並べる（js/16-drawer chosenBlock・wrapBlock） */
-    [data-part="drawer-miniseal"] .chosen { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
-    [data-part="drawer-miniseal"] .chosen .pick { min-width: 0; }
-    [data-part="drawer-miniseal"] .chosen .kind { margin: 0 0 4px; font-size: 12px; font-weight: 700; color: var(--taupe); letter-spacing: 0.04em; }
-    [data-part="drawer-miniseal"] .chosen .seal-frame, [data-part="drawer-miniseal"] .wrap-frame { width: 100%; max-width: 200px; }
-    [data-part="drawer-miniseal"] .chosen .cap { margin: 6px 0 0; }
-    [data-part="drawer-miniseal"] .wrap-frame { aspect-ratio: 1 / 1; border: 1px solid var(--champagne, #b8965c); border-radius: 12px; overflow: hidden; background: #fff; display: grid; place-items: center; }
-    [data-part="drawer-miniseal"] .wrap-frame.is-none { border-style: dashed; }
-    [data-part="drawer-miniseal"] .wrap-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* ご注文の品を全部並べる（js/16-drawer chosenBlock・js/44-option-catalog orderedItems） */
+    [data-part="drawer-miniseal"] .chosen { display: block; margin-bottom: 10px; }
+    [data-part="drawer-miniseal"] .items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    @media (min-width: 700px) { [data-part="drawer-miniseal"] .items { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    [data-part="drawer-miniseal"] .items .pick { min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 8px; background: #fff; }
+    [data-part="drawer-miniseal"] .items .kind { margin: 0 0 4px; font-size: 12px; font-weight: 700; color: var(--taupe); letter-spacing: 0.04em; }
+    [data-part="drawer-miniseal"] .item-frame { aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: #faf8f5; display: grid; place-items: center; }
+    [data-part="drawer-miniseal"] .item-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    [data-part="drawer-miniseal"] .items .cap { margin: 6px 0 0; font-size: 13px; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="drawer-miniseal"] .items button.clear { margin: 6px 0 0; padding: 4px 12px; font-size: 12px; min-height: 0; }
+    [data-part="drawer-miniseal"] .none { margin: 8px 0 0; font-size: 12px; color: var(--taupe); }

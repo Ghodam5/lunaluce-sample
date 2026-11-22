@@ -107,24 +107,26 @@
     function renderDrawerMiniseal(host) {
       host.addEventListener('error', function (event) {
         const img = event.target;
+        if (img && img.tagName === 'IMG' && img.hasAttribute('data-item-img')) { img.replaceWith(Object.assign(document.createElement('p'), { className: 'miss', textContent: '画像なし' })); return; }
         if (!img || img.tagName !== 'IMG' || !img.hasAttribute('data-seal-img')) return;
         const frame = img.closest('.seal-frame');
         if (!frame) return;
         frame.classList.add('is-empty');
         frame.innerHTML = '<p class="miss">' + escapeHtml(img.alt || '') + '</p><p class="miss">画像なし</p>';
       }, true);
+      // この注文で受けた品（商品・ミニシール・のし・ラッピング・小袋・紙袋・バッグ）を全部並べる
       function chosenBlock() {
-        const seal = currentSeal();
-        const title = seal ? seal.label : '未選択';
-        const size = '約35×25mm。';
-        return '<div class="pick"><p class="kind">ミニシール</p><div class="seal-frame">' + sealFrameInner(seal) + '</div><p class="cap">' + escapeHtml(title) + '</p><p class="sub">角丸スクエア。' + escapeHtml(size) + '</p>' + (seal ? '<button type="button" class="clear" data-action="clear-seal">図柄を外す</button>' : '') + '</div>' + wrapBlock();
-      }
-      // ラッピング（包装紙）の図柄。注文で指定されているか、担当者が選んだときだけ出す（js/44-option-catalog）
-      function wrapBlock() {
         const order = currentOrder();
-        const wrap = order ? optionChosen(order, 'wrap') : null;
-        if (!wrap) return '<div class="pick"><p class="kind">ラッピング</p><div class="wrap-frame is-none"><p class="miss">指定なし</p></div><p class="cap">指定なし</p><p class="sub">下の「のし・包装の見本」の包装紙から選べます。</p></div>';
-        return '<div class="pick"><p class="kind">ラッピング</p><div class="wrap-frame"><img src="../images/' + escapeHtml(wrap.file) + '" alt="' + escapeHtml(wrap.label) + '"></div><p class="cap">' + escapeHtml(wrap.label) + '</p><p class="sub">包装紙の図柄です。</p><button type="button" class="clear" data-action="pick-option" data-group="wrap" data-file="">ラッピングを外す</button></div>';
+        const items = orderedItems(order);
+        const tiles = items.map(function (it) {
+          const pic = it.src ? '<img src="' + escapeHtml(it.src) + '" alt="' + escapeHtml(it.label) + '" data-item-img>' : '<p class="miss">画像なし</p>';
+          const clear = it.group === 'seal' ? '<button type="button" class="clear" data-action="clear-seal">外す</button>'
+            : (it.group ? '<button type="button" class="clear" data-action="pick-option" data-group="' + it.group + '" data-file="">外す</button>' : '');
+          return '<div class="pick' + (it.group === 'seal' ? ' is-seal' : '') + '"><p class="kind">' + escapeHtml(it.kind) + '</p><div class="item-frame">' + pic + '</div><p class="cap">' + escapeHtml(it.label) + '</p>' + clear + '</div>';
+        }).join('');
+        const has = items.map(function (it) { return it.kind; });
+        const none = ['ミニシール', 'のし', 'ラッピング', '小袋', '紙袋・バッグ'].filter(function (k) { return has.indexOf(k) < 0; });
+        return '<div class="items">' + tiles + '</div>' + (none.length ? '<p class="none">指定なし：' + escapeHtml(none.join('・')) + '（ミニシールは下の図柄一覧、ほかは「のし・包装の見本」から選べます）</p>' : '');
       }
       function names(ids) {
         return ids.map(function (id) { return SEAL_BY_ID[id] ? SEAL_BY_ID[id].label : id; }).join('、');
@@ -163,7 +165,7 @@
         }).join('');
         const count = SEAL_GROUPS.reduce(function (n, g) { return n + g.ids.filter(function (id) { return SEAL_BY_ID[id]; }).length; }, 0);
         // 図柄の一覧は普段は畳む。押したときだけ開く（開いたかどうかは注文を替えても覚えておく）
-        host.innerHTML = '<div class="head"><h3>ミニシール・ラッピングの図柄</h3><p class="sub">この端末の画像</p></div><div data-seal-match>' + matchBlock() + '</div><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div><details class="fold" data-seal-fold' + (sealFoldOpen ? ' open' : '') + '><summary>図柄の見本一覧<span class="cnt">' + count + '種類・押すと開きます</span></summary><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。押すとこの注文の図柄になります。選んでいる図柄をもう一度押すと外れます。</p>' + groups + '</details>';
+        host.innerHTML = '<div class="head"><h3>ご注文の品</h3><p class="sub">受けた品の画像を全部並べています</p></div><div data-seal-match>' + matchBlock() + '</div><div class="chosen" data-seal-chosen>' + chosenBlock() + '</div><details class="fold" data-seal-fold' + (sealFoldOpen ? ' open' : '') + '><summary>図柄の見本一覧<span class="cnt">' + count + '種類・押すと開きます</span></summary><p class="note">枠は角丸スクエアです。画像がない図柄は、名前と「画像なし」だけを出します。押すとこの注文の図柄になります。選んでいる図柄をもう一度押すと外れます。</p>' + groups + '</details>';
         host.querySelector('[data-seal-fold]').addEventListener('toggle', function (e) { sealFoldOpen = e.target.open; });
       }
       function refresh() {
@@ -353,7 +355,7 @@
     function renderDrawerActions(host) {
       function paint() {
         if (!currentOrder()) { host.innerHTML = ''; return; }
-        host.innerHTML = '<h3>この注文の出力</h3><div class="grid"><button type="button" class="a1" data-action="single" data-kind="laser"><span>レーザー加工用CSV出力</span><span>CSV</span></button><button type="button" class="a2" data-action="single" data-kind="yamato"><span>ヤマトB2クラウドCSV出力</span><span>B2</span></button><button type="button" class="a3" data-action="single" data-kind="email"><span>校正確認メールを記録</span><span>記録</span></button><button type="button" class="a4" data-action="single" data-kind="ship"><span>出荷済みにする（API送信なし）</span><span>状態</span></button></div>';
+        host.innerHTML = '<h3>この注文の出力</h3><button type="button" class="wo-btn" data-action="work-order"><span>作業指示書を印刷・PDF保存</span><span>各部署に回す紙</span></button><div class="grid"><button type="button" class="a1" data-action="single" data-kind="laser"><span>レーザー加工用CSV出力</span><span>CSV</span></button><button type="button" class="a2" data-action="single" data-kind="yamato"><span>ヤマトB2クラウドCSV出力</span><span>B2</span></button><button type="button" class="a3" data-action="single" data-kind="email"><span>校正確認メールを記録</span><span>記録</span></button><button type="button" class="a4" data-action="single" data-kind="ship"><span>出荷済みにする（API送信なし）</span><span>状態</span></button></div>';
       }
       on('oms:open', paint);
     }
