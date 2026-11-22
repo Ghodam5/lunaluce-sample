@@ -16,7 +16,7 @@
 
     function builderSnapshot() {
       const b = state.builder;
-      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, catHidden: b.catHidden, pageLayout: b.pageLayout, texts: b.texts, noteTemplates: b.noteTemplates, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans, store: b.store, storeTax: b.storeTax, noteTemplatesKnown: (b.noteTemplatesBase || []).map(function (t) { return t.id; }) });
+      return JSON.stringify({ themes: b.themes.filter(function (t) { return !t.builtIn; }), cards: b.cards, notices: b.notices, uploads: Object.keys(b.uploads).sort(), stock: b.stock, newProducts: b.newProducts, newCats: b.newCats, catNames: b.catNames, catHidden: b.catHidden, pageLayout: b.pageLayout, texts: b.texts, noteTemplates: b.noteTemplates, days: b.days, news: b.news, sections: b.sections, listing: b.listing, plans: b.plans, store: b.store, storeTax: b.storeTax, noteTemplatesKnown: (b.noteTemplatesBase || []).map(function (t) { return t.id; }), cardsKnown: b.cardsBase || b.cards.map(function (c) { return c.id; }) });
     }
     function builderDirty() {
       return state.builder.ready && builderSnapshot() !== state.builder.base;
@@ -42,6 +42,7 @@
         const b = state.builder;
         b.themes = data.themes.map(cloneData);
         b.cards = data.cards.map(function (card) { const c = cloneData(card); delete c.inManifest; builderSignSyncTitle(c); return c; });
+        b.cardsBase = b.cards.map(function (c) { return c.id; }); // サイトにあるカード（下書きの cardsKnown に残す）
         b.notices = cloneData(data.notices.notices || []);
         b.products = data.products;
         b.images = data.images;
@@ -75,7 +76,12 @@
         try {
           const saved = JSON.parse(localStorage.getItem(BUILDER_STORE_KEY) || 'null');
           if (saved && Array.isArray(saved.cards)) {
-            b.cards = saved.cards;
+            // 2.47: 下書きを作った後にサイトに足されたカード（いちばん上の看板など）は下書きに無いので、サイトの元データから足す。
+            // 下書きで消したカードは戻さない（cardsKnown＝下書きを作ったときに知っていたカード。古い下書きには無いので、そのときは看板だけ足す）
+            const knownCards = Array.isArray(saved.cardsKnown) ? saved.cardsKnown : null;
+            const haveCard = {}; saved.cards.forEach(function (c) { haveCard[c.id] = 1; });
+            const addCards = b.cards.filter(function (c) { return !haveCard[c.id] && (knownCards ? knownCards.indexOf(c.id) < 0 : builderIsSign(c)); });
+            b.cards = addCards.concat(saved.cards);
             b.notices = saved.notices || b.notices;
             b.stock = saved.stock || {};
             b.newProducts = saved.newProducts || [];
