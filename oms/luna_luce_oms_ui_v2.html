@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.45
+Luna Luce OMS 2.46
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -46,6 +46,10 @@ Luna Luce OMS 2.45
   js/36-carrier-rates 契約送料（ヤマト・ネコポス）の数字を画面で直す。この端末に保存
   js/35-builder-catnames カテゴリーの名前（大・中・小）を変える。書き出しの categoryNames
   js/33-builder-sections トップの商品の段（並べ替え・表示する/しない・期間・企画やカテゴリーから段を足す）。書き出しの homeSections
+  js/46-channel-model  販路ごとの値段（基準のまま・○%上げ・固定）・扱う商品・モールの決まりの確認（計算だけ）
+  js/47-channel-tab    「7 販路と価格」タブ（値段・モールの決まり・販路・変更の記録）。楽天・Yahoo用CSVの値段にも使う
+  js/48-voice-model    お客様の声（口コミ・質問・意見・苦情）と受け口、似た質問のまとまり、よくある質問の候補（計算だけ）
+  js/49-voice-tab      「8 お客様の声」タブ（受信箱・候補・よくある質問・口コミのまとめ・受け口・設定）
   js/90-start           起動（必ず最後）
 新しい部品は新しい番号のファイルとして足し、既存ファイルに詰め込まない。
 2.8 でサイトビルダー（7のタブ）を追加。builder-data.json は tools/oms-builder-data.cjs で作り、直接編集しない。
@@ -85,6 +89,7 @@ Luna Luce OMS 2.45
 2.43 で受注明細の「ミニシールの図柄」を「ミニシール・ラッピングの図柄」にし、ミニシールの横にラッピング（包装紙）の図柄を並べた（js/16-drawer wrapBlock）。注文で包装紙が指定されているか担当者が選んだときに出し、「ラッピングを外す」で未指定に戻せる。
 2.44 で受注明細の図柄欄を「ご注文の品」にし、受けた品（商品・ミニシール・のし・ラッピング・小袋・紙袋/ブライダルバッグ）の画像を全部並べた（js/44-option-catalog orderedItems）。小袋の季節限定とギフト用紙袋の宣伝画像を外し、紙袋は実物写真に替えた。作業指示書（js/45-work-order・css/13-work-order）を追加。受注明細の「作業指示書を印刷・PDF保存」で、特急を一番上、納期・挙式日・賞味期限・数量、注文品の縮小画像、入れる文字、部品内訳（チェック欄付き）、寸法、料金、工程チェック（大きめの□・担当・日付）、印刷イメージ、受注管理表をA4に組み直して印刷する。図柄の見本一覧・実寸PDFの注意などは載せない。
 2.45 で商品の登録・編集の写真（2枚目以降・サムネイル）が出ない不具合を直した。原因は2つ: サイトの商品データの写真が {src, alt…} の形になっていたのに、ビルダーが文字列として扱っていた（tools/oms-builder-data.cjs と js/24-builder-products で src を取り出すように）。もう1つは商品の詳しい写真 images/product-details/ がこのブランチに無く、VPSに届いていなかった（main から684枚を取り込み）。
+2.46 で「7 販路と価格」と「8 お客様の声」を足した。販路と価格: 商品は1つ（基準の値段＝本店のバックアップの値段）、販路ごとに「基準のまま・基準の○%上げ・この値段に固定」と出す・出さないを持つ（販路の標準＋商品ごとの上書き）。扱う商品は絞り込める（最初は新サイトにある商品）。モールの決まり（上げ幅の上限・差の上限・下限・商品名に使えない言葉・書いておくだけ）をいつでも足せ、合わない所に注意を出す。値段を変えた記録を残す。楽天・Yahoo用CSVの値段もこれに従う。お客様の声: 受け口（楽天・Yahoo・本店・メール・LINE・SMS・電話、足せる）から手入力かCSVで集め、メールアドレス・電話番号は伏せ字にする。似た質問を自動でまとめ、決めた件数（標準3件）で「よくある質問の候補」に出し、入れる・入れない・保留を人が決める（自動で入れる設定もあり）。入れないと決めたものは、さらに同じ件数増えたら再び候補に出る。口コミは受け口・商品ごとの平均と★2以下の未対応を出す。保存はいまはこのブラウザ（DBスキーマに表を追加）。
 2.29 で商品の登録・編集に「お届けまでの日数」（必須・最短〜最長・受注生産）と「ご注文の前に」の定型文の選択を足した（js/37-builder-delivery）。定型文はサイトビルダー「注意事項の定型文」で直す。在庫と出店の一覧に「お届け日数なし」の目印と絞り込み。サイト側は v64。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
@@ -104,6 +109,8 @@ tab-architecture       renderArchitectureTab
 tab-schema             renderSchemaTab
 tab-simulator          renderSimulatorTab
 tab-carrier            renderCarrierTab
+tab-channels           renderChannelTab
+tab-voice              renderVoiceTab
 drawer                 renderDrawer
 drawer-head            renderDrawerHead
 drawer-warning         renderDrawerWarning
@@ -151,7 +158,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.45｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.46｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -168,6 +175,8 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <link rel="stylesheet" href="css/11-builder.css" />
   <link rel="stylesheet" href="css/12-print-preview.css" />
   <link rel="stylesheet" href="css/13-work-order.css" />
+  <link rel="stylesheet" href="css/14-channels.css" />
+  <link rel="stylesheet" href="css/15-voice.css" />
 </head>
 <body>
   <div id="app"></div>
@@ -214,6 +223,10 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/43-print-preview.js"></script>
   <script src="js/44-option-catalog.js"></script>
   <script src="js/45-work-order.js"></script>
+  <script src="js/46-channel-model.js"></script>
+  <script src="js/47-channel-tab.js"></script>
+  <script src="js/48-voice-model.js"></script>
+  <script src="js/49-voice-tab.js"></script>
   <script src="js/23-builder-tab.js"></script>
   <script src="js/90-start.js"></script>
 </body>

@@ -1,0 +1,72 @@
+/* Luna Luce OMS 部品CSS: 14-channels（「7 販路と価格」タブ） */
+    /* owner: renderChannelTab */
+    [data-part="tab-channels"] { display: flex; flex-direction: column; gap: 14px; }
+    [data-part="tab-channels"] .ch-head, [data-part="tab-channels"] .ch-box { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); min-width: 0; }
+    [data-part="tab-channels"] .kicker { margin: 0; font-family: "Cormorant Garamond", serif; letter-spacing: 0.14em; text-transform: uppercase; color: var(--champagne); font-size: 13px; }
+    [data-part="tab-channels"] h2 { margin: 4px 0 0; font-family: "Noto Serif JP", serif; font-size: 22px; color: var(--forest); }
+    [data-part="tab-channels"] h3 { margin: 0 0 8px; font-size: 16px; color: var(--forest); }
+    [data-part="tab-channels"] h4 { margin: 12px 0 6px; font-size: 15px; color: var(--forest); display: flex; gap: 8px; align-items: baseline; }
+    [data-part="tab-channels"] h4 small { color: var(--taupe-light); font-weight: 400; }
+    [data-part="tab-channels"] .lead, [data-part="tab-channels"] .muted { color: var(--taupe-light); font-size: 14px; margin: 4px 0 10px; }
+    [data-part="tab-channels"] button { min-height: 40px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font-size: 14px; cursor: pointer; }
+    [data-part="tab-channels"] button.primary { background: var(--forest); color: #fff; border-color: var(--forest); }
+    [data-part="tab-channels"] button:disabled { opacity: 0.45; cursor: default; }
+    [data-part="tab-channels"] input, [data-part="tab-channels"] select, [data-part="tab-channels"] textarea { font: inherit; font-size: 15px; min-height: 40px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); max-width: 100%; box-sizing: border-box; }
+    [data-part="tab-channels"] input[type="checkbox"] { min-height: 0; width: 20px; height: 20px; }
+    [data-part="tab-channels"] label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--taupe); }
+    [data-part="tab-channels"] label small { color: var(--taupe-light); }
+    [data-part="tab-channels"] .unit-in { flex-direction: row; align-items: center; }
+    [data-part="tab-channels"] .unit-in input { width: 7em; flex: 0 0 auto; }
+    [data-part="tab-channels"] .ch-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    [data-part="tab-channels"] .ch-nav button[aria-pressed="true"] { background: var(--champagne); border-color: var(--champagne); color: #fff; }
+    [data-part="tab-channels"] .ch-defs { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    [data-part="tab-channels"] .ch-def { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; padding: 10px; border-radius: 12px; background: var(--champagne-soft); }
+    [data-part="tab-channels"] .ch-def strong { flex: 1 1 100%; color: var(--forest); }
+    [data-part="tab-channels"] .ch-def.is-off { opacity: 0.6; }
+    [data-part="tab-channels"] .ch-filter { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; margin-bottom: 10px; }
+    [data-part="tab-channels"] .ch-filter input[type="search"] { flex: 1 1 14em; }
+    [data-part="tab-channels"] .ch-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    [data-part="tab-channels"] .ch-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    [data-part="tab-channels"] .ch-table th { text-align: left; font-weight: 600; color: var(--taupe); border-bottom: 1px solid var(--line); padding: 6px; white-space: nowrap; }
+    [data-part="tab-channels"] .ch-table td { border-bottom: 1px solid var(--line); padding: 6px; vertical-align: top; }
+    [data-part="tab-channels"] .ch-table td.yen { white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
+    [data-part="tab-channels"] .ch-table td.is-warn { background: #fdf0ef; }
+    [data-part="tab-channels"] .ch-table tr.is-out td { color: var(--taupe-light); }
+    [data-part="tab-channels"] .ch-table tr.is-open > td { background: var(--champagne-soft); }
+    [data-part="tab-channels"] .ch-table .pk { width: 44px; text-align: center; }
+    [data-part="tab-channels"] .ch-table .nm button { border: 0; background: none; padding: 0; min-height: 0; text-align: left; display: flex; flex-direction: column; gap: 2px; color: var(--ink); min-width: 14em; }
+    [data-part="tab-channels"] .ch-table .code { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--taupe-light); }
+    [data-part="tab-channels"] .ch-table .code em { font-style: normal; color: var(--champagne); }
+    [data-part="tab-channels"] .warn { color: var(--urgent); }
+    [data-part="tab-channels"] .m, [data-part="tab-channels"] .own { display: inline-block; margin-left: 4px; padding: 0 6px; border-radius: 999px; font-size: 11px; background: var(--ivory-warm); color: var(--taupe); }
+    [data-part="tab-channels"] .m.up { background: #e8f3f1; color: var(--sage); }
+    [data-part="tab-channels"] .m.fix { background: #f3ebdd; color: #8a6a2f; }
+    [data-part="tab-channels"] .m.off { background: #eee; color: #777; }
+    [data-part="tab-channels"] .own { background: var(--forest); color: #fff; }
+    [data-part="tab-channels"] .ch-pager, [data-part="tab-channels"] .ch-out { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+    [data-part="tab-channels"] .ch-file { flex-direction: row; align-items: center; min-height: 40px; padding: 6px 12px; border: 1px dashed var(--line); border-radius: 10px; cursor: pointer; }
+    [data-part="tab-channels"] .ch-file input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    [data-part="tab-channels"] .ch-eds { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
+    [data-part="tab-channels"] .ch-ed { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+    [data-part="tab-channels"] .ch-ed-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    [data-part="tab-channels"] .ch-ed-head label { flex-direction: row; align-items: center; }
+    [data-part="tab-channels"] .ch-prices, [data-part="tab-channels"] .ch-warns { margin: 0; padding-left: 1.2em; font-size: 13px; }
+    [data-part="tab-channels"] .ch-warns { color: var(--urgent); }
+    [data-part="tab-channels"] .ch-rules { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    [data-part="tab-channels"] .ch-rules li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; }
+    [data-part="tab-channels"] .ch-rules li > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 16em; }
+    [data-part="tab-channels"] .ch-rules li.is-off { opacity: 0.55; }
+    [data-part="tab-channels"] .ch-rules .kind { font-size: 13px; color: var(--taupe); }
+    [data-part="tab-channels"] .ch-rules p { margin: 2px 0; font-size: 13px; }
+    [data-part="tab-channels"] .ch-rules small { color: var(--taupe-light); overflow-wrap: anywhere; }
+    [data-part="tab-channels"] .ch-rules small.warn { color: var(--urgent); }
+    [data-part="tab-channels"] .ch-rules .acts { display: flex; gap: 6px; flex-wrap: wrap; align-items: flex-start; }
+    [data-part="tab-channels"] .ch-rule-form { display: flex; flex-direction: column; gap: 10px; }
+    [data-part="tab-channels"] .ch-channels { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    [data-part="tab-channels"] .ch-channels li { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    [data-part="tab-channels"] .ch-channels li label { flex-direction: row; align-items: center; }
+    [data-part="tab-channels"] .ch-channels li input[type="text"] { flex: 1 1 10em; }
+    [data-part="tab-channels"] .tag { padding: 2px 8px; border-radius: 999px; background: var(--champagne-soft); color: var(--champagne); font-size: 12px; }
+    @media (min-width: 834px) {
+      [data-part="tab-channels"] .ch-defs, [data-part="tab-channels"] .ch-eds { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    }

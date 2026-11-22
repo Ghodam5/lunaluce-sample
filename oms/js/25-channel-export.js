@@ -69,7 +69,7 @@
           sku['システム連携用SKU番号'] = s.code || p.code;
           sku['バリエーション項目キー1'] = many ? 'type' : '';
           sku['バリエーション項目選択肢1'] = many ? channelText(s.t).slice(0, 32) : '';
-          sku['通常購入販売価格'] = String(s.price);
+          sku['通常購入販売価格'] = String(opt.price ? opt.price('rakuten', p, s) : s.price); // 2.46 販路ごとの値段（47-channel-tab）
           // 在庫数は OMS が別に送るので空（欠品の商品だけ 0）
           sku['在庫数'] = row.stock && row.stock.status === 'out' ? '0' : '';
           out.push(head.map(function (h) { return sku[h] == null ? '' : sku[h]; }));
@@ -79,7 +79,8 @@
     }
 
     // ---- Yahoo!ショッピング（ストアクリエイターPro 商品データCSV data.csv）: 1商品1行 ----
-    function channelYahooRows(rows) {
+    function channelYahooRows(rows, opt) {
+      opt = opt || {};
       const head = ['path', 'name', 'code', 'sub-code', 'price', 'options', 'headline', 'caption', 'explanation', 'abstract', 'taxable', 'display'];
       const out = [head];
       rows.forEach(function (row) {
@@ -90,7 +91,7 @@
           path: '', name: channelText(p.title).slice(0, 150), code: code,
           // 種類ごとの商品コード: 「種類:Sサイズ=code-1&種類:Mサイズ=code-2」
           'sub-code': many ? p.skus.map(function (s) { return '種類:' + channelText(s.t).replace(/[:=&]/g, ' ') + '=' + channelManageNo(s.code); }).join('&') : '',
-          price: String(Math.min.apply(null, p.skus.map(function (s) { return s.price; }))),
+          price: String(Math.min.apply(null, p.skus.map(function (s) { return opt.price ? opt.price('yahoo', p, s) : s.price; }))),
           options: many ? '種類 ' + p.skus.map(function (s) { return channelText(s.t).replace(/\s+/g, '_'); }).join(' ') : '',
           headline: p.hasName ? '名入れできます' : '',
           caption: channelCaptionHtml(p),
@@ -144,7 +145,7 @@
     function channelBuild(rows, opt) {
       const files = [
         { name: 'rakuten-item.csv', label: '楽天', table: channelRakutenRows(rows, opt) },
-        { name: 'yahoo-data.csv', label: 'Yahoo', table: channelYahooRows(rows) },
+        { name: 'yahoo-data.csv', label: 'Yahoo', table: channelYahooRows(rows, opt) },
         { name: 'photo-names.csv', label: '写真の名前の対応表', table: channelPhotoRows(rows) }
       ];
       return files.map(function (f) { const enc = channelSjis(channelCsv(f.table)); return { name: f.name, label: f.label, rows: f.table.length - 1, bytes: enc.bytes, missing: enc.missing }; });
@@ -158,7 +159,7 @@
       if (bad.length) { showToast('直すところが残っている商品があります: ' + bad.join('、') + '。赤い注意を直してから書き出してください。'); return; }
       const rows = b.newProducts.map(builderProductRow);
       if (!rows.length) { showToast('書き出す商品がありません。商品を登録するか編集してください。'); return; }
-      const files = channelBuild(rows, { cabinetFolder: '' });
+      const files = channelBuild(rows, { cabinetFolder: '', price: typeof chPriceForExport === 'function' ? chPriceForExport : null });
       files.forEach(function (f, i) {
         setTimeout(function () {
           const url = URL.createObjectURL(new Blob([f.bytes], { type: 'text/csv;charset=Shift_JIS' }));
