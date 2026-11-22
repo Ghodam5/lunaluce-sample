@@ -529,3 +529,22 @@
     [data-part="builder-editor"] .notices-kept { margin-top: 14px; }
     [data-part="builder-editor"] .notices-kept > summary { cursor: pointer; font-weight: 700; color: var(--taupe, #6b5f53); }
     [data-part="builder-editor"] .news-autos li.is-off b { color: var(--taupe-light, #8a7f73); text-decoration: line-through; }
+    /* 2.36 お店の案内・送料・税率（js/41-builder-store） */
+    [data-part="builder-editor"] .store-tbl, [data-part="builder-preview"] .store-tbl { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
+    .store-tbl th, .store-tbl td { border: 1px solid #e6dccb; padding: 6px; text-align: left; vertical-align: middle; }
+    .store-tbl thead th { background: #f6f1e8; }
+    .store-tbl input[type="number"] { width: 6.5em; }
+    .store-tbl input[type="text"] { width: 100%; min-width: 6em; }
+    .store-tbl tr.is-off td { background: #f6f3ee; color: var(--taupe-light, #8a7f73); }
+    .store-tbl tr.is-now td { background: #eef8f1; }
+    .store-now { color: #1f7a4a; font-size: 12px; }
+    .store-warn { background: #fff4e5; border: 1px solid #f3c98b; border-radius: 8px; padding: 10px 12px; }
+    .store-taxes { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
+    .store-tax { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; border: 1px solid #e6dccb; border-radius: 8px; padding: 6px 8px; }
+    .store-tax .nm small { display: block; color: var(--taupe-light, #8a7f73); }
+    .store-tax.is-warn { border-color: #f3c98b; background: #fff8ee; }
+    @media (max-width: 700px) { .store-tax { grid-template-columns: 1fr; } }
+    .pv-storebar { display: flex; flex-wrap: wrap; gap: 6px 14px; background: #f6f1e8; padding: 8px; border-radius: 8px; font-size: 12px; }
+    .pv-storebar b { background: #7a5c3e; color: #fff; border-radius: 4px; padding: 1px 5px; margin-right: 4px; font-size: 11px; }
+    .pv-storeft { border: 1px solid #e6dccb; border-radius: 8px; padding: 8px 10px; font-size: 12px; background: #fbf8f2; }
+    .pv-storeft ul { margin: 4px 0 0; padding-left: 1.2em; }

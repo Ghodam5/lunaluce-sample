@@ -122,6 +122,9 @@ function productLayout() {
   const d = read('site-src/product-layout.json');
   return { side: d.side, below: d.below };
 }
+// お店の案内・送料・税率と商品ごとの税の種類（サイトの site-src/store-info.json・product-tax.json。無ければ null）
+function storeInfo() { return fs.existsSync(path.join(root, 'site-src/store-info.json')) ? read('site-src/store-info.json') : null; }
+function productTax() { return fs.existsSync(path.join(root, 'site-src/product-tax.json')) ? read('site-src/product-tax.json') : null; }
 // 表示する文字。サイトに site-src/site-texts.json があればそれ（無ければOMSの標準を使う）
 function siteTexts() {
   const f = path.join(root, 'site-src/site-texts.json');
@@ -170,7 +173,7 @@ function build() {
   const notices = read('site-src/site-notices.json');
   const products = fs.readdirSync(path.join(root, 'site-src/products')).filter((f) => /^\d+\.json$/.test(f)).map((f) => read('site-src/products/' + f)).filter((p) => p.active && p.product).map((p) => Object.assign({ id: String(p.product.id), code: p.product.code, title: p.product.title, price: p.product.price, image: p.product.image || '', lead: !!leadOf(p.product) }, p.stock ? { stock: p.stock } : {})).sort((a, b) => Number(a.id) - Number(b.id));
   const images = Array.from(new Set(cards.flatMap((c) => [c.image].concat((c.tiles || []).map((t) => t.image))).filter(Boolean))).sort();
-  return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets(), homeSections: homeSections(), noticeTemplates: noticeTemplates(), productLayout: productLayout(), siteTexts: siteTexts() };
+  return { schemaVersion: 1, note: 'tools/oms-builder-data.cjs で作る。直接編集しない。', themes: themesFromCss(), cards, notices, products, images, links: linkTargets(), homeSections: homeSections(), noticeTemplates: noticeTemplates(), productLayout: productLayout(), siteTexts: siteTexts(), storeInfo: storeInfo(), productTax: productTax() };
 }
 
 // 使われている商品コードの台帳（商品コードの重複チェック用）。小文字にそろえ、どこで使っているかを文字で持つ

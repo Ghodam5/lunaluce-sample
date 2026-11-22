@@ -60,10 +60,13 @@
     }
     function builderChecksHtml() {
       const list = builderChecksOpen();
-      if (!list.length) return '';
-      return '<div class="pv-check is-warn"><b>要確認 ' + list.length + '件</b><p class="fix-hint">反映は止めません。決まったら直して「確認した」を押してください。</p><ol class="fix-groups">' + list.map(function (c) {
+      const dyn = typeof builderStoreChecks === 'function' ? builderStoreChecks() : []; // 2.36 セット商品の税率・税率表（41-builder-store。直すと消える）
+      if (!list.length && !dyn.length) return '';
+      return '<div class="pv-check is-warn"><b>要確認 ' + (list.length + dyn.length) + '件</b><p class="fix-hint">反映は止めません。決まったら直して「確認した」を押してください。</p><ol class="fix-groups">' + list.map(function (c) {
         return '<li><div class="fix-head"><b>' + escapeHtml(c.title || c.productId || '') + '</b>' + (c.productId ? '<span class="fix-n">商品 ' + escapeHtml(c.productId) + '</span>' : '') +
           '<span class="fix-tools">' + (c.url ? '<a class="btn-link" href="' + escapeHtml(c.url) + '" target="_blank" rel="noopener">本店で見る</a>' : '') + '<button type="button" data-b="check-done" data-id="' + escapeHtml(c.id) + '">確認した</button></span></div><p>' + escapeHtml(c.text) + '</p></li>';
+      }).join('') + dyn.map(function (c) {
+        return '<li><div class="fix-head"><b>' + (c.id === 'store-sets' ? 'セット商品の税率（税理士さんに確認）' : '税率表') + '</b><span class="fix-tools"><button type="button" data-b="select" data-type="store" data-index="0">開く</button></span></div><p>' + escapeHtml(c.text) + '</p></li>';
       }).join('') + '</ol></div>';
     }
     function builderFixAction(name, el) {

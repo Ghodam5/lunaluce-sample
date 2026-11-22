@@ -55,6 +55,8 @@
           main = builderSectionsPreview();
         } else if (s.type === 'texts') {
           main = builderTextsPreview();
+        } else if (s.type === 'store') {
+          main = builderStorePreview();
         } else if (s.type === 'layout') {
           main = builderLayoutPreview();
         } else if (s.type === 'notes') {

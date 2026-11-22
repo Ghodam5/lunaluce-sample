@@ -31,6 +31,7 @@
           grp(['card'], 'トップのカード <small>上から順に表示</small>', '<ul>' + cards + '</ul>' +
             '<div class="adds"><button type="button" data-b="card-add" data-kind="products">＋ 商品</button><button type="button" data-b="card-add" data-kind="campaign">＋ キャンペーン</button><button type="button" data-b="card-add" data-kind="features">＋ 特集一覧</button></div>') +
           grp(['sections'], 'トップの商品の段', '<ul>' + item({ type: 'sections', index: 0 }, true, 'トップの商品の段（並び・表示）', builderSections().filter(function (x) { return x.active; }).length + '段を表示・全' + builderSections().length + '段') + '</ul>') +
+          grp(['store'], 'お店の案内・送料・税率', '<ul>' + item({ type: 'store', index: 0 }, true, 'お店の案内・送料・税率', (builderStoreSetsToCheck().length ? 'セット要確認 ' + builderStoreSetsToCheck().length + '件・' : '') + (builderStoreChanged() ? '変更あり' : '案内バー・送料・税率表')) + '</ul>') +
           grp(['stock', 'product', 'product-start', 'cats', 'notes', 'layout', 'texts'], '商品', '<ul>' + item({ type: 'stock', index: 0 }, true, '在庫と出店（出す・出さない・期間）', Object.keys(b.stock).length ? Object.keys(b.stock).length + '件を切り替え中' : '販売中以外 ' + b.products.filter(function (p) { return p.stock && p.stock.status !== 'in'; }).length + '件') +
             item({ type: 'notes', index: 0 }, true, '注意事項の定型文', builderNoteTemplates().length + '件') +
             item({ type: 'layout', index: 0 }, true, '商品ページの段組み', '写真の右 ' + builderPageLayout().side.length + '・写真の下 ' + builderPageLayout().below.length) +

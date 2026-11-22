@@ -3598,5 +3598,777 @@
       "label": "カートに入れるボタン",
       "text": "ダミーカートに入れる"
     }
-  ]
+  ],
+  "storeInfo": {
+    "schemaVersion": 1,
+    "bar": [
+      {
+        "id": "bar-free",
+        "active": true,
+        "label": "送料",
+        "text": "税別{free}円以上で送料無料（本州・四国・九州）",
+        "href": "shipping.html"
+      },
+      {
+        "id": "bar-lead",
+        "active": true,
+        "label": "お届け",
+        "text": "最短6日後に出荷・名入れは2〜4週間",
+        "href": "shipping.html#lead-time"
+      },
+      {
+        "id": "bar-bulk",
+        "active": true,
+        "label": "大口",
+        "text": "大口注文のご相談",
+        "href": "bulk-order.html"
+      },
+      {
+        "id": "bar-overseas",
+        "active": true,
+        "label": "海外",
+        "text": "海外発送",
+        "href": "overseas-shipping.html"
+      }
+    ],
+    "footer": {
+      "title": "お届けと送料",
+      "lines": [
+        {
+          "id": "ft-free",
+          "active": true,
+          "text": "税別{free}円以上で送料無料（本州・四国・九州）"
+        },
+        {
+          "id": "ft-fee",
+          "active": true,
+          "text": "送料は本州・四国・九州{fee:honshu}、北海道・一部離島{fee:hokkaido}、沖縄{fee:okinawa}"
+        },
+        {
+          "id": "ft-lead",
+          "active": true,
+          "text": "ご注文から最短3〜16日でお届け。名入れ商品は校了後2〜4週間"
+        },
+        {
+          "id": "ft-neko",
+          "active": true,
+          "text": "ネコポス（ポスト投函）対応の商品もあります"
+        }
+      ]
+    },
+    "shipping": {
+      "freeThreshold": 20000,
+      "freeBasis": "excl",
+      "regions": [
+        {
+          "id": "honshu",
+          "name": "本州・四国・九州",
+          "fee": 800,
+          "feeBasis": "incl",
+          "freeApplies": true
+        },
+        {
+          "id": "hokkaido",
+          "name": "北海道・一部離島",
+          "fee": 2000,
+          "feeBasis": "excl",
+          "freeApplies": false
+        },
+        {
+          "id": "okinawa",
+          "name": "沖縄",
+          "fee": 2800,
+          "feeBasis": "excl",
+          "freeApplies": false
+        }
+      ],
+      "notes": [
+        "送料無料商品も、北海道・沖縄・一部離島・海外は送料がかかります。",
+        "送料は配送の形（宅配便・ネコポスなど）を問わず、配送先の地域で決まります。"
+      ],
+      "source": "本店 お買い物ガイド 送料料金（2026-11-22 確認）"
+    },
+    "tax": {
+      "priceBasisDate": "2026-11-22",
+      "classes": [
+        {
+          "id": "standard",
+          "name": "標準（雑貨など）"
+        },
+        {
+          "id": "food",
+          "name": "食品（軽減税率）"
+        }
+      ],
+      "rates": [
+        {
+          "id": "r2019",
+          "from": "2019-10-01",
+          "active": true,
+          "standard": 10,
+          "food": 8,
+          "note": "いまの税率"
+        },
+        {
+          "id": "r2027",
+          "from": "2027-04-01",
+          "active": false,
+          "standard": 10,
+          "food": 1,
+          "note": "食料品1%（2年間の予定）。法律の成立を確かめてからオンにする"
+        },
+        {
+          "id": "r2029",
+          "from": "2029-04-01",
+          "active": false,
+          "standard": 10,
+          "food": 8,
+          "note": "食料品が8%に戻る予定。決まったらオンにする"
+        }
+      ],
+      "rounding": "floor"
+    }
+  },
+  "productTax": {
+    "schemaVersion": 1,
+    "default": "standard",
+    "note": "商品ごとの税の種類。food=食品（軽減税率）。set=食品と雑貨のセット（一体資産）で、税理士さんに確認して food か standard を決める。確認するまで価格は自動で変えない。",
+    "products": {
+      "38808": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "41594": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "42153": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "43378": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "43386": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "43530": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "47481": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "47484": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "47696": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "47723": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "48732": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "48734": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "49967": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "53122": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "53684": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "53693": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "53695": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "54244": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "54246": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "54863": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "54954": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "54994": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "55241": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "55385": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "55685": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "55687": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "57074": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "57469": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "57545": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "57577": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "57694": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "57854": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "57876": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "58085": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "58094": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "58190": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "58915": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "58966": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "59671": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "59688": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "60036": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "60047": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "64012": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "65078": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "65408": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "65418": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "65445": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "65497": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "65906": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "66771": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "66786": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "66799": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "66876": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "66897": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "66906": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "66917": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "66920": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "66935": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "67087": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "68651": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "68841": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "69206": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "69240": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "69262": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "69301": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "69345": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "69376": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "69406": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "69417": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "70302": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "70386": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "70670": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "70679": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "70767": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "70773": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71049": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71101": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71103": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71106": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71108": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71110": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71113": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71115": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71119": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71121": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71123": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71125": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71127": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71133": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71135": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71137": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71139": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71141": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71145": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71147": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71149": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71166": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "71168": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "71171": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "71173": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "71175": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "71177": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "71305": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "71342": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71369": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71388": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71406": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71448": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71478": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71493": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71499": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71527": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71540": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71558": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71564": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71574": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "71855": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72013": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72063": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72080": {
+        "class": "set",
+        "checked": false,
+        "why": "食品と雑貨の組み合わせに見える"
+      },
+      "72097": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72191": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72194": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72352": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72358": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72383": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      },
+      "72437": {
+        "class": "food",
+        "checked": false,
+        "why": "原材料・賞味期限・食品名から"
+      }
+    }
+  }
 }

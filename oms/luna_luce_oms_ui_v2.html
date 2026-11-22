@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.35
+Luna Luce OMS 2.36
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -41,6 +41,7 @@ Luna Luce OMS 2.35
   js/37-builder-delivery お届けまでの日数（必須）と注意事項の定型文。書き出しの products/edits の delivery・notes と noticeTemplates
   js/38-builder-fixlist 「直すところ」をカード・商品ごとにまとめ、開いて直す・作りかけのカードを消す
   js/40-builder-texts 表示する文字（見出し・ボタン）。書き出しの texts → サイトの site-src/site-texts.json
+  js/41-builder-store お店の案内・送料・税率。書き出しの storeInfo・productTax → サイトの site-src/store-info.json・product-tax.json
   js/39-builder-layout 商品ページの段組み（写真の右・写真の下の並び）。書き出しの productLayout と商品の layout
   js/36-carrier-rates 契約送料（ヤマト・ネコポス）の数字を画面で直す。この端末に保存
   js/35-builder-catnames カテゴリーの名前（大・中・小）を変える。書き出しの categoryNames
@@ -74,6 +75,7 @@ Luna Luce OMS 2.35
 2.33 で「直すところ」の下に「要確認」を足した（oms/builder-checks.json。反映は止めない。「確認した」はこのブラウザに覚える）。本店と価格が違う2商品を載せた。
 2.34 で「商品ページの段組み」に注意事項の定型文を選んで置けるようにした（note:定型文のid。全商品・この商品だけ）。定型文の本文は800文字まで。サイトの商品データ（本店から取り込んだお届け日数・注意事項・写真）と定型文をOMSの元データに取り込み直した（site-src/products・notice-templates.json・images/products、サイト v68）。
 2.35 で「流れる文言」の各文言を「表示する」を外すと消さずに下へしまい、再利用できるようにした（削除は「完全に消す」）。長期休暇から自動で作る文言も、流れる文言の画面で1つずつ出す・出さないを選べる。
+2.36 で「お店の案内・送料・税率」を足した（js/41-builder-store）。ヘッダーの案内バー・フッターの「お届けと送料」を1つずつ出す・出さない、送料無料の金額と税別/税込、地域ごとの送料、切替日つきの税率表、商品ごとの税の種類。セット商品は税理士さんに確認するまで要確認に出す。古い下書きにサイトで後から足した定型文を自動で足す。
 2.29 で商品の登録・編集に「お届けまでの日数」（必須・最短〜最長・受注生産）と「ご注文の前に」の定型文の選択を足した（js/37-builder-delivery）。定型文はサイトビルダー「注意事項の定型文」で直す。在庫と出店の一覧に「お届け日数なし」の目印と絞り込み。サイト側は v64。
 部品名と、その部品を持つ関数。ラベル・寸法・中身は、その関数と、同じ名前のCSSだけを変える。
 並び順は関数の外にある配列だけを入れ替える。
@@ -141,7 +143,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.35｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.36｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />
@@ -197,6 +199,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
   <script src="js/38-builder-fixlist.js"></script>
   <script src="js/39-builder-layout.js"></script>
   <script src="js/40-builder-texts.js"></script>
+  <script src="js/41-builder-store.js"></script>
   <script src="js/23-builder-tab.js"></script>
   <script src="js/90-start.js"></script>
 </body>
