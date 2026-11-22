@@ -60,9 +60,16 @@ function run(cmd, args, opts = {}) {
   if (r.error) throw Error(hide(cmd + ': ' + r.error.message));
   return r;
 }
+// エラーの見出し（Error: …）を先に出す。Node の呼び出し履歴（at …）は画面に出さない
+function errorLines(text) {
+  const lines = String(text).trim().split('\n');
+  const msg = lines.filter(function (l) { return /^\s*(\w*Error|fatal|error):/i.test(l); });
+  const rest = lines.filter(function (l) { return l.trim() && !/^\s+at /.test(l) && !/^Node\.js v/.test(l) && !/^\s*\^+\s*$/.test(l); });
+  return (msg.length ? msg.concat(rest.filter(function (l) { return msg.indexOf(l) < 0; }).slice(-2)) : rest.slice(-5)).join('\n');
+}
 function must(cmd, args, opts) {
   const r = run(cmd, args, opts);
-  if (r.status !== 0) throw Error(hide((r.stderr || r.stdout || '').trim().split('\n').slice(-5).join('\n')) || cmd + ' に失敗');
+  if (r.status !== 0) throw Error(hide(errorLines(r.stderr || r.stdout || '')) || cmd + ' に失敗');
   return r.stdout;
 }
 
