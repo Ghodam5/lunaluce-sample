@@ -6,6 +6,7 @@
       return '<div class="pv-img" style="height:' + h + 'px"><img src="' + escapeHtml(builderImg(card.image)) + '" alt=""><span class="pv-resize" data-resize title="上下に動かして大きさを変える" aria-hidden="true"></span></div>';
     }
     function builderCardPreview(card, nowIso) {
+      if (builderIsSign(card)) return builderSignPreview(card); // 50-builder-sign
       const t = builderTheme(card.theme);
       const kind = card.kind || 'products';
       const style = 'background:' + t.background + ';border-color:' + t.border + ';border-top-color:' + t.top + ';--accent:' + t.accent;
@@ -73,7 +74,7 @@
           const t = builderSelected();
           main = builderCardPreview({ kind: 'products', theme: t.id, title: t.name + 'のカード', text: 'この色の組み合わせで表示されます。', cta: 'ボタンの見え方', ids: [] }, nowIso);
         } else {
-          main = '<p class="pv-note">トップのカード（表示されるものだけ・上から順）</p><div class="pv-rail">' + b.cards.filter(function (c) { return builderOnNow(c, nowIso); }).map(function (c) { return builderCardPreview(c, nowIso); }).join('') + '</div>';
+          main = '<p class="pv-note">トップのカード（表示されるものだけ・上から順）</p><div class="pv-rail">' + builderCardOrder(b.cards).filter(function (c) { return builderOnNow(c, nowIso); }).map(function (c) { return builderCardPreview(c, nowIso); }).join('') + '</div>';
         }
         const errs = builderAllErrors();
         const dirty = builderDirty();

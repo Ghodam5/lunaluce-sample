@@ -5,7 +5,8 @@
     const BUILDER_KINDS = {
       products: { label: '商品を並べるカード（2〜6つ）', short: '商品' },
       features: { label: '特集一覧のカード', short: '特集' },
-      campaign: { label: 'キャンペーンのカード', short: 'キャンペーン' }
+      campaign: { label: 'キャンペーンのカード', short: 'キャンペーン' },
+      message: { label: 'いちばん上の看板', short: '看板' } // 50-builder-sign
     };
     const BUILDER_STORE_KEY = 'luna-oms-builder-draft-v1';
     const BUILDER_UPLOAD_KEY = 'luna-oms-builder-uploads-v1';
@@ -40,7 +41,7 @@
       }).then(function (data) {
         const b = state.builder;
         b.themes = data.themes.map(cloneData);
-        b.cards = data.cards.map(function (card) { const c = cloneData(card); delete c.inManifest; return c; });
+        b.cards = data.cards.map(function (card) { const c = cloneData(card); delete c.inManifest; builderSignSyncTitle(c); return c; });
         b.notices = cloneData(data.notices.notices || []);
         b.products = data.products;
         b.images = data.images;
@@ -281,6 +282,7 @@
     function builderLinkInfo(href) {
       const p = builderLinkParse(href);
       if (p.type === 'none') return { kind: 'なし', label: 'リンクなし', image: '' };
+      if (/^#/.test(href || '')) { const a = SIGN_ANCHORS.find(function (x) { return x.href === href; }); return a ? { kind: 'トップの中', label: a.label, image: '' } : { kind: 'ページの中', label: href, image: '', bad: true }; }
       if (p.type === 'product') {
         const prod = builderProduct(p.id);
         return prod ? { kind: '商品', label: prod.title, image: prod.image } : { kind: '商品', label: '商品番号 ' + p.id + '（掲載中の商品にありません）', image: '', bad: true };
@@ -306,6 +308,7 @@
       return out;
     }
     function builderCardErrors(card) {
+      if (builderIsSign(card)) return builderSignErrors(card); // 50-builder-sign
       const out = [];
       if (!/^[a-z0-9][a-z0-9-]{0,49}$/.test(card.id)) out.push('カードの名前（英小文字・数字・-）を確認してください');
       if (state.builder.cards.filter(function (c) { return c.id === card.id; }).length > 1) out.push('同じ名前のカードがあります');
@@ -371,6 +374,7 @@
       return id;
     }
     function builderNewCard(kind) {
+      if (kind === 'message') return builderSignNew(state.builder.cards); // 50-builder-sign
       const day = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10).replace(/-/g, '');
       const card = { id: builderUniqueId(kind + '-' + day, state.builder.cards), active: false, kind: kind, theme: kind === 'campaign' ? 'rose' : 'cream', title: '', text: '', href: '', cta: '' };
       if (kind === 'features') { card.tiles = []; card.image = ''; }
@@ -384,9 +388,10 @@
         schemaVersion: 1,
         kind: 'luna-site-builder-draft',
         exportedAt: new Date().toISOString(),
-        manifest: b.cards.map(function (c) { return c.id; }),
+        manifest: builderCardOrder(b.cards).map(function (c) { return c.id; }), // 看板が先（50-builder-sign）
         cards: b.cards.map(function (c) {
           const out = cloneData(c);
+          if (builderIsSign(out)) { ['startsAt', 'endsAt'].forEach(function (k) { if (!out[k]) delete out[k]; }); if (!out.startsAt && !out.endsAt) delete out.timeZone; return builderSignExport(out); }
           if (out.kind === 'products') delete out.kind;
           if (out.kind === 'features' && !out.image) delete out.image;
           if (!out.image || !out.imageHeight || out.imageHeight === 130) delete out.imageHeight;

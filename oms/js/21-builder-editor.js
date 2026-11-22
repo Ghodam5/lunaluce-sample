@@ -183,6 +183,7 @@
           (off.length ? '<details class="notices-kept"' + (off.length ? ' open' : '') + '><summary>しまってある文言（' + off.length + '件・再利用できます）</summary><ol class="notices">' + off.join('') + '</ol></details>' : '');
       }
       function cardForm(card) {
+        if (builderIsSign(card)) return builderSignForm(card); // 50-builder-sign
         const kind = card.kind || 'products';
         let body = '<h2>' + escapeHtml(BUILDER_KINDS[kind].label) + '</h2>' +
           '<div class="row">' + builderSwitch('トップに表示する', 'active', card.active) + '<span class="tools"><button type="button" data-b="card-copy">複製</button><button type="button" data-b="card-remove">このカードを削除</button></span></div>' +

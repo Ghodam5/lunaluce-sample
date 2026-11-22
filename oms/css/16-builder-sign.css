@@ -1,0 +1,32 @@
+/* Luna Luce OMS 部品CSS: 16-builder-sign（サイトビルダー「いちばん上の看板」。js/50-builder-sign） */
+/* 左の一覧: 看板の枠はトップのカードと見分けがつくよう、淡いコーラル色にする */
+.grp.grp-sign { background: #fff1ee; border-color: #f2c4ba; }
+.grp.grp-sign > h3 { color: #b4503f; border-bottom-color: #f2c4ba; }
+.grp.grp-sign.is-on { border-color: #d9654f; background: #ffe9e4; box-shadow: 0 0 0 2px rgba(217, 101, 79, .18); }
+.grp.grp-sign .adds button { border-color: #f2c4ba; color: #b4503f; background: #fff; }
+/* 編集欄: ボタンの色の選択 */
+.sign-btns { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.sign-btn { border: 1px solid var(--line); border-radius: 10px; padding: 10px; background: #fff; }
+.sign-styles { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.sign-style { min-height: 40px; padding: 6px 12px; border-radius: 999px; font-size: 13px; cursor: pointer; }
+.sign-style.main { background: #fff; border: 2px solid #f07b6a; color: #b4503f; }
+.sign-style.main.is-on { background: #f07b6a; color: #fff; }
+.sign-style.sub { background: #fff; border: 2px solid #2a9d8f; color: #1f7a6f; }
+.sign-style.sub.is-on { background: #e3f4f1; box-shadow: inset 0 0 0 1px #2a9d8f; }
+.sign-anchors { align-items: center; gap: 6px; flex-wrap: wrap; }
+.sign-anchors button { min-height: 36px; font-size: 12px; }
+.sign-anchors button.is-on { border-color: #2a9d8f; background: #e3f4f1; }
+/* 右の見本: サイトの看板の形に寄せる */
+.pv-sign { display: flex; flex-direction: column; }
+.pv-sign-ph { height: 120px; overflow: hidden; background: #f3efe8; display: flex; align-items: center; justify-content: center; }
+.pv-sign-ph img { width: 100%; height: 100%; object-fit: cover; }
+.pv-sign-tx { padding: 12px 12px 14px; }
+.pv-pill { display: inline-block; background: #f07b6a; color: #fff; border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+.pv-sign h4 { font-size: 19px; font-weight: 900; line-height: 1.45; margin: 10px 0 6px; color: #2b2624; }
+.pv-sign h4 span { color: #d9654f; }
+.pv-sign p { font-size: 12px; line-height: 1.7; color: #6b625e; margin: 0 0 10px; }
+.pv-sign-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.pv-sign-btns span { display: flex; align-items: center; justify-content: center; min-height: 36px; border-radius: 999px; font-size: 11px; font-weight: 700; text-align: center; padding: 4px 6px; }
+.pv-sign-btns .co { background: #f07b6a; color: #fff; box-shadow: 0 3px 0 #d9654f; }
+.pv-sign-btns .wh { background: #fff; border: 2px solid #2a9d8f; color: #1f7a6f; }
+.pv-sign-btns span:only-child { grid-column: 1 / -1; }

@@ -29,6 +29,7 @@
           else if (!card.image) card.image = (b.images.find(function (src) { return /main|xmas|feature/.test(src); }) || b.images[0] || '');
         } else {
           builderSetPath(card, field, value);
+          builderSignSyncTitle(card); // 看板は見出しから呼び名を付ける
         }
       }
     }
@@ -84,7 +85,8 @@
       if (name === 'link-tab') { b.linkTab = el.dataset.tab; emit('oms:builder', { form: true }); return; }
       if (name === 'link-set') { builderSetField(el.dataset.field, el.dataset.href); b.linkOpen = ''; b.linkTab = ''; b.linkQuery = ''; builderChanged(true); return; }
       if (name === 'select') { b.linkOpen = ''; b.sel = { type: el.dataset.type, index: index }; b.query = {}; b.slotSwap = null; emit('oms:builder', { form: true }); builderScrollToEditor(); return; }
-      if (name === 'card-move') { const to = builderMove(b.cards, index, Number(el.dataset.dir)); if (to !== false) { b.sel = { type: 'card', index: to }; builderChanged(true); } return; }
+      if (builderSignAction(name, el)) return;
+      if (name === 'card-move') { const to = builderCardMoveInGroup(index, Number(el.dataset.dir)); if (to !== false) { b.sel = { type: 'card', index: to }; builderChanged(true); } return; }
       if (name === 'card-add') { b.cards.push(builderNewCard(el.dataset.kind)); b.sel = { type: 'card', index: b.cards.length - 1 }; builderChanged(true); builderScrollToEditor(); showToast('新しいカードは「トップに表示する」が切れた状態で作りました。'); return; }
       if (name === 'card-copy' && card) { const copy = cloneData(card); copy.id = builderUniqueId(card.id.replace(/-copy(-\d+)?$|-\d+$/, '') + '-copy', b.cards); copy.active = false; b.cards.splice(b.sel.index + 1, 0, copy); b.sel.index += 1; builderChanged(true); return; }
       if (name === 'card-remove' && card) { b.cards.splice(b.sel.index, 1); b.sel = { type: 'ticker', index: 0 }; builderChanged(true); builderScrollToEditor(); showToast('カードを削除しました。「↶ 元に戻す」で戻せます。'); return; }

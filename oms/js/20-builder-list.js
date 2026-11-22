@@ -13,23 +13,30 @@
         if (!b.ready) { host.innerHTML = '<p class="muted">' + escapeHtml(b.error || '読み込み中…') + '</p>'; return; }
         const now = new Date().toISOString();
         const ticker = item({ type: 'ticker', index: 0 }, true, '流れる文言', b.notices.length + '件');
-        const cards = b.cards.map(function (card, i) {
-          return item({ type: 'card', index: i }, card.active, (i + 1) + '. ' + (card.title || '（題名なし）'), BUILDER_KINDS[card.kind || 'products'].short, builderTheme(card.theme), builderOnNow(card, now));
-        }).join('');
+        // 看板（いちばん上の看板・50-builder-sign）とトップのカードは別の枠に分け、番号もそれぞれで数える
+        let nSign = 0, nCard = 0;
+        const signs = [], cards = [];
+        b.cards.forEach(function (card, i) {
+          if (builderIsSign(card)) { nSign += 1; signs.push(item({ type: 'card', index: i }, card.active, nSign + '. ' + (card.title || '（見出しなし）'), (card.badge ? card.badge + '・' : '') + 'ボタン' + (card.buttons || []).length + 'つ', builderTheme(card.theme), builderOnNow(card, now))); }
+          else { nCard += 1; cards.push(item({ type: 'card', index: i }, card.active, nCard + '. ' + (card.title || '（題名なし）'), BUILDER_KINDS[card.kind || 'products'].short, builderTheme(card.theme), builderOnNow(card, now))); }
+        });
+        const selCard = b.sel.type === 'card' ? builderSelected() : null;
         const themes = b.themes.map(function (t, i) {
           return item({ type: 'theme', index: i }, true, t.name, t.builtIn ? '標準' : '追加', t);
         }).join('');
         // 2.27 項目ごとに枠で区切る（いまどこを操作しているかが分かるように、選んでいる枠は色を付ける）
         const sel = b.sel.type;
-        function grp(types, title, inner) {
-          return '<section class="grp' + (types.indexOf(sel) >= 0 ? ' is-on' : '') + '"><h3>' + title + '</h3>' + inner + '</section>';
+        function grp(types, title, inner, extra, on) {
+          return '<section class="grp' + (extra ? ' ' + extra : '') + ((on === undefined ? types.indexOf(sel) >= 0 : on) ? ' is-on' : '') + '"><h3>' + title + '</h3>' + inner + '</section>';
         }
         host.innerHTML = builderHistBar() +
           grp(['reflect'], '反映', '<ul class="reflect-item">' + item({ type: 'reflect', index: 0 }, true, '反映（GitHub・Welcart・楽天・Yahoo）', builderReflectSub()) + '</ul>') +
           grp(['ticker'], 'サイトの上の帯', '<ul>' + ticker + '</ul>') +
           grp(['news'], 'お知らせ本文', '<ul>' + item({ type: 'news', index: 0 }, true, 'お知らせ本文', builderNewsList().length + '件' + (builderDaysLongNotices().length ? '＋長期休暇' + builderDaysLongNotices().length + '件（自動）' : '')) + '</ul>') +
-          grp(['card'], 'トップのカード <small>上から順に表示</small>', '<ul>' + cards + '</ul>' +
-            '<div class="adds"><button type="button" data-b="card-add" data-kind="products">＋ 商品</button><button type="button" data-b="card-add" data-kind="campaign">＋ キャンペーン</button><button type="button" data-b="card-add" data-kind="features">＋ 特集一覧</button></div>') +
+          grp(['card'], 'いちばん上の看板 <small>トップを開いて最初に見える大きなカード</small>', '<ul>' + signs.join('') + '</ul>' +
+            '<div class="adds"><button type="button" data-b="card-add" data-kind="message">＋ 看板を足す</button></div>', 'grp-sign', !!selCard && builderIsSign(selCard)) +
+          grp(['card'], 'トップのカード <small>看板の次に、上から順に表示</small>', '<ul>' + cards.join('') + '</ul>' +
+            '<div class="adds"><button type="button" data-b="card-add" data-kind="products">＋ 商品</button><button type="button" data-b="card-add" data-kind="campaign">＋ キャンペーン</button><button type="button" data-b="card-add" data-kind="features">＋ 特集一覧</button></div>', '', !!selCard && !builderIsSign(selCard)) +
           grp(['sections'], 'トップの商品の段', '<ul>' + item({ type: 'sections', index: 0 }, true, 'トップの商品の段（並び・表示）', builderSections().filter(function (x) { return x.active; }).length + '段を表示・全' + builderSections().length + '段') + '</ul>') +
           grp(['store'], 'お店の案内・送料・税率', '<ul>' + item({ type: 'store', index: 0 }, true, 'お店の案内・送料・税率', (builderStoreSetsToCheck().length ? 'セット要確認 ' + builderStoreSetsToCheck().length + '件・' : '') + (builderStoreChanged() ? '変更あり' : '案内バー・送料・税率表')) + '</ul>') +
           grp(['stock', 'product', 'product-start', 'cats', 'notes', 'layout', 'texts'], '商品', '<ul>' + item({ type: 'stock', index: 0 }, true, '在庫と出店（出す・出さない・期間）', Object.keys(b.stock).length ? Object.keys(b.stock).length + '件を切り替え中' : '販売中以外 ' + b.products.filter(function (p) { return p.stock && p.stock.status !== 'in'; }).length + '件') +
