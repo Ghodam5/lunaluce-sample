@@ -55,7 +55,7 @@
         view.headline = seal ? ('画面見本 ' + seal.label) : '図柄未選択';
         const linked = template.skus.indexOf(order.sku) >= 0;
         const fileNote = !seal ? '図柄は一覧から選びます。' : (seal.file ? '図柄画像はこの端末のファイルです。' : 'この図柄の画像ファイルはありません。');
-        view.detail = '公開見本です。製造原稿ではありません。枠は角丸スクエアです。' + fileNote + '名前は図柄の上に載せていません。寸法は約35×25mmで、再構築サイト option.html のミニシール表に書かれています。' + (linked ? 'このSKUに紐付いています。' : 'このSKUの紐付けはありません。');
+        view.detail = '公開見本です。製造原稿ではありません。枠は角丸スクエアです。' + fileNote + '名前は図柄の上に載せていません（図柄の画像そのままです）。寸法は約35×25mmで、再構築サイト option.html のミニシール表に書かれています。' + (linked ? 'このSKUに紐付いています。' : 'このSKUの紐付けはありません。');
       }
       return view;
     }
@@ -75,6 +75,14 @@
         ].map(function (row) {
           return '<p>' + escapeHtml(row[0]) + ' ' + escapeHtml(row[1]) + '</p>';
         }).join('');
+        // 図柄が決まっていれば、その図柄の画像を大きく出す（受注した柄がひと目でわかるように）
+        const big = view.seal && view.seal.file && view.status !== 'diy';
+        if (big) {
+          host.innerHTML = '<div class="card"><p class="flag">' + escapeHtml(view.headline) + '</p><div class="preview-head"><h3>受注した図柄</h3><p class="sub">' + escapeHtml(view.detail) + '</p></div><div class="frame seal-big"><img data-seal-big src="' + sealSrc(view.seal.file) + '" alt="' + escapeHtml(view.seal.label) + '"><p class="seal-big-name">' + escapeHtml(view.seal.label) + '</p></div><div class="meta">' + meta + '</div></div>';
+          const img = host.querySelector('[data-seal-big]');
+          if (img) img.addEventListener('error', function () { img.replaceWith(Object.assign(document.createElement('p'), { className: 'miss', textContent: '画像なし' })); });
+          return;
+        }
         host.innerHTML = '<div class="card"><p class="flag">' + escapeHtml(view.headline) + '</p><div class="preview-head"><h3>画面の参考見本</h3><p class="sub">' + escapeHtml(view.detail) + '</p></div><div class="frame"><svg viewBox="0 0 460 210" role="img" aria-label="共通参考見本"><rect x="8" y="8" width="444" height="194" rx="12" fill="#FAF8F5" stroke="#B8965C" stroke-width="2"/><text data-sample="message" x="230" y="48" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="15" fill="#8A7B76"></text><text data-sample="name" x="230" y="112" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="30" fill="#433936"></text><text data-sample="date" x="230" y="148" text-anchor="middle" font-size="16" fill="#9E7B43"></text><text data-sample="note" x="230" y="178" text-anchor="middle" font-size="10" fill="#7A6B66"></text></svg></div><div class="meta">' + meta + '</div><p class="limit" data-limit></p></div>';
         applyPreview(host);
       }
@@ -95,26 +103,6 @@
       on('oms:open', paint);
       on('oms:draft', function () { applyPreview(); });
       on('oms:seal', paint);
-    }
-    function renderDrawerSamples(host) {
-      function paint() {
-        if (!currentOrder()) { host.innerHTML = ''; return; }
-        host.innerHTML = '<div class="head"><h3>書体の参考</h3></div><p class="note" data-design-note></p><div class="grid"><article class="sample s1"><p class="caption">CALLIGRAPHY</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article><article class="sample s2"><p class="caption">明朝</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article><article class="sample s3"><p class="caption">筆記・丸枠</p><p class="name" data-sample="name"></p><p class="date" data-sample="date"></p></article></div>';
-        fillSamples();
-      }
-      function fillSamples() {
-        const order = currentOrder();
-        const note = host.querySelector('[data-design-note]');
-        if (note && order) {
-          const view = designView(order);
-          note.textContent = view.headline + '。下の3つは書体の参考で、図柄そのものではありません。';
-        }
-        host.querySelectorAll('[data-sample="name"]').forEach(function (node) { node.textContent = draftCouple(); });
-        host.querySelectorAll('[data-sample="date"]').forEach(function (node) { node.textContent = dotted(draftWedding()); });
-      }
-      on('oms:open', paint);
-      on('oms:draft', fillSamples);
-      on('oms:seal', fillSamples);
     }
     function renderDrawerMiniseal(host) {
       host.addEventListener('error', function (event) {
@@ -362,7 +350,6 @@
     const DRAWER_PARTS = [
       { name: 'drawer-warning', render: renderDrawerWarning },
       { name: 'drawer-preview', render: renderDrawerPreview },
-      { name: 'drawer-samples', render: renderDrawerSamples },
       { name: 'drawer-miniseal', render: renderDrawerMiniseal },
       { name: 'drawer-parts', render: renderDrawerParts },
       { name: 'drawer-fees', render: renderDrawerFees },

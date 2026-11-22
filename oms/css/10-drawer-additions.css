@@ -5,8 +5,6 @@
     [data-part="drawer-preview"] .meta p { margin: 2px 0; overflow-wrap: anywhere; }
     [data-part="drawer-preview"] .limit { margin: 6px 0 0; color: var(--urgent); font-size: 13px; font-weight: 700; }
 
-    /* owner: renderDrawerSamples */
-    [data-part="drawer-samples"] .note { margin: 0 0 8px; color: #92400e; font-size: 13px; }
 
     /* owner: renderDrawerMiniseal */
     [data-part="drawer-miniseal"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; align-items: end; margin-bottom: 8px; }

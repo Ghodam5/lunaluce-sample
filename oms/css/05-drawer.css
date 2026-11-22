@@ -97,26 +97,11 @@
     }
     [data-part="drawer-preview"] svg { width: 100%; height: auto; display: block; }
 
-    /* owner: renderDrawerSamples */
-    [data-part="drawer-samples"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; align-items: end; margin-bottom: 8px; }
-    [data-part="drawer-samples"] .grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
-    [data-part="drawer-samples"] .sample { border-radius: 12px; padding: 12px; text-align: center; min-width: 0; }
-    [data-part="drawer-samples"] .sample p { margin: 0; }
-    [data-part="drawer-samples"] .caption { font-size: 12px; letter-spacing: 0.14em; }
-    [data-part="drawer-samples"] .name { margin-top: 8px; font-size: 20px; line-height: 1.25; color: var(--forest); overflow-wrap: anywhere; }
-    [data-part="drawer-samples"] .date { margin-top: 6px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13px; }
-    [data-part="drawer-samples"] .s1 { border: 2px solid var(--champagne); background: #fff; }
-    [data-part="drawer-samples"] .s1 .caption, [data-part="drawer-samples"] .s1 .date { color: var(--champagne); }
-    [data-part="drawer-samples"] .s1 .name { font-family: "Cormorant Garamond", serif; }
-    [data-part="drawer-samples"] .s2 { border: 1px solid var(--forest); background: var(--ivory); }
-    [data-part="drawer-samples"] .s2 .name { font-family: "Noto Serif JP", serif; font-size: 18px; }
-    [data-part="drawer-samples"] .s2 .caption, [data-part="drawer-samples"] .s2 .date { color: var(--forest); }
-    [data-part="drawer-samples"] .s3 { border: 1px dashed var(--champagne); background: var(--champagne-soft); }
-    [data-part="drawer-samples"] .s3 .name { font-family: "Noto Serif JP", serif; font-style: italic; font-size: 18px; }
-    [data-part="drawer-samples"] .s3 .caption, [data-part="drawer-samples"] .s3 .date { color: var(--taupe); }
-    @media (min-width: 834px) {
-      [data-part="drawer-samples"] .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
+    /* 受注した図柄を大きく（ミニシールは横長の角丸スクエア） */
+    [data-part="drawer-preview"] .seal-big { display: grid; justify-items: center; gap: 8px; padding: 16px; }
+    [data-part="drawer-preview"] .seal-big img { width: min(100%, 340px); height: auto; aspect-ratio: 35 / 25; object-fit: contain; border-radius: 14px; border: 1px solid rgba(184, 150, 92, 0.45); background: #fff; display: block; }
+    [data-part="drawer-preview"] .seal-big-name { margin: 0; font-size: 15px; font-weight: 700; color: var(--forest); text-align: center; overflow-wrap: anywhere; }
+    [data-part="drawer-preview"] .seal-big .miss { margin: 24px 0; color: var(--taupe); }
 
     /* owner: renderDrawerParts */
     [data-part="drawer-parts"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; }
