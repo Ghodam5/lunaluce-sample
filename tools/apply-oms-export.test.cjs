@@ -108,7 +108,7 @@ test('v66 商品ページの段組みと注意事項の定型文を入れる（S
     a.deepEqual(r.errors, []);
     a.deepEqual(read(path.join(tmp, 'site-src/product-layout.json')).side.slice(0, 2), ['notes', 'description']);
     const nt = read(path.join(tmp, 'site-src/notice-templates.json'));
-    a.equal(nt.templates.length, 3);
+    a.deepEqual(nt.templates.slice(0, 3).map(t => t.id), d.noticeTemplates.map(t => t.id)); // 4つ目からは商品が使っているので残したもの
     a.ok(nt.auto, '自動で出す決まりは残す');
     const before = fs.readFileSync(path.join(tmp, 'site-src/product-layout.json'), 'utf8');
     d.productLayout = { side: ['buy', 'notes'], below: ['recommend'] };
@@ -160,5 +160,18 @@ test('v69 お店の案内・送料・税率と商品の税の種類を入れる�
     r = run(tmp, d);
     a.deepEqual(r.errors.map(e => e.part), ['storeInfo']);
     a.equal(fs.readFileSync(path.join(tmp, 'site-src/store-info.json'), 'utf8'), before);
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
+test('v69 OMSの下書きに無い定型文でも、商品の注意事項が使っていれば残す', () => {
+  const tmp = sandbox();
+  try {
+    const d = draftOf(tmp);
+    const cur = read(path.join(tmp, 'site-src/notice-templates.json')).templates;
+    d.noticeTemplates = cur.filter(t => t.id !== 'catalog-fee');
+    const r = run(tmp, d);
+    a.deepEqual(r.errors, []);
+    a.ok(read(path.join(tmp, 'site-src/notice-templates.json')).templates.some(t => t.id === 'catalog-fee'));
+    require(path.join(tmp, 'tools/notice-templates.cjs')).load();
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 });

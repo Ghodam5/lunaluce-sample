@@ -112,7 +112,14 @@ function noticeTemplates(draft, touch) {
   const p = path.join(root, 'site-src/notice-templates.json');
   touch(p);
   const cur = readJson(p);
+  const before = cur.templates || [];
   cur.templates = draft.noticeTemplates.map(t => ({ id: String(t.id || ''), tone: t.tone, label: String(t.label || '').trim(), text: String(t.text || '').trim() }));
+  // 商品の注意事項（notes）が使っている定型文は消さない。OMSの下書きが古く、サイトで足した定型文を知らないときに商品が壊れるのを防ぐ
+  const used = new Set();
+  const pd = path.join(root, 'site-src/products');
+  if (fs.existsSync(pd)) for (const f of fs.readdirSync(pd).filter(f => /^\d+\.json$/.test(f))) { const r = readJson(path.join(pd, f)); for (const id of (r.product && Array.isArray(r.product.notes) ? r.product.notes : [])) used.add(id); }
+  const have = new Set(cur.templates.map(t => t.id));
+  for (const t of before) if (used.has(t.id) && !have.has(t.id)) { cur.templates.push(t); have.add(t.id); }
   // OMSで消した定型文は、自動で出す決まりからも外す
   const ids = new Set(cur.templates.map(t => t.id));
   for (const k of ['all', 'made', 'food', 'minq']) if (cur.auto && Array.isArray(cur.auto[k])) cur.auto[k] = cur.auto[k].filter(id => ids.has(id));
