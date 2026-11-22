@@ -17,7 +17,20 @@ function load() {
     if (typeof t.label !== 'string' || !t.label.trim() || t.label.length > 30) throw Error('定型文の名前は1〜30文字: ' + t.id);
     if (typeof t.text !== 'string' || !t.text.trim() || t.text.length > 300) throw Error('定型文の本文は1〜300文字: ' + t.id);
   }
+  const auto = d.auto || {};
+  for (const k of ['all', 'made', 'food', 'minq']) {
+    if (auto[k] === undefined) continue;
+    if (!Array.isArray(auto[k]) || auto[k].some(id => !ids.has(id))) throw Error('自動で出す定型文（auto.' + k + '）に無い定型文があります');
+  }
   return d;
+}
+// 商品に notes が無いときに出す定型文（並びは templates の順）。サイトの item-page.js と同じ決め方
+function autoNotes(p, d) {
+  const a = (d || load()).auto || {}, on = new Set(a.all || []);
+  if (p.delivery && p.delivery.made) (a.made || []).forEach(id => on.add(id));
+  if (p.expiry || p.allergens) (a.food || []).forEach(id => on.add(id));
+  if (p.minq > 1) (a.minq || []).forEach(id => on.add(id));
+  return (d || load()).templates.map(t => t.id).filter(id => on.has(id));
 }
 // 商品ごとの確かめ（products.cjs の validate から）
 function checkProduct(p, ids) {
@@ -31,10 +44,10 @@ function checkProduct(p, ids) {
 }
 function build(check = false) {
   const d = load();
-  const text = '/* 編集元 site-src/notice-templates.json（OMSのサイトビルダー「注意事項の定型文」） */\nwindow.NOTICE_TEMPLATES=' + JSON.stringify(d.templates) + ';\n';
+  const text = '/* 編集元 site-src/notice-templates.json（OMSのサイトビルダー「注意事項の定型文」） */\nwindow.NOTICE_TEMPLATES=' + JSON.stringify(d.templates) + ';\nwindow.NOTICE_AUTO=' + JSON.stringify(d.auto || {}) + ';\n';
   const cur = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8').replace(/\r\n/g, '\n') : '';
   if (cur !== text) { if (check) throw Error('notice-templates-data.js の生成漏れ'); fs.writeFileSync(OUT, text); }
   return d.templates.length;
 }
-module.exports = { load, build, checkProduct };
+module.exports = { load, build, checkProduct, autoNotes };
 if (require.main === module) { try { console.log('定型文: ' + build(process.argv.includes('--check')) + '件'); } catch (e) { console.error(e.message); process.exitCode = 1; } }

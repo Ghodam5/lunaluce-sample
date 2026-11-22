@@ -4,7 +4,7 @@ test('商品を独立編集し追加・掲載停止・復帰でき、重複・�
  const run=(args,ok=true)=>{const r=cp.spawnSync(process.execPath,[path.join(tmp,'tools/products.cjs'),...args],{encoding:'utf8'});assert.equal(r.status===0,ok,r.stdout+r.stderr);return r.stdout;};
  const data=()=>{const c={window:{}};vm.runInNewContext(fs.readFileSync(path.join(tmp,'product-data.js'),'utf8'),c);return JSON.parse(JSON.stringify(c.window.SAMPLE_CATALOG));};
  try{
-  for(const f of ['site-src/products','tools/products.cjs','tools/notice-templates.cjs','site-src/notice-templates.json']){fs.mkdirSync(path.dirname(path.join(tmp,f)),{recursive:true});fs.cpSync(path.join(project,f),path.join(tmp,f),{recursive:true});}
+  for(const f of ['site-src/products','tools/products.cjs','tools/notice-templates.cjs','site-src/notice-templates.json','tools/product-layout.cjs','site-src/product-layout.json']){fs.mkdirSync(path.dirname(path.join(tmp,f)),{recursive:true});fs.cpSync(path.join(project,f),path.join(tmp,f),{recursive:true});}
   const dir=path.join(tmp,'site-src/products'),ids=JSON.parse(fs.readFileSync(path.join(dir,'manifest.json')));
   for(const id of ids){const r=JSON.parse(fs.readFileSync(path.join(dir,id+'.json')));if(r.product.image){const p=path.join(tmp,r.product.image);fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,'');}}
   run(['build']);run(['check']);const original=data(),id=ids[0],other=fs.readFileSync(path.join(dir,ids[1]+'.json'),'utf8');

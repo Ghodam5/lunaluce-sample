@@ -13,7 +13,7 @@ function validate(row,id){
  for(const k of ['categories','subs'])if(!Array.isArray(p[k]))throw Error(id+': '+k+'が必要');
  if(typeof p.image!=='string'||(p.image&&(!p.image.startsWith('images/')||p.image.includes('..')||!fs.existsSync(path.join(root,p.image)))))throw Error(id+': 商品画像が見つかりません');
  if(row.detail&&(typeof row.detail!=='object'||Array.isArray(row.detail)))throw Error(id+': detailが不正');
- const nt=require('./notice-templates.cjs');nt.checkProduct(p,new Set(nt.load().templates.map(t=>t.id)));
+ const nt=require('./notice-templates.cjs');nt.checkProduct(p,new Set(nt.load().templates.map(t=>t.id)));require('./product-layout.cjs').checkProduct(p);
  return row;
 }
 function load(){

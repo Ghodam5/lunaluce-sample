@@ -5,7 +5,7 @@ const root = path.resolve(__dirname, '..');
 const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 function sandbox() {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'luna-apply-oms-'));
-  for (const f of ['tools/apply-oms-export.cjs', 'tools/home-sections.cjs', 'tools/promos.cjs', 'site-src/home-sections.json', 'site-src/site-notices.json', 'site-src/home-promos', 'site-src/pages', 'site-src/sections/top', 'site-src/products']) {
+  for (const f of ['tools/apply-oms-export.cjs', 'tools/home-sections.cjs', 'tools/promos.cjs', 'tools/product-layout.cjs', 'tools/notice-templates.cjs', 'tools/site-texts.cjs', 'site-src/site-texts.json', 'site-src/site-settings.json', 'site-src/product-layout.json', 'site-src/notice-templates.json', 'site-src/home-sections.json', 'site-src/site-notices.json', 'site-src/home-promos', 'site-src/pages', 'site-src/sections/top', 'site-src/products']) {
     fs.mkdirSync(path.dirname(path.join(tmp, f)), { recursive: true });
     fs.cpSync(path.join(root, f), path.join(tmp, f), { recursive: true });
   }
@@ -95,5 +95,50 @@ test('置き場の外の画像や、サイトにないリンク先は入れな�
     const r = run(tmp, d);
     a.deepEqual(r.errors.map(x => x.part).sort(), ['cards', 'notices']);
     a.ok(!fs.existsSync(path.join(tmp, '..', 'evil.png')));
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
+test('v66 商品ページの段組みと注意事項の定型文を入れる（SNSを外す段組みは断って元に戻す）', () => {
+  const tmp = sandbox();
+  try {
+    const d = draftOf(tmp);
+    d.productLayout = { side: ['notes', 'description', 'buy', 'spec', 'source'], below: ['delivery', 'share', 'recommend', 'trial'] };
+    d.noticeTemplates = read(path.join(tmp, 'site-src/notice-templates.json')).templates.slice(0, 3);
+    let r = run(tmp, d);
+    a.deepEqual(r.errors, []);
+    a.deepEqual(read(path.join(tmp, 'site-src/product-layout.json')).side.slice(0, 2), ['notes', 'description']);
+    const nt = read(path.join(tmp, 'site-src/notice-templates.json'));
+    a.equal(nt.templates.length, 3);
+    a.ok(nt.auto, '自動で出す決まりは残す');
+    const before = fs.readFileSync(path.join(tmp, 'site-src/product-layout.json'), 'utf8');
+    d.productLayout = { side: ['buy', 'notes'], below: ['recommend'] };
+    d.noticeTemplates = [];
+    r = run(tmp, d);
+    a.equal(r.errors.length, 1);
+    a.equal(r.errors[0].part, 'productLayout');
+    a.equal(fs.readFileSync(path.join(tmp, 'site-src/product-layout.json'), 'utf8'), before);
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
+test('営業日と表示する文字を入れる（無いキー・おかしな日付は断って元に戻す）', () => {
+  const tmp = sandbox();
+  try {
+    const d = draftOf(tmp);
+    d.businessDays = { from: '2026-11-22', to: '2027-11-22', holidays: ['2026-11-28', '2026-11-29', '2026-12-30'], halfDays: ['2026-12-26'] };
+    d.texts = [{ key: 'item.trial', text: '名入れができる商品（テスト）' }];
+    let r = run(tmp, d);
+    a.deepEqual(r.errors, []);
+    const cal = read(path.join(tmp, 'site-src/site-settings.json')).calendar;
+    a.deepEqual(cal.oms.holidays, ['2026-11-28', '2026-11-29', '2026-12-30']);
+    a.deepEqual(cal.oms.halfDays, ['2026-12-26']);
+    a.ok(cal.base, '本店から取った決まりは残す');
+    a.equal(read(path.join(tmp, 'site-src/site-texts.json')).texts.find(t => t.key === 'item.trial').text, '名入れができる商品（テスト）');
+    const before = [fs.readFileSync(path.join(tmp, 'site-src/site-settings.json'), 'utf8'), fs.readFileSync(path.join(tmp, 'site-src/site-texts.json'), 'utf8')];
+    d.businessDays.holidays = ['2026-13-40'];
+    d.texts = [{ key: 'nope.key', text: 'x' }];
+    r = run(tmp, d);
+    a.deepEqual(r.errors.map(e => e.part).sort(), ['businessDays', 'texts']);
+    a.equal(fs.readFileSync(path.join(tmp, 'site-src/site-settings.json'), 'utf8'), before[0]);
+    a.equal(fs.readFileSync(path.join(tmp, 'site-src/site-texts.json'), 'utf8'), before[1]);
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 });

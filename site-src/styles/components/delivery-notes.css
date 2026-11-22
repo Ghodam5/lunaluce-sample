@@ -17,3 +17,15 @@
 .rush-field label{display:flex;gap:8px;align-items:flex-start;font-weight:700;min-height:44px}
 .rush-field input{width:20px;height:20px;margin-top:2px;flex:none}
 .rush-field p{margin:4px 0 0;font-size:12px;line-height:1.7;color:#6b4a36}
+/* v66 本店と文字の大きさをそろえる（本店の商品説明・注意書きは14px） */
+#sample-item .product-description{font-size:14px;line-height:1.75}
+#sample-item .details .spec th,#sample-item .details .spec td{font-size:14px}
+.order-note,.order-note b{font-size:14px}
+/* v66 商品ページの段組み（写真の下に横幅いっぱいで並ぶ部品） */
+#sample-item .pd-part+.pd-part{margin-top:4px}
+#sample-item .pd-below{margin-top:28px}
+#sample-item .pd-below>h2{font-size:20px;margin:0 0 10px}
+#sample-item .pd-below .order-notes{max-width:760px}
+#sample-item .reco-rail .prod{flex-basis:40%}
+@media(min-width:600px){#sample-item .reco-rail .prod{flex-basis:200px}}
+#sample-item .pd-share .page-share{margin:0 auto;justify-content:center}

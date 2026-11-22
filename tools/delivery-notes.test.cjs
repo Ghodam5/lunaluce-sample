@@ -17,3 +17,22 @@ test('定型文は全部正しく、商品の notes・delivery の間違いは�
   a.throws(() => nt.checkProduct({ id: '1', delivery: { min: 14, max: 7, made: true } }, ids), /delivery/);
   a.throws(() => nt.checkProduct({ id: '1', notes: ['min-qty', 'min-qty'] }, ids), /notes/);
 });
+
+test('v66 定型文を選んでいない商品にも決まりに沿って出す', () => {
+  const d = nt.load();
+  a.deepEqual(nt.autoNotes({ id: 'x' }, d), ['order-mail', 'spec-change', 'season-delay']);
+  const made = nt.autoNotes({ id: 'y', delivery: { min: 14, max: 14, made: true }, expiry: '30日', minq: 10 }, d);
+  for (const id of ['made-to-order', 'cancel-if-late', 'no-cancel-after', 'food-no-return', 'min-qty']) a.ok(made.includes(id), id);
+});
+
+test('v66 商品ページの段組みは部品の重なり・無い部品・SNSを外すのを断る', () => {
+  const pl = require('./product-layout.cjs');
+  const d = pl.load();
+  a.ok(d.below.includes('share'));
+  pl.checkProduct({ id: 'ok', layout: { side: ['buy', 'notes', 'description'], below: ['share', 'recommend', 'delivery'] } }, d);
+  a.throws(() => pl.checkProduct({ id: 'a', layout: { side: ['buy', 'notes'], below: ['notes', 'share'] } }, d), /2回/);
+  a.throws(() => pl.checkProduct({ id: 'b', layout: { side: ['buy', 'nope'], below: ['share'] } }, d), /無い部品/);
+  a.throws(() => pl.checkProduct({ id: 'c', layout: { side: ['buy', 'notes'], below: ['recommend'] } }, d), /外せません/);
+  a.throws(() => pl.checkProduct({ id: 'e', layout: { side: ['notes'], below: ['buy', 'share'] } }, d), /購入欄/);
+  a.ok(d.parts.some(x => x.id === 'delivery') && d.side.indexOf('delivery') < d.side.indexOf('buy'), 'お届け日数は購入欄の上が最初の並び');
+});

@@ -3,7 +3,7 @@
 // 使い方: node tools/apply-oms-export.cjs 書き出し.json   → 結果をJSONで出す（入れたもの・まだ入れないもの・入れられなかったもの）
 // このあと node tools/build-site.cjs でページを作り直す。OMSの「反映」画面からはサーバーがこの2つを続けて動かし、プルリクエストにする。
 // 部品ごとに入れて確かめ、だめな部品は元に戻して他は続ける（1つの間違いで全部止めない）。
-// いま入れる部品: トップの商品の段（home-sections.json）・流れる文言（site-notices.json）・トップのカード（home-promos/）とその画像。
+// いま入れる部品: トップの商品の段（home-sections.json）・流れる文言（site-notices.json）・トップのカード（home-promos/）とその画像・商品ページの段組み・注意事項の定型文・営業日（site-settings.json の calendar.oms）・表示する文字（site-texts.json）。
 // それ以外（お知らせ本文・商品・在庫・企画など）はサイト側の受け口ができたらここに足す。
 const fs = require('node:fs'), path = require('node:path');
 const root = path.resolve(__dirname, '..');
@@ -94,6 +94,65 @@ function cards(draft, touch) {
   return files;
 }
 
+// 商品ページの段組み（OMSのサイトビルダー「商品ページの段組み」）。部品の名前（parts）はサイト側のものを使う
+function productLayout(draft, touch) {
+  const p = path.join(root, 'site-src/product-layout.json');
+  touch(p);
+  const cur = readJson(p);
+  const l = draft.productLayout;
+  cur.side = (l.side || []).map(String);
+  cur.below = (l.below || []).map(String);
+  writeJson(p, cur);
+  delete require.cache[require.resolve('./product-layout.cjs')];
+  require('./product-layout.cjs').load();
+  return [p];
+}
+// 注意事項の定型文（自動で出す決まり auto はサイト側のものを残す）
+function noticeTemplates(draft, touch) {
+  const p = path.join(root, 'site-src/notice-templates.json');
+  touch(p);
+  const cur = readJson(p);
+  cur.templates = draft.noticeTemplates.map(t => ({ id: String(t.id || ''), tone: t.tone, label: String(t.label || '').trim(), text: String(t.text || '').trim() }));
+  // OMSで消した定型文は、自動で出す決まりからも外す
+  const ids = new Set(cur.templates.map(t => t.id));
+  for (const k of ['all', 'made', 'food', 'minq']) if (cur.auto && Array.isArray(cur.auto[k])) cur.auto[k] = cur.auto[k].filter(id => ids.has(id));
+  writeJson(p, cur);
+  delete require.cache[require.resolve('./notice-templates.cjs')];
+  require('./notice-templates.cjs').load();
+  return [p];
+}
+
+// 営業日（OMSの「営業日」）。サイトの営業日カレンダー（site-settings.json の calendar.oms）に入れる。本店から取った base/include は残す（期間外の月に使う）
+function businessDays(draft, touch) {
+  const p = path.join(root, 'site-src/site-settings.json');
+  touch(p);
+  const cur = readJson(p);
+  const b = draft.businessDays;
+  const day = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && Number.isFinite(Date.parse(v + 'T00:00:00Z'));
+  if (!day(b.from) || !day(b.to) || b.from > b.to) throw Error('営業日の期間を確認してください');
+  const list = (v, name) => { if (!Array.isArray(v) || !v.every(day)) throw Error('営業日の' + name + 'の日付を確認してください'); return Array.from(new Set(v)).sort(); };
+  const holidays = list(b.holidays, 'お休み'), halfDays = list(b.halfDays || [], '午前だけ');
+  if (holidays.length > 400 || halfDays.length > 400) throw Error('営業日の日付が多すぎます');
+  cur.calendar = Object.assign({}, cur.calendar, { oms: { from: b.from, to: b.to, holidays, halfDays, updatedAt: String(draft.exportedAt || new Date().toISOString()).slice(0, 10) } });
+  writeJson(p, cur);
+  return [p];
+}
+// 表示する文字（OMSの「表示する文字」）。key はサイト側にあるものだけ。説明（label・group）はサイト側のものを残す
+function texts(draft, touch) {
+  const p = path.join(root, 'site-src/site-texts.json');
+  touch(p);
+  const cur = readJson(p);
+  const byKey = new Map(cur.texts.map(t => [t.key, t]));
+  for (const t of draft.texts) {
+    const row = byKey.get(String(t.key || ''));
+    if (!row) throw Error('サイトに無い文字のキーです: ' + t.key);
+    row.text = String(t.text || '').trim();
+  }
+  require('./site-texts.cjs').check(cur);
+  writeJson(p, cur);
+  return [p];
+}
+
 const LATER = [
   ['news', 'お知らせ本文', d => (d.news || []).length],
   ['themes', '追加した色のテーマ', d => (d.themes || []).length],
@@ -104,8 +163,7 @@ const LATER = [
   ['plans', '企画', d => (d.plans || []).length],
   ['newCategories', '新しいカテゴリー', d => (d.newCategories || []).length],
   ['categoryNames', 'カテゴリーの名前', d => (d.categoryNames || []).length],
-  ['noticeTemplates', '注意事項の定型文', d => (d.noticeTemplates || []).length],
-  ['businessDays', '営業日', d => (d.businessDays && d.businessDays.holidays ? d.businessDays.holidays.length : 0)]
+  ['hiddenCategories', '消すカテゴリー', d => (d.hiddenCategories || []).length]
 ];
 
 function apply(draft) {
@@ -114,6 +172,10 @@ function apply(draft) {
   if (Array.isArray(draft.homeSections) && draft.homeSections.length) part(report, 'homeSections', 'トップの商品の段', t => sections(draft, t));
   if (Array.isArray(draft.notices)) part(report, 'notices', '流れる文言', t => notices(draft, t));
   if (Array.isArray(draft.cards) && draft.cards.length) part(report, 'cards', 'トップのカード', t => cards(draft, t));
+  if (draft.productLayout && Array.isArray(draft.productLayout.side)) part(report, 'productLayout', '商品ページの段組み', t => productLayout(draft, t));
+  if (Array.isArray(draft.noticeTemplates) && draft.noticeTemplates.length) part(report, 'noticeTemplates', '注意事項の定型文', t => noticeTemplates(draft, t));
+  if (draft.businessDays && Array.isArray(draft.businessDays.holidays)) part(report, 'businessDays', '営業日', t => businessDays(draft, t));
+  if (Array.isArray(draft.texts) && draft.texts.length) part(report, 'texts', '表示する文字', t => texts(draft, t));
   for (const [key, label, count] of LATER) { const n = count(draft); if (n) report.later.push({ part: key, label, count: n, reason: 'サイト側の受け口はこれから作ります' }); }
   return report;
 }
