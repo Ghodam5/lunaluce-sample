@@ -1,7 +1,7 @@
 'use strict';
 // 商品ページの段組み（site-src/product-layout.json）を確かめ、product-layout-data.js を作る。
 // 商品ごとの layout（{ side: [...], below: [...] }）も、ここの checkProduct で確かめる（products.cjs から呼ぶ）。
-// SNSでシェア（share）は全ページ共通の必須部品なので、外せない。
+// SNSでシェア（share）は全ページ共通の必須部品なので、外せない。購入欄（buy）は写真の右（side）に必ず置く。
 const fs = require('node:fs'), path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const SRC = path.join(root, 'site-src/product-layout.json');
@@ -13,6 +13,7 @@ function checkLayout(l, ids, who) {
   if (new Set(all).size !== all.length) throw Error(who + ': 段組みに同じ部品が2回あります');
   for (const id of all) if (!ids.has(id)) throw Error(who + ': 段組みに無い部品があります: ' + id);
   for (const id of REQUIRED) if (!all.includes(id)) throw Error(who + ': 「' + id + '」（SNSでシェア）は外せません');
+  if (!l.side.includes('buy')) throw Error(who + ': 購入欄（buy）は写真の右（side）に入れてください');
 }
 function load() {
   const d = JSON.parse(fs.readFileSync(SRC, 'utf8'));

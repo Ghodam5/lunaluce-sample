@@ -102,7 +102,7 @@ test('v66 商品ページの段組みと注意事項の定型文を入れる（S
   const tmp = sandbox();
   try {
     const d = draftOf(tmp);
-    d.productLayout = { side: ['notes', 'description', 'spec', 'source'], below: ['share', 'recommend', 'trial'] };
+    d.productLayout = { side: ['notes', 'description', 'buy', 'spec', 'source'], below: ['delivery', 'share', 'recommend', 'trial'] };
     d.noticeTemplates = read(path.join(tmp, 'site-src/notice-templates.json')).templates.slice(0, 3);
     let r = run(tmp, d);
     a.deepEqual(r.errors, []);
@@ -111,7 +111,7 @@ test('v66 商品ページの段組みと注意事項の定型文を入れる（S
     a.equal(nt.templates.length, 3);
     a.ok(nt.auto, '自動で出す決まりは残す');
     const before = fs.readFileSync(path.join(tmp, 'site-src/product-layout.json'), 'utf8');
-    d.productLayout = { side: ['notes'], below: ['recommend'] };
+    d.productLayout = { side: ['buy', 'notes'], below: ['recommend'] };
     d.noticeTemplates = [];
     r = run(tmp, d);
     a.equal(r.errors.length, 1);
