@@ -5,6 +5,14 @@
       { id: 'main', label: '目立つボタン（コーラル色）' },
       { id: 'sub', label: '控えめなボタン（白地に緑の線）' }
     ];
+    // 写真の上の演出（サイトの tools/home-message.cjs の EFFECTS と同じ。書いていなければ花びら）
+    const SIGN_EFFECTS = [
+      { id: 'petals', label: '花びら', help: '白い花びらがゆっくり回りながら舞い落ちる（いままで）' },
+      { id: 'snow', label: '雪', help: '白い丸い粒が、ゆれながら静かに降る' },
+      { id: 'confetti', label: '紙吹雪', help: 'コーラル・金・緑などの色の紙が、少し速めに落ちる' },
+      { id: 'sparkle', label: 'キラキラ', help: '写真のあちこちで、小さな光がまたたく' },
+      { id: 'none', label: 'なし', help: '何も動かさない' }
+    ];
     // ページの中の行き先（#印）。サイトのトップにある場所だけ
     const SIGN_ANCHORS = [{ href: '#rank', label: 'トップの売れ筋ランキング' }];
 
@@ -47,6 +55,7 @@
       if (!String(card.text || '').trim()) out.push('説明を入れてください');
       if (String(card.badge || '').length > 30) out.push('バッジは30文字までにしてください');
       if (!card.image || !builderImageOk(card.image)) out.push('写真を選んでください');
+      if (card.effect && !SIGN_EFFECTS.some(function (f) { return f.id === card.effect; })) out.push('写真の上の演出を選び直してください');
       if (!state.builder.themes.some(function (t) { return t.id === card.theme && t.builtIn; })) out.push('色は標準のテーマから選んでください');
       const btns = card.buttons || [];
       if (!btns.length) out.push('ボタンを1つ以上入れてください');
@@ -93,6 +102,10 @@
         builderField('説明', 'text', card.text, { wide: true, area: true, max: 160, placeholder: '例: 結婚式・発表会・部活の記念品に。カートでお名前を入れるだけ。' }) +
         '<h3>ボタン（1〜2つ）</h3><ol class="sign-btns">' + btns + '</ol>' +
         (card.buttons.length < 2 ? '<button type="button" class="add" data-b="sign-btn-add">＋ ボタンを足す</button>' : '') +
+        '<h3>写真の上の演出</h3><div class="sign-fx" role="radiogroup" aria-label="写真の上の演出">' + SIGN_EFFECTS.map(function (f) {
+          const on = (card.effect || 'petals') === f.id;
+          return '<button type="button" role="radio" aria-checked="' + on + '" class="sign-fx-btn' + (on ? ' is-on' : '') + '" data-b="sign-fx" data-fx="' + f.id + '"><b>' + escapeHtml(f.label) + '</b><small>' + escapeHtml(f.help) + '</small></button>';
+        }).join('') + '</div><small class="muted">右の見本でも動きます。スマホなど「動きを減らす」設定の人には出しません。</small>' +
         '<h3>カードの色</h3>' + builderSignThemes(card) +
         '<h3>表示する期間</h3>' + builderPeriod(card, '', false);
     }
@@ -108,7 +121,7 @@
       const t = builderTheme(card.theme);
       const style = 'background:' + t.background + ';border-color:' + t.border + ';border-top-color:' + t.top;
       return '<article class="pv-card pv-sign" style="' + escapeHtml(style) + '">' +
-        (card.image ? '<div class="pv-sign-ph"><img src="' + escapeHtml(builderImg(card.image)) + '" alt=""></div>' : '<div class="pv-sign-ph pv-empty">写真を選ぶ</div>') +
+        (card.image ? '<div class="pv-sign-ph"' + ((card.effect || 'petals') !== 'petals' ? ' data-fx="' + escapeHtml(card.effect) + '"' : '') + '><img src="' + escapeHtml(builderImg(card.image)) + '" alt="">' + (card.effect === 'none' ? '' : ['l1', 'l2', 'l3', 'r1', 'r2', 'r3'].map(function (c) { return '<i class="pt ' + c + '"></i>'; }).join('')) + '</div>' : '<div class="pv-sign-ph pv-empty">写真を選ぶ</div>') +
         '<div class="pv-sign-tx">' + (String(card.badge || '').trim() ? '<span class="pv-pill">' + escapeHtml(card.badge) + '</span>' : '') +
         '<h4>' + (String(card.headline || '').trim() ? builderSignHeadlineHtml(card.headline, card.accent) : '見出し') + '</h4>' +
         '<p>' + escapeHtml(card.text || '説明') + '</p>' +
@@ -118,7 +131,8 @@
     function builderSignAction(name, el) {
       const b = state.builder;
       const card = b.sel.type === 'card' ? builderSelected() : null;
-      if (!builderIsSign(card) || name.indexOf('sign-btn') !== 0) return false;
+      if (!builderIsSign(card) || name.indexOf('sign-') !== 0) return false;
+      if (name === 'sign-fx') { if (el.dataset.fx === 'petals') delete card.effect; else card.effect = el.dataset.fx; builderChanged(true); return true; }
       const i = Number(el.dataset.btn);
       if (name === 'sign-btn-style') { card.buttons[i].style = el.dataset.style; builderChanged(true); return true; }
       if (name === 'sign-btn-add') { if (card.buttons.length < 2) { card.buttons.push({ label: '', href: '', style: card.buttons.some(function (x) { return x.style === 'main'; }) ? 'sub' : 'main' }); builderChanged(true); } return true; }

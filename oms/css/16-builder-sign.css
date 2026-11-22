@@ -30,3 +30,22 @@
 .pv-sign-btns .co { background: #f07b6a; color: #fff; box-shadow: 0 3px 0 #d9654f; }
 .pv-sign-btns .wh { background: #fff; border: 2px solid #2a9d8f; color: #1f7a6f; }
 .pv-sign-btns span:only-child { grid-column: 1 / -1; }
+/* 写真の上の演出の選択と、見本での動き（サイトの home-promos.css・50-campaign-patterns.css と同じ動き） */
+.sign-fx { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; margin: 6px 0; }
+.sign-fx-btn { text-align: left; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fff; cursor: pointer; min-height: 44px; }
+.sign-fx-btn b { display: block; font-size: 14px; }
+.sign-fx-btn small { display: block; font-size: 11px; color: var(--taupe-light); line-height: 1.5; margin-top: 2px; }
+.sign-fx-btn.is-on { border-color: #d9654f; background: #fff1ee; box-shadow: inset 0 0 0 1px #d9654f; }
+.pv-sign-ph { position: relative; }
+.pv-sign-ph .pt { position: absolute; top: -14px; width: 9px; height: 12px; border-radius: 80% 0 80% 0; background: rgba(255,255,255,.92); box-shadow: 0 0 6px rgba(255,255,255,.9); opacity: 0; animation: pvPetal 9s linear infinite; pointer-events: none; }
+.pv-sign-ph .pt.l1 { left: 6%; } .pv-sign-ph .pt.l2 { left: 16%; width: 7px; height: 10px; animation-delay: 3.2s; animation-duration: 11s; } .pv-sign-ph .pt.l3 { left: 26%; animation-delay: 6.1s; animation-duration: 10s; }
+.pv-sign-ph .pt.r1 { left: 86%; animation-delay: 1.6s; animation-duration: 10s; } .pv-sign-ph .pt.r2 { left: 92%; width: 7px; height: 10px; animation-delay: 4.8s; animation-duration: 12s; } .pv-sign-ph .pt.r3 { left: 97%; animation-delay: 7.4s; animation-duration: 9s; }
+@keyframes pvPetal { 0% { transform: translate(0,0) rotate(0); opacity: 0 } 8% { opacity: .95 } 50% { transform: translate(10px,70px) rotate(160deg) } 92% { opacity: .9 } 100% { transform: translate(-6px,140px) rotate(320deg); opacity: 0 } }
+.pv-sign-ph[data-fx="snow"] .pt { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation-name: pvSnow; }
+@keyframes pvSnow { 0% { transform: translate(0,0); opacity: 0 } 10% { opacity: .95 } 50% { transform: translate(-8px,70px) } 90% { opacity: .9 } 100% { transform: translate(6px,140px); opacity: 0 } }
+.pv-sign-ph[data-fx="confetti"] .pt { width: 6px; height: 10px; border-radius: 1px; box-shadow: none; animation-duration: 7s; }
+.pv-sign-ph[data-fx="confetti"] .pt.l1 { background: #f07b6a } .pv-sign-ph[data-fx="confetti"] .pt.l2 { background: #e5c58c } .pv-sign-ph[data-fx="confetti"] .pt.l3 { background: #2fa9a3 } .pv-sign-ph[data-fx="confetti"] .pt.r1 { background: #e6adb9 } .pv-sign-ph[data-fx="confetti"] .pt.r2 { background: #bfafd9 } .pv-sign-ph[data-fx="confetti"] .pt.r3 { background: #f2b84b }
+.pv-sign-ph[data-fx="sparkle"] .pt { width: 8px; height: 8px; border-radius: 50%; background: radial-gradient(circle, #fff 0 30%, rgba(255,244,214,.6) 55%, transparent 72%); box-shadow: 0 0 8px 2px rgba(255,248,225,.9); animation: pvTwinkle 3.2s ease-in-out infinite; }
+.pv-sign-ph[data-fx="sparkle"] .pt.l1 { top: 18% } .pv-sign-ph[data-fx="sparkle"] .pt.l2 { top: 62%; animation-delay: 1.1s } .pv-sign-ph[data-fx="sparkle"] .pt.l3 { top: 35%; animation-delay: 2s } .pv-sign-ph[data-fx="sparkle"] .pt.r1 { top: 22%; animation-delay: .6s } .pv-sign-ph[data-fx="sparkle"] .pt.r2 { top: 55%; animation-delay: 1.7s } .pv-sign-ph[data-fx="sparkle"] .pt.r3 { top: 40%; animation-delay: 2.5s }
+@keyframes pvTwinkle { 0%, 100% { transform: scale(.3); opacity: 0 } 45% { transform: scale(1.15); opacity: 1 } 60% { transform: scale(.9); opacity: .85 } }
+@media (prefers-reduced-motion: reduce) { .pv-sign-ph .pt { animation: none; display: none; } }
