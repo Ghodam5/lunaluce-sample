@@ -3,7 +3,7 @@
 // 使い方: node tools/apply-oms-export.cjs 書き出し.json   → 結果をJSONで出す（入れたもの・まだ入れないもの・入れられなかったもの）
 // このあと node tools/build-site.cjs でページを作り直す。OMSの「反映」画面からはサーバーがこの2つを続けて動かし、プルリクエストにする。
 // 部品ごとに入れて確かめ、だめな部品は元に戻して他は続ける（1つの間違いで全部止めない）。
-// いま入れる部品: トップの商品の段（home-sections.json）・流れる文言（site-notices.json）・トップのカード（home-promos/）とその画像・商品ページの段組み・注意事項の定型文・営業日（site-settings.json の calendar.oms）・表示する文字（site-texts.json）。
+// いま入れる部品: トップの商品の段（home-sections.json）・流れる文言（site-notices.json）・トップのカード（home-promos/）とその画像・商品ページの段組み・注意事項の定型文・営業日（site-settings.json の calendar.oms）・表示する文字（site-texts.json）・お店の案内・送料・税率（store-info.json・product-tax.json）。
 // それ以外（お知らせ本文・商品・在庫・企画など）はサイト側の受け口ができたらここに足す。
 const fs = require('node:fs'), path = require('node:path');
 const root = path.resolve(__dirname, '..');
@@ -163,6 +163,20 @@ function texts(draft, touch) {
   return [p];
 }
 
+// お店の案内・送料・税率（OMSの「お店の案内・送料・税率」）。案内バー・フッター・送料・税率表を丸ごと、商品ごとの税の種類も丸ごと入れる
+function storeInfo(draft, touch) {
+  const ip = path.join(root, 'site-src/store-info.json'), tp = path.join(root, 'site-src/product-tax.json');
+  touch(ip); touch(tp);
+  const cur = readJson(ip), tax = readJson(tp);
+  const s = draft.storeInfo || {};
+  const next = { schemaVersion: 1, bar: s.bar || cur.bar, footer: s.footer || cur.footer, shipping: s.shipping || cur.shipping, tax: s.tax || cur.tax };
+  if (draft.productTax && draft.productTax.products) tax.products = draft.productTax.products;
+  delete require.cache[require.resolve('./store-info.cjs')];
+  require('./store-info.cjs').check(next, tax);
+  writeJson(ip, next); writeJson(tp, tax);
+  return [ip, tp];
+}
+
 const LATER = [
   ['news', 'お知らせ本文', d => (d.news || []).length],
   ['themes', '追加した色のテーマ', d => (d.themes || []).length],
@@ -187,6 +201,7 @@ function apply(draft) {
   if (draft.productLayout && Array.isArray(draft.productLayout.side)) part(report, 'productLayout', '商品ページの段組み', t => productLayout(draft, t));
   if (draft.businessDays && Array.isArray(draft.businessDays.holidays)) part(report, 'businessDays', '営業日', t => businessDays(draft, t));
   if (Array.isArray(draft.texts) && draft.texts.length) part(report, 'texts', '表示する文字', t => texts(draft, t));
+  if (draft.storeInfo || draft.productTax) part(report, 'storeInfo', 'お店の案内・送料・税率', t => storeInfo(draft, t));
   for (const [key, label, count] of LATER) { const n = count(draft); if (n) report.later.push({ part: key, label, count: n, reason: 'サイト側の受け口はこれから作ります' }); }
   return report;
 }

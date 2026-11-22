@@ -24,10 +24,10 @@ function renderCampaign(){
  return c;
 }
 function renderCart(){
- let total=0,fees=0,draft=0;const summaries=[];problems=[];
+ let total=0,fees=0,draft=0;const summaries=[],freeRows=[];problems=[];
  CART.forEach(c=>{
   const p=c.product,r=c.row,q=r.qty,sub=q*c.price,box=document.getElementById('f-'+c.id),ck=document.getElementById('ck-'+c.id);
-  total+=sub;document.getElementById('sub-'+c.id).textContent=money(sub);
+  total+=sub;freeRows.push({id:p.id,price:c.price,qty:q});document.getElementById('sub-'+c.id).textContent=money(sub);
   if(!box)return;
   const enough=q>=p.minq,need=document.getElementById('need-'+c.id);
   need.hidden=enough;need.textContent='あと'+(p.minq-q)+'個で名入れできます（'+p.minq+'個から）';ck.disabled=!enough;box.classList.toggle('on',enough&&r.enabled);
@@ -41,8 +41,8 @@ function renderCart(){
  const campaign=renderCampaign();if(campaign){total+=campaign.total;if(!campaign.valid)problems.push('5円でご縁キャンペーン：対象の引出物が20個に届いていないため、このままでは注文できません。対象商品を追加するかキャンペーン商品を削除してください。')}
  const options=window.optCost?window.optCost():0;total+=fees+draft+options;
  document.getElementById('nfee').innerHTML=(summaries.length?'<h3>名入れ・ご指定の内容</h3>'+summaries.join(''):'')+(fees?'<p>商品ごとの追加料金：'+money(fees)+'</p>':'')+(draft?'<p id="draft-fee">原稿作成手数料：500円（1注文につき1回）</p>':'');
- document.getElementById('tot').textContent=money(total);document.getElementById('tbar').style.width=Math.min(100,total/FREE*100)+'%';
- document.getElementById('tship').innerHTML=total>=FREE?'<b>送料無料</b>になりました':'あと<b>'+money(FREE-total)+'</b>で送料無料';
+ document.getElementById('tot').textContent=money(total);const S=window.LunaStore,F=S?S.info.shipping.freeThreshold:FREE,left=S?S.freeLeft(freeRows):Math.max(0,FREE-total);document.getElementById('tbar').style.width=Math.min(100,(F-left)/F*100)+'%';
+ document.getElementById('tship').innerHTML=left<=0?'<b>送料無料</b>になりました（本州・四国・九州）':'あと<b>'+money(left)+'</b>'+(S&&S.info.shipping.freeBasis==='excl'?'（税別）':'')+'で送料無料';
  document.getElementById('cart-options').hidden=!CART.length&&!campaign;document.getElementById('cart-summary').hidden=!CART.length&&!campaign;
  const empty=document.querySelector('.empty-cart');if(empty)empty.hidden=!!campaign;
  document.getElementById('order-check').hidden=true;
