@@ -73,3 +73,12 @@ th { width: 40%; color: var(--taupe); font-weight: 600; }
 .sc-msg.ng { color: #ffb4ae; }
 .sc-photo { display: block; text-align: center; padding: 14px; border-radius: 12px; background: #fff; color: #1f2a27; font-weight: 700; }
 .sc-photo input { display: none; }
+/* 作業表の注文（作業QR表の「スマホで作業」から開いたとき、2.58） */
+.batch h2 { margin-bottom: 8px; }
+.bt-nav { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
+.bt-nav button { width: 100%; min-width: 0; }
+.bt-toggle { width: 100%; margin-top: 8px; padding: 12px; border: 1px dashed var(--sage); border-radius: 12px; background: var(--done); color: var(--forest); font-weight: 700; cursor: pointer; }
+.batch input[type="search"] { margin-top: 8px; }
+.bt-list a.is-cur { border-color: var(--forest); border-width: 2px; }
+.bt-list a.is-done { background: var(--done); }
+.wide-next { width: 100%; margin-bottom: 12px; background: var(--sage); }
