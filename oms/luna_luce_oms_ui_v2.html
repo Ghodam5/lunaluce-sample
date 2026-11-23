@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.56
+Luna Luce OMS 2.57
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -91,6 +91,7 @@ Luna Luce OMS 2.56
 2.44 で受注明細の図柄欄を「ご注文の品」にし、受けた品（商品・ミニシール・のし・ラッピング・小袋・紙袋/ブライダルバッグ）の画像を全部並べた（js/44-option-catalog orderedItems）。小袋の季節限定とギフト用紙袋の宣伝画像を外し、紙袋は実物写真に替えた。作業指示書（js/45-work-order・css/13-work-order）を追加。受注明細の「作業指示書を印刷・PDF保存」で、特急を一番上、納期・挙式日・賞味期限・数量、注文品の縮小画像、入れる文字、部品内訳（チェック欄付き）、寸法、料金、工程チェック（大きめの□・担当・日付）、印刷イメージ、受注管理表をA4に組み直して印刷する。図柄の見本一覧・実寸PDFの注意などは載せない。
 2.45 で商品の登録・編集の写真（2枚目以降・サムネイル）が出ない不具合を直した。原因は2つ: サイトの商品データの写真が {src, alt…} の形になっていたのに、ビルダーが文字列として扱っていた（tools/oms-builder-data.cjs と js/24-builder-products で src を取り出すように）。もう1つは商品の詳しい写真 images/product-details/ がこのブランチに無く、VPSに届いていなかった（main から684枚を取り込み）。
 2.56 で「10 名入れの決まり」タブを足した（js/55-name-rules）。文字数超過の上限・基本料金・1文字の料金（空白を数えないか）を決め、受注明細で名入れから自動で数える（手で直せる）。書体と色の一覧を足す・消す・並べ替え、シール・のし・カードのどれに使うかを選ぶ。受注明細は書体と色を別々に選ぶ（前の「書体（色）」は分けて読む）。「校正確認メールを記録」は（準備中）と出す。
+2.57 で文字数超過の料金の決まりを、商品や加工（シール・のし・カード・レーザー彫刻など）ごとに複数持てるようにした。決まりごとに当てる商品（SKU・商品名の言葉）・数える文字・上限・基本料金・1文字の料金。注文に当てはまる決まりを全部足す。受注明細で決まりごとに超えた文字数を直せる。「加工の種類」は足す・消す・名前を変える・並べ替えができ、書体・色の「どこに使うか」の欄にもなる。
 2.55 で受注明細の「名入れ内容を目視確認済みにする（パース警告を解除）」を「名入れを目で確認した（「要確認」の印を消す）」に言い換えた（林さんが意味をつかめなかったため）。
 2.54 で「日付で作業QR表」を「作業QR表（PDF印刷）」にし、一覧の「選択注文の加工・送り状CSVを生成」の右へ移した。対象は日付ではなく、チェックした注文。PDF保存・PDF印刷・QRコードを画面に出す、の3つ（js/54-day-sheet）。
 2.53 で「日付で作業QR表（PDF）」ボタンを青緑（スマホで作業開始と同じ色）にした（手動登録のシャンパンゴールドと同じ色で見分けにくかったため。css/17-work）。
@@ -172,7 +173,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.56｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.57｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />

@@ -129,18 +129,16 @@
       return row.rates[index];
     }
 
-    // 文字数超過の金額は「10 名入れの決まり」（js/55-name-rules）の上限・基本料金・1文字の料金で計算する。coupleText は編集中の名入れ（省略時は注文の名入れ）
-    function feeNumbers(order, coupleText) {
-      const rule = state.nameRules ? state.nameRules.extra : { base: 500, per: 20 };
-      const count = state.nameRules ? nameExtraCount(order, coupleText) : 0;
-      const applies = count > 0;
-      const base = Number(rule.base) || 0, per = Number(rule.per) || 0;
-      const extraTotal = applies ? base + per * count : 0;
+    // 文字数超過の金額は「10 名入れの決まり」（js/55-name-rules）の料金の決まりで計算する。当てはまる決まり（商品・加工ごと）を全部足す。draft は受注明細で編集中の中身（省略可）
+    function feeNumbers(order, draft) {
+      const lines = state.nameRules ? nameExtraLines(order, draft) : [];
+      const first = lines.filter(function (l) { return l.total > 0; })[0];
       return {
-        extraBase: applies ? base : 0,
-        extraCount: count,
-        extraPer: per,
-        extraTotal: extraTotal,
+        extraLines: lines,
+        extraBase: first ? first.base : 0,
+        extraCount: first ? first.count : 0,
+        extraPer: first ? first.per : 0,
+        extraTotal: lines.reduce(function (n, l) { return n + l.total; }, 0),
         noshi: Number(order.noshiFee) || 0,
         wrapping: Number(order.wrappingFee) || 0
       };
@@ -158,7 +156,8 @@
       if (!order.partPer) order.partPer = { sweets: 1, box: 1, thanksCard: 1, miniSeal: 1 };
       if (order.extraCharApplies == null) order.extraCharApplies = false;
       if (order.extraCharCount == null) order.extraCharCount = 0;
-      if (order.extraCharManual === undefined) order.extraCharManual = null; // 手で入れた超過文字数（null なら名入れから自動で数える。js/55-name-rules）
+      // 手で入れた超過文字数（料金の決まりのid ごと。無い決まりは名入れから自動で数える。js/55-name-rules）。2.56 までの数1つの形は捨てる
+      if (!order.extraCharManual || typeof order.extraCharManual !== 'object') order.extraCharManual = {};
       nameSplitFont(order); // 「書体（色）」を書体と色に分ける
       if (order.noshiFee == null) order.noshiFee = 0;
       if (order.wrappingFee == null) order.wrappingFee = 0;
@@ -190,7 +189,7 @@
         message: order.headerMsg,
         font: order.fontStyle,
         color: order.textColor || '',
-        extraManual: order.extraCharManual == null ? '' : String(order.extraCharManual),
+        extraManual: Object.assign({}, order.extraCharManual || {}),
         noshi: order.noshiSeal,
         status: order.status,
         clearWarning: !order.warning

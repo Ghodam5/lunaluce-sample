@@ -149,6 +149,7 @@
     function onEditInput(el) {
       if (!state.draft) return;
       if (el.dataset.field === 'clearWarning') state.draft.clearWarning = el.checked;
+      else if (el.dataset.field.indexOf('extraManual:') === 0) state.draft.extraManual[el.dataset.field.slice(12)] = el.value;
       else state.draft[el.dataset.field] = el.value;
       emit('oms:draft');
     }
@@ -161,7 +162,9 @@
       order.headerMsg = state.draft.message;
       order.fontStyle = state.draft.font;
       order.textColor = state.draft.color;
-      order.extraCharManual = state.draft.extraManual === '' ? null : Math.max(0, Number(state.draft.extraManual) || 0);
+      const manual = {};
+      Object.keys(state.draft.extraManual || {}).forEach(function (k) { const v = state.draft.extraManual[k]; if (v !== '' && v != null) manual[k] = Math.max(0, Number(v) || 0); });
+      order.extraCharManual = manual;
       order.noshiSeal = state.draft.noshi;
       workLogStatus(order, order.status, state.draft.status);
       order.status = state.draft.status;

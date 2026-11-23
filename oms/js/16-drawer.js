@@ -202,7 +202,7 @@
         if (!order) { host.innerHTML = ''; return; }
         const fees = feeNumbers(order);
         const extra = fees.extraTotal > 0
-          ? '文字数超過 ' + formatYen(fees.extraBase) + ' ＋ ' + formatYen(fees.extraPer) + ' × ' + fees.extraCount + '文字 ＝ ' + formatYen(fees.extraTotal) + '（1注文につき1回）'
+          ? '文字数超過 ' + feeExtraText(fees) + '（決まりごとに1注文1回）'
           : '文字数超過 ' + formatYen(0);
         const total = fees.extraTotal + fees.noshi + fees.wrapping;
         host.innerHTML = '<div class="card"><h3>この注文の料金</h3><div class="lines"><p data-fee="extra">' + escapeHtml(extra) + '</p><p data-fee="noshi">のし ' + formatYen(fees.noshi) + '</p><p data-fee="wrap">ラッピング ' + formatYen(fees.wrapping) + '</p><p class="total">オプション計 ' + formatYen(total) + '</p></div></div>';
@@ -332,15 +332,16 @@
         const order = currentOrder();
         const draft = state.draft;
         if (!order || !draft) { host.innerHTML = ''; return; }
-        const fees = feeNumbers(Object.assign({}, order, { extraCharManual: draft.extraManual === '' ? null : draft.extraManual }), draft.couple);
-        const badge = fees.extraTotal > 0
-          ? '文字数超過 ' + formatYen(fees.extraBase) + '＋' + formatYen(fees.extraPer) + '×' + fees.extraCount + '＝' + formatYen(fees.extraTotal)
-          : '文字数超過 ' + formatYen(0);
+        const fees = feeNumbers(order, draft);
+        const badge = fees.extraTotal > 0 ? '文字数超過 ' + feeExtraText(fees, true) : '文字数超過 ' + formatYen(0);
         // 書体・色の選択肢は「10 名入れの決まり」の一覧（js/55-name-rules）
         const fonts = nameOptions(state.nameRules.fonts, draft.font);
         const colors = nameOptions(state.nameRules.colors, draft.color);
-        const autoCount = Math.max(0, nameCharCount(draft.couple) - (Number(state.nameRules.extra.limit) || 0));
-        host.innerHTML = '<div class="head"><h3>名入れ・工程の編集</h3><span class="fee-badge' + (fees.extraTotal > 0 ? ' is-on' : '') + '">' + escapeHtml(badge) + '</span></div><div class="grid"><div><label for="edit-couple">新郎・新婦名</label><input id="edit-couple" data-action="edit-field" data-field="couple" value="' + escapeHtml(draft.couple) + '"></div><div><label for="edit-date">挙式日</label><input id="edit-date" type="date" data-action="edit-field" data-field="wedding" value="' + escapeHtml(draft.wedding) + '"></div><div><label for="edit-delivery">納期（納品日）</label><input id="edit-delivery" type="date" data-action="edit-field" data-field="delivery" value="' + escapeHtml(draft.delivery || '') + '"></div><div><label for="edit-message">見出し・定型メッセージ</label><input id="edit-message" data-action="edit-field" data-field="message" value="' + escapeHtml(draft.message) + '"></div><div><label for="edit-font">書体</label><select id="edit-font" data-action="edit-field" data-field="font">' + fonts + '</select></div><div><label for="edit-color">色（文字・箔）</label><select id="edit-color" data-action="edit-field" data-field="color">' + colors + '</select></div><div><label for="edit-extra">文字数超過（超えた文字数）</label><input id="edit-extra" type="number" min="0" max="200" data-action="edit-field" data-field="extraManual" value="' + escapeHtml(draft.extraManual) + '" placeholder="自動: ' + autoCount + '文字（' + nameCharCount(draft.couple) + '文字・上限' + escapeHtml(state.nameRules.extra.limit) + '）"></div><div><label for="edit-noshi">熨斗・サンクスシール</label><input id="edit-noshi" data-action="edit-field" data-field="noshi" value="' + escapeHtml(draft.noshi) + '"></div><div><label for="edit-status">工程ステータス</label><select id="edit-status" data-action="edit-field" data-field="status">' + statusOptions(draft.status) + '</select></div></div><div class="save-row"><label class="check"><input type="checkbox" data-action="edit-field" data-field="clearWarning"' + (draft.clearWarning ? ' checked' : '') + '>名入れを目で確認した（「要確認」の印を消す）</label><button type="button" class="save" data-action="save-edit">変更内容を保存する</button></div>';
+        // 当てはまる料金の決まりごとに、超えた文字数の欄（空なら自動）
+        const extraRows = fees.extraLines.length ? fees.extraLines.map(function (l) {
+          return '<div><label for="edit-extra-' + escapeHtml(l.id) + '">文字数超過: ' + escapeHtml(l.name) + '</label><input id="edit-extra-' + escapeHtml(l.id) + '" type="number" min="0" max="200" data-action="edit-field" data-field="extraManual:' + escapeHtml(l.id) + '" value="' + escapeHtml(l.manual ? l.count : '') + '" placeholder="自動: ' + l.auto + '文字（' + escapeHtml(l.field) + ' ' + l.chars + '文字・上限' + l.limit + '）"></div>';
+        }).join('') : '<div><label>文字数超過</label><p class="sub">この商品に当てはまる料金の決まりはありません（「10 名入れの決まり」で作れます）</p></div>';
+        host.innerHTML = '<div class="head"><h3>名入れ・工程の編集</h3><span class="fee-badge' + (fees.extraTotal > 0 ? ' is-on' : '') + '">' + escapeHtml(badge) + '</span></div><div class="grid"><div><label for="edit-couple">新郎・新婦名</label><input id="edit-couple" data-action="edit-field" data-field="couple" value="' + escapeHtml(draft.couple) + '"></div><div><label for="edit-date">挙式日</label><input id="edit-date" type="date" data-action="edit-field" data-field="wedding" value="' + escapeHtml(draft.wedding) + '"></div><div><label for="edit-delivery">納期（納品日）</label><input id="edit-delivery" type="date" data-action="edit-field" data-field="delivery" value="' + escapeHtml(draft.delivery || '') + '"></div><div><label for="edit-message">見出し・定型メッセージ</label><input id="edit-message" data-action="edit-field" data-field="message" value="' + escapeHtml(draft.message) + '"></div><div><label for="edit-font">書体</label><select id="edit-font" data-action="edit-field" data-field="font">' + fonts + '</select></div><div><label for="edit-color">色（文字・箔）</label><select id="edit-color" data-action="edit-field" data-field="color">' + colors + '</select></div>' + extraRows + '<div><label for="edit-noshi">熨斗・サンクスシール</label><input id="edit-noshi" data-action="edit-field" data-field="noshi" value="' + escapeHtml(draft.noshi) + '"></div><div><label for="edit-status">工程ステータス</label><select id="edit-status" data-action="edit-field" data-field="status">' + statusOptions(draft.status) + '</select></div></div><div class="save-row"><label class="check"><input type="checkbox" data-action="edit-field" data-field="clearWarning"' + (draft.clearWarning ? ' checked' : '') + '>名入れを目で確認した（「要確認」の印を消す）</label><button type="button" class="save" data-action="save-edit">変更内容を保存する</button></div>';
       }
       on('oms:open', paint);
     }

@@ -67,9 +67,7 @@
         if (order.status === '梱包・出荷済') when = '<span class="mini done">出荷完了</span>';
         else if (days != null && days <= 7) when = '<span class="mini hot">挙式まであと' + days + '日</span>';
         else if (days != null && days <= 16) when = '<span class="mini soon">あと' + days + '日</span>';
-        const extra = fees.extraTotal > 0
-          ? '超過 ' + formatYen(fees.extraBase) + '+' + formatYen(fees.extraPer) + '×' + fees.extraCount + '=' + formatYen(fees.extraTotal)
-          : '超過 ' + formatYen(0);
+        const extra = feeExtraText(fees, true);
         const due = dueInfo(order);
         const dueText = due.missing
           ? '<span class="mini soon">日付はありません</span>'

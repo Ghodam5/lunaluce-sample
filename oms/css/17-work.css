@@ -138,3 +138,15 @@
     .nr-table button:disabled { opacity: .35; cursor: default; }
     .nr-table .nr-del { color: var(--urgent); }
     .nr-add { margin-top: 8px; padding: 8px 14px; border: 1px dashed var(--champagne); border-radius: 8px; background: var(--champagne-soft); font: inherit; cursor: pointer; }
+    /* 2.57 料金の決まり（商品・加工ごと） */
+    .nr-rule { margin-top: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--ivory); }
+    .nr-rule.is-off { opacity: .55; }
+    .nr-rule-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .nr-rule-head input[type="text"] { flex: 1; min-width: 160px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; font: inherit; font-weight: 600; }
+    .nr-rule-head button { padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); font: inherit; font-size: 12px; cursor: pointer; }
+    .nr-rule-head button:disabled { opacity: .35; cursor: default; }
+    .nr-rule-head .nr-del { color: var(--urgent); }
+    .nr-rule-head .nr-chk { display: flex; align-items: center; gap: 4px; font-size: 13px; }
+    .nr-form .nr-wide { grid-column: span 2; }
+    .nr-form input[type="text"], .nr-form select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; background: var(--white); }
+    @media (max-width: 520px) { .nr-form .nr-wide { grid-column: auto; } }
