@@ -11,7 +11,7 @@
     {
       "label": "ブライダルバッグ",
       "href": "bridal-bag.html",
-      "image": "images/bridal-bag-intro.png"
+      "image": "images/bridal-bag-intro.jpg"
     },
     {
       "label": "防災・備蓄ギフト",
@@ -21,17 +21,17 @@
     {
       "label": "にゃんこモチーフ",
       "href": "neko.html",
-      "image": "images/feature-neko.png"
+      "image": "images/feature-neko.jpg"
     },
     {
       "label": "新着商品",
       "href": "new-arrivals.html",
-      "image": "images/feature-new.png"
+      "image": "images/feature-new.jpg"
     },
     {
       "label": "数量限定・特価商品",
       "href": "sale.html",
-      "image": "images/feature-sale.png"
+      "image": "images/feature-sale.jpg"
     }
   ]
 }

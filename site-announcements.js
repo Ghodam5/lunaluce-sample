@@ -28,18 +28,26 @@ const cats=gaps.map((g,i)=>{const slot=document.createElement('span');slot.inner
   return{el,sprite:el.querySelector('.cat-sprite'),off:rnd(MIN_OFF,MAX_OFF),state:'walk',until:0,frame:Math.floor(rnd(0,4)),lastFrame:0,runsLeft:Math.round(rnd(2,3)),nextJump:0};});
 const set=(c,s,ms,t)=>{c.state=s;c.frame=0;c.until=ms?t+ms:0;c.el.classList.toggle('is-sleeping',s==='sleep');};
 // 文字にマウスを乗せたとき・キーボードで文字を選んだときだけ止める（猫を押したときは止めない）
-const held=()=>manual||!!track.querySelector('a:hover')||track.contains(document.activeElement);
+// v73 速度対策：毎フレームの「:hover検索・幅の読み取り」をやめ、イベントで覚えておく（見た目と動きは同じ）
+let hoverA=false;track.addEventListener('pointerover',e=>{hoverA=!!e.target.closest('a')});track.addEventListener('pointerleave',()=>{hoverA=false});
+const held=()=>manual||hoverA||track.contains(document.activeElement);
+let halfW=0;const measure=()=>{halfW=track.scrollWidth/2};if(window.ResizeObserver)new ResizeObserver(measure).observe(track);else addEventListener('resize',measure);
+win.addEventListener('scroll',()=>{if(win.scrollLeft&&!manual&&!reduce.matches)win.scrollLeft=0},{passive:true});
+// 帯が画面の外にあるあいだは描かない（戻ったら続きから動く）
+let onScreen=true;if(window.IntersectionObserver)new IntersectionObserver(es=>{onScreen=es[es.length-1].isIntersecting}).observe(strip);
 cats.forEach(c=>c.el.addEventListener('click',()=>{if(manual||reduce.matches||c.state==='sleep')return;const t=performance.now(),ms=rnd(2600,3600);set(c,Math.random()<0.5?'play':'drink',ms,t);holdUntil=Math.max(holdUntil,t+ms);}));
 function draw(c,t){
   let y=0;if(c.state==='jump'){y=-Math.sin(((t%650)/650)*Math.PI)*8}
-  c.el.style.transform=`translate(${c.off}px,${y}px)`;
-  C.show(c.sprite,c.state,c.frame);
+  const tf=`translate(${c.off}px,${y}px)`,fk=c.state+c.frame;
+  if(tf!==c.tf){c.el.style.transform=tf;c.tf=tf}
+  if(fk!==c.fk){C.show(c.sprite,c.state,c.frame);c.fk=fk}
 }
 function tick(t){
   const dt=prev?Math.min(64,t-prev)/1000:0;prev=t;
-  if(reduce.matches){textX=0;track.style.transform='';cats.forEach(c=>{c.state='walk';c.frame=0;draw(c,t)});requestAnimationFrame(tick);return}
+  if(!onScreen){requestAnimationFrame(tick);return}
+  if(reduce.matches){textX=0;track.style.transform='';track._tx='';cats.forEach(c=>{c.state='walk';c.frame=0;draw(c,t)});requestAnimationFrame(tick);return}
   if(!held()){
-    if(t>=holdUntil){textX-=TEXT_V*dt;const L=track.scrollWidth/2;if(-textX>=L)textX+=L}
+    if(t>=holdUntil){textX-=TEXT_V*dt;if(!halfW)measure();const L=halfW;if(L&&-textX>=L)textX+=L}
     cats.forEach(c=>{
       if(c.until&&t>c.until){if(c.state==='sleep')c.runsLeft=Math.round(rnd(2,3));set(c,'walk',0,t);c.nextJump=t+rnd(4000,8000)}
       if(!c.nextJump)c.nextJump=t+rnd(4000,8000);
@@ -54,8 +62,7 @@ function tick(t){
       if(t-c.lastFrame>(C.FRAME_MS[c.state]||200)){c.frame++;c.lastFrame=t}
     });
   }
-  track.style.transform=`translateX(${textX}px)`;
-  if(win.scrollLeft&&!manual&&!reduce.matches)win.scrollLeft=0;
+  const tx=`translateX(${textX}px)`;if(tx!==track._tx){track.style.transform=tx;track._tx=tx}
   cats.forEach(c=>draw(c,t));
   requestAnimationFrame(tick);
 }

@@ -19,3 +19,6 @@
 
 /* 2026-11-19 林さん指示：スマホの写真拡大は2本指と倍率リセット。 */
 @media(max-width:1023px){.photo-viewer [data-zoom-in],.photo-viewer [data-zoom-out]{display:none}}
+
+/* v73 速度対策：商品の中身が描かれる前にフッターが見えて、あとでずれる（CLS）のを防ぐ。中身が入ると自動で外れる */
+#sample-item:empty{min-height:150vh}
