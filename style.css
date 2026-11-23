@@ -272,6 +272,9 @@ footer.ft{background:#fff;border-top:4px solid var(--teal);margin-top:56px;paddi
 .mini-feat img{width:100%;aspect-ratio:16/9;object-fit:cover}
 .mini-feat b{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:13px;padding:16px 12px 8px}
 
+
+/* v73 速度対策：カテゴリ一覧の中身（cat2.jsが描く）が入る前にフッターが見えて、あとでずれる（CLS）のを防ぐ。中身が入ると自動で外れる */
+#catv:empty{min-height:150vh}
 /* ===================== PC（1024px以上） ===================== */
 @media (min-width:1024px){
   body{padding-bottom:0}

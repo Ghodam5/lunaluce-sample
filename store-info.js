@@ -6,7 +6,8 @@
 (function(){
 'use strict';
 var I=window.STORE_INFO;if(!I)return;
-function today(){try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}catch(e){return new Date().toISOString().slice(0,10)}}
+// v73 速度対策：日付の書式は1回だけ作って使い回す（商品の数だけ作ると重い）
+var jstFmt=null;function today(){try{jstFmt=jstFmt||new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'});return jstFmt.format(new Date())}catch(e){return new Date().toISOString().slice(0,10)}}
 var rates=I.tax.rates.filter(function(r){return r.active}).sort(function(a,b){return a.from<b.from?-1:1});
 function rowOn(date){var row=rates[0];rates.forEach(function(r){if(r.from<=date)row=r});return row}
 function rateOn(cls,date){var r=rowOn(date||today());return r[cls]!=null?r[cls]:r.standard}

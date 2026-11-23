@@ -7,7 +7,7 @@ window.FEATURE_CATALOG={
       "group": "paper",
       "groupTitle": "ペーパー・演出",
       "file": "bridal-bag.html",
-      "banner": "images/bridal-bag-intro.png",
+      "banner": "images/bridal-bag-intro.jpg",
       "desc": "大切な贈り物を、より特別に。素材や内側のデザインにこだわった、引出物用のブライダルバッグ。",
       "category": "ブライダルバッグ"
     },
@@ -25,7 +25,7 @@ window.FEATURE_CATALOG={
       "group": "season",
       "groupTitle": "季節・特集",
       "file": "neko.html",
-      "banner": "images/feature-neko.png",
+      "banner": "images/feature-neko.jpg",
       "desc": "猫好きさんへ、かわいいありがとう。お菓子、タオル、時計など、本店の「にゃんこモチーフ」に登録された商品です。",
       "category": "にゃんこモチーフ"
     },
@@ -34,7 +34,7 @@ window.FEATURE_CATALOG={
       "group": "season",
       "groupTitle": "季節・特集",
       "file": "new-arrivals.html",
-      "banner": "images/feature-new.png",
+      "banner": "images/feature-new.jpg",
       "desc": "新しいお気に入りを見つけませんか。本店の「新商品」カテゴリーに登録されている商品をご紹介します。",
       "category": "新商品"
     },
@@ -43,7 +43,7 @@ window.FEATURE_CATALOG={
       "group": "season",
       "groupTitle": "季節・特集",
       "file": "sale.html",
-      "banner": "images/feature-sale.png",
+      "banner": "images/feature-sale.jpg",
       "desc": "ちょっとお得に、気持ちを贈る。本店の「数量限定・特価商品」カテゴリーの商品を集めました。",
       "category": "数量限定・特価商品"
     }
