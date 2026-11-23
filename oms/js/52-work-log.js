@@ -43,7 +43,7 @@
       const qr = qrcode(0, 'M');
       qr.addData(text);
       qr.make();
-      return qr.createSvgTag({ cellSize: cell || 4, margin: (cell || 4) * 2, scalable: true, alt: 'スマホで作業画面を開くQRコード' });
+      return qr.createSvgTag({ cellSize: cell || 4, margin: (cell || 4) * 4, scalable: true, alt: 'スマホで作業画面を開くQRコード' });
     }
     function sendWorkCard(order) {
       if (!workServerOn() || !order) return Promise.resolve(null);

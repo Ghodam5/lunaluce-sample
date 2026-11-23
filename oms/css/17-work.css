@@ -57,3 +57,38 @@
     /* 作業指示書のQRコード（印刷） */
     #work-order-print .wo-qr { width: 22mm; text-align: center; font-size: 7pt; }
     #work-order-print .wo-qr svg { display: block; width: 22mm; height: 22mm; }
+
+    /* 日付で作業QR表（js/54-day-sheet） */
+    .ds-sheet { width: min(480px, 100%); }
+    .ds-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+    .ds-form label { display: grid; gap: 4px; font-size: 12px; color: var(--taupe); }
+    .ds-form input[type="date"], .ds-form select { padding: 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+    .ds-form .ds-check { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink); }
+    .ds-count { font-weight: 700; margin: 6px 0; }
+    .ds-pre { margin: 0 0 10px; padding-left: 18px; font-size: 13px; color: var(--taupe); }
+    .ds-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .ds-btns .wo-btn { padding: 12px; border: 0; border-radius: 10px; background: var(--forest); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+    .ds-btns .wo-btn:disabled { opacity: .4; cursor: default; }
+    #day-sheet-print { display: none; }
+    @media print {
+      html.is-printing-day-sheet body > *:not(#day-sheet-print) { display: none !important; }
+      html.is-printing-day-sheet #day-sheet-print { display: block; color: #111; font-size: 9.5pt; line-height: 1.4; font-family: "Noto Sans JP", sans-serif; }
+      html.is-printing-day-sheet, html.is-printing-day-sheet body { background: #fff !important; }
+      @page { size: A4; margin: 10mm; }
+    }
+    #day-sheet-print .ds-head { display: flex; justify-content: space-between; align-items: end; border-bottom: 2px solid #111; padding-bottom: 4px; margin-bottom: 6px; }
+    #day-sheet-print .ds-title { margin: 0; font-size: 15pt; font-weight: 700; }
+    #day-sheet-print .ds-sub, #day-sheet-print .ds-made { margin: 0; font-size: 8.5pt; color: #555; }
+    #day-sheet-print .ds-table { width: 100%; border-collapse: collapse; }
+    #day-sheet-print .ds-table th { font-size: 8pt; text-align: left; border-bottom: 1px solid #111; padding: 2px 4px; }
+    #day-sheet-print .ds-table td { border-bottom: 1px solid #bbb; padding: 4px; vertical-align: top; }
+    #day-sheet-print .ds-table tr { break-inside: avoid; }
+    #day-sheet-print .ds-table small { display: block; color: #444; font-size: 8pt; }
+    #day-sheet-print .ds-table em { display: inline-block; margin-top: 2px; padding: 0 4px; background: #111; color: #fff; font-style: normal; font-size: 8pt; }
+    #day-sheet-print .ds-table tr.is-rush td:first-child { box-shadow: inset 3px 0 0 #111; }
+    #day-sheet-print .ds-qr { width: 25mm; }
+    #day-sheet-print .ds-qr svg { display: block; width: 23mm; height: 23mm; }
+    #day-sheet-print .ds-done { width: 12mm; }
+    #day-sheet-print .ds-done::before { content: ""; display: block; width: 9mm; height: 9mm; border: 1.5px solid #111; }
+    #day-sheet-print .ds-warn { font-weight: 700; }
+    #day-sheet-print .ds-table td:nth-child(5) { white-space: nowrap; }

@@ -29,8 +29,9 @@
   function paintFind(msg) {
     app.innerHTML = '<section class="card"><h1>注文を開く</h1>' + (msg ? '<p class="ng">' + esc(msg) + '</p>' : '') +
       '<p class="muted">作業指示書のQRコードをカメラで写すと開きます。読めないときは注文番号・お名前・商品名を打ってください。</p>' +
-      '<input id="find" type="search" inputmode="search" autocomplete="off" placeholder="注文番号・お名前・商品名・SKU"><div id="hits" class="hits"></div></section>';
+      '<div class="findrow"><input id="find" type="search" inputmode="search" autocomplete="off" placeholder="注文番号・お名前・商品名・SKU"><button type="button" class="go scanbtn" data-scan>QRを読む<small>カメラ</small></button></div><div id="hits" class="hits"></div></section>';
     const input = document.getElementById('find'), hits = document.getElementById('hits');
+    app.querySelector('[data-scan]').addEventListener('click', () => window.workScan.start());
     let seq = 0;
     input.addEventListener('input', () => {
       const n = ++seq, q = input.value.trim();
@@ -68,16 +69,19 @@
       '<p class="sku">' + esc(c.sku || '') + '　× ' + esc(c.qty || '') + '</p>' +
       '<div class="keys"><div><span>納期</span><b>' + esc(c.deliveryDate || '—') + '</b></div><div><span>挙式日</span><b>' + esc(c.weddingDate || '—') + '</b></div><div><span>進み具合</span><b>' + n + ' / ' + c.steps.length + '</b></div></div>' +
       (c.warning ? '<p class="warn">注意：' + esc(c.warning) + '</p>' : '') + '</section>' +
+      '<button type="button" class="go scanbtn wide" data-scan-top>別の注文のQRを読む（カメラ）</button>' +
       '<section class="card"><h2>工程</h2><ol class="steps">' + steps + '</ol></section>' +
       '<section class="card"><h2>コメント</h2><form id="cm"><select id="cm-step">' + stepOpts + '</select><textarea id="cm-text" rows="3" maxlength="500" placeholder="気づいたこと・困ったこと（500文字まで）"></textarea><button type="submit" class="go">送る</button></form></section>' +
       (texts ? '<section class="card"><h2>入れる文字</h2><table>' + texts + '</table></section>' : '') +
       (items ? '<section class="card"><h2>ご注文の品</h2><div class="items">' + items + '</div></section>' : '') +
       (parts ? '<section class="card"><h2>部品内訳</h2><table>' + parts + '</table></section>' : '') +
       '<section class="card"><h2>この注文の記録</h2><ul class="log">' + (log || '<li class="muted">まだありません</li>') + '</ul></section>' +
-      '<p class="foot"><a href="work.html">別の注文を開く</a>　<button type="button" id="reload">最新にする</button></p>';
+      '<button type="button" class="go scanbtn wide" data-scan>次の注文のQRを読む（カメラ）</button>' +
+      '<p class="foot"><a href="work.html">注文を探す</a>　<button type="button" id="reload">最新にする</button></p>';
     app.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => step(b.dataset.step, b.dataset.done === '1')));
     document.getElementById('cm').addEventListener('submit', e => { e.preventDefault(); comment(); });
     document.getElementById('reload').addEventListener('click', load);
+    app.querySelectorAll('[data-scan], [data-scan-top]').forEach(b => b.addEventListener('click', () => window.workScan.start()));
   }
   function step(id, done) {
     if (!done && armed !== id) { armed = id; paint(); setTimeout(() => { if (armed === id) { armed = ''; paint(); } }, 4000); return; }

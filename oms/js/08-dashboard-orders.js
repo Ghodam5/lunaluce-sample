@@ -52,7 +52,7 @@
         const reset = (state.onlyUrgent || state.onlyWarning)
           ? '<button type="button" class="reset" data-action="reset-special">× 特別絞り込み解除</button>'
           : '';
-        host.innerHTML = '<div class="block"><span class="cap">販路:</span>' + channels + '</div><div class="block"><label class="search-wrap">検索<input data-action="search" type="search" placeholder="注文番号・顧客名・新郎新婦名・商品名・SKU（あいまいでも探せます）" autocomplete="off" value="' + escapeHtml(search) + '"></label><button type="button" class="manual" data-action="open-manual">＋ 電話・FAX注文 手動登録</button></div><div class="block status"><span class="cap">工程:</span>' + statuses + reset + '</div>';
+        host.innerHTML = '<div class="block"><span class="cap">販路:</span>' + channels + '</div><div class="block"><label class="search-wrap">検索<input data-action="search" type="search" placeholder="注文番号・顧客名・新郎新婦名・商品名・SKU（あいまいでも探せます）" autocomplete="off" value="' + escapeHtml(search) + '"></label><button type="button" class="manual" data-action="open-manual">＋ 電話・FAX注文 手動登録</button><button type="button" class="manual ds-open" data-action="day-sheet">日付で作業QR表（PDF）</button></div><div class="block status"><span class="cap">工程:</span>' + statuses + reset + '</div>';
       }
       paint();
       on('oms:filters', paint);

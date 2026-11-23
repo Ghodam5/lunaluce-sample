@@ -57,3 +57,19 @@ th { width: 40%; color: var(--taupe); font-weight: 600; }
 .foot button { padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--white); }
 #toast { position: fixed; left: 12px; right: 12px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 20; padding: 12px 14px; border-radius: 12px; background: var(--forest); color: #fff; text-align: center; font-weight: 600; }
 #toast.is-ng { background: var(--urgent); }
+/* QRを読む（work/work-scan.js） */
+.findrow { display: flex; gap: 8px; }
+.findrow input { flex: 1; min-width: 0; }
+.scanbtn { display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; }
+.scanbtn small { font-size: 11px; font-weight: 400; opacity: .85; }
+.scanbtn.wide { width: 100%; margin-bottom: 12px; background: #2a9d8f; }
+.scan { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; background: #111; color: #fff; padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)); }
+.sc-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+.sc-x { padding: 10px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,.4); background: none; color: #fff; }
+.sc-view { position: relative; flex: 1; min-height: 0; border-radius: 14px; overflow: hidden; background: #000; }
+.sc-view video { width: 100%; height: 100%; object-fit: cover; }
+.sc-frame { position: absolute; left: 50%; top: 50%; width: min(64vw, 280px); aspect-ratio: 1; transform: translate(-50%, -50%); border: 3px solid #fff; border-radius: 16px; box-shadow: 0 0 0 100vmax rgba(0,0,0,.35); }
+.sc-msg { margin: 10px 0; text-align: center; font-weight: 600; }
+.sc-msg.ng { color: #ffb4ae; }
+.sc-photo { display: block; text-align: center; padding: 14px; border-radius: 12px; background: #fff; color: #1f2a27; font-weight: 700; }
+.sc-photo input { display: none; }

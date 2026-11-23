@@ -372,6 +372,7 @@
       else if (name === 'clear-seal') clearMiniSeal();
       else if (name === 'work-order') printWorkOrder(); // 45-work-order
       else if (name === 'work-output') workOutput(el.dataset.kind); // 52-work-log
+      else if (name === 'day-sheet') openDaySheet(); // 54-day-sheet
       else if (name === 'pick-option') pickOption(el.dataset.group, el.dataset.file || '');
     }
     document.addEventListener('click', function (event) {
