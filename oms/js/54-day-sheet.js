@@ -2,8 +2,8 @@
 // 表の1行 = 1注文: スマホ作業用のQRコード・注文番号・商品・数・名入れ・納期/挙式日・工程・特急/注意・済の欄。住所・電話・メールは載せない。
 // 出す前に、載せる注文の作業カードをサーバーへ送る（QRを写したらすぐ作業画面が開くように。js/52-work-log）。
 // 2.54 で「日付で選ぶ」をやめ、チェックした注文が対象になった（林さんの指示）。
-// 2.58（林さんの指示）: 「PDF保存」は「PDF印刷」と同じなので消した。「スマホで作業」を足した: チェックした注文をまとめた1つのQRコード（とこのパソコンで開くリンク）を出し、
-//   スマホの作業画面でこの表の注文を「前へ・次へ」や一覧から選んで次々に開ける（work.html?o=最初の注文&l=注文番号,注文番号,…）。
+// 2.58（林さんの指示）: 「PDF保存」は「PDF印刷」と同じなので消した。「このPC・スマホ・タブレットで作業画面を開く」を足した（作業画面へ直接飛ぶ）。
+//   作業画面ではこの表の注文を「前へ・次へ」や一覧から選んで次々に開ける（work.html?o=最初の注文&l=注文番号,注文番号,…）。
     function daySheetOrders() {
       return state.orders.filter(function (o) { return o.selected; })
         .sort(function (a, b) { return (b.rushTicket ? 1 : 0) - (a.rushTicket ? 1 : 0) || dueInfo(a).time - dueInfo(b).time || String(a.id).localeCompare(String(b.id)); });
@@ -18,29 +18,27 @@
         '<p class="wk-lead">チェックした注文を1枚の表にします。注文ごとのQRコードをiPhone・Androidのカメラで写すと、その注文のスマホ作業画面が開きます（住所・電話・メールは載せません）。</p>' +
         '<p class="ds-count">' + list.length + '件の注文が載ります</p>' +
         '<ul class="ds-pre">' + list.slice(0, 8).map(function (o) { return '<li>' + (o.rushTicket ? '<b>特急</b> ' : '') + escapeHtml(o.id) + '　' + escapeHtml(o.productName) + '</li>'; }).join('') + (list.length > 8 ? '<li>ほか' + (list.length - 8) + '件</li>' : '') + '</ul>' +
-        '<div class="ds-btns"><button type="button" class="wo-btn" data-ds="print">PDF印刷</button><button type="button" class="wo-btn is-qr" data-ds="phone">スマホで作業</button><button type="button" class="wo-btn is-show" data-ds="show">QRコードを画面に出す</button></div>' +
+        '<div class="ds-btns"><button type="button" class="wo-btn" data-ds="print">PDF印刷</button><a class="wo-btn is-qr" data-ds="phone" href="#" target="_blank" rel="noopener">このPC・スマホ・タブレットで作業画面を開く</a><button type="button" class="wo-btn is-show" data-ds="show">QRコードを画面に出す</button></div>' +
         '<p class="wk-state" role="status"></p><div class="ds-show"></div><button type="button" class="wk-close" data-ds="close">閉じる</button></div>';
       const status = host.querySelector('.wk-state');
       host.querySelector('[data-ds="close"]').addEventListener('click', function () { host.hidden = true; });
       host.onclick = function (e) { if (e.target === host) host.hidden = true; };
       host.querySelector('[data-ds="print"]').addEventListener('click', function () { printDaySheet(list, status); });
-      host.querySelector('[data-ds="phone"]').addEventListener('click', function () {
-        const box = host.querySelector('.ds-show'), btn = this;
-        if (!workServerOn()) { box.innerHTML = '<p class="sub">手元のファイルで開いているので、スマホの作業画面は使えません（VPSのOMSで開くと使えます）</p>'; return; }
-        // 押したことが分かるように、送っている間はボタンの文字を変える（2.58 林さん「反応しない」）
-        btn.disabled = true; btn.textContent = '準備しています…';
-        box.innerHTML = '';
-        daySheetReady(list, status).then(function () {
-          const link = workListLink(list);
-          box.innerHTML = '<div class="ds-phone"><div class="wk-qr">' + workQrSvg(link, 4) + '</div><div><p><b>スマホのカメラでこのQRコードを写してください。</b></p>' +
-            '<p class="sub">チェックした' + list.length + '件の注文がまとめて開きます。作業画面の「次の注文へ」や「この表の注文から選ぶ」で、次の注文に直接進めます。</p>' +
-            '<p><a class="ds-open-link" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">このパソコンまたはタブレットで作業画面を開く</a></p></div></div>';
-          box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-        }).catch(function (e) {
-          showToast('スマホで作業の準備ができませんでした: ' + (e && e.message ? e.message : e));
-          if (!status.textContent) status.textContent = 'スマホで作業の準備ができませんでした: ' + (e && e.message ? e.message : e);
-          status.classList.add('is-ng');
-        }).then(function () { btn.disabled = false; btn.textContent = 'スマホで作業'; });
+      // 2.58（林さん）: 「スマホで作業」ボタンはやめ、作業画面へ直接飛ぶボタンにした。開いた画面では、この表の注文を前へ・次へ・一覧から選べる
+      const phone = host.querySelector('[data-ds="phone"]');
+      phone.href = workServerOn() ? workListLink(list) : '#';
+      let ready = null;
+      phone.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (!workServerOn()) { status.textContent = '手元のファイルで開いているので、作業画面は使えません（VPSのOMSで開くと使えます）'; return; }
+        const w = window.open('about:blank', '_blank'); // 先に窓を開ける（あとで開くと止められるブラウザがあるため）
+        (ready || (ready = daySheetReady(list, status))).then(function () {
+          if (w) w.location.href = phone.href; else location.href = phone.href;
+        }).catch(function (err) {
+          ready = null;
+          if (w) w.close();
+          status.textContent = '作業画面の準備ができませんでした: ' + (err && err.message ? err.message : err); status.classList.add('is-ng');
+        });
       });
       host.querySelector('[data-ds="show"]').addEventListener('click', function () {
         const box = host.querySelector('.ds-show');

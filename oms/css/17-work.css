@@ -112,10 +112,7 @@
     .ds-btns { grid-template-columns: 1fr 1fr 1fr !important; }
     .ds-btns .wo-btn.is-qr { background: var(--sage); }
     .ds-btns .wo-btn.is-show { background: var(--champagne); }
-    .ds-phone { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 10px; }
-    .ds-phone .wk-qr { width: 220px; max-width: 100%; }
-    .ds-phone > div:last-child { flex: 1; min-width: 200px; }
-    .ds-open-link { display: inline-block; padding: 8px 14px; border-radius: 8px; background: var(--sage); color: #fff; text-decoration: none; font-weight: 700; }
+    a.wo-btn { display: flex; align-items: center; justify-content: center; text-align: center; text-decoration: none; line-height: 1.3; font-size: 14px; }
     .ds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; max-height: 50vh; overflow: auto; }
     .ds-grid figure { margin: 0; padding: 8px; border: 1px solid var(--line); border-radius: 10px; text-align: center; }
     .ds-grid svg { display: block; width: 100%; height: auto; }
