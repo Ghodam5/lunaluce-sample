@@ -31,7 +31,7 @@
           const link = workListLink(list);
           box.innerHTML = '<div class="ds-phone"><div class="wk-qr">' + workQrSvg(link, 4) + '</div><div><p><b>スマホのカメラでこのQRコードを写してください。</b></p>' +
             '<p class="sub">チェックした' + list.length + '件の注文がまとめて開きます。作業画面の「次の注文へ」や「この表の注文から選ぶ」で、次の注文に直接進めます。</p>' +
-            '<p><a class="ds-open-link" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">このパソコンで作業画面を開く</a></p></div></div>';
+            '<p><a class="ds-open-link" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">このパソコンまたはタブレットで作業画面を開く</a></p></div></div>';
         }, function () {});
       });
       host.querySelector('[data-ds="show"]').addEventListener('click', function () {
