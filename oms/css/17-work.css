@@ -105,3 +105,7 @@
     .wk-cm select, .wk-cm input { padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; font-size: 13px; min-width: 0; }
     .wk-cm button { padding: 7px 14px; border: 0; border-radius: 8px; background: var(--forest); color: #fff; font: inherit; font-size: 13px; cursor: pointer; }
     @media (max-width: 520px) { .wk-cm { grid-template-columns: 1fr; } }
+
+    /* 統合受注の「日付で作業QR表（PDF）」ボタン: 手動登録（シャンパンゴールド）と見分けるため、スマホ作業と同じ青緑 */
+    [data-part="order-filters"] .manual.ds-open { background: var(--sage); border-color: var(--sage); color: #fff; }
+    [data-part="order-filters"] .manual.ds-open:hover { background: #23867a; border-color: #23867a; }
