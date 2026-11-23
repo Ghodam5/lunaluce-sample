@@ -3,7 +3,7 @@
 var root=document.querySelector('[data-feature]');if(!root)return;
 var key=root.dataset.feature,definition=FEATURE_CATALOG.definitions[key],all=FEATURE_CATALOG.products.filter(function(p){return p.groups.indexOf(key)>=0}),pack='all';
 document.querySelectorAll('.cats a').forEach(function(a){a.classList.toggle('on',(a.getAttribute('href')||'')==='category.html?g='+definition.group)});
-var side=document.getElementById('sidecat');if(side)side.innerHTML='<h4>カテゴリ・特集</h4><ul><li class="cur"><a href="category.html?g='+definition.group+'">'+definition.groupTitle+'</a><ul>'+Object.values(FEATURE_CATALOG.definitions).filter(function(d){return d.group===definition.group}).map(function(d){return '<li'+(d===definition?' class="cur"':'')+'><a href="'+d.file+'">'+d.title+'</a></li>'}).join('')+'</ul></li><li><a href="category.html?g=all">すべての商品</a></li></ul>';
+var side=document.getElementById('sidecat');if(side)side.innerHTML='<h3>カテゴリ・特集</h3><ul><li class="cur"><a href="category.html?g='+definition.group+'">'+definition.groupTitle+'</a><ul>'+Object.values(FEATURE_CATALOG.definitions).filter(function(d){return d.group===definition.group}).map(function(d){return '<li'+(d===definition?' class="cur"':'')+'><a href="'+d.file+'">'+d.title+'</a></li>'}).join('')+'</ul></li><li><a href="category.html?g=all">すべての商品</a></li></ul>';
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function money(n){return n.toLocaleString('ja-JP')+'円'}
 function card(p){

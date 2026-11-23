@@ -62,9 +62,9 @@ function match(it,skip){var m=curMid();
 function sync(){var a=['g='+G.k];if(S.m)a.push('m='+S.m);if(S.s)a.push('s='+S.s);if(S.pr)a.push('p='+S.pr);if(S.q)a.push('q='+encodeURIComponent(S.q));if(S.n)a.push('n=1');if(S.f)a.push('f=1');if(S.o!=='rec')a.push('o='+S.o);try{history.replaceState(null,'','category.html?'+a.join('&'))}catch(e){}}
 function card(it){var tags=it.g.map(function(g){return '<span'+(g==='名入れ'?' class="n"':'')+'>'+esc(g)+'</span>'}).join('');
  var ph=it.i?'<img src="'+it.i+'" alt="'+esc(it.t)+'" loading="lazy" width="520" height="520">':'<span class="noimg">写真は準備中</span>';
- return '<a class="prod" href="'+esc(it.url||'item.html')+'"><div class="ph">'+ph+'</div><div class="b">'+(tags?'<div class="tags">'+tags+'</div>':'')+'<h4>'+esc(it.t)+'</h4><div class="price">'+it.pt+'<small> 税込</small></div></div></a>'}
+ return '<a class="prod" href="'+esc(it.url||'item.html')+'"><div class="ph">'+ph+'</div><div class="b">'+(tags?'<div class="tags">'+tags+'</div>':'')+'<h3>'+esc(it.t)+'</h3><div class="price">'+it.pt+'<small> 税込</small></div></div></a>'}
 document.getElementById('catv').innerHTML='<nav class="crumb" id="cr"></nav><div class="page-h"><h1 id="h1"></h1><p id="gd"></p></div><div class="mtabs" id="mtabs" role="tablist"></div><div class="subrow" id="subrow"></div>'
-+'<div id="rank"></div><div class="fbar"><form class="fsearch" onsubmit="return false"><input id="fq" type="search" placeholder="このなかで探す（例：ピンク、10個）" value="'+esc(S.q)+'"></form><button type="button" class="fbtn" id="fbtn">絞り込み<b id="fcnt"></b></button><select id="sortsel"><option value="rec">おすすめ順</option><option value="low">価格の安い順</option><option value="high">価格の高い順</option></select></div><div class="fpanel" id="fpanel"></div><div class="fsum" id="fsum"></div><div id="res"></div>';
++'<div id="rank"></div><div class="fbar"><form class="fsearch" onsubmit="return false"><input id="fq" type="search" placeholder="このなかで探す（例：ピンク、10個）" value="'+esc(S.q)+'"></form><button type="button" class="fbtn" id="fbtn">絞り込み<b id="fcnt"></b></button><select id="sortsel" aria-label="並び順"><option value="rec">おすすめ順</option><option value="low">価格の安い順</option><option value="high">価格の高い順</option></select></div><div class="fpanel" id="fpanel"></div><div class="fsum" id="fsum"></div><div id="res"></div>';
 var fq=document.getElementById('fq'),ss=document.getElementById('sortsel'),fp=document.getElementById('fpanel');ss.value=S.o;
 function chips(arr,cur,attr){return arr.map(function(x){return '<button type="button" class="chip'+(cur===x[0]?' on':'')+'" data-'+attr+'="'+esc(x[0])+'">'+esc(x[1])+'<small>'+x[2]+'</small></button>'}).join('')}
 function rangeName(r){for(var i=0;i<PRICES.length;i++)if(PRICES[i][0]===r)return PRICES[i][1];return r}
@@ -98,14 +98,14 @@ function render(){
  document.getElementById('fcnt').textContent=act.length?'（'+act.length+'）':'';
  document.getElementById('fsum').innerHTML='<span>'+list.length+'件を表示</span>'+act.map(function(a){return '<button type="button" class="tagx" data-x="'+a[0]+'">'+esc(a[1])+' ×</button>'}).join('')+(act.length?'<button type="button" class="clr" data-x="all">すべて解除</button>':'');
  var rk=document.getElementById('rank');
- if(list.length>=3&&!act.length){var top=list.slice().sort(function(a,b){return a.o-b.o}).slice(0,20);rk.innerHTML='<div class="rankbox"><h3>売れ筋 TOP'+top.length+' <small>迷ったらまずここから・横にスワイプ</small></h3><div class="rankrow">'+top.map(function(it,i){return '<a class="rkc" href="'+esc(it.url||'item.html')+'"><i>'+(i+1)+'</i><div class="ph">'+(it.i?'<img src="'+it.i+'" alt="" loading="lazy">':'<span class="noimg">準備中</span>')+'</div><b>'+esc(it.t)+'</b><span>'+it.pt+'</span></a>'}).join('')+'</div></div>'}else rk.innerHTML='';
+ if(list.length>=3&&!act.length){var top=list.slice().sort(function(a,b){return a.o-b.o}).slice(0,20);rk.innerHTML='<div class="rankbox"><h2>売れ筋 TOP'+top.length+' <small>迷ったらまずここから・横にスワイプ</small></h2><div class="rankrow">'+top.map(function(it,i){return '<a class="rkc" href="'+esc(it.url||'item.html')+'"><i>'+(i+1)+'</i><div class="ph">'+(it.i?'<img src="'+it.i+'" alt="" loading="lazy">':'<span class="noimg">準備中</span>')+'</div><b>'+esc(it.t)+'</b><span>'+it.pt+'</span></a>'}).join('')+'</div></div>'}else rk.innerHTML='';
  var r=document.getElementById('res');
  if(!list.length)r.innerHTML='<p class="note" style="margin:24px 0">この条件に合う商品は、サンプルにはありません。 <button type="button" class="clr" data-x="all">すべて解除</button></p>';
  else r.innerHTML='<div class="prods p4">'+list.slice(0,shown).map(card).join('')+'</div>'+(list.length>shown?'<div class="morewrap"><button type="button" class="morebtn" id="moreb">もっと見る（残り'+(list.length-shown)+'件）</button></div>':'')+'<p class="note" style="margin-top:14px">サンプルのため、掲載している商品の一部のみを表示しています。</p>';
  sync();renderTree();
 }
 function renderTree(){var side=document.getElementById('sidecat');
- side.innerHTML='<h4>カテゴリ</h4><ul>'+GROUPS.map(function(g){var cur=g===G;
+ side.innerHTML='<h3>カテゴリ</h3><ul>'+GROUPS.map(function(g){var cur=g===G;
   var sub=cur?'<ul>'+g.mids.map(function(x){return '<li'+(S.m===x.k?' class="cur"':'')+'><a href="category.html?g='+g.k+'&m='+x.k+'">'+esc(x.name)+'<span>'+midItems(x).length+'</span></a></li>'}).join('')+'</ul>':'';
   return '<li'+(cur?' class="cur"':'')+'><a href="category.html?g='+g.k+'">'+esc(g.name)+'<span>'+groupItems(g).length+'</span></a>'+sub+'</li>'}).join('')+'</ul>'}
 document.addEventListener('click',function(e){var t=e.target.closest('[data-m],[data-s],[data-pr],[data-tg],[data-x],#moreb,#fbtn');if(!t||!document.getElementById('catv').contains(t))return;

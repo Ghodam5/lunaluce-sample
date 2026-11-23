@@ -17,7 +17,7 @@
 
 /* 林さん追加指示：矢印専用の余白・下段をなくし、常に左右中央へ重ねる。 */
 .home-promos{padding-inline:0!important}.promo-side-arrow{display:grid;top:50%;bottom:auto;transform:translateY(-50%)}.promo-side-arrow.prev{left:2px}.promo-side-arrow.next{right:2px}.promo-side-arrow:hover:not(:disabled){transform:translateY(-50%) scale(1.06)}
-.promo-count{position:absolute;top:10px;right:10px;z-index:6;pointer-events:none;border-radius:10px;padding:2px 7px;background:rgba(38,48,58,.58);color:#fff;font-size:12px;font-variant-numeric:tabular-nums}
+.promo-count{position:absolute;top:10px;right:10px;z-index:6;pointer-events:none;border-radius:10px;padding:2px 7px;background:rgba(38,48,58,.72);color:#fff;font-size:12px;font-variant-numeric:tabular-nums}
 
 /* v47 共通ルール：操作が止まれば背面を読める薄さへ。ホバー中も静止すれば薄くなる。 */
 .round-arrow{opacity:.18;transition:opacity .3s ease,background-color .2s,transform .2s}
