@@ -4,14 +4,33 @@
 	# 前に立つ Traefik（Docker内の住所）から来た X-Forwarded-For を信じて、本当の相手の住所でログイン失敗を数える
 	servers {
 		trusted_proxies static private_ranges
+		# X-Forwarded-For を右（信じられる側）から読む。左端は相手が自由に書けるので、それで数えると失敗の数えを逃げられる
+		trusted_proxies_strict
 	}
 }
 :8080 {
-	header X-Robots-Tag "noindex, nofollow"
-	header Referrer-Policy "same-origin"
+	# 守りの見出し（2026-11-23 セキュリティ点検）
+	header {
+		X-Robots-Tag "noindex, nofollow"
+		Referrer-Policy "same-origin"
+		# いつも https で開かせる（1年）
+		Strict-Transport-Security "max-age=31536000"
+		# ファイルの種類を勝手に読み替えさせない
+		X-Content-Type-Options "nosniff"
+		# ほかのサイトの枠の中に OMS を出させない（だまして押させる手口を防ぐ）
+		?X-Frame-Options "DENY"
+		# ログイン画面は oms-auth がもっと厳しい決まりをつけるので、それがあるときはそちらを残す（先頭の ?）
+		?Content-Security-Policy "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+		# カメラ・マイク・位置は使わない
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		-Server
+	}
 	# 外から来た名前の見出しは捨てる（ログインの仕組みだけがつける）
 	request_header -X-OMS-User
 	request_header -X-OMS-Role
+	# ログインの仕組みが失敗を数えるための、本当の相手の住所（外から来た同じ見出しは上書きする）
+	request_header X-OMS-Client-IP {client_ip}
 	# ログインの仕組みがつけた権限が「作業員」のとき（forward_auth の後に見る）
 	@worker header X-OMS-Role worker
 

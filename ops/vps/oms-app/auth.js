@@ -57,6 +57,8 @@ function passProblem(pass, name) {
   return '';
 }
 const token = () => crypto.randomBytes(32).toString('base64url');
+// ログインの後に戻る先は、このサイトの中（/ で始まる）だけ。// や /\ は別のサイトへ飛べるので断る
+const safeNext = v => { v = String(v || ''); return /^\/(?![\/\\])[^\\\s\x00-\x1f]*$/.test(v) ? v : '/oms/'; };
 const sha = t => crypto.createHash('sha256').update(String(t)).digest('hex');
 const user = name => db.users.find(u => u.name === name);
 const isAdmin = u => !!u && (u.owner || u.role === 'admin');
@@ -66,6 +68,7 @@ const pub = u => ({ /* hash は出さない */ name: u.name, display: u.display 
 // 環境欄のパスワードが前回と変わったときだけ、オーナーのパスワードをそれに戻す（画面で変えたパスワードは再起動では消さない）
 function ensureOwner() {
   if (!OWNER_PASS) return;
+  if (passProblem(OWNER_PASS, OWNER)) console.error('注意: 環境欄の OMS_PASSWORD が弱いです（' + MIN_PASS + '文字以上・ログイン名を含まないものにしてください）');
   let u = user(OWNER);
   if (!u) {
     u = { name: OWNER, display: OWNER, createdAt: new Date().toISOString(), createdBy: '環境欄', hash: hashPass(OWNER_PASS) };
@@ -109,12 +112,15 @@ function setCookie(res, value, maxAge) {
 const fails = new Map();
 function locked(key) { const f = fails.get(key); return f && f.until > Date.now(); }
 function failed(key) {
+  // 数えるための表が大きくなりすぎないように（期限が切れたものから捨てる）
+  if (fails.size > 5000) { const now = Date.now(); for (const [k, v] of fails) if (v.until < now) fails.delete(k); if (fails.size > 5000) fails.clear(); }
   const f = fails.get(key) || { n: 0, until: 0 };
   f.n += 1;
   if (f.n >= MAX_FAILS) { f.until = Date.now() + LOCK_MS; f.n = 0; }
   fails.set(key, f);
 }
-const ipOf = req => String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
+// 相手の住所: Caddy が確かめてつけた X-OMS-Client-IP を使う（X-Forwarded-For の左端は相手が自由に書けるので使わない）
+const ipOf = req => String(req.headers['x-oms-client-ip'] || req.socket.remoteAddress || '').trim().slice(0, 64);
 
 // ---- 送受信 ----
 function send(res, code, obj) {
@@ -166,12 +172,12 @@ async function handle(req, res) {
     if (s) { res.writeHead(200, { 'x-oms-user': s.user.name, 'x-oms-role': isAdmin(s.user) ? 'admin' : (s.user.role === 'worker' ? 'worker' : 'staff') }); return res.end(); }
     const uri = String(req.headers['x-forwarded-uri'] || '/');
     if (uri.startsWith('/api/') || uri.startsWith('/work-api/')) return send(res, 401, { ok: false, error: 'ログインが切れました。画面を読み込み直してログインしてください', login: true });
-    res.writeHead(302, { location: '/login?next=' + encodeURIComponent(uri.startsWith('/') && !uri.startsWith('//') ? uri : '/oms/') });
+    res.writeHead(302, { location: '/login?next=' + encodeURIComponent(safeNext(uri)) });
     return res.end();
   }
 
   if (req.method === 'GET') {
-    if (p === '/login') return page(res, 'login', { next: url.searchParams.get('next') || '/oms/' });
+    if (p === '/login') return page(res, 'login', { next: safeNext(url.searchParams.get('next')) });
     if (p === '/forgot') return page(res, 'forgot');
     if (p === '/join') {
       const inv = db.invites.find(x => x.tokenHash === sha(url.searchParams.get('t') || '') && !x.used && x.expires > Date.now());
@@ -229,8 +235,7 @@ async function handle(req, res) {
     log('ログイン', u.name, ip);
     save();
     setCookie(res, t, Math.floor(SESSION_IDLE / 1000));
-    const next = String(body.next || '/oms/');
-    return send(res, 200, { ok: true, next: next.startsWith('/') && !next.startsWith('//') ? next : '/oms/' });
+    return send(res, 200, { ok: true, next: safeNext(body.next) });
   }
 
   if (p === '/auth/logout') {

@@ -3,6 +3,8 @@
 # 環境欄に入れるもの: POSTGRES_PASSWORD（oms-db と同じもの。林さんが入力）
 #                    KEEP_DAYS（写しを残す日数。省略時14日）
 # 写しは VPS 内の oms-backups に保存。VPSの外（Dropbox等）への持ち出しは次の段階で追加。
+# 2026-11-23 追加: アカウント・作業ログ（oms-auth-data。今いちばん大事な中身）も毎晩 tar.gz で写す（読み取り専用でつなぐ）。
+#   これを使うには hPanel で oms-backup の yaml をこの内容に差し替えて展開する（自動入れ替えの対象外）。
 services:
   backup:
     image: postgres:16-alpine
@@ -16,6 +18,7 @@ services:
       TZ: Asia/Tokyo
     volumes:
       - oms-backups:/backups
+      - oms-auth-data:/auth-data:ro
     networks: [oms-net]
     entrypoint: ["/bin/sh", "-c"]
     command:
@@ -33,7 +36,14 @@ services:
             echo "写しに失敗しました" >&2
             rm -f "$$f"
           fi
-          find /backups -name 'oms-*.dump' -mtime +$${KEEP_DAYS} -delete
+          a=/backups/auth-$$(date +%Y%m%d-%H%M).tar.gz
+          if tar -czf "$$a" -C /auth-data . && chmod 600 "$$a"; then
+            echo "アカウント・作業ログの写しを保存: $$a"
+          else
+            echo "アカウント・作業ログの写しに失敗しました" >&2
+            rm -f "$$a"
+          fi
+          find /backups \( -name 'oms-*.dump' -o -name 'auth-*.tar.gz' \) -mtime +$${KEEP_DAYS} -delete
         done
     mem_limit: 256m
 
@@ -44,3 +54,7 @@ networks:
 volumes:
   oms-backups:
     name: oms-backups
+  # oms-app が作ったアカウント・作業ログの入れ物（読み取り専用でつなぐ）
+  oms-auth-data:
+    name: oms-auth-data
+    external: true
