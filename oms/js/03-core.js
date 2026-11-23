@@ -41,7 +41,8 @@
       { id: 'builder', label: '6 サイトビルダー' },
       { id: 'channels', label: '7 販路と価格' },
       { id: 'voice', label: '8 お客様の声' },
-      { id: 'worklog', label: '9 作業ログ' }
+      { id: 'worklog', label: '9 作業ログ' },
+      { id: 'namerules', label: '10 名入れの決まり' }
     ];
     const CHANNELS = [
       { id: 'ALL', label: 'すべて' },
@@ -128,14 +129,17 @@
       return row.rates[index];
     }
 
-    function feeNumbers(order) {
-      const applies = !!order.extraCharApplies;
-      const count = applies ? Number(order.extraCharCount) || 0 : 0;
-      const extraTotal = applies ? 500 + 20 * count : 0;
+    // 文字数超過の金額は「10 名入れの決まり」（js/55-name-rules）の上限・基本料金・1文字の料金で計算する。coupleText は編集中の名入れ（省略時は注文の名入れ）
+    function feeNumbers(order, coupleText) {
+      const rule = state.nameRules ? state.nameRules.extra : { base: 500, per: 20 };
+      const count = state.nameRules ? nameExtraCount(order, coupleText) : 0;
+      const applies = count > 0;
+      const base = Number(rule.base) || 0, per = Number(rule.per) || 0;
+      const extraTotal = applies ? base + per * count : 0;
       return {
-        extraBase: applies ? 500 : 0,
+        extraBase: applies ? base : 0,
         extraCount: count,
-        extraPer: 20,
+        extraPer: per,
         extraTotal: extraTotal,
         noshi: Number(order.noshiFee) || 0,
         wrapping: Number(order.wrappingFee) || 0
@@ -154,6 +158,8 @@
       if (!order.partPer) order.partPer = { sweets: 1, box: 1, thanksCard: 1, miniSeal: 1 };
       if (order.extraCharApplies == null) order.extraCharApplies = false;
       if (order.extraCharCount == null) order.extraCharCount = 0;
+      if (order.extraCharManual === undefined) order.extraCharManual = null; // 手で入れた超過文字数（null なら名入れから自動で数える。js/55-name-rules）
+      nameSplitFont(order); // 「書体（色）」を書体と色に分ける
       if (order.noshiFee == null) order.noshiFee = 0;
       if (order.wrappingFee == null) order.wrappingFee = 0;
       if (order.campaignMark === undefined) order.campaignMark = null;
@@ -183,6 +189,8 @@
         delivery: order.deliveryDate || '',
         message: order.headerMsg,
         font: order.fontStyle,
+        color: order.textColor || '',
+        extraManual: order.extraCharManual == null ? '' : String(order.extraCharManual),
         noshi: order.noshiSeal,
         status: order.status,
         clearWarning: !order.warning

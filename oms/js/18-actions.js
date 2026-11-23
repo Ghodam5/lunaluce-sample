@@ -160,6 +160,8 @@
       order.deliveryDate = state.draft.delivery;
       order.headerMsg = state.draft.message;
       order.fontStyle = state.draft.font;
+      order.textColor = state.draft.color;
+      order.extraCharManual = state.draft.extraManual === '' ? null : Math.max(0, Number(state.draft.extraManual) || 0);
       order.noshiSeal = state.draft.noshi;
       workLogStatus(order, order.status, state.draft.status);
       order.status = state.draft.status;
@@ -223,7 +225,7 @@
         return;
       }
       if (kind === 'email') {
-        showToast(order.customerName + ' 様の校正確認を記録しました。メールの本番送信はまだありません。');
+        showToast('準備中です。いまはメールを送らず、記録も残りません（メールのやり取りは第2段階で作ります）');
         return;
       }
       if (kind === 'ship') {
@@ -264,7 +266,8 @@
         amount: 27300,
         coupleNames: document.getElementById('manual-couple').value.trim() || 'New Couple',
         headerMsg: 'THANK YOU FOR COMING',
-        fontStyle: FONT_OPTIONS[0],
+        fontStyle: state.nameRules.fonts.length ? state.nameRules.fonts[0].name : '',
+        textColor: '',
         noshiSeal: document.getElementById('manual-noshi').value.trim() || 'オリジナルタグ',
         status: '新規受付',
         warning: null,

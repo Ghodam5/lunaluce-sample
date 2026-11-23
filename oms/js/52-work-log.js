@@ -31,7 +31,7 @@
         orderDate: order.orderDate, headerMsg: order.headerMsg, design: designView(order).headline, noshi: order.noshiSeal,
         warning: order.warning || '', rush: order.rushTicket ? 'yes' : '', status: order.status,
         items: orderedItems(order).map(function (it) { return { kind: it.kind, label: it.label, src: it.src }; }),
-        texts: [['上の一文', order.headerMsg], ['お名前', order.coupleNames], ['日付', dotted(order.weddingDate)], ['のしの上（表書き）', order.noshiUpper], ['のしの下（お名前）', order.noshiName], ['のし・シール', order.noshiSeal]].filter(function (r) { return r[1]; }),
+        texts: [['上の一文', order.headerMsg], ['お名前', order.coupleNames], ['日付', dotted(order.weddingDate)], ['のしの上（表書き）', order.noshiUpper], ['のしの下（お名前）', order.noshiName], ['のし・シール', order.noshiSeal], ['書体', order.fontStyle], ['色（文字・箔）', order.textColor]].filter(function (r) { return r[1]; }),
         parts: PART_KEYS.map(function (p) { return [p.label, String(counts[p.key])]; }).filter(function (r) { return r[1] !== '0'; }),
         steps: workStepsOf(order)
       };

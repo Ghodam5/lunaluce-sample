@@ -59,9 +59,9 @@
       return selected.length ? selected : state.orders.slice(0, 3);
     }
     function laserCsv() {
-      const header = '注文ID,販路,挙式日,商品SKU,数量,新郎新婦名,印字日付,見出し,書体,熨斗シール,キャンペーン印';
+      const header = '注文ID,販路,挙式日,商品SKU,数量,新郎新婦名,印字日付,見出し,書体,色,熨斗シール,キャンペーン印';
       const rows = csvTargets().map(function (order) {
-        return [order.id, order.channelLabel, order.weddingDate, order.sku, order.qty, '"' + order.coupleNames + '"', dotted(order.weddingDate), '"' + order.headerMsg + '"', '"' + order.fontStyle + '"', '"' + order.noshiSeal + '"', order.campaignMark ? '"' + order.campaignMark + '"' : 'なし'].join(',');
+        return [order.id, order.channelLabel, order.weddingDate, order.sku, order.qty, '"' + order.coupleNames + '"', dotted(order.weddingDate), '"' + order.headerMsg + '"', '"' + (order.fontStyle || '') + '"', '"' + (order.textColor || '') + '"', '"' + order.noshiSeal + '"', order.campaignMark ? '"' + order.campaignMark + '"' : 'なし'].join(',');
       });
       return [header].concat(rows).join('\n');
     }

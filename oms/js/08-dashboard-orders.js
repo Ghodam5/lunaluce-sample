@@ -80,7 +80,7 @@
           ['販路 / 注文番号', '<span class="badge ch-' + order.channel + '">' + escapeHtml(order.channelLabel) + '</span><br>' + escapeHtml(order.id)],
           ['注文者 / 配送先', escapeHtml(order.customerName) + ' 様<br>' + escapeHtml(piiText(order.shippingTo))],
           ['商品・数量・金額', escapeHtml(order.productName) + '<br>' + escapeHtml(order.sku) + ' × ' + order.qty + '点 ' + formatYen(order.amount) + '<br>内訳 ' + PART_KEYS.map(function (part) { return part.short + counts[part.key]; }).join('・')],
-          ['名入れ', escapeHtml(order.coupleNames) + (order.warning ? ' <span class="mini soon">要確認</span>' : ' <span class="mini done">正規化済</span>') + '<br>' + escapeHtml(order.fontStyle)],
+          ['名入れ', escapeHtml(order.coupleNames) + (order.warning ? ' <span class="mini soon">要確認</span>' : ' <span class="mini done">正規化済</span>') + '<br>' + escapeHtml([order.fontStyle, order.textColor].filter(Boolean).join('・'))],
           ['オプション・料金・印', escapeHtml(order.noshiSeal) + '<br>' + escapeHtml(extra) + '<br>のし ' + formatYen(fees.noshi) + ' / 包装 ' + formatYen(fees.wrapping) + (order.campaignMark ? '<br><span class="mini mark">「' + escapeHtml(order.campaignMark) + '」</span>' : '')],
           ['期限', '賞味 ' + escapeHtml(order.bestBefore || 'なし') + '<br>' + (clock.within ? '13:00まで（内） ' : '13:00過ぎ ') + escapeHtml(clock.time)],
           ['工程', '<select data-action="quick-status" data-id="' + escapeHtml(order.id) + '" aria-label="工程">' + statusOptions(order.status) + '</select><br>校正: ' + escapeHtml(order.proofStatus) + '<br>' + (order.stockCommitted ? '在庫引当済' : '在庫未確定')]
