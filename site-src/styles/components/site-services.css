@@ -16,7 +16,7 @@
 .store-bar b{background:#7a5c3e;color:#fff;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700}
 @media(max-width:700px){.store-bar-in{justify-content:flex-start}}
 .store-ft{margin-top:22px;padding:14px 16px;border:1px solid #e6dccb;border-radius:10px;background:#fbf8f2}
-.store-ft h5{margin:0 0 6px}
+.store-ft h2,.store-ft h5{margin:0 0 6px}
 .store-ft ul{margin:0;padding-left:1.2em;font-size:13px;line-height:1.8}
 .store-ft-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin:8px 0 0;font-size:13px}
 .store-ship{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}

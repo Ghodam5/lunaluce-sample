@@ -73,7 +73,7 @@
 .rk{position:absolute;top:0;left:10px;z-index:2;width:28px;height:36px;background:var(--gold);color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;clip-path:polygon(0 0,100% 0,100% 100%,50% 80%,0 100%)}
 .rk.r2{background:#a8b3bb}.rk.r3{background:#c58b5c}.rk.rn{background:var(--sub)}
 .prod .b{padding:10px 12px 12px}
-.prod h4{font-size:12.5px;font-weight:500;line-height:1.55;height:3.1em;overflow:hidden}
+.prod h4,.prod h3:not(.detail-related *){font-size:12.5px;font-weight:500;line-height:1.55;height:3.1em;overflow:hidden}
 .prod .price{font-size:16px;font-weight:900;margin-top:4px}
 .prod .price small{font-size:10.5px;font-weight:400;color:var(--sub)}
 
@@ -162,7 +162,7 @@ body.item{padding-bottom:calc(var(--tabh,62px) + var(--buyh,70px) + 12px)}
 /* フッター */
 footer.ft{background:#fff;border-top:4px solid var(--teal);margin-top:56px;padding:34px 0 30px;font-size:13px}
 .ft-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-.ft h5{font-size:13px;font-weight:900;margin-bottom:6px}
+.ft h2,.ft h5{font-size:13px;font-weight:900;margin-bottom:6px}
 .ft li{list-style:none;margin:4px 0;color:var(--sub)}
 .malls{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .malls span{font-size:11px;border:1px solid var(--line);border-radius:6px;padding:3px 10px;color:var(--sub)}
@@ -171,8 +171,8 @@ footer.ft{background:#fff;border-top:4px solid var(--teal);margin-top:56px;paddi
 /* 右の欄（PCだけ） */
 .side{display:none}
 .side .box2{background:#fff;border-radius:16px;padding:16px 18px;margin-bottom:16px}
-.side h4{font-size:14px;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.side h4::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--teal)}
+.side h3,.side h4{font-size:14px;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.side h3::before,.side h4::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--teal)}
 .side ul{list-style:none}
 .side li a{display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;border-bottom:1px dashed var(--line)}
 .side li a span{color:var(--sub);font-size:12px}

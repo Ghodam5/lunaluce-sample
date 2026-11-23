@@ -47,7 +47,7 @@ function rowHtml(s) {
     const p = product(id);
     const name = (p.tags || []).includes('名入れ') ? '<span class="n">名入れ</span>' : '';
     const img = p.image ? '<img src="' + esc(p.image) + '" alt="' + esc(p.title) + '" loading="lazy" width="520" height="520">' : '';
-    return '<a class="prod" href="item.html?id=' + esc(id) + '"><div class="ph">' + img + '</div><div class="b"><div class="tags">' + name + '</div><h4>' + esc(p.title) + '</h4><div class="price">' + Number(p.price).toLocaleString('ja-JP') + '円<small> 税込</small></div></div></a>';
+    return '<a class="prod" href="item.html?id=' + esc(id) + '"><div class="ph">' + img + '</div><div class="b"><div class="tags">' + name + '</div><h3>' + esc(p.title) + '</h3><div class="price">' + Number(p.price).toLocaleString('ja-JP') + '円<small> 税込</small></div></div></a>';
   }).join('');
   return '<section class="rowsec" data-home-row="' + esc(s.id) + '"><div class="row-h"><h2>' + esc(s.title) + (s.sub ? ' <small>' + esc(s.sub) + '</small>' : '') + '</h2>\n' +
     (href ? '<a class="all" href="' + href + '">すべて見る ›</a>' : '') + '</div>\n' +

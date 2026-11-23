@@ -97,8 +97,8 @@
 .morewrap{text-align:center;margin:20px 0 6px}
 .morebtn{border:2px solid var(--teal);background:#fff;color:var(--teal-d);font-weight:800;font-size:14px;border-radius:999px;padding:12px 34px;cursor:pointer}
 .rankbox{background:#fff;border-radius:14px;padding:12px 14px;margin:12px 0}
-.rankbox h3{font-size:14px;font-weight:900}
-.rankbox h3 small{font-weight:400;color:var(--sub);font-size:12px;margin-left:6px}
+.rankbox h2,.rankbox h3{font-size:14px;font-weight:900}
+.rankbox h2 small,.rankbox h3 small{font-weight:400;color:var(--sub);font-size:12px;margin-left:6px}
 .rankrow{display:flex;gap:10px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none}
 .rkc{flex:0 0 120px;position:relative;font-size:12px}
 .rkc .ph{aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:var(--bg)}
