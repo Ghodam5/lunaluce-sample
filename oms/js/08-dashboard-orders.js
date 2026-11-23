@@ -52,7 +52,7 @@
         const reset = (state.onlyUrgent || state.onlyWarning)
           ? '<button type="button" class="reset" data-action="reset-special">× 特別絞り込み解除</button>'
           : '';
-        host.innerHTML = '<div class="block"><span class="cap">販路:</span>' + channels + '</div><div class="block"><label class="search-wrap">検索<input data-action="search" type="search" placeholder="注文番号・顧客名・新郎新婦名・商品名・SKU（あいまいでも探せます）" autocomplete="off" value="' + escapeHtml(search) + '"></label><button type="button" class="manual" data-action="open-manual">＋ 電話・FAX注文 手動登録</button><button type="button" class="manual ds-open" data-action="day-sheet">日付で作業QR表（PDF）</button></div><div class="block status"><span class="cap">工程:</span>' + statuses + reset + '</div>';
+        host.innerHTML = '<div class="block"><span class="cap">販路:</span>' + channels + '</div><div class="block"><label class="search-wrap">検索<input data-action="search" type="search" placeholder="注文番号・顧客名・新郎新婦名・商品名・SKU（あいまいでも探せます）" autocomplete="off" value="' + escapeHtml(search) + '"></label><button type="button" class="manual" data-action="open-manual">＋ 電話・FAX注文 手動登録</button></div><div class="block status"><span class="cap">工程:</span>' + statuses + reset + '</div>';
       }
       paint();
       on('oms:filters', paint);
@@ -103,7 +103,7 @@
           const onSort = sortKey === item[0];
           return '<button type="button" data-action="sort-orders" data-sort="' + item[0] + '" class="' + (onSort ? 'is-on' : '') + '" aria-pressed="' + (onSort ? 'true' : 'false') + '">' + item[1] + '</button>';
         }).join('');
-        host.innerHTML = '<div class="list-head"><h2>' + sortTitle + '</h2><div class="sort" role="group" aria-label="並び順"><span class="cap">並び:</span>' + sorts + '</div><p class="hint">納期は納品日、挙式日は挙式の日付です。近い日付が上です。行を開くと、内訳・図柄の見本・受注管理表が出ます</p><label class="select-all"><input id="select-all" type="checkbox" data-action="toggle-all"' + (allOn ? ' checked' : '') + '>すべて選択</label><p class="count">表示: ' + rows.length + '件 / 全' + state.orders.length + '件</p><p class="count">選択中: ' + selected + '件</p><button type="button" class="batch" data-action="open-simulator">選択注文の加工・送り状CSVを生成</button></div>' + (rows.length ? rows.map(card).join('') : '<p class="empty">該当する注文はありません</p>');
+        host.innerHTML = '<div class="list-head"><h2>' + sortTitle + '</h2><div class="sort" role="group" aria-label="並び順"><span class="cap">並び:</span>' + sorts + '</div><p class="hint">納期は納品日、挙式日は挙式の日付です。近い日付が上です。行を開くと、内訳・図柄の見本・受注管理表が出ます</p><label class="select-all"><input id="select-all" type="checkbox" data-action="toggle-all"' + (allOn ? ' checked' : '') + '>すべて選択</label><p class="count">表示: ' + rows.length + '件 / 全' + state.orders.length + '件</p><p class="count">選択中: ' + selected + '件</p><button type="button" class="batch" data-action="open-simulator">選択注文の加工・送り状CSVを生成</button><button type="button" class="batch ds-open" data-action="day-sheet">作業QR表（PDF印刷）</button></div>' + (rows.length ? rows.map(card).join('') : '<p class="empty">該当する注文はありません</p>');
       }
       paint();
       on('oms:list', paint);

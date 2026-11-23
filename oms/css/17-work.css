@@ -59,7 +59,7 @@
     #work-order-print .wo-qr svg { display: block; width: 22mm; height: 22mm; }
 
     /* 日付で作業QR表（js/54-day-sheet） */
-    .ds-sheet { width: min(480px, 100%); }
+    .ds-sheet { width: min(640px, 100%); }
     .ds-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
     .ds-form label { display: grid; gap: 4px; font-size: 12px; color: var(--taupe); }
     .ds-form input[type="date"], .ds-form select { padding: 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
@@ -106,6 +106,14 @@
     .wk-cm button { padding: 7px 14px; border: 0; border-radius: 8px; background: var(--forest); color: #fff; font: inherit; font-size: 13px; cursor: pointer; }
     @media (max-width: 520px) { .wk-cm { grid-template-columns: 1fr; } }
 
-    /* 統合受注の「日付で作業QR表（PDF）」ボタン: 手動登録（シャンパンゴールド）と見分けるため、スマホ作業と同じ青緑 */
-    [data-part="order-filters"] .manual.ds-open { background: var(--sage); border-color: var(--sage); color: #fff; }
-    [data-part="order-filters"] .manual.ds-open:hover { background: #23867a; border-color: #23867a; }
+    /* 統合受注の「作業QR表（PDF印刷）」ボタン（選択注文のCSVボタンの右）: スマホ作業と同じ青緑 */
+    [data-part="order-list"] .batch.ds-open { background: var(--sage); border-color: var(--sage); color: #fff; }
+    [data-part="order-list"] .batch.ds-open:hover { background: #23867a; border-color: #23867a; }
+    .ds-btns { grid-template-columns: 1fr 1fr 1fr !important; }
+    .ds-btns .wo-btn.is-qr { background: var(--sage); }
+    .ds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; max-height: 50vh; overflow: auto; }
+    .ds-grid figure { margin: 0; padding: 8px; border: 1px solid var(--line); border-radius: 10px; text-align: center; }
+    .ds-grid svg { display: block; width: 100%; height: auto; }
+    .ds-grid figcaption { font-size: 11px; color: var(--taupe); }
+    .ds-grid figcaption b { display: block; color: var(--ink); }
+    @media (max-width: 520px) { .ds-btns { grid-template-columns: 1fr !important; } }
