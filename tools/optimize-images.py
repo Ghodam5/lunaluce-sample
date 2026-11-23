@@ -5,6 +5,7 @@
   python3 tools/optimize-images.py            # images/ 全体を確認だけ（何も書き換えない）
   python3 tools/optimize-images.py --write    # 実際に書き換える
   python3 tools/optimize-images.py --write images/new-photo.jpg   # 1枚だけ
+  python3 tools/optimize-images.py --hero images/main-flavor.jpg  # トップの大きな写真のスマホ用（-1100.webp）を作る（v75）
 
 やること（ファイル名は変えない。参照しているHTML・JSON・OMSはそのまま動く）:
   - 画質100相当で保存された大きなJPEG（量子化テーブル平均が4以下）だけを、画質85・色の間引きなし(4:4:4)・プログレッシブで保存し直す。
@@ -12,6 +13,8 @@
   - 2000pxを超える辺は2000pxに縮める（スマホ3倍・PC2倍でも足りる大きさ）。
   - CMYKのJPEGは色が変わるおそれがあるので触らない。
   - 2割以上小さくならないときは元のまま。
+--hero: トップのメッセージのカードの写真から、横1100pxのWebP（例 images/main-flavor-1100.webp）を作る。
+  元の写真はそのまま。ページを作り直す（node tools/build-site.cjs）と、スマホでは小さい方が自動で使われる。
 PNG・GIF・SVGは触らない（特集バナーPNGは別名の .jpg を作って参照を切り替え済み、元のPNGも残す）。
 Pillow が必要（pip install Pillow）。
 """
@@ -62,7 +65,22 @@ def optimize(path, write):
     return before, after
 
 
+def make_hero(path):
+    im = Image.open(path)
+    if im.size[0] <= 1100:
+        print(f'{path}: 横{im.size[0]}pxなので作りません（1100pxより大きい写真だけ）')
+        return
+    h = round(im.size[1] * 1100 / im.size[0])
+    out = os.path.splitext(path)[0] + '-1100.webp'
+    im.convert('RGB').resize((1100, h), Image.LANCZOS).save(out, 'WEBP', quality=82, method=6)
+    print(f'作成: {out} {os.path.getsize(out) // 1024}KB（元 {os.path.getsize(path) // 1024}KB）')
+
+
 def main():
+    if '--hero' in sys.argv:
+        for f in [a for a in sys.argv[1:] if not a.startswith('--')]:
+            make_hero(f)
+        return
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     write = '--write' in sys.argv
     files = []

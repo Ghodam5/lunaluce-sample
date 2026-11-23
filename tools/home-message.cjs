@@ -60,7 +60,11 @@ function check(row, id, ok) {
 function card(row, first) {
   const tag = first ? 'h1' : 'h2';
   const wh = imageSize(row.image);
-  const img = '<img src="' + esc(row.image) + '" alt="' + esc(row.alt || '') + '"' + (wh ? ' width="' + wh[0] + '" height="' + wh[1] + '"' : '') + (first ? ' fetchpriority="high"' : ' loading="lazy"') + '>';
+  // スマホ用の小さい写真（同じ名前の -1100.webp。tools/optimize-images.py --hero で作る）があれば、画面に合う方をブラウザが選ぶ。無ければ元の写真だけ。
+  // 写真は高さ220pxに合わせて切り抜くので、横幅はどの画面でも約580px分を描く（sizes）
+  const small = String(row.image).replace(/\.(jpe?g|png)$/i, '-1100.webp');
+  const srcset = small !== row.image && fs.existsSync(path.join(root, small)) && wh && wh[0] > 1100 ? ' srcset="' + esc(small) + ' 1100w, ' + esc(row.image) + ' ' + wh[0] + 'w" sizes="580px"' : '';
+  const img = '<img src="' + esc(row.image) + '"' + srcset + ' alt="' + esc(row.alt || '') + '"' + (wh ? ' width="' + wh[0] + '" height="' + wh[1] + '"' : '') + (first ? ' fetchpriority="high"' : ' loading="lazy"') + '>';
   const fx = row.effect || 'petals';
   const petals = fx === 'none' ? '' : ['l1', 'l2', 'l3', 'r1', 'r2', 'r3'].map(c => '<i class="pt ' + c + '"></i>').join('');
   const btns = row.buttons.map(b => '<a class="btn ' + STYLES[b.style] + '" href="' + esc(b.href) + '">' + esc(b.label) + '</a>').join('');

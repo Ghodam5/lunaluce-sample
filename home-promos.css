@@ -37,3 +37,8 @@
 .main-bn[data-fx="sparkle"] .ph .pt{width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#fff 0 30%,rgba(255,244,214,.6) 55%,transparent 72%);box-shadow:0 0 8px 2px rgba(255,248,225,.9);animation:heroTwinkle 3.2s ease-in-out infinite}
 .main-bn[data-fx="sparkle"] .ph .pt.l1{top:18%;animation-delay:0s}.main-bn[data-fx="sparkle"] .ph .pt.l2{top:62%;animation-delay:1.1s}.main-bn[data-fx="sparkle"] .ph .pt.l3{top:35%;animation-delay:2s}.main-bn[data-fx="sparkle"] .ph .pt.r1{top:22%;animation-delay:.6s}.main-bn[data-fx="sparkle"] .ph .pt.r2{top:55%;animation-delay:1.7s}.main-bn[data-fx="sparkle"] .ph .pt.r3{top:40%;animation-delay:2.5s}
 @keyframes heroTwinkle{0%,100%{transform:scale(.3);opacity:0}45%{transform:scale(1.15);opacity:1}60%{transform:scale(.9);opacity:.85}}
+/* v75 スマホの表示速度対策：画面の外にある商品の段は、見える位置に来るまで描画を後回しにする（見た目は同じ。仮の高さは画面幅ごとの実測値で、余白を除いた中身の高さ） */
+.rowsec{content-visibility:auto;contain-intrinsic-size:auto 307px;overflow-clip-margin:48px}
+@media(min-width:768px){.rowsec{contain-intrinsic-size:auto 485px}}
+@media(min-width:1024px){.rowsec{contain-intrinsic-size:auto 330px}}
+.hero~.sec{content-visibility:auto;contain-intrinsic-size:auto 400px;overflow-clip-margin:48px}
