@@ -1,7 +1,7 @@
 /* ルナルーチェ 新サイト サンプル 案4デザイン版（スマホが基本・PCは右の欄つき）2026-11-15 Claude Code */
 :root{
-  --teal:#2fa9a3; --teal-d:#1f8781; --teal-l:#e6f5f4; --coral:#ef7a6d; --coral-d:#d9604f; --coral-l:#fde6e2;
-  --ink:#26303a; --sub:#6b7680; --line:#e4e9ec; --bg:#f6f8f9; --white:#fff; --gold:#c9a45c; --yellow:#ffd86b; --cream:#fffaf2;
+  --teal:#217c77; --teal-d:#1a726d; --teal-l:#e6f5f4; --coral:#b45c52; --coral-d:#bf3c29; --coral-l:#fde6e2;
+  --ink:#26303a; --sub:#606a73; --line:#e4e9ec; --bg:#f6f8f9; --white:#fff; --gold:#c9a45c; --yellow:#ffd86b; --cream:#fffaf2;
   --sans:"Noto Sans JP","Hiragino Sans","Yu Gothic UI",sans-serif; --latin:"Cormorant Garamond",serif; --script:"Great Vibes",cursive;
 }
 *{box-sizing:border-box;margin:0;padding:0}

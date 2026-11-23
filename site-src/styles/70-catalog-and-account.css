@@ -76,7 +76,7 @@
 .chip{text-decoration:none}
 .toolbar span{align-self:center;font-size:12px;color:var(--sub);white-space:nowrap}
 .prod .ph .noimg{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:120px;background:repeating-linear-gradient(135deg,#f4efe8 0 10px,#faf6f0 10px 20px);color:var(--sub);font-size:12px;font-weight:700;text-align:center}
-.cats a.on{color:var(--teal);font-weight:900}
+.cats a.on{color:var(--teal-d);font-weight:900}
 
 /* ===== 絞り込み・検索・売れ筋 ===== */
 .fbar{display:flex;gap:8px;margin:14px 0 8px;flex-wrap:wrap}
