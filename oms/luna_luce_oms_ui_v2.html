@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Luna Luce OMS 2.51
+Luna Luce OMS 2.52
 この画面を新しく作るか広げるたびに、見える版を 0.1 上げる。
 
 2.7 から部品ごとのファイルに分けた（見た目と動きは2.6と同じ）。
@@ -90,6 +90,7 @@ Luna Luce OMS 2.51
 2.43 で受注明細の「ミニシールの図柄」を「ミニシール・ラッピングの図柄」にし、ミニシールの横にラッピング（包装紙）の図柄を並べた（js/16-drawer wrapBlock）。注文で包装紙が指定されているか担当者が選んだときに出し、「ラッピングを外す」で未指定に戻せる。
 2.44 で受注明細の図柄欄を「ご注文の品」にし、受けた品（商品・ミニシール・のし・ラッピング・小袋・紙袋/ブライダルバッグ）の画像を全部並べた（js/44-option-catalog orderedItems）。小袋の季節限定とギフト用紙袋の宣伝画像を外し、紙袋は実物写真に替えた。作業指示書（js/45-work-order・css/13-work-order）を追加。受注明細の「作業指示書を印刷・PDF保存」で、特急を一番上、納期・挙式日・賞味期限・数量、注文品の縮小画像、入れる文字、部品内訳（チェック欄付き）、寸法、料金、工程チェック（大きめの□・担当・日付）、印刷イメージ、受注管理表をA4に組み直して印刷する。図柄の見本一覧・実寸PDFの注意などは載せない。
 2.45 で商品の登録・編集の写真（2枚目以降・サムネイル）が出ない不具合を直した。原因は2つ: サイトの商品データの写真が {src, alt…} の形になっていたのに、ビルダーが文字列として扱っていた（tools/oms-builder-data.cjs と js/24-builder-products で src を取り出すように）。もう1つは商品の詳しい写真 images/product-details/ がこのブランチに無く、VPSに届いていなかった（main から684枚を取り込み）。
+2.52 で受注明細の「工程の流れ・作業の記録」を明細の上の方に移し、パソコンでも工程ごとに「終わった」「取り消す」（2回押しで取り消し）とコメントを付けられるようにした。スマホと同じ作業ログに残る（js/52-work-log renderDrawerWorkLog）。
 2.51 で統合受注に「日付で作業QR表（PDF）」を足した（日付と、納期・挙式日・受付日のどれで選ぶか → その日の注文を1枚の表にしてPDF保存・印刷。1行に注文ごとのスマホ作業用QR・注文番号・商品・数・名入れ・日付・工程・済の欄。住所などは載せない。js/54-day-sheet）。スマホの作業画面に「QRを読む」ボタン（カメラでQRを写すと注文が開く。iPhone・Android。vendor/jsQR.js、work/work-scan.js）。
 2.50 で工程と作業ログをサーバーに残すようにした（林さんの開発依頼書 第1段階）。受注明細の出力を「PDF保存・PDF印刷・スマホで作業開始」の3つにし、作業指示書の右上にQRコード（iPhoneで写すと work.html のスマホ作業画面。工程ごとに「終わった」・取り消し・コメント）。受注明細に「作業の記録」、タブ「9 作業ログ」（フリーワード・注文番号・お客様・新郎新婦・商品・SKU・人・工程・日付で探す）。統合受注の検索はあいまい検索（全角半角・カナかな・記号・1文字ちがい）にして候補を出す（js/51-fuzzy・52-work-log・53-work-log-tab・css/17-work・work.html・work/・vendor/qrcode.js）。作業員のログインでは住所・電話・メール・お届け先・受信メモ・送り状CSVを出さず、タブは1と9だけ。サーバーは ops/vps/oms-app/work.js（vps-oms-setup）。
 2.49 で看板に「写真の上の演出」を足した（花びら＝いままで・雪・紙吹雪・キラキラ・なし。看板ごと。右の見本でも動く。サイトの effect、v72）。
@@ -166,7 +167,7 @@ setCarrierMode, setCarrierZone, setCarrierSize, pickMiniSeal
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luna Luce OMS 2.51｜統合受注・名入れ制作管理</title>
+  <title>Luna Luce OMS 2.52｜統合受注・名入れ制作管理</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet" />

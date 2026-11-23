@@ -92,3 +92,16 @@
     #day-sheet-print .ds-done::before { content: ""; display: block; width: 9mm; height: 9mm; border: 1.5px solid #111; }
     #day-sheet-print .ds-warn { font-weight: 700; }
     #day-sheet-print .ds-table td:nth-child(5) { white-space: nowrap; }
+
+    /* 受注明細の工程の流れ（パソコンでも終わった・取り消し） */
+    [data-part="drawer-worklog"] .wk-steps li { align-items: center; }
+    [data-part="drawer-worklog"] .wk-steps li > div { display: grid; }
+    .wk-progress { margin: 0 0 6px; font-size: 13px; }
+    .wk-done, .wk-undo { flex: none; min-width: 96px; padding: 7px 12px; border-radius: 8px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .wk-done { border: 0; background: var(--forest); color: #fff; }
+    .wk-undo { border: 1px solid var(--line); background: var(--white); color: var(--taupe); }
+    .wk-undo.is-armed { background: var(--urgent); border-color: var(--urgent); color: #fff; }
+    .wk-cm { display: grid; grid-template-columns: 140px 1fr auto; gap: 6px; margin: 6px 0 10px; }
+    .wk-cm select, .wk-cm input { padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; font-size: 13px; min-width: 0; }
+    .wk-cm button { padding: 7px 14px; border: 0; border-radius: 8px; background: var(--forest); color: #fff; font: inherit; font-size: 13px; cursor: pointer; }
+    @media (max-width: 520px) { .wk-cm { grid-template-columns: 1fr; } }

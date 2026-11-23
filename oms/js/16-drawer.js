@@ -366,6 +366,7 @@
 
     const DRAWER_PARTS = [
       { name: 'drawer-warning', render: renderDrawerWarning },
+      { name: 'drawer-worklog', render: function (host) { renderDrawerWorkLog(host); } }, // 工程の流れ（終わった・取り消し）。本体は js/52-work-log
       { name: 'drawer-preview', render: renderDrawerPreview },
       { name: 'drawer-miniseal', render: renderDrawerMiniseal },
       { name: 'drawer-catalog', render: function (host) { renderDrawerCatalog(host); } }, // 本体は js/44-option-catalog
@@ -380,8 +381,7 @@
       { name: 'drawer-stock', render: renderDrawerStock },
       { name: 'drawer-edit', render: renderDrawerEdit },
       { name: 'drawer-raw', render: renderDrawerRaw },
-      { name: 'drawer-actions', render: renderDrawerActions },
-      { name: 'drawer-worklog', render: function (host) { renderDrawerWorkLog(host); } } // 本体は js/52-work-log
+      { name: 'drawer-actions', render: renderDrawerActions }
     ];
     function renderDrawer(host) {
       host.innerHTML = '<div class="drawer-backdrop" data-action="close-drawer" hidden></div><aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden><div data-slot="head"></div><div class="drawer-body" data-slot="body"></div></aside>';

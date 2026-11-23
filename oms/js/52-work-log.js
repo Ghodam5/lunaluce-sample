@@ -86,22 +86,59 @@
     }
 
     // 受注明細の「作業の記録」（工程の進み具合とログ。VPSのOMSで開いたときだけ）
+    // 受注明細の「工程の流れ」: パソコンでも工程ごとに「終わった」を付けたり取り消したりできる（スマホと同じ作業ログに残る）
     function renderDrawerWorkLog(host) {
+      let armed = '';
       function paint() {
         const order = currentOrder();
         if (!order || !workServerOn()) { host.innerHTML = ''; return; }
-        host.innerHTML = '<h3>作業の記録</h3><p class="sub">スマホの作業画面で押した工程とコメント。誰が・いつ・何をしたかが残ります（直したり消したりはできません）</p><div class="wk-log">読み込み中…</div>';
+        host.innerHTML = '<h3>工程の流れ・作業の記録</h3><p class="sub">工程ごとに「終わった」を付ける・取り消すと、スマホで押したのと同じように作業ログに残ります（誰が・いつ・何をしたか。記録は消えません）</p><div class="wk-log">読み込み中…</div>';
+        load(order);
+      }
+      function load(order) {
+        workApi('GET', '/order?id=' + encodeURIComponent(order.id)).then(function (r) { show(order, r); }, function (e) {
+          const box = host.querySelector('.wk-log'); if (box) box.textContent = '読み込めませんでした: ' + e.message;
+        });
+      }
+      function show(order, r) {
+        if (state.currentId !== order.id) return;
         const box = host.querySelector('.wk-log');
-        workApi('GET', '/order?id=' + encodeURIComponent(order.id)).then(function (r) {
-          if (state.currentId !== order.id) return;
-          const done = r.state && r.state.steps || {};
-          const steps = (r.card ? r.card.steps : workStepsOf(order)).map(function (s) {
-            const d = done[s.id];
-            return '<li class="' + (d ? 'is-done' : '') + '"><b>' + escapeHtml(s.label) + '</b><span>' + (d ? '済　' + escapeHtml(d.display || d.by) + '　' + escapeHtml(workTime(d.at)) : 'まだ') + '</span></li>';
-          }).join('');
-          box.innerHTML = (r.card ? '' : '<p class="sub">まだスマホの作業カードを作っていません（「スマホで作業開始」か「PDF印刷」を押すと作られます）</p>') +
-            '<ul class="wk-steps">' + steps + '</ul>' + workLogTable(r.log.slice(0, 20), false);
-        }, function (e) { box.textContent = '読み込めませんでした: ' + e.message; });
+        if (!box) return;
+        const done = r.state && r.state.steps || {};
+        const list = r.card ? r.card.steps : workStepsOf(order);
+        const n = list.filter(function (s) { return done[s.id]; }).length;
+        const steps = list.map(function (s) {
+          const d = done[s.id];
+          const btn = d
+            ? '<button type="button" class="wk-undo' + (armed === s.id ? ' is-armed' : '') + '" data-wks="' + escapeHtml(s.id) + '" data-done="0">' + (armed === s.id ? 'もう一度押すと取り消し' : '取り消す') + '</button>'
+            : '<button type="button" class="wk-done" data-wks="' + escapeHtml(s.id) + '" data-done="1">終わった</button>';
+          return '<li class="' + (d ? 'is-done' : '') + '"><div><b>' + escapeHtml(s.label) + '</b><span>' + (d ? '済　' + escapeHtml(d.display || d.by) + '　' + escapeHtml(workTime(d.at)) : 'まだ') + '</span></div>' + btn + '</li>';
+        }).join('');
+        box.innerHTML = '<p class="wk-progress">進み具合 <b>' + n + ' / ' + list.length + '</b></p><ul class="wk-steps">' + steps + '</ul>' +
+          '<div class="wk-cm"><select data-wkc="step"><option value="">工程を選ばない</option>' + list.map(function (s) { return '<option value="' + escapeHtml(s.id) + '">' + escapeHtml(s.label) + '</option>'; }).join('') + '</select>' +
+          '<input type="text" data-wkc="text" maxlength="500" placeholder="コメント（取り消した理由など）"><button type="button" data-wkc="send">残す</button></div>' +
+          workLogTable(r.log.slice(0, 20), false);
+        box.querySelectorAll('[data-wks]').forEach(function (b) {
+          b.addEventListener('click', function () { step(order, b.dataset.wks, b.dataset.done === '1'); });
+        });
+        box.querySelector('[data-wkc="send"]').addEventListener('click', function () {
+          const text = box.querySelector('[data-wkc="text"]').value.trim();
+          if (!text) { showToast('コメントを入れてください'); return; }
+          withCard(order).then(function () { return workApi('POST', '/comment', { id: order.id, step: box.querySelector('[data-wkc="step"]').value, text: text }); })
+            .then(function (r2) { show(order, r2); showToast('コメントを残しました'); }, function (e) { showToast('残せませんでした: ' + e.message); });
+        });
+      }
+      // 作業カードがまだ無い注文は、先にカードを作ってから押す
+      function withCard(order) { return piiHidden() ? Promise.resolve() : sendWorkCard(order); } // 作業員はカードを作れない（事務の人が作ったものを使う）
+      function step(order, id, done) {
+        if (!done && armed !== id) { armed = id; load(order); setTimeout(function () { if (armed === id) { armed = ''; if (state.currentId === order.id) load(order); } }, 4000); return; }
+        armed = '';
+        host.querySelectorAll('[data-wks]').forEach(function (b) { b.disabled = true; });
+        withCard(order).then(function () { return workApi('POST', '/step', { id: order.id, step: id, done: done }); }).then(function (r) {
+          show(order, r);
+          const s = r.card && r.card.steps.filter(function (x) { return x.id === id; })[0];
+          showToast((s ? s.label : '') + (done ? 'を「済」にしました' : 'の「済」を取り消しました'));
+        }, function (e) { showToast('変えられませんでした: ' + e.message); load(order); });
       }
       on('oms:open', paint);
     }
