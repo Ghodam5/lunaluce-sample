@@ -19,20 +19,28 @@
         '<p class="ds-count">' + list.length + '件の注文が載ります</p>' +
         '<ul class="ds-pre">' + list.slice(0, 8).map(function (o) { return '<li>' + (o.rushTicket ? '<b>特急</b> ' : '') + escapeHtml(o.id) + '　' + escapeHtml(o.productName) + '</li>'; }).join('') + (list.length > 8 ? '<li>ほか' + (list.length - 8) + '件</li>' : '') + '</ul>' +
         '<div class="ds-btns"><button type="button" class="wo-btn" data-ds="print">PDF印刷</button><button type="button" class="wo-btn is-qr" data-ds="phone">スマホで作業</button><button type="button" class="wo-btn is-show" data-ds="show">QRコードを画面に出す</button></div>' +
-        '<div class="ds-show"></div><p class="wk-state" role="status"></p><button type="button" class="wk-close" data-ds="close">閉じる</button></div>';
+        '<p class="wk-state" role="status"></p><div class="ds-show"></div><button type="button" class="wk-close" data-ds="close">閉じる</button></div>';
       const status = host.querySelector('.wk-state');
       host.querySelector('[data-ds="close"]').addEventListener('click', function () { host.hidden = true; });
       host.onclick = function (e) { if (e.target === host) host.hidden = true; };
       host.querySelector('[data-ds="print"]').addEventListener('click', function () { printDaySheet(list, status); });
       host.querySelector('[data-ds="phone"]').addEventListener('click', function () {
-        const box = host.querySelector('.ds-show');
+        const box = host.querySelector('.ds-show'), btn = this;
         if (!workServerOn()) { box.innerHTML = '<p class="sub">手元のファイルで開いているので、スマホの作業画面は使えません（VPSのOMSで開くと使えます）</p>'; return; }
+        // 押したことが分かるように、送っている間はボタンの文字を変える（2.58 林さん「反応しない」）
+        btn.disabled = true; btn.textContent = '準備しています…';
+        box.innerHTML = '';
         daySheetReady(list, status).then(function () {
           const link = workListLink(list);
           box.innerHTML = '<div class="ds-phone"><div class="wk-qr">' + workQrSvg(link, 4) + '</div><div><p><b>スマホのカメラでこのQRコードを写してください。</b></p>' +
             '<p class="sub">チェックした' + list.length + '件の注文がまとめて開きます。作業画面の「次の注文へ」や「この表の注文から選ぶ」で、次の注文に直接進めます。</p>' +
             '<p><a class="ds-open-link" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">このパソコンまたはタブレットで作業画面を開く</a></p></div></div>';
-        }, function () {});
+          box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }).catch(function (e) {
+          showToast('スマホで作業の準備ができませんでした: ' + (e && e.message ? e.message : e));
+          if (!status.textContent) status.textContent = 'スマホで作業の準備ができませんでした: ' + (e && e.message ? e.message : e);
+          status.classList.add('is-ng');
+        }).then(function () { btn.disabled = false; btn.textContent = 'スマホで作業'; });
       });
       host.querySelector('[data-ds="show"]').addEventListener('click', function () {
         const box = host.querySelector('.ds-show');
