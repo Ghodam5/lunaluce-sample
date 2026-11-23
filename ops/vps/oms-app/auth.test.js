@@ -121,3 +121,28 @@ test('失敗が続いたら止める・環境欄のパスワードを変える�
     a.equal((await c.post('/auth/login', { name: 'owner', password: 'set-on-screen-pass' })).status, 200, '環境欄が同じなら画面で変えたパスワードのまま');
   } finally { s.p.kill(); }
 });
+
+test('ログインの後に別のサイトへ飛ばさない・失敗はCaddyがつけた住所で数える', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'oms-auth-'));
+  const s = await start(dir);
+  try {
+    const anon = client(s.url);
+    // /\evil や //evil はブラウザが別のサイトとして開くので、/oms/ に直す
+    for (const bad of ['/\\evil.example', '//evil.example', '/\t/evil.example', 'https://evil.example', '']) {
+      let r = await anon.get('/login?next=' + encodeURIComponent(bad));
+      a.ok(!r.text.includes('evil.example'), 'ログイン画面に ' + JSON.stringify(bad) + ' を入れない');
+      r = await anon.get('/auth/check', { 'x-forwarded-uri': bad || '/' });
+      a.ok(!String(r.headers.get('location')).includes('evil'), 'check の戻り先 ' + JSON.stringify(bad));
+    }
+    const owner = client(s.url);
+    const r = await owner.post('/auth/login', { name: 'owner', password: OWNER_PASS, next: '/\\evil.example' });
+    a.equal(r.body.next, '/oms/');
+    a.equal((await client(s.url).get('/auth/check', { 'x-forwarded-uri': '/oms/work.html?o=A-1' })).headers.get('location'), '/login?next=' + encodeURIComponent('/oms/work.html?o=A-1'));
+    // X-Forwarded-For を毎回変えても、Caddy がつけた X-OMS-Client-IP が同じなら止まる
+    const c = client(s.url);
+    for (let i = 0; i < 5; i++) a.equal((await c.post('/auth/login', { name: 'nobody' + i, password: 'bad' }, { 'x-forwarded-for': '10.0.0.' + i, 'x-oms-client-ip': '203.0.113.5' })).status, 401);
+    a.equal((await c.post('/auth/login', { name: 'owner', password: OWNER_PASS }, { 'x-forwarded-for': '10.0.9.9', 'x-oms-client-ip': '203.0.113.5' })).status, 429);
+    // 別の住所からは入れる
+    a.equal((await client(s.url).post('/auth/login', { name: 'owner', password: OWNER_PASS }, { 'x-oms-client-ip': '198.51.100.7' })).status, 200);
+  } finally { s.p.kill(); }
+});
