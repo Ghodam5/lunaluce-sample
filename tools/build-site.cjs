@@ -30,6 +30,18 @@ function render(text,vars,stack=[]){
  text=text.replace(/{{(\w+)}}/g,(_,k)=>value(k));
  if(/{{[>@#/]/.test(text))throw Error('Unresolved template');return text;
 }
+// v75 表示速度対策：ページが読むCSS（編集元・生成物は今まで通り別々のファイル）を、公開するHTMLでは1つにまとめて読む。
+// まとめたリンクには中身のCSS名を data-bundle に書き、決まりの確認（page-contract）はそれを元の並びに戻して行う。まとめたファイルは bundles/ に中身の指紋の名前で置き、同じ組み合わせのページは同じファイルを使う。
+// bundles/ は1つ下のフォルダなので、CSSの中の写真の場所には ../ を付ける。
+const bundleDir=path.join(root,'bundles'),bundles=new Map(),cssLink=/<link rel="stylesheet" href="([a-z0-9-]+\.css)\?v=\d+">/g;
+function bundleCss(html){
+ const end=html.indexOf('</head>'),head=html.slice(0,end),files=[...head.matchAll(cssLink)].map(m=>m[1]);
+ if(files.length<2)return html;
+ const text=files.map(f=>'/* '+f+' */\n'+read(path.join(root,f)).replace(/url\((["']?)(?![a-z][a-z0-9+.-]*:|\/|#)([^)"']+)\1\)/gi,(_,q,u)=>'url('+q+'../'+u+q+')')).join('\n');
+ const name='bundles/'+crypto.createHash('sha256').update(text).digest('hex').slice(0,12)+'.css';bundles.set(name,text);
+ if(!args.has('--check')){if(!fs.existsSync(bundleDir))fs.mkdirSync(bundleDir);const dest=path.join(root,name);if(!fs.existsSync(dest)||read(dest)!==text)fs.writeFileSync(dest,text);}
+ let first=true;return head.replace(cssLink,()=>first?(first=false,'<link rel="stylesheet" href="'+name+'?v='+version+'" data-bundle="'+files.map(f=>f+'?v='+version).join(' ')+'">'):'')+html.slice(end);
+}
 let stale=[];for(const [file,settings] of Object.entries(pages)){
  if(path.basename(file)!==file||!file.endsWith('.html'))throw Error('Invalid page path');
  const source=read(path.join(src,'pages',file));
@@ -39,11 +51,14 @@ let stale=[];for(const [file,settings] of Object.entries(pages)){
  let out=render(source,{stripAttributes:'',...settings,version});
  // トップのメッセージのカード（site-src/home-promos の kind: message）は最初からページに書く（見出しを検索に読ませるため）
  if(out.includes('<!--home-message-cards-->'))out=out.replace('<!--home-message-cards-->',()=>require('./home-message.cjs').html(require('./promos.cjs').load()));
+ out=bundleCss(out);
  pageContract.checkRendered(file,out,contract,root);
  const dest=path.join(root,file);
  if(args.has('--check')){if(!fs.existsSync(dest)||read(dest)!==out)stale.push(file);}
  else if(!fs.existsSync(dest)||read(dest)!==out)fs.writeFileSync(dest,out);
 }
+if(args.has('--check'))for(const [name,text] of bundles){const dest=path.join(root,name);if(!fs.existsSync(dest)||read(dest)!==text)stale.push(name);}
+for(const f of fs.existsSync(bundleDir)?fs.readdirSync(bundleDir):[]){const name='bundles/'+f;if(bundles.has(name))continue;if(args.has('--check'))stale.push(name+'（使われていない）');else fs.unlinkSync(path.join(bundleDir,f));}
 const orphan=fs.readdirSync(root).filter(f=>f.endsWith('.html')&&!(f in pages));if(orphan.length)throw Error('Page config missing: '+orphan.join(','));
 if(stale.length)throw Error('生成HTMLと編集元が不一致です。node tools/build-site.cjs を実行してください:\n'+stale.join('\n'));
 console.log((args.has('--check')?'確認':'生成')+'完了：'+Object.keys(pages).length+'ページ／v'+version+'（共通部分の保護も一致）');

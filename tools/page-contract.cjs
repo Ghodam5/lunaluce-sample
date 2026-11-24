@@ -9,7 +9,10 @@ function checkSource(file,source,contract){
   if(/\b(?:id|name)=["'](?:quantity[^"']*|[^"']*-qty)["']/i.test(tag)&&!tag.includes('data-quantity-picker'))throw Error('数量の共通マーカー不足: '+file+' '+tag);
  }
 }
+// v75：CSSを1つにまとめたリンク（build-site.cjs の bundleCss）は、data-bundle に書いた元のCSSが同じ場所に並んでいるものとして確かめる
+const expandBundles=(html,root)=>html.replace(/<link rel="stylesheet" href="(bundles\/[0-9a-f]{12}\.css)\?v=\d+" data-bundle="([^"]+)">/g,(_,bundle,list)=>{if(root&&!fs.existsSync(path.join(root,bundle)))throw Error('まとめたCSSがありません: '+bundle);return list.split(' ').map(u=>'<link rel="stylesheet" href="'+u+'">').join('');});
 function checkRendered(file,html,contract,root){
+ html=expandBundles(html,root);
  const head=html.slice(0,html.indexOf('</head>'));
  const shell=html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'');
  for(const cls of ['hd','drawer','tabs-bottom',...(file in contract.footerExceptions?[]:['ft'])]){
