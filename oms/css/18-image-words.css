@@ -1,0 +1,91 @@
+/* Luna Luce OMS 部品CSS: 18-image-words（「11 画像の頼み方」タブ） */
+    /* owner: renderImageWordsTab */
+    [data-part="tab-imgwords"] { display: flex; flex-direction: column; gap: 14px; }
+    [data-part="tab-imgwords"] .iw-head, [data-part="tab-imgwords"] .iw-box { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); min-width: 0; }
+    [data-part="tab-imgwords"] .kicker { margin: 0; font-family: "Cormorant Garamond", serif; letter-spacing: 0.14em; text-transform: uppercase; color: var(--champagne); font-size: 13px; }
+    [data-part="tab-imgwords"] h2 { margin: 4px 0 0; font-family: "Noto Serif JP", serif; font-size: 22px; color: var(--forest); }
+    [data-part="tab-imgwords"] h3 { margin: 0 0 8px; font-size: 17px; color: var(--forest); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    [data-part="tab-imgwords"] h3 small, [data-part="tab-imgwords"] h4 small { font-weight: 400; font-size: 12px; color: var(--taupe-light); }
+    [data-part="tab-imgwords"] h4 { margin: 0 0 6px; font-size: 15px; color: var(--taupe); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+    [data-part="tab-imgwords"] .lead, [data-part="tab-imgwords"] .muted { color: var(--taupe-light); font-size: 14px; margin: 4px 0 10px; }
+    [data-part="tab-imgwords"] .iw-sub { margin: 10px 0 6px; font-size: 13px; color: var(--taupe); font-weight: 600; }
+    [data-part="tab-imgwords"] .iw-step { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--forest); color: #fff; font-size: 14px; flex: 0 0 auto; }
+    [data-part="tab-imgwords"] button { min-height: 40px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font: inherit; font-size: 14px; cursor: pointer; }
+    [data-part="tab-imgwords"] button.primary { background: var(--forest); color: #fff; border-color: var(--forest); }
+    [data-part="tab-imgwords"] button:disabled { opacity: 0.45; cursor: default; }
+    [data-part="tab-imgwords"] input, [data-part="tab-imgwords"] select, [data-part="tab-imgwords"] textarea { font: inherit; font-size: 15px; min-height: 40px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); width: 100%; max-width: 100%; box-sizing: border-box; }
+    [data-part="tab-imgwords"] label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--taupe); }
+    [data-part="tab-imgwords"] .iw-cols { display: flex; flex-direction: column; gap: 14px; }
+    [data-part="tab-imgwords"] .iw-main { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+    /* 1 何の画像 */
+    [data-part="tab-imgwords"] .iw-results { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 6px; }
+    [data-part="tab-imgwords"] .iw-results button, [data-part="tab-imgwords"] .iw-product { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; padding: 6px; }
+    [data-part="tab-imgwords"] .iw-product { border: 2px solid var(--champagne); border-radius: 12px; background: var(--champagne-soft); flex-wrap: wrap; }
+    [data-part="tab-imgwords"] .iw-pimg { width: 56px; height: 56px; flex: 0 0 56px; border-radius: 8px; background: var(--ivory-warm); overflow: hidden; }
+    [data-part="tab-imgwords"] .iw-product .iw-pimg { width: 88px; height: 88px; flex-basis: 88px; }
+    [data-part="tab-imgwords"] .iw-pimg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    [data-part="tab-imgwords"] .iw-pname { display: flex; flex-direction: column; min-width: 0; flex: 1 1 10em; }
+    [data-part="tab-imgwords"] .iw-pname b { font-size: 14px; overflow-wrap: anywhere; }
+    [data-part="tab-imgwords"] .iw-pname small { color: var(--taupe-light); font-size: 12px; overflow-wrap: anywhere; }
+    /* 2 どこに使う */
+    [data-part="tab-imgwords"] .iw-uses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    [data-part="tab-imgwords"] .iw-uses button { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 2px; }
+    [data-part="tab-imgwords"] .iw-uses button small { color: var(--taupe-light); font-size: 12px; }
+    [data-part="tab-imgwords"] .iw-uses button[aria-pressed="true"] { border: 2px solid var(--champagne); background: var(--champagne-soft); }
+    /* 3 ことばを選ぶ */
+    [data-part="tab-imgwords"] .iw-kinds { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 8px; -webkit-overflow-scrolling: touch; }
+    [data-part="tab-imgwords"] .iw-kinds button { flex: 0 0 auto; border-radius: 999px; }
+    [data-part="tab-imgwords"] .iw-kinds button small { margin-left: 4px; color: var(--taupe-light); }
+    [data-part="tab-imgwords"] .iw-kinds button[aria-selected="true"] { background: var(--forest); border-color: var(--forest); color: #fff; }
+    [data-part="tab-imgwords"] .iw-kinds button[aria-selected="true"] small { color: var(--champagne-light); }
+    [data-part="tab-imgwords"] .iw-combos { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; padding: 10px; background: var(--ivory-warm); border-radius: 12px; }
+    [data-part="tab-imgwords"] .iw-combos .iw-sub { width: 100%; margin: 0 0 2px; }
+    [data-part="tab-imgwords"] .iw-sec { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
+    [data-part="tab-imgwords"] .iw-terms { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    [data-part="tab-imgwords"] .iw-term { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    [data-part="tab-imgwords"] .iw-term.is-wide { grid-column: span 2; }
+    [data-part="tab-imgwords"] .iw-pick { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: stretch; text-align: left; gap: 4px; padding: 6px; border-radius: 12px; }
+    [data-part="tab-imgwords"] .iw-term.is-on .iw-pick { border: 2px solid var(--champagne); background: var(--champagne-soft); padding: 5px; }
+    [data-part="tab-imgwords"] .iw-thumb { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: var(--ivory-warm); }
+    [data-part="tab-imgwords"] .is-wide .iw-thumb { aspect-ratio: 1100 / 396; }
+    [data-part="tab-imgwords"] .iw-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    [data-part="tab-imgwords"] .iw-noimg { display: grid; place-items: center; width: 100%; height: 100%; color: var(--taupe-light); font-size: 12px; min-height: 60px; }
+    [data-part="tab-imgwords"] .iw-check { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border-radius: 50%; background: var(--champagne); color: #fff; display: grid; place-items: center; font-style: normal; font-weight: 700; }
+    [data-part="tab-imgwords"] .iw-tname { font-weight: 700; color: var(--forest); font-size: 14px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    [data-part="tab-imgwords"] .iw-tname em { font-style: normal; font-weight: 400; font-size: 11px; padding: 0 6px; border-radius: 999px; background: #eef; color: #557; }
+    [data-part="tab-imgwords"] .iw-blurb { font-size: 12px; color: var(--taupe); }
+    [data-part="tab-imgwords"] .iw-say { font-size: 12px; color: var(--taupe-light); }
+    [data-part="tab-imgwords"] .iw-del { min-height: 32px; font-size: 12px; color: var(--urgent); }
+    [data-part="tab-imgwords"] .iw-addrow { margin: 14px 0 0; }
+    [data-part="tab-imgwords"] .iw-add { margin-top: 14px; padding: 12px; border: 1px dashed var(--champagne); border-radius: 12px; background: var(--champagne-soft); }
+    [data-part="tab-imgwords"] .iw-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    [data-part="tab-imgwords"] .iw-file img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; }
+    [data-part="tab-imgwords"] .iw-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    /* 4・5 見本と指示文 */
+    [data-part="tab-imgwords"] .iw-preview { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    [data-part="tab-imgwords"] .iw-preview li { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    [data-part="tab-imgwords"] .iw-preview li.is-wide { grid-column: 1 / -1; }
+    [data-part="tab-imgwords"] .iw-preview img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; display: block; }
+    [data-part="tab-imgwords"] .iw-preview li.is-wide img { aspect-ratio: 1100 / 396; }
+    [data-part="tab-imgwords"] .iw-preview span { font-size: 11px; color: var(--taupe); overflow-wrap: anywhere; }
+    [data-part="tab-imgwords"] .iw-preview button { position: absolute; top: 4px; right: 4px; min-height: 0; width: 26px; height: 26px; padding: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1; }
+    [data-part="tab-imgwords"] .iw-extra { margin-top: 10px; }
+    [data-part="tab-imgwords"] .iw-out { margin: 0; padding: 10px; background: var(--ivory); border: 1px solid var(--line); border-radius: 10px; white-space: pre-wrap; overflow-wrap: anywhere; font-family: inherit; font-size: 14px; line-height: 1.6; max-height: 320px; overflow: auto; }
+    [data-part="tab-imgwords"] .iw-en { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13px; }
+    [data-part="tab-imgwords"] .iw-savedh { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
+    [data-part="tab-imgwords"] .iw-saved { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    [data-part="tab-imgwords"] .iw-saved li { display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap; padding: 8px; border: 1px solid var(--line); border-radius: 10px; }
+    [data-part="tab-imgwords"] .iw-saved li div { display: flex; flex-direction: column; min-width: 0; }
+    [data-part="tab-imgwords"] .iw-saved small { color: var(--taupe-light); font-size: 12px; }
+    [data-part="tab-imgwords"] .iw-saved span { display: flex; gap: 6px; }
+    @media (min-width: 600px) {
+      [data-part="tab-imgwords"] .iw-terms { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      [data-part="tab-imgwords"] .iw-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      [data-part="tab-imgwords"] .iw-uses { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      [data-part="tab-imgwords"] .iw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1100px) {
+      [data-part="tab-imgwords"] .iw-cols { display: grid; grid-template-columns: minmax(0, 1fr) 400px; align-items: start; }
+      [data-part="tab-imgwords"] .iw-side { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto; border-radius: 16px; }
+      [data-part="tab-imgwords"] .iw-terms { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }

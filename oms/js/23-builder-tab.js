@@ -115,6 +115,7 @@
       if (name === 'code-suggest' && b.sel.type === 'product') { const p = builderSelected(); p.code = el.dataset.code; p.codeAuto = el.dataset.code; builderChanged(true); return; }
       if (name === 'place-edit' && b.sel.type === 'product') { builderSelected().placesTouched = true; builderChanged(true); return; }
       if (name === 'channel-export') { builderChannelExport(); return; }
+      if (name === 'imgw-open' && b.sel.type === 'product') { const p = builderSelected(); builderSyncPhotos(p); imgwOpenFor(p); return; } // 2.59 画像の頼み方へ
       if (name === 'product-remove' && b.sel.type === 'product') { b.newProducts.splice(b.sel.index, 1); b.sel = { type: 'stock', index: 0 }; builderChanged(true); builderScrollToEditor(); return; }
       if (name === 'sku-add' && b.sel.type === 'product') { builderSelected().skus.push({ t: '', price: 0 }); builderChanged(true); return; }
       if (name === 'sku-remove' && b.sel.type === 'product') { builderSelected().skus.splice(index, 1); builderChanged(true); return; }
