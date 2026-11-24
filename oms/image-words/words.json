@@ -1,0 +1,1820 @@
+{
+ "source": "指示ことば見本帳.html（林さん作、2026-11-24）",
+ "categories": [
+  {
+   "id": "photo",
+   "name": "商品写真",
+   "intro": "商品のイメージ写真を頼むとき、見え方とことばをそろえるための見本です。被写体はクリームの箱にサテンのリボンをかけたものにそろえています。箱そのものではなく、角度や光、背景などの違いを見比べてください。",
+   "how": [
+    "使う場所を決める：ヘッダー（横長、あとから文字を入れる余白が要る）か、商品ページ（四角、または少し縦長）か。",
+    "角度、距離、構図、光、背景、飾り、雰囲気から、使いたいものを組み合わせる。",
+    "下の「こう言えば伝わる」のように書いて渡すか、見本の名前を指差す。"
+   ],
+   "sections": [
+    {
+     "id": "photo-angle",
+     "title": "カメラの角度",
+     "note": "",
+     "terms": [
+      {
+       "id": "photo-angle-1",
+       "name": "真上",
+       "blurb": "真上からまっすぐ見おろす撮り方です。箱のフタが四角く見えます。",
+       "say": "真上から撮って",
+       "en": "top-down, overhead, flat lay",
+       "wide": false,
+       "img": "img/photo-angle-1.webp"
+      },
+      {
+       "id": "photo-angle-2",
+       "name": "俯瞰45度",
+       "blurb": "斜め上から、フタと正面が両方見える角度です。",
+       "say": "斜め上から、45度くらいで",
+       "en": "45-degree high angle",
+       "wide": false,
+       "img": "img/photo-angle-2.webp"
+      },
+      {
+       "id": "photo-angle-3",
+       "name": "目線の高さ",
+       "blurb": "箱の正面が大きく見える高さです。正面から見る感じに近づきます。",
+       "say": "目線の高さで、正面から",
+       "en": "eye-level, straight-on front view",
+       "wide": false,
+       "img": "img/photo-angle-3.webp"
+      },
+      {
+       "id": "photo-angle-4",
+       "name": "あおり",
+       "blurb": "下から見上げる角度です。箱が大きく、堂々と見えます。",
+       "say": "下からあおって",
+       "en": "low angle, looking up",
+       "wide": false,
+       "img": "img/photo-angle-4.webp"
+      }
+     ]
+    },
+    {
+     "id": "photo-distance",
+     "title": "距離と切り取り",
+     "note": "",
+     "terms": [
+      {
+       "id": "photo-distance-1",
+       "name": "寄り",
+       "blurb": "箱を大きく写し、まわりをあまり入れない切り取りです。",
+       "say": "寄って、箱を大きく写して",
+       "en": "tight crop, close framing",
+       "wide": false,
+       "img": "img/photo-distance-1.webp"
+      },
+      {
+       "id": "photo-distance-2",
+       "name": "引き",
+       "blurb": "カメラを引いて、まわりの空間や場所も写します。",
+       "say": "引いて、まわりの空間も入れて",
+       "en": "wide shot, pulled back",
+       "wide": false,
+       "img": "img/photo-distance-2.webp"
+      },
+      {
+       "id": "photo-distance-3",
+       "name": "クローズアップ",
+       "blurb": "リボンや箱の質感など、一部分を大きく写します。",
+       "say": "リボンの質感がわかるように、クローズアップで",
+       "en": "close-up, macro detail",
+       "wide": false,
+       "img": "img/photo-distance-3.webp"
+      },
+      {
+       "id": "photo-distance-4",
+       "name": "余白多め",
+       "blurb": "箱は小さめに置いて、まわりに何もない空間を多めに残します。文字を後から入れるときにも向きます。",
+       "say": "余白を多めに、文字を入れるスペースを残して",
+       "en": "ample negative space",
+       "wide": false,
+       "img": "img/photo-distance-4.webp"
+      }
+     ]
+    },
+    {
+     "id": "photo-composition",
+     "title": "構図",
+     "note": "",
+     "terms": [
+      {
+       "id": "photo-composition-1",
+       "name": "中央",
+       "blurb": "箱を画面のまん中に置く、きちんとした構図です。",
+       "say": "中央に置いて",
+       "en": "centered composition",
+       "wide": false,
+       "img": "img/photo-composition-1.webp"
+      },
+      {
+       "id": "photo-composition-2",
+       "name": "三分割",
+       "blurb": "画面を三等分した線のうえに箱を置く構図です。少しずらすと落ち着いて見えます。",
+       "say": "三分割で、少し右（または左）に寄せて",
+       "en": "rule of thirds",
+       "wide": false,
+       "img": "img/photo-composition-2.webp"
+      },
+      {
+       "id": "photo-composition-3",
+       "name": "左寄せ右に余白",
+       "blurb": "箱を左に置き、右側を空けます。ヘッダーに文字を入れるときに向きます。",
+       "say": "左に寄せて、右に余白を残して",
+       "en": "left-aligned, space on the right",
+       "wide": false,
+       "img": "img/photo-composition-3.webp"
+      },
+      {
+       "id": "photo-composition-4",
+       "name": "対角線",
+       "blurb": "箱を斜めに置いて、画面の対角線に沿わせる構図です。",
+       "say": "対角線上に、斜めに置いて",
+       "en": "diagonal composition",
+       "wide": false,
+       "img": "img/photo-composition-4.webp"
+      }
+     ]
+    },
+    {
+     "id": "photo-light",
+     "title": "光",
+     "note": "",
+     "terms": [
+      {
+       "id": "photo-light-1",
+       "name": "自然光の窓辺",
+       "blurb": "窓からの昼の光で撮ります。やわらかく、日常の感じが出ます。",
+       "say": "窓辺の自然光で",
+       "en": "natural window light",
+       "wide": false,
+       "img": "img/photo-light-1.webp"
+      },
+      {
+       "id": "photo-light-2",
+       "name": "逆光",
+       "blurb": "光を箱の後ろから当てます。フチが光って、やわらかく輝いて見えます。",
+       "say": "逆光で、フチが光るように",
+       "en": "backlit, rim light",
+       "wide": false,
+       "img": "img/photo-light-2.webp"
+      },
+      {
+       "id": "photo-light-3",
+       "name": "やわらかい光",
+       "blurb": "影がぼんやりして、やさしく包むような光です。",
+       "say": "やわらかい光で、影は控えめに",
+       "en": "soft diffused light",
+       "wide": false,
+       "img": "img/photo-light-3.webp"
+      },
+      {
+       "id": "photo-light-4",
+       "name": "硬い光とくっきり影",
+       "blurb": "影のフチがはっきり出る、明るいところと暗いところの差が強い光です。",
+       "say": "硬い光で、影をくっきりつけて",
+       "en": "hard light, crisp shadows",
+       "wide": false,
+       "img": "img/photo-light-4.webp"
+      },
+      {
+       "id": "photo-light-5",
+       "name": "ゴールデンアワー",
+       "blurb": "日没前後の、オレンジがかった長い光です。",
+       "say": "ゴールデンアワーの、オレンジがかった光で",
+       "en": "golden hour, warm sunset light",
+       "wide": false,
+       "img": "img/photo-light-5.webp"
+      }
+     ]
+    },
+    {
+     "id": "photo-background",
+     "title": "背景",
+     "note": "",
+     "terms": [
+      {
+       "id": "photo-background-1",
+       "name": "白背景",
+       "blurb": "まっ白な背景です。商品だけをはっきり見せたいときに使います。",
+       "say": "白背景で",
+       "en": "white background, seamless white",
+       "wide": false,
+       "img": "img/photo-background-1.webp"
+      },
+      {
+       "id": "photo-background-2",
+       "name": "大理石",
+       "blurb": "白い大理石のうえに置く背景です。すっきりして、少し高級な感じです。",
+       "say": "白い大理石の上で",
+       "en": "on white marble",
+       "wide": false,
+       "img": "img/photo-background-2.webp"
+      },
+      {
+       "id": "photo-background-3",
+       "name": "木のテーブル",
+       "blurb": "木目の見えるテーブルのうえです。あたたかみが出ます。",
+       "say": "木のテーブルの上で",
+       "en": "on a wooden table",
+       "wide": false,
+       "img": "img/photo-background-3.webp"
+      },
+      {
+       "id": "photo-background-4",
+       "name": "布",
+       "blurb": "リネンなどの布を敷いて、やわらかいシワを見せます。",
+       "say": "リネンの布の上で",
+       "en": "on draped linen",
+       "wide": false,
+       "img": "img/photo-background-4.webp"
+      },
+      {
+       "id": "photo-background-5",
+       "name": "ぼかし背景",
+       "blurb": "箱ははっきり、後ろは大きくぼかします。",
+       "say": "背景はぼかして、箱にピントを",
+       "en": "blurred background, bokeh",
+       "wide": false,
+       "img": "img/photo-background-5.webp"
+      }
+     ]
+    },
+    {
+     "id": "photo-props",
+     "title": "飾り・小物",
+     "note": "箱のリボン以外に、添えるものを選びます。",
+     "terms": [
+      {
+       "id": "photo-props-1",
+       "name": "花",
+       "blurb": "花を添えて、華やかさや贈り物らしさを出します。",
+       "say": "白い花を少し添えて",
+       "en": "with flowers, floral styling",
+       "wide": false,
+       "img": "img/photo-props-1.webp"
+      },
+      {
+       "id": "photo-props-2",
+       "name": "季節小物",
+       "blurb": "その季節がわかる小物を添えます。見本は秋（紅葉、松ぼっくりなど）です。",
+       "say": "秋の小物を添えて",
+       "en": "seasonal props",
+       "wide": false,
+       "img": "img/photo-props-2.webp"
+      },
+      {
+       "id": "photo-props-3",
+       "name": "テーブルセッティング",
+       "blurb": "皿やナプキンなど、食卓に置いたように撮ります。",
+       "say": "テーブルセッティングの一部として",
+       "en": "tablescape, place setting",
+       "wide": false,
+       "img": "img/photo-props-3.webp"
+      }
+     ]
+    },
+    {
+     "id": "photo-mood",
+     "title": "雰囲気",
+     "note": "光や背景、小物を組み合わせた、画面全体の感じです。",
+     "terms": [
+      {
+       "id": "photo-mood-1",
+       "name": "上品",
+       "blurb": "控えめですっきりした、静かな上品さです。",
+       "say": "上品な雰囲気で",
+       "en": "elegant, refined, understated",
+       "wide": false,
+       "img": "img/photo-mood-1.webp"
+      },
+      {
+       "id": "photo-mood-2",
+       "name": "明るい",
+       "blurb": "光が多く、開放的でいきいきした雰囲気です。",
+       "say": "明るい雰囲気で",
+       "en": "bright, airy, high-key",
+       "wide": false,
+       "img": "img/photo-mood-2.webp"
+      },
+      {
+       "id": "photo-mood-3",
+       "name": "あたたか",
+       "blurb": "室内のあたたかい光や、木・布などのぬくもりがある雰囲気です。",
+       "say": "あたたかな雰囲気で",
+       "en": "warm, cozy, inviting",
+       "wide": false,
+       "img": "img/photo-mood-3.webp"
+      },
+      {
+       "id": "photo-mood-4",
+       "name": "季節感",
+       "blurb": "小物だけでなく、光や色でその季節の空気を出します。見本は冬の朝です。",
+       "say": "冬の朝のような季節感で",
+       "en": "seasonal atmosphere",
+       "wide": false,
+       "img": "img/photo-mood-4.webp"
+      },
+      {
+       "id": "photo-mood-5",
+       "name": "高級感",
+       "blurb": "暗い背景や明暗の差で、贅沢で落ち着いた雰囲気です。",
+       "say": "高級感のある雰囲気で",
+       "en": "luxurious, premium, dramatic",
+       "wide": false,
+       "img": "img/photo-mood-5.webp"
+      }
+     ]
+    }
+   ],
+   "combos": [
+    {
+     "title": "ヘッダー用（横長、あとから文字を入れる）",
+     "text": "俯瞰45度で、箱を左に寄せて右に余白を多めに。\n白い大理石の上、やわらかい自然光で、上品な雰囲気。\n文字を入れるための空間を右に残して。"
+    },
+    {
+     "title": "商品ページ用（四角）",
+     "text": "真上から、中央に配置。\n白背景で、白い花を少し添えて。明るい雰囲気。"
+    },
+    {
+     "title": "季節のギフト",
+     "text": "目線の高さで、少し寄って。\n木のテーブルの上、秋の小物を添えて、あたたかな雰囲気。"
+    },
+    {
+     "title": "特別感を出したいとき",
+     "text": "下からあおって、リボンの質感がわかるようにクローズアップで。\n暗い背景、硬い光で影をくっきり、高級感のある雰囲気。"
+    }
+   ]
+  },
+  {
+   "id": "video",
+   "name": "動画",
+   "intro": "SNS用の動画を頼むとき、カメラの動きや尺、切り替え方とことばをそろえるための見本です。動きの見本は、始まり・途中・終わりを3枚の写真で表しています。実際の動画ではありません。回り込みや追従、尺の見本は、わかりやすく図解で表しているものもあります。",
+   "how": [
+    "使う場所を決める：Instagramのリールやストーリーなら縦型、フィードなら四角、XやYouTubeなら横型。画面の形と尺を決める。",
+    "カメラの動き、ショットの大きさ、速さ、切り替え方、雰囲気から、使いたいものを組み合わせる。",
+    "下の「こう言えば伝わる」のように書いて渡すか、見本の名前を指差す。"
+   ],
+   "sections": [
+    {
+     "id": "video-move",
+     "title": "カメラの動き",
+     "note": "",
+     "terms": [
+      {
+       "id": "video-move-1",
+       "name": "ズームイン",
+       "blurb": "カメラの位置はそのままで、箱がだんだん大きく見えてきます。",
+       "say": "箱に向かって、ゆっくりズームインして",
+       "en": "slow zoom in",
+       "wide": true,
+       "img": "img/video-move-1.webp"
+      },
+      {
+       "id": "video-move-2",
+       "name": "ズームアウト",
+       "blurb": "逆に、箱がだんだん小さくなり、まわりが見えてきます。",
+       "say": "箱から、ゆっくりズームアウトして",
+       "en": "slow zoom out",
+       "wide": true,
+       "img": "img/video-move-2.webp"
+      },
+      {
+       "id": "video-move-3",
+       "name": "パン",
+       "blurb": "カメラの位置は動かさず、左右に振って景色を流します。",
+       "say": "左から右へ、ゆっくりパンして",
+       "en": "pan left to right",
+       "wide": true,
+       "img": "img/video-move-3.webp"
+      },
+      {
+       "id": "video-move-4",
+       "name": "ティルト",
+       "blurb": "カメラの位置は動かさず、上下に振ります。",
+       "say": "上から下へ、ゆっくりティルトして",
+       "en": "tilt down",
+       "wide": true,
+       "img": "img/video-move-4.webp"
+      },
+      {
+       "id": "video-move-5",
+       "name": "ドリーイン",
+       "blurb": "カメラ自身が箱に近づいていきます。まわりの景色の見え方も変わります。",
+       "say": "カメラを箱に近づけて（ドリーイン）",
+       "en": "dolly in",
+       "wide": true,
+       "img": "img/video-move-5.webp"
+      },
+      {
+       "id": "video-move-6",
+       "name": "ドリーアウト",
+       "blurb": "カメラ自身が箱から離れていきます。場所がだんだん見えてきます。",
+       "say": "カメラを箱から離して（ドリーアウト）",
+       "en": "dolly out",
+       "wide": true,
+       "img": "img/video-move-6.webp"
+      },
+      {
+       "id": "video-move-7",
+       "name": "回り込み",
+       "blurb": "箱のまわりを、カメラが回るように動きます。",
+       "say": "箱のまわりを、ゆっくり回り込んで",
+       "en": "orbit around the product",
+       "wide": true,
+       "img": "img/video-move-7.webp"
+      },
+      {
+       "id": "video-move-8",
+       "name": "追従",
+       "blurb": "動く箱を画面の中央に置いたまま、追いかけます。背景は流れます。",
+       "say": "箱を画面の中央に置いたまま、追従して",
+       "en": "tracking shot",
+       "wide": true,
+       "img": "img/video-move-8.webp"
+      },
+      {
+       "id": "video-move-9",
+       "name": "固定",
+       "blurb": "カメラを動かさず、同じ位置から撮り続けます。",
+       "say": "カメラは固定で",
+       "en": "static locked-off camera",
+       "wide": true,
+       "img": "img/video-move-9.webp"
+      }
+     ]
+    },
+    {
+     "id": "video-shot",
+     "title": "ショットの大きさ",
+     "note": "",
+     "terms": [
+      {
+       "id": "video-shot-1",
+       "name": "ロングショット",
+       "blurb": "箱のまわりの場所まで入る、引いた大きさです。",
+       "say": "ロングショットで、場所がわかるように",
+       "en": "long shot",
+       "wide": false,
+       "img": "img/video-shot-1.webp"
+      },
+      {
+       "id": "video-shot-2",
+       "name": "ミディアムショット",
+       "blurb": "箱が主役で、まわりは少し入る大きさです。",
+       "say": "ミディアムショットで、箱を中心に",
+       "en": "medium shot",
+       "wide": false,
+       "img": "img/video-shot-2.webp"
+      },
+      {
+       "id": "video-shot-3",
+       "name": "クローズアップ",
+       "blurb": "リボンや質感など、一部分を大きく写します。",
+       "say": "リボンのクローズアップで",
+       "en": "close-up",
+       "wide": false,
+       "img": "img/video-shot-3.webp"
+      }
+     ]
+    },
+    {
+     "id": "video-speed",
+     "title": "速さ",
+     "note": "",
+     "terms": [
+      {
+       "id": "video-speed-1",
+       "name": "スローモーション",
+       "blurb": "動きをゆっくり再生します。質感や細かい動きを見せたいときに向きます。",
+       "say": "リボンの動きを、スローモーションで",
+       "en": "slow motion",
+       "wide": true,
+       "img": "img/video-speed-1.webp"
+      },
+      {
+       "id": "video-speed-2",
+       "name": "通常の速さ",
+       "blurb": "普段目で見るくらいの速さです。",
+       "say": "通常の速さで",
+       "en": "real-time speed",
+       "wide": true,
+       "img": "img/video-speed-2.webp"
+      },
+      {
+       "id": "video-speed-3",
+       "name": "タイムラプス",
+       "blurb": "長い時間の変化を、短くまとめます。朝から夕方などの光の変わりに向きます。",
+       "say": "朝から夕方までを、タイムラプスで",
+       "en": "time-lapse",
+       "wide": true,
+       "img": "img/video-speed-3.webp"
+      }
+     ]
+    },
+    {
+     "id": "video-trans",
+     "title": "切り替え方",
+     "note": "",
+     "terms": [
+      {
+       "id": "video-trans-1",
+       "name": "カット",
+       "blurb": "絵と絵を、いきなり切り替えます。テンポのいい動画向きです。",
+       "say": "カットで、テンポよく切り替えて",
+       "en": "hard cut",
+       "wide": true,
+       "img": "img/video-trans-1.webp"
+      },
+      {
+       "id": "video-trans-2",
+       "name": "フェード",
+       "blurb": "前の絵が薄くなり、次の絵が重なって現れます。",
+       "say": "次の絵へ、ゆっくりフェードして",
+       "en": "cross-fade",
+       "wide": true,
+       "img": "img/video-trans-2.webp"
+      },
+      {
+       "id": "video-trans-3",
+       "name": "ワイプ",
+       "blurb": "次の絵が、横から掃くように入ってきます。",
+       "say": "横からのワイプで切り替えて",
+       "en": "wipe transition",
+       "wide": true,
+       "img": "img/video-trans-3.webp"
+      }
+     ]
+    },
+    {
+     "id": "video-shape",
+     "title": "画面の形と尺",
+     "note": "",
+     "terms": [
+      {
+       "id": "video-shape-1",
+       "name": "縦型9:16",
+       "blurb": "スマホの画面いっぱいに縦長です。リールやストーリー向きです。",
+       "say": "縦型9:16で",
+       "en": "vertical 9:16",
+       "wide": false,
+       "img": "img/video-shape-1.webp"
+      },
+      {
+       "id": "video-shape-2",
+       "name": "正方形1:1",
+       "blurb": "四角い画面です。フィード投稿向きです。",
+       "say": "正方形1:1で",
+       "en": "square 1:1",
+       "wide": false,
+       "img": "img/video-shape-2.webp"
+      },
+      {
+       "id": "video-shape-3",
+       "name": "横型16:9",
+       "blurb": "横に長い画面です。YouTubeやXの横動画向きです。",
+       "say": "横型16:9で",
+       "en": "horizontal 16:9",
+       "wide": false,
+       "img": "img/video-shape-3.webp"
+      },
+      {
+       "id": "video-shape-4",
+       "name": "短い（15秒まで）",
+       "blurb": "冒頭からすぐ伝わる、短い動画です。",
+       "say": "15秒までの短い動画で",
+       "en": "short, under 15 seconds",
+       "wide": true,
+       "img": "img/video-shape-4.webp"
+      },
+      {
+       "id": "video-shape-5",
+       "name": "少し長め（30〜60秒）",
+       "blurb": "少しゆったり見せる長さです。",
+       "say": "30秒から60秒くらいの長さで",
+       "en": "30 to 60 seconds",
+       "wide": true,
+       "img": "img/video-shape-5.webp"
+      }
+     ]
+    },
+    {
+     "id": "video-mood",
+     "title": "雰囲気",
+     "note": "",
+     "terms": [
+      {
+       "id": "video-mood-1",
+       "name": "やわらかい",
+       "blurb": "光や動きがおだやかで、やさしい感じです。",
+       "say": "やわらかい雰囲気で、ゆっくり動かして",
+       "en": "soft, gentle mood",
+       "wide": true,
+       "img": "img/video-mood-1.webp"
+      },
+      {
+       "id": "video-mood-2",
+       "name": "テンポよく",
+       "blurb": "切り替えが多く、リズムのある感じです。",
+       "say": "テンポよく、カットで切り替えて",
+       "en": "upbeat, rhythmic pacing",
+       "wide": true,
+       "img": "img/video-mood-2.webp"
+      },
+      {
+       "id": "video-mood-3",
+       "name": "高級感",
+       "blurb": "落ち着いた光と、ゆっくりした動きです。",
+       "say": "高級感のある雰囲気で、ゆっくり寄って",
+       "en": "luxurious, slow and calm",
+       "wide": true,
+       "img": "img/video-mood-3.webp"
+      }
+     ]
+    }
+   ],
+   "combos": [
+    {
+     "title": "Instagramリール（縦型、短い）",
+     "text": "縦型9:16、15秒までの短い動画。\nミディアムショットから始めて、リボンのクローズアップへドリーイン。\nテンポよく、カットで切り替えて。"
+    },
+    {
+     "title": "商品をゆっくり見せたいとき",
+     "text": "縦型9:16、30秒くらい。\nカメラは固定、やわらかい雰囲気で。\nそのあと、リボンの質感がわかるようにスローモーションで寄って。"
+    },
+    {
+     "title": "高級感を出したいとき",
+     "text": "横型16:9、高級感のある雰囲気で。\n箱のまわりをゆっくり回り込んでから、クローズアップへドリーイン。\n切り替えはフェードで、ゆっくり。"
+    },
+    {
+     "title": "季節のギフト案内",
+     "text": "正方形1:1、やわらかい雰囲気で。\n朝から夕方までの光の変わりをタイムラプスで。\n最後はクローズアップで終わらせて。"
+    }
+   ]
+  },
+  {
+   "id": "illustration",
+   "name": "イラスト",
+   "intro": "SNS用の挿絵やアイコンを頼むとき、絵のタッチや色の使い方とことばをそろえるための見本です。題材はすべてクリームの箱にサテンのリボンをかけたものにそろえています。箱そのものではなく、絵のタッチや色、線の違いを見比べてください。",
+   "how": [
+    "使う場所を決める：投稿の挿絵か、お知らせのアイコンか、季節のギフト案内か。",
+    "絵のタッチ、色の使い方、線の太さ、余白や雰囲気から、使いたいものを組み合わせる。",
+    "下の「こう言えば伝わる」のように書いて渡すか、見本の名前を指差す。"
+   ],
+   "sections": [
+    {
+     "id": "illust-touch",
+     "title": "絵のタッチ",
+     "note": "",
+     "terms": [
+      {
+       "id": "illust-touch-1",
+       "name": "水彩",
+       "blurb": "水でにじませたような、やわらかく色がにじむタッチです。",
+       "say": "水彩風のイラストで",
+       "en": "watercolor illustration",
+       "wide": false,
+       "img": "img/illust-touch-1.webp"
+      },
+      {
+       "id": "illust-touch-2",
+       "name": "線画",
+       "blurb": "色をつけず、線だけで描いた絵です。",
+       "say": "線画で、色はつけないで",
+       "en": "line drawing, no color",
+       "wide": false,
+       "img": "img/illust-touch-2.webp"
+      },
+      {
+       "id": "illust-touch-3",
+       "name": "フラット",
+       "blurb": "陰影をつけず、色面をきれいに塗り分けた絵です。",
+       "say": "フラットな塗りで、陰影は少なめに",
+       "en": "flat illustration, minimal shading",
+       "wide": false,
+       "img": "img/illust-touch-3.webp"
+      },
+      {
+       "id": "illust-touch-4",
+       "name": "アニメ風",
+       "blurb": "アニメの一シーンのような、きれいな線と塗りの絵です。",
+       "say": "アニメ風のイラストで",
+       "en": "anime style",
+       "wide": false,
+       "img": "img/illust-touch-4.webp"
+      },
+      {
+       "id": "illust-touch-5",
+       "name": "絵本風",
+       "blurb": "絵本のような、まるみがあって親しみやすい絵です。",
+       "say": "絵本風で、親しみやすい感じに",
+       "en": "picture book style",
+       "wide": false,
+       "img": "img/illust-touch-5.webp"
+      },
+      {
+       "id": "illust-touch-6",
+       "name": "鉛筆",
+       "blurb": "鉛筆で描いたような、濃淡のある白黒の絵です。",
+       "say": "鉛筆描きのイラストで",
+       "en": "pencil sketch",
+       "wide": false,
+       "img": "img/illust-touch-6.webp"
+      },
+      {
+       "id": "illust-touch-7",
+       "name": "和風",
+       "blurb": "墨のにじみや空白を活かした、和紙や水墨画のような絵です。",
+       "say": "和風のイラストで、墨の味を出して",
+       "en": "Japanese ink painting style, sumi-e",
+       "wide": false,
+       "img": "img/illust-touch-7.webp"
+      },
+      {
+       "id": "illust-touch-8",
+       "name": "アイコン風",
+       "blurb": "形をしぼって、一目でわかるシンプルな図です。",
+       "say": "アイコン風で、しぼった形に",
+       "en": "simple icon style",
+       "wide": false,
+       "img": "img/illust-touch-8.webp"
+      },
+      {
+       "id": "illust-touch-9",
+       "name": "油彩風",
+       "blurb": "絵の具が見える、厚みのある油絵のようなタッチです。",
+       "say": "油彩風で、厚みのあるタッチに",
+       "en": "oil painting style, thick brushstrokes",
+       "wide": false,
+       "img": "img/illust-touch-9.webp"
+      }
+     ]
+    },
+    {
+     "id": "illust-color",
+     "title": "色の使い方",
+     "note": "",
+     "terms": [
+      {
+       "id": "illust-color-1",
+       "name": "淡い色",
+       "blurb": "白っぽい、やさしい色合わせです。",
+       "say": "淡い色で、やさしい感じに",
+       "en": "pale pastel colors",
+       "wide": false,
+       "img": "img/illust-color-1.webp"
+      },
+      {
+       "id": "illust-color-2",
+       "name": "はっきりした色",
+       "blurb": "明るく強い色で、目立つ画面にします。",
+       "say": "はっきりした色で、華やかに",
+       "en": "vivid bold colors",
+       "wide": false,
+       "img": "img/illust-color-2.webp"
+      },
+      {
+       "id": "illust-color-3",
+       "name": "少ない色",
+       "blurb": "使う色の数を少なくして、すっきり見せます。見本は紺とクリームと金の3色です。",
+       "say": "使う色は少なく、紺とクリームと金だけで",
+       "en": "limited color palette",
+       "wide": false,
+       "img": "img/illust-color-3.webp"
+      },
+      {
+       "id": "illust-color-4",
+       "name": "単色",
+       "blurb": "ひとつの色だけで描いた絵です。見本は茶色です。",
+       "say": "茶色の単色で",
+       "en": "monochrome, single color",
+       "wide": false,
+       "img": "img/illust-color-4.webp"
+      },
+      {
+       "id": "illust-color-5",
+       "name": "季節の色",
+       "blurb": "その季節がわかる色合わせです。見本は秋の紅葉色です。",
+       "say": "秋の色で、紅葉を効かして",
+       "en": "seasonal colors",
+       "wide": false,
+       "img": "img/illust-color-5.webp"
+      }
+     ]
+    },
+    {
+     "id": "illust-line",
+     "title": "線の太さ",
+     "note": "",
+     "terms": [
+      {
+       "id": "illust-line-1",
+       "name": "細い線",
+       "blurb": "細くきれいな線で描きます。すっきりした印象です。",
+       "say": "細い線で、きれいに",
+       "en": "thin clean lines",
+       "wide": false,
+       "img": "img/illust-line-1.webp"
+      },
+      {
+       "id": "illust-line-2",
+       "name": "太い線",
+       "blurb": "太い線で、ポスターのような力強い印象です。",
+       "say": "太い線で、少しポスター風に",
+       "en": "thick bold lines",
+       "wide": false,
+       "img": "img/illust-line-2.webp"
+      },
+      {
+       "id": "illust-line-3",
+       "name": "線なし",
+       "blurb": "輪郭線を引かず、色面だけで形を出します。",
+       "say": "線なしで、色面だけで",
+       "en": "no outlines",
+       "wide": false,
+       "img": "img/illust-line-3.webp"
+      },
+      {
+       "id": "illust-line-4",
+       "name": "手描きの線",
+       "blurb": "まっすぐではない、手で描いたような線です。",
+       "say": "手描きの線で、少しゆらぎをつけて",
+       "en": "hand-drawn wobbly lines",
+       "wide": false,
+       "img": "img/illust-line-4.webp"
+      }
+     ]
+    },
+    {
+     "id": "illust-other",
+     "title": "余白・背景・雰囲気",
+     "note": "",
+     "terms": [
+      {
+       "id": "illust-other-1",
+       "name": "余白多め",
+       "blurb": "箱は小さめに置いて、まわりの空間を多めに残します。文字を後から入れるときにも向きます。",
+       "say": "余白を多めに、文字を入れるスペースを残して",
+       "en": "ample negative space",
+       "wide": false,
+       "img": "img/illust-other-1.webp"
+      },
+      {
+       "id": "illust-other-2",
+       "name": "背景あり",
+       "blurb": "部屋や机など、場所がわかる背景を入れます。",
+       "say": "部屋のような背景ありで",
+       "en": "with background scene",
+       "wide": false,
+       "img": "img/illust-other-2.webp"
+      },
+      {
+       "id": "illust-other-3",
+       "name": "白地",
+       "blurb": "真っ白の背景で、箱だけをはっきり見せます。",
+       "say": "白地で、箱だけを描いて",
+       "en": "plain white background",
+       "wide": false,
+       "img": "img/illust-other-3.webp"
+      },
+      {
+       "id": "illust-other-4",
+       "name": "かわいい",
+       "blurb": "まるい形やきらきらした飾りで、かわいらしい印象です。",
+       "say": "かわいい感じで、きらきらした飾りを少し添えて",
+       "en": "cute, sparkles",
+       "wide": false,
+       "img": "img/illust-other-4.webp"
+      },
+      {
+       "id": "illust-other-5",
+       "name": "上品",
+       "blurb": "控えめですっきりした、静かな上品さです。",
+       "say": "上品な雰囲気で",
+       "en": "elegant, refined",
+       "wide": false,
+       "img": "img/illust-other-5.webp"
+      },
+      {
+       "id": "illust-other-6",
+       "name": "手描き感",
+       "blurb": "クレヨンや色鉛筆のような、手で描いたぬくもりが残るタッチです。",
+       "say": "手描き感のあるイラストで",
+       "en": "hand-drawn crayon texture",
+       "wide": false,
+       "img": "img/illust-other-6.webp"
+      },
+      {
+       "id": "illust-other-7",
+       "name": "立体的",
+       "blurb": "光と陰影で厚みがあるよう見せます。",
+       "say": "立体的に見えるように",
+       "en": "three-dimensional shading",
+       "wide": false,
+       "img": "img/illust-other-7.webp"
+      }
+     ]
+    }
+   ],
+   "combos": [
+    {
+     "title": "投稿の挿絵",
+     "text": "絵本風で、淡い色、手描きの線。\n背景ありで、親しみやすい感じに。"
+    },
+    {
+     "title": "お知らせやアイコン",
+     "text": "アイコン風で、しぼった形に。\n使う色は少なく、紺とクリームと金だけ。白地で。"
+    },
+    {
+     "title": "季節のギフト案内",
+     "text": "水彩風で、秋の色（紅葉）を効かして。\n余白を多めに、文字を入れるスペースを残して。"
+    },
+    {
+     "title": "上品なギフト案内",
+     "text": "線なしで、淡い色、上品な雰囲気。\n白地で、花を一輪だけ添えて。"
+    }
+   ]
+  },
+  {
+   "id": "slides",
+   "name": "スライド・図解",
+   "intro": "SNSのカルーセルや図解を頼むとき、仕上がりの型や図の種類とことばをそろえるための見本です。本文は、文字ががたがたにならないよう灰色の帯で示しています。見える日本語は見本の名前や短い表示だけです。",
+   "how": [
+    "使う場所を決める：Instagramのカルーセルか、ひと枚の図解か、説明のスライドか。",
+    "仕上がりの型、図の種類、文字の量、配色、カルーセルの工夫から、使いたいものを組み合わせる。",
+    "下の「こう言えば伝わる」のように書いて渡すか、見本の名前を指差す。"
+   ],
+   "sections": [
+    {
+     "id": "slides-layout",
+     "title": "仕上がりの型",
+     "note": "",
+     "terms": [
+      {
+       "id": "slides-layout-1",
+       "name": "タイトルと本文",
+       "blurb": "上に見出し、下に本文を置く、いちばん基本の型です。",
+       "say": "タイトルと本文の型で",
+       "en": "title and body layout",
+       "wide": false,
+       "img": "img/slides-layout-1.webp"
+      },
+      {
+       "id": "slides-layout-2",
+       "name": "左に図・右に文",
+       "blurb": "左側に図を置き、右側に説明を書きます。",
+       "say": "左に図、右に文の仕上がりで",
+       "en": "diagram left, text right",
+       "wide": false,
+       "img": "img/slides-layout-2.webp"
+      },
+      {
+       "id": "slides-layout-3",
+       "name": "大きな数字",
+       "blurb": "番号や件数などの数字を、一番目立つほど大きく置きます。",
+       "say": "大きな数字を見出しにして",
+       "en": "big number as headline",
+       "wide": false,
+       "img": "img/slides-layout-3.webp"
+      },
+      {
+       "id": "slides-layout-4",
+       "name": "写真全面に文字",
+       "blurb": "写真を背景いっぱいに使い、その上に文字を乗せます。",
+       "say": "写真を全面に広げて、上に文字を乗せて",
+       "en": "full-bleed photo with text overlay",
+       "wide": false,
+       "img": "img/slides-layout-4.webp"
+      },
+      {
+       "id": "slides-layout-5",
+       "name": "カードが並ぶ",
+       "blurb": "同じ型のカードを横に並べて、一目で見比べられるようにします。",
+       "say": "カードを3枚横に並べて",
+       "en": "row of cards",
+       "wide": false,
+       "img": "img/slides-layout-5.webp"
+      },
+      {
+       "id": "slides-layout-6",
+       "name": "上下に分ける",
+       "blurb": "画面を上下に二つに分けて、要点と説明を分けます。",
+       "say": "上に要点、下にくわしい説明で、上下に分けて",
+       "en": "split top and bottom",
+       "wide": false,
+       "img": "img/slides-layout-6.webp"
+      }
+     ]
+    },
+    {
+     "id": "slides-types",
+     "title": "図の種類",
+     "note": "",
+     "terms": [
+      {
+       "id": "slides-types-1",
+       "name": "比較表",
+       "blurb": "項目を横に並べて、違いを一目で見比べる表です。",
+       "say": "比較表で、項目ごとの違いがわかるように",
+       "en": "comparison table",
+       "wide": false,
+       "img": "img/slides-types-1.webp"
+      },
+      {
+       "id": "slides-types-2",
+       "name": "手順の流れ",
+       "blurb": "1、2、3と、次にやる順番を矢印でつなげます。",
+       "say": "手順の流れで、3つの手順で示して",
+       "en": "step-by-step flow",
+       "wide": false,
+       "img": "img/slides-types-2.webp"
+      },
+      {
+       "id": "slides-types-3",
+       "name": "タイムライン",
+       "blurb": "時間の流れに沿って、出来事を並べます。",
+       "say": "タイムラインで、年の流れがわかるように",
+       "en": "timeline",
+       "wide": false,
+       "img": "img/slides-types-3.webp"
+      },
+      {
+       "id": "slides-types-4",
+       "name": "前と後の対比",
+       "blurb": "左に「前」、右に「後」を置いて、変わりがわかるようにします。",
+       "say": "前と後の対比で、左右に並べて",
+       "en": "before and after",
+       "wide": false,
+       "img": "img/slides-types-4.webp"
+      },
+      {
+       "id": "slides-types-5",
+       "name": "割合",
+       "blurb": "丸い図などで、全体の中の割合を示します。",
+       "say": "割合がわかる丸い図で",
+       "en": "pie chart",
+       "wide": false,
+       "img": "img/slides-types-5.webp"
+      },
+      {
+       "id": "slides-types-6",
+       "name": "つながりの図",
+       "blurb": "ものとものの関係を、線でつないで見せます。",
+       "say": "つながりの図で、中心から枝分かれるように",
+       "en": "mind map",
+       "wide": false,
+       "img": "img/slides-types-6.webp"
+      }
+     ]
+    },
+    {
+     "id": "slides-text",
+     "title": "文字の量",
+     "note": "",
+     "terms": [
+      {
+       "id": "slides-text-1",
+       "name": "文字少なめ",
+       "blurb": "見出しだけにして、空きを多めに残します。SNSで目を止めたいときに向きます。",
+       "say": "文字は少なめに、見出しだけで",
+       "en": "minimal text",
+       "wide": false,
+       "img": "img/slides-text-1.webp"
+      },
+      {
+       "id": "slides-text-2",
+       "name": "ちょうどよい",
+       "blurb": "見出しと、短い説明がちょうどよい量です。",
+       "say": "文字の量はちょうどよく",
+       "en": "moderate text",
+       "wide": false,
+       "img": "img/slides-text-2.webp"
+      },
+      {
+       "id": "slides-text-3",
+       "name": "説明多め",
+       "blurb": "説明をめいっぱい書いて、くわしく伝えます。",
+       "say": "説明は多めに、くわしく書いて",
+       "en": "detailed text",
+       "wide": false,
+       "img": "img/slides-text-3.webp"
+      }
+     ]
+    },
+    {
+     "id": "slides-color",
+     "title": "配色",
+     "note": "",
+     "terms": [
+      {
+       "id": "slides-color-1",
+       "name": "淡い配色",
+       "blurb": "やさしい色で、おだやかな印象です。",
+       "say": "淡い配色で、やさしい感じに",
+       "en": "soft pastel palette",
+       "wide": false,
+       "img": "img/slides-color-1.webp"
+      },
+      {
+       "id": "slides-color-2",
+       "name": "はっきりした配色",
+       "blurb": "目につく色を使って、印象を強くします。",
+       "say": "はっきりした配色で、目を引くように",
+       "en": "bold high-contrast palette",
+       "wide": false,
+       "img": "img/slides-color-2.webp"
+      },
+      {
+       "id": "slides-color-3",
+       "name": "白背景",
+       "blurb": "背景を白にして、すっきり見せます。",
+       "say": "白背景で、すっきりと",
+       "en": "white background",
+       "wide": false,
+       "img": "img/slides-color-3.webp"
+      },
+      {
+       "id": "slides-color-4",
+       "name": "暗い背景",
+       "blurb": "暗い背景に明るい文字で、落ち着いた印象です。",
+       "say": "暗い背景に、明るい文字で",
+       "en": "dark background, light text",
+       "wide": false,
+       "img": "img/slides-color-4.webp"
+      }
+     ]
+    },
+    {
+     "id": "slides-carousel",
+     "title": "カルーセル投稿",
+     "note": "Instagramなどで、横に滑らせて見る投稿です。",
+     "terms": [
+      {
+       "id": "slides-carousel-1",
+       "name": "1枚目で興味を引く",
+       "blurb": "最初の一枚で、足を止めてもらう見出しを置きます。",
+       "say": "1枚目で興味を引く見出しにして",
+       "en": "hook on the first slide",
+       "wide": false,
+       "img": "img/slides-carousel-1.webp"
+      },
+      {
+       "id": "slides-carousel-2",
+       "name": "番号を付ける",
+       "blurb": "今何枚目かがわかるよう、番号を入れます。",
+       "say": "各枚に番号を付けて（2/5など）",
+       "en": "slide numbers",
+       "wide": false,
+       "img": "img/slides-carousel-2.webp"
+      },
+      {
+       "id": "slides-carousel-3",
+       "name": "同じ型でそろえる",
+       "blurb": "並ぶ枚の仕上がりを同じ型にして、まとまって見せます。",
+       "say": "並ぶ枚は、同じ型でそろえて",
+       "en": "consistent template",
+       "wide": false,
+       "img": "img/slides-carousel-3.webp"
+      },
+      {
+       "id": "slides-carousel-4",
+       "name": "最後にまとめ",
+       "blurb": "一番後ろの枚で、伝えたいことをそろえます。",
+       "say": "最後の枚はまとめにして",
+       "en": "summary on the last slide",
+       "wide": false,
+       "img": "img/slides-carousel-4.webp"
+      },
+      {
+       "id": "slides-carousel-5",
+       "name": "次へを示す",
+       "blurb": "次の枚があることがわかるよう、次への目安を入れます。",
+       "say": "次へを示す目安を入れて",
+       "en": "swipe cue",
+       "wide": false,
+       "img": "img/slides-carousel-5.webp"
+      }
+     ]
+    }
+   ],
+   "combos": [
+    {
+     "title": "Instagramのカルーセル",
+     "text": "5枚のカルーセル。淡い配色、白背景。\n1枚目で興味を引く見出し、文字は少なめに。\n各枚に番号を付け、同じ型でそろえ、次への目安を入れて。\n最後の枚はまとめにして。"
+    },
+    {
+     "title": "比較して伝える",
+     "text": "前と後の対比で、左右に並べて。\nはっきりした配色、文字の量はちょうどよく。"
+    },
+    {
+     "title": "手順の案内",
+     "text": "手順の流れで、3つの手順で示して。\n大きな数字を見出しに。淡い配色、白背景。"
+    },
+    {
+     "title": "ひと枚の図解",
+     "text": "左に図、右に文の仕上がりで。\n割合がわかる丸い図を左に置いて。文字は少なめに。"
+    }
+   ]
+  },
+  {
+   "id": "sns",
+   "name": "SNS投稿画像・バナー",
+   "intro": "Instagram・X・Threadsなどの投稿画像やバナーを頼むとき、文字の乗せ方や画面の形とことばをそろえるための見本です。商品はクリームの箱にサテンのリボンをかけたものにそろえています。本文の文字は、がたがたにならないよう灰色の帯で示している見本もあります。フォントの見本だけ、短い日本語をそのまま書いています。",
+   "how": [
+    "使う場所を決める：フィード（四角、または少し縦長）、ストーリーやリール（縦型）、横長のバナーなど。",
+    "文字の乗せ方、フォント、形、余白、アイキャッチ、配色から、使いたいものを組み合わせる。",
+    "下の「こう言えば伝わる」のように書いて渡すか、見本の名前を指差す。"
+   ],
+   "sections": [
+    {
+     "id": "sns-textplace",
+     "title": "文字の乗せ方",
+     "note": "",
+     "terms": [
+      {
+       "id": "sns-textplace-1",
+       "name": "中央に大きく",
+       "blurb": "画面のまん中に、大きな文字を置きます。",
+       "say": "文字は中央に大きく",
+       "en": "large centered text",
+       "wide": false,
+       "img": "img/sns-textplace-1.webp"
+      },
+      {
+       "id": "sns-textplace-2",
+       "name": "下に帯を敷いて",
+       "blurb": "画面の下に白い帯を敷き、その上に文字を置きます。",
+       "say": "下に帯を敷いて、文字を乗せて",
+       "en": "text on a bottom band",
+       "wide": false,
+       "img": "img/sns-textplace-2.webp"
+      },
+      {
+       "id": "sns-textplace-3",
+       "name": "上に小さく",
+       "blurb": "画面の上のほうに、小さめの文字を置きます。",
+       "say": "上に小さく、店名や日付だけ",
+       "en": "small text at the top",
+       "wide": false,
+       "img": "img/sns-textplace-3.webp"
+      },
+      {
+       "id": "sns-textplace-4",
+       "name": "空きに乗せる",
+       "blurb": "商品のまわりの空いたところに、文字を置きます。",
+       "say": "箱の横の空きに、文字を乗せて",
+       "en": "text in the empty space",
+       "wide": false,
+       "img": "img/sns-textplace-4.webp"
+      },
+      {
+       "id": "sns-textplace-5",
+       "name": "文字だけ",
+       "blurb": "写真を使わず、文字だけの画面にします。",
+       "say": "写真は使わず、文字だけの画面で",
+       "en": "text only, no photo",
+       "wide": false,
+       "img": "img/sns-textplace-5.webp"
+      }
+     ]
+    },
+    {
+     "id": "sns-font",
+     "title": "フォントの雰囲気",
+     "note": "",
+     "terms": [
+      {
+       "id": "sns-font-1",
+       "name": "明朝で上品に",
+       "blurb": "線の端に飾りのある字体で、落ち着いた上品さが出ます。",
+       "say": "明朝体で、上品な感じに",
+       "en": "elegant serif (Mincho) font",
+       "wide": false,
+       "img": "img/sns-font-1.webp"
+      },
+      {
+       "id": "sns-font-2",
+       "name": "ゴシックで読みやすく",
+       "blurb": "線の太さが均一な字体で、遠くからでも読みやすいです。",
+       "say": "ゴシック体で、読みやすく",
+       "en": "clean sans-serif (Gothic) font",
+       "wide": false,
+       "img": "img/sns-font-2.webp"
+      },
+      {
+       "id": "sns-font-3",
+       "name": "手書き風",
+       "blurb": "手で書いたような、やわらかい字体です。",
+       "say": "手書き風の字体で",
+       "en": "handwritten font",
+       "wide": false,
+       "img": "img/sns-font-3.webp"
+      },
+      {
+       "id": "sns-font-4",
+       "name": "太くて強い",
+       "blurb": "太い字で、いちばん伝えたいことばを強く見せます。",
+       "say": "太くて強い字で、短く",
+       "en": "heavy bold font",
+       "wide": false,
+       "img": "img/sns-font-4.webp"
+      }
+     ]
+    },
+    {
+     "id": "sns-ratio",
+     "title": "画面の形",
+     "note": "",
+     "terms": [
+      {
+       "id": "sns-ratio-1",
+       "name": "1:1",
+       "blurb": "四角い画面です。フィードの投稿向きです。",
+       "say": "正方形の1:1で",
+       "en": "1:1 square",
+       "wide": false,
+       "img": "img/sns-ratio-1.webp"
+      },
+      {
+       "id": "sns-ratio-2",
+       "name": "4:5",
+       "blurb": "少し縦長の四角です。Instagramのフィードで大きく見せたいときに向きます。",
+       "say": "少し縦長の4:5で",
+       "en": "4:5 portrait",
+       "wide": false,
+       "img": "img/sns-ratio-2.webp"
+      },
+      {
+       "id": "sns-ratio-3",
+       "name": "9:16",
+       "blurb": "スマホの画面いっぱいに縦長です。ストーリーやリール向きです。",
+       "say": "縦型の9:16で",
+       "en": "9:16 vertical",
+       "wide": false,
+       "img": "img/sns-ratio-3.webp"
+      },
+      {
+       "id": "sns-ratio-4",
+       "name": "16:9",
+       "blurb": "横に長い画面です。Xのヘッダーや、横長のバナー向きです。",
+       "say": "横型の16:9で",
+       "en": "16:9 horizontal",
+       "wide": false,
+       "img": "img/sns-ratio-4.webp"
+      }
+     ]
+    },
+    {
+     "id": "sns-margin",
+     "title": "余白",
+     "note": "",
+     "terms": [
+      {
+       "id": "sns-margin-1",
+       "name": "余白多め",
+       "blurb": "文字や商品のまわりに、余裕のある空きを残します。",
+       "say": "余白を多めに",
+       "en": "ample white space",
+       "wide": false,
+       "img": "img/sns-margin-1.webp"
+      },
+      {
+       "id": "sns-margin-2",
+       "name": "ぎっしり",
+       "blurb": "画面の端まで、写真や文字をいっぱいに使います。",
+       "say": "余白は少なめに、ぎっしりと",
+       "en": "dense full layout",
+       "wide": false,
+       "img": "img/sns-margin-2.webp"
+      },
+      {
+       "id": "sns-margin-3",
+       "name": "まわりを空けて",
+       "blurb": "商品の外側に白い枠のような空きを作ります。",
+       "say": "まわりを空けて、白い余白を残して",
+       "en": "white border around the product",
+       "wide": false,
+       "img": "img/sns-margin-3.webp"
+      }
+     ]
+    },
+    {
+     "id": "sns-eye",
+     "title": "アイキャッチ",
+     "note": "スクロールの途中で、足を止めてもらうための工夫です。",
+     "terms": [
+      {
+       "id": "sns-eye-1",
+       "name": "大きな一言",
+       "blurb": "いちばん伝えたいことばを、大きく置きます。",
+       "say": "大きな一言を、画面の中央に",
+       "en": "one big catchphrase",
+       "wide": false,
+       "img": "img/sns-eye-1.webp"
+      },
+      {
+       "id": "sns-eye-2",
+       "name": "商品が主役",
+       "blurb": "文字は控えめにして、商品を大きく見せます。",
+       "say": "商品が主役で、文字は控えめに",
+       "en": "product as the hero",
+       "wide": false,
+       "img": "img/sns-eye-2.webp"
+      },
+      {
+       "id": "sns-eye-3",
+       "name": "数字を大きく",
+       "blurb": "件数や日付などの数字を、目立つように大きくします。",
+       "say": "数字を大きく、一目でわかるように",
+       "en": "big numbers",
+       "wide": false,
+       "img": "img/sns-eye-3.webp"
+      },
+      {
+       "id": "sns-eye-4",
+       "name": "問いかけ",
+       "blurb": "読んだ人に問いかけることばで、足を止めてもらいます。",
+       "say": "問いかけの見出しで",
+       "en": "question headline",
+       "wide": false,
+       "img": "img/sns-eye-4.webp"
+      },
+      {
+       "id": "sns-eye-5",
+       "name": "前と後の対比",
+       "blurb": "左に前、右に後を並べて、変わりがわかるようにします。",
+       "say": "前と後の対比で、左右に分けて",
+       "en": "before and after split",
+       "wide": false,
+       "img": "img/sns-eye-5.webp"
+      }
+     ]
+    },
+    {
+     "id": "sns-color",
+     "title": "配色",
+     "note": "",
+     "terms": [
+      {
+       "id": "sns-color-1",
+       "name": "明るくやさしい",
+       "blurb": "明るい色で、やわらかい印象です。",
+       "say": "明るくやさしい配色で",
+       "en": "bright soft colors",
+       "wide": false,
+       "img": "img/sns-color-1.webp"
+      },
+      {
+       "id": "sns-color-2",
+       "name": "高級感",
+       "blurb": "暗い色と金色などで、落ち着いた贅沢さです。",
+       "say": "高級感のある配色で",
+       "en": "luxurious dark and gold",
+       "wide": false,
+       "img": "img/sns-color-2.webp"
+      },
+      {
+       "id": "sns-color-3",
+       "name": "季節の色",
+       "blurb": "その季節がわかる色合わせです。見本は秋の紅葉色です。",
+       "say": "秋の色で",
+       "en": "seasonal colors",
+       "wide": false,
+       "img": "img/sns-color-3.webp"
+      },
+      {
+       "id": "sns-color-4",
+       "name": "白基調",
+       "blurb": "白を多く使って、すっきり見せます。",
+       "say": "白基調で、すっきりと",
+       "en": "white-based clean",
+       "wide": false,
+       "img": "img/sns-color-4.webp"
+      },
+      {
+       "id": "sns-color-5",
+       "name": "暗い背景に白文字",
+       "blurb": "暗い写真の上に、白い文字を置きます。",
+       "say": "暗い背景に白文字で",
+       "en": "dark background with white text",
+       "wide": false,
+       "img": "img/sns-color-5.webp"
+      }
+     ]
+    }
+   ],
+   "combos": [
+    {
+     "title": "フィード投稿（四角、または少し縦長）",
+     "text": "少し縦長の4:5で。商品が主役、余白を多めに。\n明るくやさしい配色。文字は下に帯を敷いて、ゴシック体で読みやすく。"
+    },
+    {
+     "title": "ストーリーやリールの表紙",
+     "text": "縦型の9:16で。大きな一言を画面の中央に。\n太くて強い字で、短く。秋の色で。"
+    },
+    {
+     "title": "上品なお知らせ",
+     "text": "正方形の1:1、白基調で、まわりを空けて。\n明朝体で上品な感じに。箱の横の空きに文字を乗せて。"
+    },
+    {
+     "title": "横長のバナー",
+     "text": "横型の16:9で。暗い背景に白文字。\n高級感のある配色。数字を大きく、一目でわかるように。"
+    }
+   ]
+  },
+  {
+   "id": "app",
+   "name": "アプリ・Web画面",
+   "intro": "お店の画面や案内ページを頼むとき、部品の名前や仕上がりの型とことばをそろえるための見本です。特定のお店の画面をまねたものではなく、ギフト店の案内画面をごく簡単な図で示しています。本文は灰色の帯です。赤い枠は、その見本で見てほしい場所です。動きの見本は、始まり・途中・終わりを3枚の図で表しています。",
+   "how": [
+    "使う場所を決める：お店のトップ画面か、商品の一覧か、案内の読み物か。",
+    "画面の部品、仕上がりの型、余白、動きから、使いたいものを組み合わせる。",
+    "下の「こう言えば伝わる」のように書いて渡すか、見本の名前を指差す。"
+   ],
+   "sections": [
+    {
+     "id": "app-parts",
+     "title": "画面の部品",
+     "note": "",
+     "terms": [
+      {
+       "id": "app-parts-1",
+       "name": "ヘッダー",
+       "blurb": "画面のいちばん上の帯です。店名や案内が入ります。",
+       "say": "上のヘッダーに、店名を入れて",
+       "en": "header bar",
+       "wide": false,
+       "img": "img/app-parts-1.webp"
+      },
+      {
+       "id": "app-parts-2",
+       "name": "フッター",
+       "blurb": "画面のいちばん下の帯です。よく使う場所への入口が並びます。",
+       "say": "下のフッターに、ホーム・探す・案内を並べて",
+       "en": "footer navigation",
+       "wide": false,
+       "img": "img/app-parts-2.webp"
+      },
+      {
+       "id": "app-parts-3",
+       "name": "ボタン",
+       "blurb": "押すと次の動作に進む、角の丸い枠です。",
+       "say": "購入するボタンを、目立つ色で",
+       "en": "rounded button",
+       "wide": false,
+       "img": "img/app-parts-3.webp"
+      },
+      {
+       "id": "app-parts-4",
+       "name": "カード",
+       "blurb": "写真と短い説明を、一枚の札のようにまとめた塊です。",
+       "say": "商品はカードにして、並べて",
+       "en": "card",
+       "wide": false,
+       "img": "img/app-parts-4.webp"
+      },
+      {
+       "id": "app-parts-5",
+       "name": "モーダル",
+       "blurb": "今の画面の手前に、確認などの枠が乗ることです。後ろは少し暗くなります。",
+       "say": "確認は、画面の手前に乗る枠（モーダル）で",
+       "en": "modal dialog",
+       "wide": false,
+       "img": "img/app-parts-5.webp"
+      },
+      {
+       "id": "app-parts-6",
+       "name": "メニュー",
+       "blurb": "横から出てくる、行き先の一覧です。",
+       "say": "横から出るメニューで、行き先を並べて",
+       "en": "side menu",
+       "wide": false,
+       "img": "img/app-parts-6.webp"
+      }
+     ]
+    },
+    {
+     "id": "app-parts2",
+     "title": "部品の続き",
+     "note": "",
+     "terms": [
+      {
+       "id": "app-parts2-1",
+       "name": "タブ",
+       "blurb": "同じ場所で、見せる内容を切り替える見出しです。",
+       "say": "おすすめと新着を、タブで切り替えられるように",
+       "en": "tabs",
+       "wide": false,
+       "img": "img/app-parts2-1.webp"
+      },
+      {
+       "id": "app-parts2-2",
+       "name": "入力欄",
+       "blurb": "名前やメッセージを書き込む、枠のある場所です。",
+       "say": "入力欄を縦に並べて、下に送るボタンを",
+       "en": "input fields",
+       "wide": false,
+       "img": "img/app-parts2-2.webp"
+      },
+      {
+       "id": "app-parts2-3",
+       "name": "リスト",
+       "blurb": "同じ型の行を、縦に並べた一覧です。",
+       "say": "お知らせは、リストで縦に並べて",
+       "en": "list",
+       "wide": false,
+       "img": "img/app-parts2-3.webp"
+      },
+      {
+       "id": "app-parts2-4",
+       "name": "バナー",
+       "blurb": "画面の目立つ位置に置く、横長の案内です。",
+       "say": "上に大きなバナーを置いて",
+       "en": "banner",
+       "wide": false,
+       "img": "img/app-parts2-4.webp"
+      },
+      {
+       "id": "app-parts2-5",
+       "name": "お知らせ",
+       "blurb": "短いメッセージが、画面の上のほうにさっと出ることです。",
+       "say": "完了したら、上にお知らせを出して",
+       "en": "toast notification",
+       "wide": false,
+       "img": "img/app-parts2-5.webp"
+      },
+      {
+       "id": "app-parts2-6",
+       "name": "アイコン",
+       "blurb": "探すやかごなど、一目で意味がわかる小さな印です。",
+       "say": "探す・お気に入り・かご・案内のアイコンを並べて",
+       "en": "icons",
+       "wide": false,
+       "img": "img/app-parts2-6.webp"
+      }
+     ]
+    },
+    {
+     "id": "app-pattern",
+     "title": "仕上がりの型",
+     "note": "",
+     "terms": [
+      {
+       "id": "app-pattern-1",
+       "name": "大きな写真から始まる",
+       "blurb": "画面の最初に、大きな写真を置いて印象を作ります。",
+       "say": "大きな写真から始まる型で",
+       "en": "hero image layout",
+       "wide": false,
+       "img": "img/app-pattern-1.webp"
+      },
+      {
+       "id": "app-pattern-2",
+       "name": "カードが並ぶ",
+       "blurb": "同じ型のカードを、格子のように並べます。",
+       "say": "カードが並ぶ型で",
+       "en": "card grid",
+       "wide": false,
+       "img": "img/app-pattern-2.webp"
+      },
+      {
+       "id": "app-pattern-3",
+       "name": "商品一覧",
+       "blurb": "商品を小さくたくさん並べて、探しやすくします。",
+       "say": "商品一覧の型で、たくさん並べて",
+       "en": "product grid",
+       "wide": false,
+       "img": "img/app-pattern-3.webp"
+      },
+      {
+       "id": "app-pattern-4",
+       "name": "一列の読み物",
+       "blurb": "文章を一列の中央にそろえて、読みやすくします。",
+       "say": "一列の読み物の型で、ゆったりと",
+       "en": "single-column article",
+       "wide": false,
+       "img": "img/app-pattern-4.webp"
+      },
+      {
+       "id": "app-pattern-5",
+       "name": "シンプル最少",
+       "blurb": "要素をできるだけ少なくして、すっきり見せます。",
+       "say": "シンプル最少で、要素は少なく",
+       "en": "minimal layout",
+       "wide": false,
+       "img": "img/app-pattern-5.webp"
+      },
+      {
+       "id": "app-pattern-6",
+       "name": "縦にスクロール",
+       "blurb": "下に続いていく画面で、次の段が見えるようにします。",
+       "say": "縦にスクロールする型で、次の段が少し見えるように",
+       "en": "vertical scroll",
+       "wide": false,
+       "img": "img/app-pattern-6.webp"
+      }
+     ]
+    },
+    {
+     "id": "app-space",
+     "title": "余白",
+     "note": "",
+     "terms": [
+      {
+       "id": "app-space-1",
+       "name": "余白多め",
+       "blurb": "部品のあいだやまわりに、余裕のある空きを残します。上品に見えやすいです。",
+       "say": "余白を多めに、ゆったりと",
+       "en": "generous spacing",
+       "wide": false,
+       "img": "img/app-space-1.webp"
+      },
+      {
+       "id": "app-space-2",
+       "name": "詰め気味",
+       "blurb": "部品のあいだを狭めて、同じ画面に多く載せます。",
+       "say": "余白は詰め気味に、一覧を多く見せて",
+       "en": "compact spacing",
+       "wide": false,
+       "img": "img/app-space-2.webp"
+      }
+     ]
+    },
+    {
+     "id": "app-motion",
+     "title": "動き",
+     "note": "",
+     "terms": [
+      {
+       "id": "app-motion-1",
+       "name": "押すと沈む",
+       "blurb": "ボタンを押すと、少し沈んで、押したことがわかります。",
+       "say": "ボタンは、押すと沈む動きで",
+       "en": "press-down button",
+       "wide": true,
+       "img": "img/app-motion-1.webp"
+      },
+      {
+       "id": "app-motion-2",
+       "name": "下から出てくる",
+       "blurb": "画面の下から、枠がせり上がってきます。",
+       "say": "選択の枠は、下から出てくるように",
+       "en": "bottom sheet",
+       "wide": true,
+       "img": "img/app-motion-2.webp"
+      },
+      {
+       "id": "app-motion-3",
+       "name": "フェードイン",
+       "blurb": "薄い状態から、だんだんはっきり現れます。",
+       "say": "カードは、フェードインで現れるように",
+       "en": "fade in",
+       "wide": true,
+       "img": "img/app-motion-3.webp"
+      },
+      {
+       "id": "app-motion-4",
+       "name": "横に滑る",
+       "blurb": "今の画面が横に流れ、次の画面が入ってきます。",
+       "say": "次の画面へは、横に滑るように",
+       "en": "slide transition",
+       "wide": true,
+       "img": "img/app-motion-4.webp"
+      },
+      {
+       "id": "app-motion-5",
+       "name": "スクロールで現れる",
+       "blurb": "下に送ると、隠れていた内容が現れます。",
+       "say": "下に送ると、次の内容が現れるように",
+       "en": "reveal on scroll",
+       "wide": true,
+       "img": "img/app-motion-5.webp"
+      }
+     ]
+    }
+   ],
+   "combos": [
+    {
+     "title": "お店のトップ画面",
+     "text": "大きな写真から始まる型で。上のヘッダーに店名を入れて。\n余白を多めに、ゆったりと。下のフッターに、ホーム・探す・案内を並べて。"
+    },
+    {
+     "title": "商品一覧",
+     "text": "商品一覧の型で、たくさん並べて。\n商品はカードにして。おすすめと新着を、タブで切り替えられるように。\n余白は詰め気味に。"
+    },
+    {
+     "title": "案内の読み物",
+     "text": "一列の読み物の型で、ゆったりと。\n余白を多めに。カードは、フェードインで現れるように。"
+    },
+    {
+     "title": "確認や購入の流れ",
+     "text": "購入するボタンを、目立つ色で。押すと沈む動きで。\n確認は、画面の手前に乗る枠（モーダル）で。\n完了したら、上にお知らせを出して。"
+    }
+   ]
+  }
+ ]
+}

@@ -42,7 +42,8 @@
       { id: 'channels', label: '7 販路と価格' },
       { id: 'voice', label: '8 お客様の声' },
       { id: 'worklog', label: '9 作業ログ' },
-      { id: 'namerules', label: '10 名入れの決まり' }
+      { id: 'namerules', label: '10 名入れの決まり' },
+      { id: 'imgwords', label: '11 画像の頼み方' }
     ];
     const CHANNELS = [
       { id: 'ALL', label: 'すべて' },
