@@ -1273,6 +1273,9 @@ html{touch-action:manipulation}
 /* v73 速度対策：商品の中身が描かれる前にフッターが見えて、あとでずれる（CLS）のを防ぐ。中身が入ると自動で外れる */
 #sample-item:empty{min-height:150vh}
 
+/* 2026-11-26 林さん依頼：PC幅で左の写真を右側（カート・注文前の説明）に付いてこさせる。位置と写真の大きさはproduct-gallery-follow.jsが画面に合わせて決める。スマホ・タブレットの縦並びでは付いてこない */
+@media(min-width:1024px){.pdp>.gal.pd-follow{position:sticky;top:var(--pd-follow-top,140px)}.pdp>.gal.pd-follow-off{position:relative;top:auto}.pdp>.gal :is(.detail-gallery-track,.sample-product-photo){max-width:var(--pd-photo-max,100%);margin-inline:auto}}
+
 /* delivery-notes.css */
 /* お届け日数・注意事項の定型文・お急ぎ制作（v64）。目立たせすぎず、でも見落とさない */
 .lead-time{margin:12px 0 4px;padding:10px 12px;border-radius:12px;background:#f7f3ec;border:1px solid #eadfce;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;color:#4a3f35}

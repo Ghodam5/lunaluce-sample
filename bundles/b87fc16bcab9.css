@@ -1273,6 +1273,9 @@ html{touch-action:manipulation}
 /* v73 速度対策：商品の中身が描かれる前にフッターが見えて、あとでずれる（CLS）のを防ぐ。中身が入ると自動で外れる */
 #sample-item:empty{min-height:150vh}
 
+/* 2026-11-26 林さん依頼：PC幅で左の写真を右側（カート・注文前の説明）に付いてこさせる。位置と写真の大きさはproduct-gallery-follow.jsが画面に合わせて決める。スマホ・タブレットの縦並びでは付いてこない */
+@media(min-width:1024px){.pdp>.gal.pd-follow{position:sticky;top:var(--pd-follow-top,140px)}.pdp>.gal.pd-follow-off{position:relative;top:auto}.pdp>.gal :is(.detail-gallery-track,.sample-product-photo){max-width:var(--pd-photo-max,100%);margin-inline:auto}}
+
 /* product-guide.css */
 .product-guide{max-width:960px;padding-block:24px 50px}.product-guide h1{font-size:clamp(24px,5vw,32px);line-height:1.5}.guide-lead{font-size:16px;line-height:1.9;margin:16px 0}.guide-back{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}.guide-back a{display:inline-flex;align-items:center;min-height:44px;border:1px solid rgba(47,169,163,.38);border-radius:12px;padding:10px 14px;background:#fff;color:var(--teal-d);font-size:16px}.product-guide .detail-section{font-size:16px;line-height:1.95}.product-guide .detail-section p+p{margin-top:14px}.product-guide h3{font-size:18px;line-height:1.7;margin:20px 0 10px;color:var(--teal-d)}.product-guide ol{padding-left:1.5em}.product-guide li{margin:10px 0}.product-guide .source-link{display:inline-flex;align-items:center;min-height:44px;margin:6px 0}.product-guide .crumb{overflow-wrap:anywhere}
 
