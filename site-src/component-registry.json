@@ -8,6 +8,7 @@
         "site-src/products",
         "item-page.js",
         "product-detail.js",
+        "product-gallery-follow.js",
         "site-src/styles/components/product-detail.css",
         "site-src/styles/components/pilot-inputs.css"
       ],
