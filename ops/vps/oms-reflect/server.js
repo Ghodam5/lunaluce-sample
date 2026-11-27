@@ -128,6 +128,29 @@ async function reflectSite(body, by) {
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 
+
+// プラグインは days.changes を {date, from, to} の配列で返す。古いOMS画面はこれを文字のようにつないで [object Object] になる。
+// 反映サーバーで見られる文にして渡す。画面の #31 修正がまだ入っていない端末でも、試し結果が読める。
+function daysText(days) {
+  if (!days) return '';
+  if (typeof days === 'string') return days;
+  const changes = days.changes || [];
+  if (!changes.length) return '入れました';
+  const dates = changes.map(function (c) {
+    if (typeof c === 'string') return String(c).replace(/-/g, '/');
+    return String((c && c.date) || '').replace(/-/g, '/');
+  }).filter(Boolean);
+  const n = dates.length || changes.length;
+  const shown = dates.slice(0, 8);
+  const more = dates.length > shown.length ? ' ほか' + (dates.length - shown.length) + '日' : '';
+  return 'お休み ' + n + '日（' + shown.join('・') + more + '）';
+}
+function withDaysText(out) {
+  if (!out || out.days == null || out.days === '') return out;
+  const text = daysText(out.days);
+  return Object.assign({}, out, { days: text, daysText: text });
+}
+
 async function reflectWelcart(body) {
   const bad = welcartReady();
   if (bad) throw Error(bad);
@@ -140,7 +163,7 @@ async function reflectWelcart(body) {
   let out;
   try { out = JSON.parse(text); } catch { throw Error('Welcartの返事が読めません（' + res.status + '）'); }
   if (!res.ok) throw Error('Welcart ' + res.status + ': ' + hide(out.message || text).slice(0, 300));
-  return out;
+  return withDaysText(out);
 }
 
 function send(res, code, obj) {
@@ -193,4 +216,4 @@ const server = http.createServer(async (req, res) => {
 });
 
 if (require.main === module) server.listen(PORT, () => console.log('oms-reflect: ' + PORT + ' で待っています（新サイト ' + (TOKEN ? '用意あり' : '鍵なし') + '・Welcart ' + (welcartReady() || welcartHost()) + '）'));
-module.exports = { server, welcartReady, hide, record, readLog, PINNED_WELCART_URL, ALLOWED_WELCART_HOSTS };
+module.exports = { server, welcartReady, hide, record, readLog, PINNED_WELCART_URL, ALLOWED_WELCART_HOSTS, daysText, withDaysText };

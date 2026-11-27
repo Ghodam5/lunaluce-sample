@@ -84,3 +84,21 @@ test('新サイトを試しに見ると、変わるファイルが分かる（�
     a.equal(r.body.pr, undefined);
   } finally { s.p.kill(); }
 });
+
+const { daysText, withDaysText } = require('./server.js');
+test('営業日の変更は件数と日付の文にする（[object Object] にしない）', () => {
+  a.equal(daysText('入れました'), '入れました');
+  a.equal(daysText({ changes: [] }), '入れました');
+  a.equal(daysText({ changes: [{ date: '2026-12-29', from: 1, to: 0 }, { date: '2026-12-30', from: 1, to: 0 }] }), 'お休み 2日（2026/12/29・2026/12/30）');
+  const many = [];
+  for (let i = 1; i <= 12; i += 1) many.push({ date: '2026-12-' + String(i).padStart(2, '0'), from: 1, to: 0 });
+  const t = daysText({ changes: many });
+  a.equal(t.indexOf('お休み 12日（'), 0);
+  a.ok(t.indexOf('2026/12/01') >= 0);
+  a.ok(t.indexOf('ほか4日') >= 0);
+  a.ok(t.indexOf('[object Object]') < 0);
+  const out = withDaysText({ ok: true, days: { count: 2, changes: [{ date: '2026-12-29', from: 1, to: 0 }] }, items: [] });
+  a.equal(out.days, 'お休み 1日（2026/12/29）');
+  a.equal(out.daysText, out.days);
+  a.equal(out.ok, true);
+});

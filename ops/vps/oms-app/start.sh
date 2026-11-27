@@ -27,6 +27,14 @@ put_oms() {
   cp -R "${dir}images/." /srv/images/
   cp -R "${dir}oms" /srv/oms.new
   cp /srv/oms.new/luna_luce_oms_ui_v2.html /srv/oms.new/index.html
+  # 画面のJS/CSSは Cache-Control: no-cache でも、ブラウザが古いファイルを使い続けることがある。
+  # コミットをURLに足すと、新しい版に入れ替わったあと必ず新しいファイルを取りに行く。
+  if [ -n "$sha" ]; then
+    for html in /srv/oms.new/index.html /srv/oms.new/luna_luce_oms_ui_v2.html /srv/oms.new/work.html; do
+      [ -f "$html" ] || continue
+      sed -i 's#src="js/\([^"]*\.js\)"#src="js/\1?v='"$sha"'"#g; s#href="css/\([^"]*\.css\)"#href="css/\1?v='"$sha"'"#g' "$html"
+    done
+  fi
   printf '{"ref":"%s","commit":"%s","at":"%s"}\n' "$OMS_REF" "$sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /srv/oms.new/version.json
   rm -rf /srv/oms.old
   if [ -d /srv/oms ]; then mv /srv/oms /srv/oms.old; fi
