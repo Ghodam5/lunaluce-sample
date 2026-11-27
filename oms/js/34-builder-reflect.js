@@ -13,7 +13,7 @@
     ];
     const REFLECT_DESTS = [
       { id: 'site', name: '新サイト（GitHub）', parts: ['cards', 'notices', 'news', 'homeSections', 'themes', 'plans', 'listing', 'stock', 'newCategories', 'categoryNames', 'hiddenCategories', 'productLayout', 'texts', 'businessDays', 'noticeTemplates', 'storeInfo', 'productTax', 'products', 'edits', 'uploads'], lead: '変わったファイルをプルリクエストにします。中身を確かめてマージすると、見本サイトに出ます。' },
-      { id: 'welcart', name: '本店 Welcart（テスト環境）', parts: ['products', 'edits', 'stock', 'businessDays', 'newCategories', 'categoryNames', 'hiddenCategories', 'uploads'], lead: 'テスト環境の本店に、商品・在庫・営業日を入れます。本番にはまだつなぎません。' },
+      { id: 'welcart', name: '本店 Welcart（検証用 renewal-test.luna-luce.info）', parts: ['products', 'edits', 'stock', 'businessDays', 'newCategories', 'categoryNames', 'hiddenCategories', 'uploads'], lead: '送り先は renewal-test.luna-luce.info に固定しています。商品・在庫の状態・営業日を入れます。本番（luna-luce.jp）には送りません。GitHubへの反映は上の別ボタンです。' },
       { id: 'rakuten', name: '楽天', parts: ['products', 'edits', 'businessDays'], lead: 'API の申請がすむまでは、CSVとお休み一覧をダウンロードして楽天の管理画面に入れます。' },
       { id: 'yahoo', name: 'Yahoo', parts: ['products', 'edits', 'businessDays'], lead: 'API の申請がすむまでは、CSVとお休み一覧をダウンロードしてYahooの管理画面に入れます。' }
     ];

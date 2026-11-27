@@ -2,7 +2,7 @@
 
 ルナルーチェOMSのサイトビルダーで書き出した `site-builder-draft.json` を、Welcart 2.x に登録する WordPress プラグイン。
 
-- 入れる場所: まずテスト環境（コアサーバー）だけ。本番に入れるのは林さんの確認後。
+- 入れる場所: まず検証用サイト（https://renewal-test.luna-luce.info）だけ。本番（luna-luce.jp）には入れない。
 - 使い方: WordPress 管理画面 → ツール → **OMSから取り込む** → ファイルを選ぶ →「何が変わるかを見る」→ 確認して「この内容でWelcartに登録する」。
 - 自動で送るとき: `POST /wp-json/luna-oms/v1/import`（`{draft, dry_run}`、dry_run を省くと試しだけ）。認証は WordPress のアプリケーションパスワード。パスワードは記録しない。
 
@@ -19,3 +19,12 @@
 
 ## 確かめ方
 `php wordpress/luna-oms-receiver/tests/run.php`（WordPressなしで、代わりの関数を使って流れを確かめる）
+
+## 注文の試験送信（初期オフ）
+
+検証用サイトから OMS の試験受け口（`https://oms.srv2050136.hstgr.cloud/intake-api/test-orders`）へ、注文が届くかを確かめるスイッチです。
+
+- 初期値はオフ。オフのときは Welcart のフック `usces_action_reg_orderdata`（Welcart 2.12.9）を登録しません。
+- オンにするには、管理画面で確認文「試験送信をオンにする」を再入力し、試験用トークンを入れます。
+- 送り先は固定です。本番の受注データ（`oms.orders`）には書きません。住所・電話・メールは送りません。在庫の書き戻しはありません。
+- オンにするのは林さんの了承後だけ。試したらオフに戻します。
