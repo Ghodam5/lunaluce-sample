@@ -199,6 +199,11 @@
       return out.concat(builderDeliveryErrors(p));
     }
     // サイトの商品ファイル（site-src/products/<番号>.json）と同じ形にする
+    // コードも名前も空の行（「新しい商品」を足したまま中身を書いていない下書き）
+    function builderProductBlank(p) {
+      if (!p) return true;
+      return !String(p.code || '').trim() && !String(p.title || '').trim();
+    }
     function builderProductRow(p) {
       builderSyncPhotos(p);
       const keep = p.edit && !p.placesTouched;

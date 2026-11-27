@@ -1,0 +1,22 @@
+# renewal-test.luna-luce.info 用（XServer / Apache 2.4 で実測して通った書き方）
+# サイト全体の閲覧制限（Basic認証）から、OMS受け取りプラグインの経路だけを外す。
+# /wp-json/ 全体は外さない。WordPress のアプリケーションパスワードによる認証はそのまま残る。
+#
+# 使い方: 公開フォルダ先頭の .htaccess で、AuthUserFile / AuthName / AuthType はそのまま残す。
+# この断片を、閲覧制限の Require valid-user がある場所に足す（または置き換える）。
+# すでに WordPress が書いた # BEGIN WordPress の塊は消さない。
+#
+# 試して通らなかった書き方（この環境では使わない）:
+#   - Apache 2.2 の Order / Allow / Satisfy
+#   - SetEnvIf Request_URI または THE_REQUEST でフラグを立て、Require env で外す
+
+# Authorization 見出しを PHP に渡す（アプリケーションパスワードが読めるように）
+CGIPassAuth On
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# /wp-json/luna-oms/ だけ閲覧制限を外す（THE_REQUEST の元のURLで判定）
+<RequireAny>
+	Require expr "%{THE_REQUEST} =~ m#\s/wp-json/luna-oms/#"
+	Require valid-user
+</RequireAny>

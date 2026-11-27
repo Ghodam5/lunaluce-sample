@@ -103,6 +103,20 @@ $r = Luna_OMS_Writer::run( array( 'products' => array( array( 'product' => array
 check( 'おかしな行は「登録できない」', ! $r['ok'] && 'error' === $r['items'][0]['action'] && 3 === count( $r['items'][0]['changes'] ) );
 check( 'Welcartの在庫状態の名前で番号を探す', 3 === Luna_OMS_Mapper::stock_index( 'wait', array( 9 => 'x', 3 => '入荷待ち' ) ) && 2 === Luna_OMS_Mapper::stock_index( 'out', array() ) );
 
+// 6b. 空の行はエラーにせず飛ばす（ほかの商品はそのまま、ok は真）
+$blank = array(
+	'products' => array(
+		array( 'product' => array( 'code' => '', 'title' => '', 'skus' => array( array( 't' => '', 'price' => 0 ) ) ) ),
+		array( 'product' => array( 'code' => '  ', 'title' => " \t ", 'skus' => array() ) ),
+		$draft['products'][0],
+	),
+);
+$r = Luna_OMS_Writer::run( $blank, true, $opts );
+check( '空の行は飛ばす（ほかの商品は通る）', ! empty( $r['ok'] ) && 'skip' === $r['items'][0]['action'] && 'skip' === $r['items'][1]['action'] && in_array( $r['items'][2]['action'], array( 'same', 'update', 'create' ), true ) );
+check( '空行の理由が分かる', false !== strpos( implode( '', $r['items'][0]['changes'] ), '空の行' ) );
+$r = Luna_OMS_Writer::run( array( 'products' => array( array( 'product' => array( 'code' => '', 'title' => '名前だけ', 'skus' => array( array( 't' => 'A', 'price' => 100 ) ) ) ) ) ), true, $opts );
+check( '名前だけでコードが無い行は登録できない', ! $r['ok'] && 'error' === $r['items'][0]['action'] );
+
 // 7. 注文の試験送信（初期オフ）
 $GLOBALS['hooks'] = array();
 $GLOBALS['http']  = array();

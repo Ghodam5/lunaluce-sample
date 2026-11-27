@@ -149,6 +149,22 @@
         (errs.length ? '<p class="reflect-conn is-bad">直すところが ' + errs.length + '件あるので、反映はできません（右の「直すところ」を見てください）。</p>' : '') +
         '<ol class="reflect-dests">' + cards + '</ol><button type="button" data-b="reflect-refresh">つながりと記録を読み直す</button>';
     }
+    // プラグインは days.changes を {date, from, to} の配列で返す。文字列としてつなぐと [object Object] になる
+    function reflectDaysText(days) {
+      if (!days) return '';
+      if (typeof days === 'string') return days;
+      const changes = days.changes || [];
+      if (!changes.length) return '入れました';
+      const dates = changes.map(function (c) {
+        if (typeof c === 'string') return c.replace(/-/g, '/');
+        const d = String((c && c.date) || '').replace(/-/g, '/');
+        return d;
+      }).filter(Boolean);
+      const n = dates.length || changes.length;
+      const shown = dates.slice(0, 8);
+      const more = dates.length > shown.length ? ' ほか' + (dates.length - shown.length) + '日' : '';
+      return 'お休み ' + n + '日（' + shown.join('・') + more + '）';
+    }
     function reflectResultHtml(dest, res) {
       if (res.error) return '<div class="reflect-res is-bad"><b>うまくいきませんでした</b><p>' + escapeHtml(res.error) + '</p></div>';
       if (dest.id === 'site') {
@@ -165,7 +181,7 @@
         const items = (res.items || []).concat(res.stock || []);
         return '<div class="reflect-res' + (res.ok === false ? ' is-bad' : '') + '"><b>' + (res.dry ? '試しに見た結果（まだ何も変えていません）' : 'テスト環境に入れました') + '</b>' + (res.error ? '<p>' + escapeHtml(res.error) + '</p>' : '') +
           (items.length ? '<ul>' + items.slice(0, 30).map(function (x) { return '<li>' + escapeHtml((x.code || '') + ' ' + (x.title || '') + ' … ' + (x.action || '') + (x.changes && x.changes.length ? '（' + x.changes.slice(0, 3).join('・') + '）' : '')) + '</li>'; }).join('') + '</ul>' : '<p class="muted">商品・在庫の変更はありません。</p>') +
-          (res.days ? '<p>営業日: ' + escapeHtml(typeof res.days === 'string' ? res.days : (res.days.changes || []).join('・') || '入れました') + '</p>' : '') + '</div>';
+          (res.days ? '<p>営業日: ' + escapeHtml(reflectDaysText(res.days)) + '</p>' : '') + '</div>';
       }
       return '<div class="reflect-res"><b>' + (res.downloaded ? 'ダウンロードしました' : '入れるもの') + '</b><p>' + escapeHtml(res.text || '') + '</p></div>';
     }
@@ -268,4 +284,4 @@
       const n = REFLECT_DESTS.filter(function (d) { return reflectDestDiff(d, snap).length; }).length;
       return n ? '未反映 ' + n + 'か所' : 'すべて反映済み';
     }
-    if (typeof module !== 'undefined' && module.exports) module.exports = { reflectSnapshot: reflectSnapshot, reflectDiff: reflectDiff, reflectHash: reflectHash };
+    if (typeof module !== 'undefined' && module.exports) module.exports = { reflectSnapshot: reflectSnapshot, reflectDiff: reflectDiff, reflectHash: reflectHash, reflectDaysText: reflectDaysText };
