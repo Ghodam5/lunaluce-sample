@@ -1233,26 +1233,6 @@ html{touch-action:manipulation}
 @media(hover:hover) and (pointer:fine) and (min-width:1024px){.hd .hd-pc{height:98px}.hd .logo .brand-gif-frame.brand-banner{width:225px;height:90px}.hd .logo .brand-gif-frame.brand-banner .brand-gif{width:225px;height:225px;top:-67.5px}}
 .ft .logo .brand-gif-frame.brand-banner{margin-left:-21.5px}
 
-/* naire-1.css */
-
-.wlist .wst,.wlist .wrow .wdel,.wtop .wno{display:none}
-.wlist .wrow{cursor:default}
-.wlbl{font-weight:700;font-size:13px;margin-right:4px}
-.orow{transition:background-color .35s ease,box-shadow .35s ease}
-.orow>button{transition:background-color .35s ease}
-.orow:hover>button,.orow:focus-within>button{background:var(--teal-l)}
-.orow:focus-within{box-shadow:inset 4px 0 0 var(--teal)}
-.orow .ob{transition:background-color .35s ease}
-.orow:focus-within .ob{background:#f3fbfa}
-input,select,textarea{transition:border-color .3s ease,box-shadow .3s ease,background-color .3s ease}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal)!important;box-shadow:0 0 0 3px rgba(47,169,163,.22);background-color:#f3fbfa}
-.biko{transition:background-color .35s ease,box-shadow .35s ease}
-.biko:focus-within{background:#f3fbfa;box-shadow:0 0 0 3px rgba(47,169,163,.18)}
-.biko{margin-top:12px;background:#fff;border:2px solid var(--teal);border-radius:12px;padding:10px 12px}
-.biko label{display:block;font-weight:900;font-size:14px;color:var(--teal-d)}
-.biko p{font-size:14px;color:var(--ink);line-height:1.7;margin:4px 0 8px}
-.biko textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:13.5px;background:#fff;color:var(--ink);resize:vertical}
-
 /* features.css */
 /* v16：既存の大分類・配色を引き継ぐ特集とダミーカート */
 .feature-page{padding:14px 0 40px;min-width:0}
@@ -1324,13 +1304,12 @@ textarea[data-example-placeholder]::placeholder{color:#b52632;opacity:1}
 /* 期間外・移動済みの掲載枠は、個別のdisplay指定より優先して隠す。 */
 [data-placement-id][hidden]{display:none!important}
 /* v69 ヘッダーの案内バー・フッターの「お届けと送料」・送料表（store-info.js が中身を描く） */
-.store-bar{background:#f6f1e8;border-bottom:1px solid #e6dccb;font-size:12.5px}
-.store-bar-in{display:flex;gap:6px 18px;align-items:center;justify-content:center;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;padding-top:6px;padding-bottom:6px;scrollbar-width:none}
-.store-bar-in::-webkit-scrollbar{display:none}
-.store-bar a{color:#5b4a3a;text-decoration:none;display:inline-flex;gap:6px;align-items:center;min-height:28px}
+.store-bar{background:#f6f1e8;border-bottom:1px solid #e6dccb;font-size:12.5px;width:100%}
+/* 案内はスクロール式ではない。幅が足りなければ折り返し、送料・お届け・大口・海外をすべて見えるようにする。 */
+.store-bar-in{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:center;width:100%;box-sizing:border-box;overflow:visible;white-space:normal;padding-top:6px;padding-bottom:6px}
+.store-bar a{color:#5b4a3a;text-decoration:none;display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:28px;max-width:100%;white-space:normal}
 .store-bar a:hover{text-decoration:underline}
-.store-bar b{background:#7a5c3e;color:#fff;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700}
-@media(max-width:700px){.store-bar-in{justify-content:flex-start}}
+.store-bar b{background:#7a5c3e;color:#fff;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700;flex:none}
 .store-ft{margin-top:22px;padding:14px 16px;border:1px solid #e6dccb;border-radius:10px;background:#fbf8f2}
 .store-ft h2,.store-ft h5{margin:0 0 6px}
 .store-ft ul{margin:0;padding-left:1.2em;font-size:13px;line-height:1.8}
