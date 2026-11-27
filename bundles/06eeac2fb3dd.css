@@ -1233,6 +1233,19 @@ html{touch-action:manipulation}
 @media(hover:hover) and (pointer:fine) and (min-width:1024px){.hd .hd-pc{height:98px}.hd .logo .brand-gif-frame.brand-banner{width:225px;height:90px}.hd .logo .brand-gif-frame.brand-banner .brand-gif{width:225px;height:225px;top:-67.5px}}
 .ft .logo .brand-gif-frame.brand-banner{margin-left:-21.5px}
 
+/* 2026-11-28 林さん指示：スマホ幅（〜1023px）でロゴの動き（ハートが散る・星が弾ける場面）が検索欄の上端まで届いて重なって見えた。
+   原因はロゴ枠（68〜78px）がロゴ段（72px固定）より高く、枠の下端が検索欄の上端にくっついていたこと。動きは枠いっぱいに描かれる。
+   ロゴ段の高さを枠に合わせて自動にし、上下に余白を取って、検索段との間を必ず空ける。PC（1024px〜）の並びは変えない。 */
+@media(max-width:1023px){
+ .hd .hd-in{height:auto;min-height:0;padding-top:6px;padding-bottom:12px;box-sizing:content-box;align-items:center}
+ .hd .hd-in .logo{flex:none}
+ .hd .hd-search{position:relative;z-index:1}
+}
+/* タッチのタブレット横向き（1024px〜・マウスなし）でも、ロゴ枠がPCの段からはみ出さないようにする。 */
+@media (min-width:1024px) and (hover:none),(min-width:1024px) and (pointer:coarse){
+ .hd .hd-pc{height:auto;min-height:64px;padding-top:6px;padding-bottom:6px}
+}
+
 /* features.css */
 /* v16：既存の大分類・配色を引き継ぐ特集とダミーカート */
 .feature-page{padding:14px 0 40px;min-width:0}
@@ -1349,6 +1362,15 @@ textarea[data-example-placeholder]::placeholder{color:#b52632;opacity:1}
 .store-ship tbody th{text-align:left;background:#fbf8f2}
 .store-ship td b{color:#c2185b}
 @media(max-width:600px){.store-ship td[data-l]::before{content:attr(data-l)"：";display:block;font-size:12px;color:#7a6a5a}}
+/* 2026-11-28 林さん指示：スマホ幅（〜1023px）では、送料・お届け・大口・海外発送を折り返さず1行にして、指で横にスクロールして見せる。
+   入りきる幅では中央に置き、入りきらない幅では左から並べて左右どちらの端の案内も届くようにする。PC（1024px〜）は今のまま。 */
+@media(max-width:1023px){
+ .store-bar-in{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;white-space:nowrap;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y;scrollbar-width:none;padding-left:12px;padding-right:12px;gap:0 16px}
+ .store-bar-in::-webkit-scrollbar{display:none;height:0}
+ .store-bar-in>a{flex:none;flex-wrap:nowrap;white-space:nowrap;max-width:none}
+ .store-bar-in>a:first-child{margin-left:auto}
+ .store-bar-in>a:last-child{margin-right:auto}
+}
 
 /* rail-controls.css */
 /* 共通の円形矢印：ボタンの大きさ・位置とは独立した中央配置。 */
@@ -1422,3 +1444,27 @@ textarea[data-example-placeholder]::placeholder{color:#b52632;opacity:1}
 .picker-keyboard{margin-top:12px;border:1px solid #b6d5ce;border-radius:10px;padding:10px}.picker-keyboard summary{min-height:30px;font-size:14px;color:#126c69;cursor:pointer}
 @media(max-width:1023px){.quantity-picker-slot .pilot-quantity-button{border-radius:8px;min-width:90px;min-height:46px;cursor:pointer}}
 @media print{.pilot-qty .pilot-quantity-button,.pilot-date-button{display:none!important}.pilot-qty input[data-pilot-input=quantity]{display:inline-block!important}.quantity-picker-slot{display:contents}}
+
+/* name-preview.css */
+/* 名入れお試しの独立部品。実際の商品画像や印刷データを表現しない。 */
+.name-preview [hidden]{display:none!important}
+.preview-notice{margin:0 0 12px;padding:12px 14px;border-radius:12px;background:#fff4e5;color:#735229;font-size:14px;line-height:1.8}.preview-notice strong{display:inline-block;margin-right:8px}
+.preview-switch{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}.preview-switch button{font:inherit;font-size:14px;font-weight:700;min-height:46px;border:1px solid #a8d7d3;border-radius:10px;color:var(--teal-d);background:white;padding:8px;cursor:pointer}.preview-switch button[aria-pressed=true]{background:var(--teal);color:white}.preview-switch button:hover{box-shadow:0 0 0 2px #a8d7d366}.preview-switch button:focus-visible{outline:3px solid #b58c40;outline-offset:2px}
+.name-preview .preview-stage{display:flex;flex-direction:column;gap:18px;justify-content:center;min-width:0;background:linear-gradient(140deg,#f7eee7,#edf7f4);padding:24px 18px}.preview-stage h3{font-size:16px;text-align:center;color:#446b66}.preview-art{width:100%;max-width:320px;background:#fffdf8;color:#534a40;border:1px solid #cfbfa4;text-align:center;padding:22px 18px;box-shadow:0 12px 28px #7a68551a;box-sizing:border-box;overflow-wrap:anywhere;flex:none}.preview-art p{margin:0;line-height:1.6}.preview-art .preview-message{font-family:var(--script),serif;font-size:30px;color:#947046}.preview-art .preview-names{font-family:var(--latin),serif;font-size:24px;line-height:1.5;margin:10px 0}.preview-art .preview-date{font-size:14px;letter-spacing:.08em}.preview-kicker{font-size:12px;letter-spacing:.12em;color:#547c71}.preview-flower{font-size:30px;color:#b49759;line-height:1}.preview-seal{width:min(100%,244px);min-height:244px;aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;justify-content:center;padding:24px;outline:1px solid #d8c9ae;outline-offset:-10px}.preview-seal .preview-names{font-size:23px}.preview-thanks{border-width:5px;border-color:#dce9df;outline:1px solid #a3b7a7;outline-offset:-12px;min-height:245px;display:flex;flex-direction:column;justify-content:center}.preview-thanks .preview-copy{font-size:13px;margin:12px 0;color:#64706a}.preview-place{border-top:12px solid #e2cbb5;border-radius:3px;position:relative;min-height:190px}.preview-place:after{content:'';display:block;height:14px;background:#eae1d4;position:absolute;bottom:-15px;left:7px;right:7px;transform:skewX(-25deg)}.preview-art .preview-guest{font-size:26px;margin:18px 0;line-height:1.7}.preview-guest small{font-size:16px;margin-left:8px}.preview-hosts{font-size:14px;margin-top:8px!important}.preview-seating{padding:20px 12px;border-color:#b5cfc5}.preview-seating .preview-names{font-size:21px}.preview-head-table{margin:14px auto;width:70%;padding:7px;border:1px solid #d2bc94;border-radius:20px;font-size:13px;background:#fbf5e8}.preview-tables{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center}.preview-tables>div{min-width:0;padding:12px 6px;border:1px solid #c6ded5;border-radius:14px;background:#f4f9f6}.preview-tables b{display:block;font-size:14px;color:#4a7568}.preview-tables ul{list-style:none;padding:0;margin:7px 0 0;font-size:12px;line-height:1.9}.preview-fiction{font-size:12px;margin-top:12px!important;color:#6b7870}.preview-caption{font-size:13px;text-align:center;color:#6a786f;line-height:1.8;margin:0}.preview-status{font-size:13px;color:var(--teal-d);margin-bottom:10px}.preview-search{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;padding:8px 12px}.name-preview .form{min-width:0}.name-preview .field small{font-size:12px;color:var(--sub)}.name-preview .trysteps{margin:12px 0 8px 1.3em;font-size:13px;line-height:1.8}.name-preview .note{line-height:1.8}
+@media(max-width:600px){.preview-switch{grid-template-columns:repeat(2,minmax(0,1fr))}.name-preview .preview-stage{padding:20px 14px}.preview-art{max-width:300px}}
+
+/* 見本へのジャンプ・ボタン選択で固定検索欄の下へ表示する。 */
+.name-preview,.preview-switch button{scroll-margin-top:160px}
+@media(max-width:1023px){.name-preview,.preview-switch button{scroll-margin-top:76px}}
+
+/* v50 独立した背景画像。装飾だけの見本で実際の商品図柄とは区別する。 */
+.preview-seal{background-size:cover;background-position:center;outline:none}
+.preview-seal[data-preview-background=simple]{background-image:url("../images/name-preview/seal-simple.svg")}
+.preview-seal[data-preview-background=floral]{background-image:url("../images/name-preview/seal-floral.svg")}
+.preview-seal[data-preview-background=stars]{background-image:url("../images/name-preview/seal-stars.svg")}
+.preview-backgrounds{min-width:0;border:0;margin:0 0 16px;padding:0}
+.preview-backgrounds legend{font-size:14px;font-weight:700;margin-bottom:8px}.preview-background-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.preview-background-options button{min-width:0;min-height:86px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;border:1px solid #b7d7d2;border-radius:10px;background:#fff;font:inherit;font-size:12px;cursor:pointer}.preview-background-options img{border-radius:50%;width:48px;height:48px}.preview-background-options button[aria-pressed=true]{border:2px solid var(--teal);background:var(--teal-l)}.preview-background-options button:focus-visible{outline:3px solid #b58c40;outline-offset:2px}.preview-backgrounds small{display:block;margin-top:6px;font-size:12px;color:var(--sub)}
+.preview-back{display:inline-flex;align-items:center;min-height:44px;gap:6px;margin:12px 0;padding:8px 14px;border:1px solid #b8d9d4;border-radius:10px;background:#fff;color:var(--teal-d);font-weight:700;font-size:14px}.preview-back:hover{background:var(--teal-l)}.preview-back:focus-visible{outline:3px solid var(--teal);outline-offset:2px}.preview-page>.guide-hero{margin-top:8px}.preview-page .name-preview{margin-top:24px}
+
+/* v51 カートの図柄原本をそのまま表示し、入力内容は別枠の鮮明な文字で確認する。 */
+.preview-switch{grid-template-columns:repeat(3,minmax(0,1fr))}.preview-seal{border-radius:12px;aspect-ratio:auto;width:100%;min-height:0;padding:16px;background:#fffdf8;display:block}.preview-seal .seal-design-image{width:auto;max-width:100%;max-height:190px;height:auto;margin:0 auto 12px;object-fit:contain}.preview-seal .seal-fixed-note{font-size:12px;color:var(--sub)}.seal-input-proof{margin:14px 0;padding:12px;border:1px dashed #b7cec5;border-radius:10px}.preview-seal>small{display:block;font-size:12px;line-height:1.8}.preview-backgrounds select{max-width:100%;width:100%;font:inherit;font-size:16px;padding:10px;border:1px solid #a8cbc3;border-radius:10px}.seal-source-sheets{margin-top:10px;border:1px solid #c3dcd5;border-radius:10px;padding:10px;font-size:13px}.seal-source-sheets summary{cursor:pointer;min-height:32px}.seal-source-sheets img{width:100%;height:auto;margin:12px auto}.paper-preview-info{padding:18px;background:#f0f7f4;border-radius:12px;margin-top:16px;font-size:14px;line-height:1.9}.paper-preview-info h3{font-size:16px}.paper-preview-info a{display:inline-block;padding:8px;border:1px solid #b6d4cc;border-radius:8px;margin-top:8px}
