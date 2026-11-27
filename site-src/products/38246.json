@@ -19,7 +19,11 @@
     "categories": [
       "hikidemono"
     ],
-    "subs": [],
+    "subs": [
+      "goods",
+      "disney",
+      "set"
+    ],
     "tags": [],
     "skus": [
       {
@@ -34,7 +38,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/features/010ds-2410.jpg",
+        "alt": "ディズニー ミッキー&ミニー ラブラブタイム ウォッシュタオル2P10個セット 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/38246/love2time-01.jpg",
+        "alt": "ディズニー ミッキー&ミニー ラブラブタイム ウォッシュタオル2P10個セット 商品写真2",
+        "width": 650,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/38246/love2time-02.jpg",
+        "alt": "ディズニー ミッキー&ミニー ラブラブタイム ウォッシュタオル2P10個セット 商品写真3",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "feature": {
     "id": "38246",

@@ -92,7 +92,28 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/features/japonesque-konpei2024.jpg",
+        "alt": "ジャポネスク こんぺいとうPB 選べるデザイン 春夏秋冬 富士 さくら 桜 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47723/japonesque-konpei01.jpg",
+        "alt": "ジャポネスク こんぺいとうPB 選べるデザイン 春夏秋冬 富士 さくら 桜 商品写真2",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "feature": {
     "id": "47723",

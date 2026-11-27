@@ -67,7 +67,41 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb-xmaspartybox5.jpg",
+        "alt": "パーティBOX-PB 5個セット(金平糖) 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/57545/pb-xmaspartybox5.jpg",
+        "alt": "パーティBOX-PB 5個セット(金平糖) 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/57545/pb-xmaspartybox5img.jpg",
+        "alt": "パーティBOX-PB 5個セット(金平糖) 商品写真3",
+        "width": 700,
+        "height": 540
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

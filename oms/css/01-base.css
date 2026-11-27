@@ -1,0 +1,44 @@
+/* Luna Luce OMS 部品CSS: 01-base（元は luna_luce_oms_ui_v2.html の <style>。並び順どおりに読み込む） */
+    :root {
+      --forest: #1f2a27;
+      --forest-light: #2c3b37;
+      --ivory: #faf8f5;
+      --ivory-warm: #f3efe8;
+      --white: #ffffff;
+      --champagne: #b8965c;
+      --champagne-light: #e8dec8;
+      --champagne-soft: #f7f3ea;
+      --taupe: #5e514d;
+      --taupe-light: #8a7b76;
+      --urgent: #d9534f;
+      --sage: #2a9d8f;
+      --ink: #2b2624;
+      --line: rgba(31, 42, 39, 0.12);
+      --shadow: 0 8px 24px rgba(20, 28, 26, 0.06);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; max-width: 100%; }
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    body.scroll-lock { overflow: hidden; }
+    [hidden] { display: none !important; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: 0.45; }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--champagne);
+      outline-offset: 2px;
+    }
+    p { overflow-wrap: anywhere; }
+    .part { min-width: 0; max-width: 100%; }
+    .part * { min-width: 0; }
+    [data-tab-panel] { min-width: 0; max-width: 100%; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: #c9bfa9; border-radius: 999px; }
+

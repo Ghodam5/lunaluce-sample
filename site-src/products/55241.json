@@ -36,7 +36,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/conf168.jpg",
+        "alt": "京・宇治抹茶ばうむ 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/55241/conf168_1.jpg",
+        "alt": "京・宇治抹茶ばうむ 商品写真2",
+        "width": 600,
+        "height": 600
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

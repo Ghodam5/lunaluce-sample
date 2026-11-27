@@ -110,7 +110,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/flamsr.jpg",
+        "alt": "1個で送料込み ベストレート FLAVOR メープルシフォンケー… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/47481/flavor-img.jpg",
+        "alt": "1個で送料込み ベストレート FLAVOR メープルシフォンケー… 商品写真2",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/47481/fla-hako202410.jpg",
+        "alt": "1個で送料込み ベストレート FLAVOR メープルシフォンケー… 商品写真3",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

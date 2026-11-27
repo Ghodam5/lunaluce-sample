@@ -37,7 +37,34 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/pb-santagift.jpg",
+        "alt": "サンタのギフトバッグ(中身お任せのお菓子入り) 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/53684/pb-santagift.jpg",
+        "alt": "サンタのギフトバッグ(中身お任せのお菓子入り) 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/53684/pb-santagiftimg.jpg",
+        "alt": "サンタのギフトバッグ(中身お任せのお菓子入り) 商品写真3",
+        "width": 700,
+        "height": 630
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#2f2a26">
+  <title>作業画面｜Luna Luce OMS</title>
+  <!-- スマホの作業画面。作業指示書のQRコードから開く（?o=注文番号）。中身は work/work-page.js、見た目は work/work.css。
+       サーバーの受け手は VPS の oms-work（ops/vps/oms-app/work.js）。住所・電話・メールはここには来ない。 -->
+  <link rel="stylesheet" href="work/work.css">
+</head>
+<body>
+  <header class="top"><b>Luna Luce 作業</b><span id="who"></span></header>
+  <main id="app"><p class="muted">読み込み中…</p></main>
+  <script src="vendor/jsQR.js"></script>
+  <script src="work/work-scan.js"></script>
+  <script src="work/work-page.js"></script>
+</body>
+</html>

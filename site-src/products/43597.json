@@ -62,7 +62,35 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 10,
+      "max": 10,
+      "made": false,
+      "source": "db",
+      "label": "10日後"
+    },
+    "photos": [
+      {
+        "src": "images/hf62402.jpg",
+        "alt": "桜どらじぇ 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/43597/21item.jpg",
+        "alt": "桜どらじぇ 商品写真2",
+        "width": 700,
+        "height": 100
+      }
+    ],
+    "notes": [
+      "order-mail",
+      "min-qty",
+      "spec-change",
+      "season-delay",
+      "assort-color"
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

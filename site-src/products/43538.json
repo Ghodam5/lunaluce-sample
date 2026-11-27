@@ -21,7 +21,8 @@
     ],
     "subs": [
       "welcome",
-      "set"
+      "set",
+      "goods"
     ],
     "tags": [],
     "skus": [
@@ -37,7 +38,22 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/hf61905.jpg",
+        "alt": "リボンスティック 50本セット(バスケット付) 商品写真1",
+        "width": 520,
+        "height": 520
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

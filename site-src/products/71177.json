@@ -5,7 +5,7 @@
     "code": "a635",
     "title": "【引出物】トートバッグ＆Premiumフルーツバームセット A635",
     "price": 1980,
-    "image": "",
+    "image": "images/products/71177.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/a635.html",
     "description": "厚手でシンプルなコットントートバッグはエコバッグや、お出かけにも最適。 お家でもカフェのような至福のひとときを。",
     "size": "商品サイズ:381×185×65mm",
@@ -37,7 +37,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71177.jpg",
+        "alt": "【引出物】トートバッグ＆Premiumフルーツバームセット A635 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71177/a635_1.jpg",
+        "alt": "【引出物】トートバッグ＆Premiumフルーツバームセット A635 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

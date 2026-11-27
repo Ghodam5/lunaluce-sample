@@ -38,7 +38,22 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 2,
+      "max": 3,
+      "made": false,
+      "source": "db",
+      "label": "2～3日後"
+    },
+    "photos": [
+      {
+        "src": "images/1790.jpg",
+        "alt": "メリーソックス!!（ハートクッキー） 1790 商品写真1",
+        "width": 520,
+        "height": 520
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -5,7 +5,7 @@
     "code": "grace04_5900",
     "title": "Grace 5900円コース セレニティ",
     "price": 6490,
-    "image": "",
+    "image": "images/products/72339.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/grace04_5900.html",
     "description": "グルメ・ファッション・インテリア・テーブルウェア・キッチンウェアなど魅力的な品揃えで選ぶ楽しさを贈ります。 ライフスタイルを彩るとっておきのアイテムを厳選して掲載しています。 結婚引出物や結婚内祝い、出産内祝い、快気祝いの他、各種記念品・景品等さまざまなギフトシーンにてお使い頂けるギフトカタログです。",
     "size": "",
@@ -94,7 +94,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/products/72339.jpg",
+        "alt": "Grace 5900円コース セレニティ 商品写真1",
+        "width": 700,
+        "height": 700
+      }
+    ],
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "season-delay",
+      "catalog-fee"
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

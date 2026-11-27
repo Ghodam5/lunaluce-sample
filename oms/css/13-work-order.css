@@ -1,0 +1,61 @@
+/* owner: js/45-work-order（作業指示書。印刷するときだけ出す） */
+    #work-order-print { display: none; }
+    @media print {
+      @page { size: A4 portrait; margin: 10mm; }
+      html.is-printing-work-order body > *:not(#work-order-print) { display: none !important; }
+      html.is-printing-work-order #work-order-print { display: block; color: #111; font-size: 10.5pt; line-height: 1.45; font-family: "Noto Sans JP", sans-serif; }
+      html.is-printing-work-order, html.is-printing-work-order body { background: #fff !important; }
+    }
+    #work-order-print * { box-sizing: border-box; }
+    #work-order-print .wo-rush { border: 3px solid #b00020; background: #b00020; color: #fff; font-size: 20pt; font-weight: 900; text-align: center; padding: 6px; letter-spacing: 0.1em; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    #work-order-print .wo-rush.is-off { background: #fff; color: #555; border: 1px solid #999; font-size: 10pt; font-weight: 400; padding: 2px; }
+    #work-order-print .wo-head { display: flex; justify-content: space-between; align-items: end; border-bottom: 2px solid #111; padding: 6px 0 4px; margin-top: 6px; }
+    #work-order-print .wo-title { margin: 0; font-size: 18pt; font-weight: 800; }
+    #work-order-print .wo-id { margin: 0; font-size: 12pt; font-family: monospace; }
+    #work-order-print .wo-made { font-size: 8.5pt; color: #555; }
+    #work-order-print .wo-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 6px 0; }
+    #work-order-print .wo-box { border: 1px solid #333; padding: 4px 6px; }
+    #work-order-print .wo-box span { display: block; font-size: 8pt; color: #444; }
+    #work-order-print .wo-box b { font-size: 12pt; }
+    #work-order-print .wo-box.is-strong { border-width: 2.5px; }
+    #work-order-print .wo-box.is-strong b { font-size: 14pt; }
+    #work-order-print .wo-warn { border: 2px dashed #b00020; padding: 4px 6px; margin: 4px 0; font-weight: 700; }
+    #work-order-print .wo-product { margin: 4px 0; font-size: 13pt; font-weight: 700; }
+    #work-order-print .wo-product span { margin-left: 8px; font-size: 9pt; font-weight: 400; font-family: monospace; }
+    #work-order-print .wo-sec { margin: 6px 0; break-inside: avoid; }
+    #work-order-print .wo-sec h2 { margin: 0 0 3px; font-size: 10.5pt; background: #eee; padding: 2px 6px; border-left: 4px solid #111; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    #work-order-print .wo-sec p { margin: 2px 0; }
+    #work-order-print .wo-items { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+    #work-order-print .wo-items figure { margin: 0; border: 1px solid #999; padding: 3px; }
+    #work-order-print .wo-pic { aspect-ratio: 1 / 1; display: grid; place-items: center; overflow: hidden; background: #fafafa; }
+    #work-order-print .wo-pic img { width: 100%; height: 100%; object-fit: contain; }
+    #work-order-print .wo-pic span { font-size: 8pt; color: #777; }
+    #work-order-print figcaption { font-size: 8pt; line-height: 1.25; margin-top: 2px; overflow-wrap: anywhere; }
+    #work-order-print figcaption b { display: block; font-size: 8pt; }
+    #work-order-print .wo-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    #work-order-print .wo-table { width: 100%; border-collapse: collapse; }
+    #work-order-print .wo-table th, #work-order-print .wo-table td { border: 1px solid #999; padding: 2px 5px; text-align: left; vertical-align: middle; overflow-wrap: anywhere; }
+    #work-order-print .wo-table th { width: 32%; font-weight: 600; background: #f6f6f6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    #work-order-print .wo-check th { width: auto; }
+    #work-order-print .wo-cb { width: 30px; text-align: center; }
+    #work-order-print .wo-cb span, #work-order-print .wo-big { display: inline-block; width: 18px; height: 18px; border: 2px solid #111; }
+    #work-order-print .wo-steps { break-inside: auto; }
+    #work-order-print .wo-step { break-inside: avoid; display: grid; grid-template-columns: 34px 1fr 110px 110px; gap: 8px; align-items: center; border-bottom: 1px solid #bbb; padding: 4px 0; }
+    #work-order-print .wo-step .wo-big { width: 26px; height: 26px; border-width: 2.5px; }
+    #work-order-print .wo-step b { font-size: 12pt; }
+    #work-order-print .wo-step small { display: block; font-size: 8pt; color: #555; }
+    #work-order-print .wo-sign { border-bottom: 1px solid #111; font-size: 8pt; color: #555; padding-top: 12px; }
+    /* 印刷イメージは drawer-preview の見た目を使い、紙に合わせて小さくする */
+    #work-order-print .wo-prints [data-part="drawer-preview"] .pp-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    #work-order-print .wo-prints .pp-card { border: 1px solid #999; border-radius: 4px; padding: 5px; break-inside: avoid; }
+    #work-order-print .wo-prints .pp-card h4 { margin: 0 0 4px; font-size: 9.5pt; }
+    #work-order-print .wo-prints .pp-row { grid-template-columns: 1fr 1fr; gap: 6px; }
+    #work-order-print .wo-prints .pp-pic img, #work-order-print .wo-prints .pp-ribbon { max-width: 100%; max-height: 140px; object-fit: contain; }
+    #work-order-print .wo-prints .pp-noshi { max-width: 100%; }
+    #work-order-print .wo-prints .pp-noshi-up { font-size: 13px; }
+    #work-order-print .wo-prints .pp-noshi-name { font-size: 9px; letter-spacing: 0; }
+    #work-order-print .wo-prints .pp-text { border-width: 1.5px; padding: 4px 6px; }
+    #work-order-print .wo-prints .pp-line b { font-size: 10pt; }
+    #work-order-print .wo-prints .pp-note { display: none; }
+    /* 受注明細の「作業指示書」ボタン（ほかの出力ボタンより大きく） */
+    [data-part="drawer-actions"] button.wo-btn { width: 100%; margin-top: 8px; background: var(--forest); color: #fff; font-weight: 700; }

@@ -36,7 +36,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/a182.jpg",
+        "alt": "極バウムセットD 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/54246/73kiwami.jpg",
+        "alt": "極バウムセットD 商品写真2",
+        "width": 700,
+        "height": 530
+      },
+      {
+        "src": "images/product-details/54246/a182_1.jpg",
+        "alt": "極バウムセットD 商品写真3",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

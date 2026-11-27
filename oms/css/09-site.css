@@ -1,0 +1,68 @@
+/* Luna Luce OMS 部品CSS: 09-site（元は luna_luce_oms_ui_v2.html の <style>。並び順どおりに読み込む） */
+    /* owner: renderSiteTab */
+    [data-part="tab-site"] { display: flex; flex-direction: column; gap: 14px; }
+
+    /* owner: renderSiteNotices */
+    [data-part="site-notices"] .panel { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+    [data-part="site-notices"] h2 { margin: 0; font-size: 18px; color: var(--forest); }
+    [data-part="site-notices"] .lead, [data-part="site-notices"] .meta { margin: 6px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="site-notices"] .row { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+    [data-part="site-notices"] label { display: block; font-size: 13px; color: var(--taupe); }
+    [data-part="site-notices"] input, [data-part="site-notices"] textarea { width: 100%; margin-top: 4px; min-height: 44px; padding: 8px 10px; border-radius: 12px; border: 1px solid #d6d3d1; background: #fff; font-size: 16px; }
+    [data-part="site-notices"] textarea { min-height: 88px; }
+    [data-part="site-notices"] .check { display: flex; gap: 8px; align-items: center; min-height: 44px; }
+    [data-part="site-notices"] .actions, [data-part="site-notices"] .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+    [data-part="site-notices"] button, [data-part="site-notices"] .file { min-height: 44px; padding: 8px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; color: var(--forest); font-weight: 700; }
+    [data-part="site-notices"] .export { background: var(--forest); color: #fff; border: 0; }
+    [data-part="site-notices"] .band { margin-top: 8px; padding: 10px 12px; border-radius: 12px; background: var(--forest); color: #fff; }
+    [data-part="site-notices"] .news { margin-top: 8px; padding: 10px 12px; border-radius: 12px; background: var(--ivory); }
+    [data-part="site-notices"] .news h3, [data-part="site-notices"] .news p { margin: 0; }
+    [data-part="site-notices"] .news p { margin-top: 4px; color: var(--taupe); font-size: 13px; }
+    [data-part="site-notices"] .checkline { margin: 8px 0 0; font-size: 13px; color: var(--taupe); }
+    [data-part="site-notices"] .checkline.is-bad { color: var(--urgent); font-weight: 700; }
+    @media (min-width: 834px) {
+      [data-part="site-notices"] .row { grid-template-columns: 1fr 1fr; }
+      [data-part="site-notices"] .wide { grid-column: 1 / -1; }
+    }
+
+    /* owner: renderSiteCalendar */
+    [data-part="site-calendar"] .panel { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+    [data-part="site-calendar"] h2 { margin: 0; font-size: 18px; color: var(--forest); }
+    [data-part="site-calendar"] .lead, [data-part="site-calendar"] .meta { margin: 6px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="site-calendar"] .week { display: flex; flex-wrap: wrap; gap: 6px; align-items: end; margin-top: 8px; }
+    [data-part="site-calendar"] .week span { flex: 1 1 100%; font-size: 13px; color: var(--forest); font-weight: 700; }
+    [data-part="site-calendar"] label { display: block; font-size: 12px; color: var(--taupe); flex: 1 1 70px; }
+    [data-part="site-calendar"] select, [data-part="site-calendar"] textarea, [data-part="site-calendar"] input { width: 100%; margin-top: 4px; min-height: 44px; padding: 8px; border-radius: 12px; border: 1px solid #d6d3d1; background: #fff; font-size: 16px; }
+    [data-part="site-calendar"] textarea { min-height: 88px; }
+    [data-part="site-calendar"] .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    [data-part="site-calendar"] button, [data-part="site-calendar"] .file { min-height: 44px; padding: 8px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-weight: 700; }
+    [data-part="site-calendar"] .export { background: var(--forest); color: #fff; border: 0; }
+    [data-part="site-calendar"] .months { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    [data-part="site-calendar"] .month { overflow-x: auto; }
+    [data-part="site-calendar"] table { width: 100%; min-width: 280px; border-collapse: collapse; }
+    [data-part="site-calendar"] th, [data-part="site-calendar"] td { text-align: center; font-size: 12px; padding: 4px 2px; border: 1px solid var(--line); }
+    [data-part="site-calendar"] td.off { background: #fee2e2; }
+    [data-part="site-calendar"] td.partial { background: #fef3c7; }
+    [data-part="site-calendar"] .checkline { margin: 8px 0 0; font-size: 13px; color: var(--taupe); }
+    [data-part="site-calendar"] .checkline.is-bad { color: var(--urgent); font-weight: 700; }
+
+    /* owner: renderSitePromos */
+    [data-part="site-promos"] .panel { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+    [data-part="site-promos"] h2 { margin: 0; font-size: 18px; color: var(--forest); }
+    [data-part="site-promos"] .lead, [data-part="site-promos"] .meta { margin: 6px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="site-promos"] .row { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+    [data-part="site-promos"] label { display: block; font-size: 13px; color: var(--taupe); }
+    [data-part="site-promos"] input { width: 100%; margin-top: 4px; min-height: 44px; padding: 8px 10px; border-radius: 12px; border: 1px solid #d6d3d1; background: #fff; font-size: 16px; }
+    [data-part="site-promos"] .check { display: flex; gap: 8px; align-items: center; min-height: 44px; }
+    [data-part="site-promos"] .bar, [data-part="site-promos"] .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+    [data-part="site-promos"] button, [data-part="site-promos"] .file { min-height: 44px; padding: 8px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-weight: 700; }
+    [data-part="site-promos"] .export { background: var(--forest); color: #fff; border: 0; }
+    [data-part="site-promos"] .card { margin-top: 8px; padding: 10px 12px; border-radius: 12px; background: var(--ivory); }
+    [data-part="site-promos"] .card strong { color: var(--forest); }
+    [data-part="site-promos"] .checkline { margin: 8px 0 0; font-size: 13px; color: var(--taupe); }
+    [data-part="site-promos"] .checkline.is-bad { color: var(--urgent); font-weight: 700; }
+    @media (min-width: 834px) {
+      [data-part="site-promos"] .row { grid-template-columns: 1fr 1fr; }
+      [data-part="site-promos"] .wide { grid-column: 1 / -1; }
+    }
+

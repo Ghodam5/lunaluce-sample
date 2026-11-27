@@ -90,7 +90,52 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "notes": [
+      "order-mail",
+      "food-no-return",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/fla121middle2025.jpg",
+        "alt": "FLAVOR クリスマスギフトセット メープルシフォンケーキ ミ… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/71049/fla121middle2025-01.jpg",
+        "alt": "FLAVOR クリスマスギフトセット メープルシフォンケーキ ミ… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71049/fla121middle2025-02.jpg",
+        "alt": "FLAVOR クリスマスギフトセット メープルシフォンケーキ ミ… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71049/flam-koshiki.jpg",
+        "alt": "FLAVOR クリスマスギフトセット メープルシフォンケーキ ミ… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71049/flavor-img.jpg",
+        "alt": "FLAVOR クリスマスギフトセット メープルシフォンケーキ ミ… 商品写真5",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/71049/fla-hako202410.jpg",
+        "alt": "FLAVOR クリスマスギフトセット メープルシフォンケーキ ミ… 商品写真6",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

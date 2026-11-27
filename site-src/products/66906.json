@@ -38,7 +38,22 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/1803.jpg",
+        "alt": "メオトヅル（こんぺいとう）1個 1803 商品写真1",
+        "width": 520,
+        "height": 520
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

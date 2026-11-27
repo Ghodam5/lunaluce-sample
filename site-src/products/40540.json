@@ -5,7 +5,7 @@
     "code": "wk-mm-01-s",
     "title": "ディズニー招待状 フラワーガーデン 10名様分",
     "price": 3608,
-    "image": "",
+    "image": "images/products/40540.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/wk-mm-01-s.html",
     "description": "誰もが大好きなミッキー&ミニーのペーパーアイテムが登場です。 パールの光沢がある表紙に厚手のトレーシングペーパーのカバーをプラス。 トレーシングペーパーのあいた窓から、ミッキーとミニーが見える凝ったデザインです。 ディズニーキャラクターがおふたりの祝福の時を演出します。 テンプレートはサイトからダウンロードして頂けます。 ご自由にアレンジなさって、ご家庭のプリンターで印刷してご使用ください。",
     "size": "表紙:219×153 中紙:210×148(A5) 返信ハガキ:148×100 封筒:167×119",
@@ -36,7 +36,40 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 4,
+      "max": 6,
+      "made": false,
+      "source": "db",
+      "label": "4～6日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/40540.jpg",
+        "alt": "ディズニー招待状 フラワーガーデン 10名様分 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/40540/wk-mm-01-s.jpg",
+        "alt": "ディズニー招待状 フラワーガーデン 10名様分 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/40540/wk-mms.jpg",
+        "alt": "ディズニー招待状 フラワーガーデン 10名様分 商品写真3",
+        "width": 650,
+        "height": 1735
+      },
+      {
+        "src": "images/product-details/40540/distance.jpg",
+        "alt": "ディズニー招待状 フラワーガーデン 10名様分 商品写真4",
+        "width": 650,
+        "height": 310
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

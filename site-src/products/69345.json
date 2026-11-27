@@ -84,7 +84,46 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "notes": [
+      "order-mail",
+      "food-no-return",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/fla505hanayaka2026.jpg",
+        "alt": "メープル シフォンケーキ ミドル HANAYAKA ハーバリウム… 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69345/fla505hanayaka2026-01.jpg",
+        "alt": "メープル シフォンケーキ ミドル HANAYAKA ハーバリウム… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69345/fla505hanayaka2026-02.jpg",
+        "alt": "メープル シフォンケーキ ミドル HANAYAKA ハーバリウム… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69345/flavor-img.jpg",
+        "alt": "メープル シフォンケーキ ミドル HANAYAKA ハーバリウム… 商品写真4",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/69345/fla-hako202410.jpg",
+        "alt": "メープル シフォンケーキ ミドル HANAYAKA ハーバリウム… 商品写真5",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "listing": {
     "image": "images/fla505hanayaka2026.jpg"

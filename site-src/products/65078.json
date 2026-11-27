@@ -90,7 +90,39 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "photos": [
+      {
+        "src": "images/fla122middle-red.jpg",
+        "alt": "FLAVOR サンタのシフォン メープル シフォンケーキ ミドル… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/65078/fla122middle-red-2.jpg",
+        "alt": "FLAVOR サンタのシフォン メープル シフォンケーキ ミドル… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/65078/flam-koshiki.jpg",
+        "alt": "FLAVOR サンタのシフォン メープル シフォンケーキ ミドル… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/65078/flavor-img.jpg",
+        "alt": "FLAVOR サンタのシフォン メープル シフォンケーキ ミドル… 商品写真4",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/65078/fla-hako202410.jpg",
+        "alt": "FLAVOR サンタのシフォン メープル シフォンケーキ ミドル… 商品写真5",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

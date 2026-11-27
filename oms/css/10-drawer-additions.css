@@ -1,0 +1,92 @@
+/* Luna Luce OMS 部品CSS: 10-drawer-additions（元は luna_luce_oms_ui_v2.html の <style>。並び順どおりに読み込む） */
+    /* owner: renderDrawerPreview */
+    [data-part="drawer-preview"] .flag { display: inline-block; margin: 0 0 8px; padding: 4px 8px; border-radius: 8px; background: #fffbeb; color: #92400e; font-size: 13px; font-weight: 700; }
+    [data-part="drawer-preview"] .meta { margin: 8px 0 0; font-size: 13px; color: var(--taupe); }
+    [data-part="drawer-preview"] .meta p { margin: 2px 0; overflow-wrap: anywhere; }
+    [data-part="drawer-preview"] .limit { margin: 6px 0 0; color: var(--urgent); font-size: 13px; font-weight: 700; }
+
+
+    /* owner: renderDrawerMiniseal */
+    [data-part="drawer-miniseal"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; align-items: end; margin-bottom: 8px; }
+    [data-part="drawer-miniseal"] .note { margin: 0 0 8px; color: var(--taupe); font-size: 13px; }
+    [data-part="drawer-miniseal"] .chosen { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 10px; }
+    [data-part="drawer-miniseal"] .chosen .seal-frame { width: min(168px, 46vw); }
+    [data-part="drawer-miniseal"] .chosen .cap { margin: 0; font-size: 13px; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="drawer-miniseal"] .seal-frame {
+      aspect-ratio: 1;
+      border-radius: 18%;
+      background: #fff;
+      border: 1px solid var(--champagne);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    [data-part="drawer-miniseal"] .seal-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    [data-part="drawer-miniseal"] .miss { margin: 0; padding: 4px; font-size: 12px; line-height: 1.3; color: var(--taupe); }
+    [data-part="drawer-miniseal"] .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    [data-part="drawer-miniseal"] button {
+      min-height: 44px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--forest);
+      text-align: center;
+    }
+    [data-part="drawer-miniseal"] button.is-on { border-color: var(--forest); box-shadow: inset 0 0 0 1px var(--forest); }
+    [data-part="drawer-miniseal"] .nm { display: block; margin-top: 4px; font-size: 12px; line-height: 1.3; overflow-wrap: anywhere; word-break: break-all; line-break: anywhere; }
+    [data-part="drawer-miniseal"] .match { margin: 0 0 10px; padding: 8px 10px; border-radius: 10px; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; background: var(--champagne-soft); color: var(--forest); border: 1px solid var(--champagne-light); }
+    [data-part="drawer-miniseal"] .match.is-auto { background: rgba(42, 157, 143, 0.08); border-color: rgba(42, 157, 143, 0.35); }
+    [data-part="drawer-miniseal"] .match.is-warn { background: rgba(217, 83, 79, 0.07); border-color: rgba(217, 83, 79, 0.4); }
+    [data-part="drawer-miniseal"] .match b { font-weight: 600; }
+    [data-part="drawer-miniseal"] .group { margin: 14px 0 6px; font-size: 13px; font-weight: 600; color: var(--taupe); }
+    @media (min-width: 834px) {
+      [data-part="drawer-miniseal"] .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1280px) {
+      [data-part="drawer-miniseal"] .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    }
+
+    /* owner: renderDrawerRealSize */
+    [data-part="drawer-realsize"] .limit { margin: 8px 0 0; color: var(--taupe); font-size: 13px; }
+
+    /* owner: renderManualModal */
+    [data-part="manual-modal"] .retired { margin: 10px 0 0; color: var(--taupe); font-size: 13px; }
+    /* 見本一覧を畳む（ミニシールの図柄・のし・包装） js/16-drawer・js/44-option-catalog */
+    [data-part="drawer-miniseal"] .fold, [data-part="drawer-catalog"] .fold { border: 1px solid var(--champagne-light, #e5d6b8); border-radius: 10px; background: #fff; margin-top: 8px; }
+    [data-part="drawer-miniseal"] .fold > summary, [data-part="drawer-catalog"] .fold > summary { cursor: pointer; padding: 10px 12px; font-size: 14px; font-weight: 600; color: var(--forest); list-style: none; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+    [data-part="drawer-miniseal"] .fold > summary::-webkit-details-marker, [data-part="drawer-catalog"] .fold > summary::-webkit-details-marker { display: none; }
+    [data-part="drawer-miniseal"] .fold > summary::before, [data-part="drawer-catalog"] .fold > summary::before { content: "▶"; font-size: 11px; color: var(--taupe); transition: transform .15s; }
+    [data-part="drawer-miniseal"] .fold[open] > summary::before, [data-part="drawer-catalog"] .fold[open] > summary::before { transform: rotate(90deg); }
+    [data-part="drawer-miniseal"] .fold .cnt, [data-part="drawer-catalog"] .fold .cnt { font-size: 12px; font-weight: 400; color: var(--taupe); overflow-wrap: anywhere; }
+    [data-part="drawer-miniseal"] .fold[open] { padding: 0 10px 10px; }
+    [data-part="drawer-miniseal"] .fold[open] > summary { padding-left: 2px; padding-right: 2px; }
+    [data-part="drawer-catalog"] .head { display: flex; flex-wrap: wrap; gap: 6px; justify-content: space-between; align-items: end; }
+    [data-part="drawer-catalog"] .head h3 { margin: 0; }
+    [data-part="drawer-catalog"] .sub { margin: 0; color: var(--taupe); font-size: 12px; }
+    [data-part="drawer-catalog"] .fold[open] { padding: 0 10px 10px; }
+    [data-part="drawer-catalog"] .note { margin: 0 0 8px; color: var(--taupe); font-size: 13px; }
+    [data-part="drawer-catalog"] .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    @media (min-width: 700px) { [data-part="drawer-catalog"] .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    [data-part="drawer-catalog"] .grid button { margin: 0; border: 1px solid rgba(184, 150, 92, 0.35); border-radius: 10px; padding: 6px; min-width: 0; background: #fff; cursor: pointer; font: inherit; color: inherit; }
+    [data-part="drawer-catalog"] .grid button.is-on { border-color: var(--forest); box-shadow: inset 0 0 0 1px var(--forest); }
+    [data-part="drawer-catalog"] .grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; display: block; border-radius: 6px; }
+    [data-part="drawer-catalog"] .nm { display: block; margin-top: 4px; font-size: 12px; line-height: 1.3; text-align: center; overflow-wrap: anywhere; }
+    [data-part="drawer-catalog"] .nm b { display: block; color: var(--forest); font-size: 11px; }
+    [data-part="drawer-catalog"] .miss { display: block; margin: 0; padding: 20px 4px; font-size: 12px; color: var(--taupe); text-align: center; }
+    /* 選んだ図柄・のし・包装を外すボタン */
+    [data-part="drawer-miniseal"] button.clear, [data-part="drawer-catalog"] button.clear { display: inline-block; width: auto; margin: 8px 0; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(217, 83, 79, 0.5); background: #fff; color: var(--urgent, #c0392b); font-size: 13px; cursor: pointer; }
+    /* ご注文の品を全部並べる（js/16-drawer chosenBlock・js/44-option-catalog orderedItems） */
+    [data-part="drawer-miniseal"] .chosen { display: block; margin-bottom: 10px; }
+    [data-part="drawer-miniseal"] .items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    @media (min-width: 700px) { [data-part="drawer-miniseal"] .items { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    [data-part="drawer-miniseal"] .items .pick { min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 8px; background: #fff; }
+    [data-part="drawer-miniseal"] .items .kind { margin: 0 0 4px; font-size: 12px; font-weight: 700; color: var(--taupe); letter-spacing: 0.04em; }
+    [data-part="drawer-miniseal"] .item-frame { aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: #faf8f5; display: grid; place-items: center; }
+    [data-part="drawer-miniseal"] .item-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    [data-part="drawer-miniseal"] .items .cap { margin: 6px 0 0; font-size: 13px; color: var(--forest); overflow-wrap: anywhere; }
+    [data-part="drawer-miniseal"] .items button.clear { margin: 6px 0 0; padding: 4px 12px; font-size: 12px; min-height: 0; }
+    [data-part="drawer-miniseal"] .none { margin: 8px 0 0; font-size: 12px; color: var(--taupe); }

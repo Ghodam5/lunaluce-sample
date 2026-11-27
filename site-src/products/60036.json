@@ -65,7 +65,48 @@
     "hasName": false,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "bulk-100",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb-kmamoriset.jpg",
+        "alt": "KA MI守り 10個セット こんぺいとう おまもり 御守 絵馬 中学 高校 大学 資格試験 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60036/pb-kmamoriset-01.jpg",
+        "alt": "KA MI守り 10個セット こんぺいとう おまもり 御守 絵馬 中学 高校 大学 資格試験 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60036/pb-kmamoriset-02.jpg",
+        "alt": "KA MI守り 10個セット こんぺいとう おまもり 御守 絵馬 中学 高校 大学 資格試験 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/60036/pb-kmamoriset-03.jpg",
+        "alt": "KA MI守り 10個セット こんぺいとう おまもり 御守 絵馬 中学 高校 大学 資格試験 商品写真4",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "feature": {
     "id": "60036",

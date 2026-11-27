@@ -100,7 +100,52 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": true,
+      "source": "db",
+      "label": "約1週間後"
+    },
+    "photos": [
+      {
+        "src": "images/pb258xmaskairo30.jpg",
+        "alt": "名入れ対応プチギフト クリスマスカイロPB(かいろ1枚入り)30… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/53691/pb258xmaskairo30.jpg",
+        "alt": "名入れ対応プチギフト クリスマスカイロPB(かいろ1枚入り)30… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/53691/pb258xmaskairo30-01.jpg",
+        "alt": "名入れ対応プチギフト クリスマスカイロPB(かいろ1枚入り)30… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/53691/pb258xmaskairo30-02.jpg",
+        "alt": "名入れ対応プチギフト クリスマスカイロPB(かいろ1枚入り)30… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/53691/pb258xmaskairo30-03.jpg",
+        "alt": "名入れ対応プチギフト クリスマスカイロPB(かいろ1枚入り)30… 商品写真5",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/53691/pb258xmaskairo30-04.jpg",
+        "alt": "名入れ対応プチギフト クリスマスカイロPB(かいろ1枚入り)30… 商品写真6",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

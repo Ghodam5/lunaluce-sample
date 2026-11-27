@@ -74,7 +74,40 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/1829.jpg",
+        "alt": "フルーティーダイヤ(ゼリー)40個セット 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/69206/1829_1.jpg",
+        "alt": "フルーティーダイヤ(ゼリー)40個セット 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69206/1829_2.jpg",
+        "alt": "フルーティーダイヤ(ゼリー)40個セット 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/69206/1829_3.jpg",
+        "alt": "フルーティーダイヤ(ゼリー)40個セット 商品写真4",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

@@ -117,7 +117,14 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 7,
+      "max": 7,
+      "made": false,
+      "source": "db",
+      "label": "約1週間後"
+    }
   },
   "detail": {
     "photos": [
@@ -130,6 +137,24 @@
       {
         "src": "images/product-details/47484/ecoflavor-104-101-01.jpg",
         "alt": "メープルシフォンケーキ ミドルサイズ(箱入り) 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/47484/flavor-img.jpg",
+        "alt": "メープルシフォンケーキ ミドルサイズ(箱入り) 商品写真3",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/47484/fla-hako202410.jpg",
+        "alt": "メープルシフォンケーキ ミドルサイズ(箱入り) 商品写真4",
+        "width": 700,
+        "height": 350
+      },
+      {
+        "src": "images/product-details/47484/fla2026gw.jpg",
+        "alt": "メープルシフォンケーキ ミドルサイズ(箱入り) 商品写真5",
         "width": 700,
         "height": 700
       }

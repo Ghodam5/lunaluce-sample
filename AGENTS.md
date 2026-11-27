@@ -1,5 +1,13 @@
 # このリポジトリを編集するAIへ
 
+**Codex など、これまでの会話を知らないAIは、最初に `引き継ぎ書.md` を読む。** 現状・ブランチの使い分け・確認コマンド・OMSのVPS反映手順・進行中の作業・林さんの開発方針がまとめてある。
+- 返事は日本語。依頼主は林さん（GitHub `Ghodam5`）。作業の終わりに「何をどの順で、なぜやったか」を短く書く。
+- OMS の作業は **oms-split-builder** ブランチ（main の oms/ は古い）。VPS の設定は **vps-oms-setup** ブランチの ops/vps/。
+- oms-split-builder にマージ・push すると、VPS の OMS は1〜2分で自動で入れ替わる（hPanel の再起動は不要。引き継ぎ書.md の 5）。壊れた版を入れると本番の画面がそのまま変わるので、テストと `--check` を通してからマージする。
+- 処理ごとに部品（モジュール）に分ける。担当者が JSON・CSS を触らずに済むビルダー型の画面にする。
+- パスワード・トークン・鍵・お客様の個人情報は書かない、コミットしない。
+- PR を出す前に `node tools/build-site.cjs --check` と CI と同じテスト（.github/workflows/check-site.yml）を通す。
+
 先に制作ルール.md・更新履歴.md・README_編集する場所.mdを読む。
 
 - 編集元はsite-src/pages/。直下のHTMLは公開用の生成物なので直接編集しない。

@@ -1,0 +1,71 @@
+/* Luna Luce OMS 部品CSS: 06-modal-toast（元は luna_luce_oms_ui_v2.html の <style>。並び順どおりに読み込む） */
+    /* owner: renderManualModal */
+    [data-part="manual-modal"] {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    [data-part="manual-modal"] .card {
+      width: 100%;
+      max-height: 100%;
+      overflow: auto;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
+      padding: 16px;
+    }
+    [data-part="manual-modal"] .top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+    [data-part="manual-modal"] h2 { margin: 6px 0 0; font-family: "Noto Serif JP", serif; font-size: 18px; color: var(--forest); }
+    [data-part="manual-modal"] .tag { display: inline-block; padding: 2px 8px; border-radius: 6px; background: #0369a1; color: #fff; font-size: 12px; font-weight: 700; }
+    [data-part="manual-modal"] .x { width: 44px; height: 44px; border: 0; border-radius: 12px; background: var(--ivory-warm); }
+    [data-part="manual-modal"] .grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+    [data-part="manual-modal"] label { display: block; font-size: 13px; color: var(--taupe); margin-bottom: 4px; }
+    [data-part="manual-modal"] input, [data-part="manual-modal"] select {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid #d6d3d1;
+      font-size: 16px;
+      background: #fff;
+    }
+    [data-part="manual-modal"] .buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+    [data-part="manual-modal"] .buttons button { min-height: 44px; padding: 8px 14px; border-radius: 12px; border: 0; font-weight: 700; }
+    [data-part="manual-modal"] .cancel { background: #f5f5f4; color: var(--taupe); }
+    [data-part="manual-modal"] .ok { background: var(--forest); color: #fff; }
+    @media (min-width: 834px) {
+      [data-part="manual-modal"] { align-items: center; padding: 24px; }
+      [data-part="manual-modal"] .card { width: min(560px, 100%); max-height: min(90vh, 820px); border-radius: 16px; }
+      [data-part="manual-modal"] .grid { grid-template-columns: 1fr 1fr; }
+      [data-part="manual-modal"] .span-2 { grid-column: 1 / -1; }
+    }
+
+    /* owner: renderToast */
+    [data-part="toast"] {
+      position: fixed;
+      z-index: 80;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      pointer-events: none;
+    }
+    [data-part="toast"] .bubble {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--forest);
+      color: #fff;
+      border: 1px solid rgba(184, 150, 92, 0.4);
+      box-shadow: var(--shadow);
+      font-size: 14px;
+    }
+    [data-part="toast"] .dot { width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--champagne); flex: none; }
+    @media (min-width: 834px) {
+      [data-part="toast"] { left: auto; right: 20px; width: min(440px, calc(100% - 40px)); }
+    }
+

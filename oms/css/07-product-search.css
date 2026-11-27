@@ -1,0 +1,87 @@
+/* Luna Luce OMS 部品CSS: 07-product-search（元は luna_luce_oms_ui_v2.html の <style>。並び順どおりに読み込む） */
+    /* owner: renderProductSearch */
+    [data-part="product-search"] .panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    [data-part="product-search"] h2 { margin: 0; font-size: 15px; color: var(--forest); }
+    [data-part="product-search"] h3 { margin: 0 0 8px; font-size: 14px; color: var(--forest); }
+    [data-part="product-search"] .lead { margin: 4px 0 0; color: var(--taupe-light); font-size: 13px; }
+    [data-part="product-search"] .query {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--taupe);
+    }
+    [data-part="product-search"] input[type="search"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #d6d3d1;
+      background: var(--ivory);
+      font-size: 16px;
+      font-weight: 400;
+    }
+    [data-part="product-search"] .meta { margin: 8px 0 0; color: var(--taupe); font-size: 13px; }
+    [data-part="product-search"] .line {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--champagne-soft);
+      border: 1px solid var(--champagne-light);
+    }
+    [data-part="product-search"] .line .grid {
+      display: grid;
+      gap: 8px;
+    }
+    [data-part="product-search"] .line .grid div { display: flex; flex-direction: column; gap: 2px; }
+    [data-part="product-search"] .line .wide { grid-column: 1 / -1; }
+    [data-part="product-search"] .line span { color: var(--taupe-light); font-size: 12px; }
+    [data-part="product-search"] .line strong { color: var(--ink); font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+    [data-part="product-search"] .flags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    [data-part="product-search"] .flag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--white);
+      color: var(--taupe);
+      font-size: 13px;
+    }
+    [data-part="product-search"] .flag.is-on { background: var(--forest); color: #fff; font-weight: 600; }
+    [data-part="product-search"] .hits {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+      max-height: 320px;
+      overflow: auto;
+    }
+    [data-part="product-search"] .hits button {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--ivory);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    [data-part="product-search"] .hits button.is-on { border-color: var(--champagne); background: var(--white); }
+    [data-part="product-search"] .hits strong { font-size: 14px; font-weight: 600; }
+    [data-part="product-search"] .hits span,
+    [data-part="product-search"] .more,
+    [data-part="product-search"] .empty { color: var(--taupe); font-size: 13px; }
+    [data-part="product-search"] .empty { margin: 0; }
+    [data-part="product-search"] .more { margin: 0; }
+    @media (min-width: 834px) {
+      [data-part="product-search"] .line .grid { grid-template-columns: 1fr 1fr; }
+    }
+

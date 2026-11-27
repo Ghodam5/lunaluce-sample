@@ -153,7 +153,34 @@
     "hasName": true,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "photos": [
+      {
+        "src": "images/wb-g911_g914.jpg",
+        "alt": "ガラスボード 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/1854/WB-G911_G914-2.jpg",
+        "alt": "ガラスボード 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/1854/imgWB-G911_G914.jpg",
+        "alt": "ガラスボード 商品写真3",
+        "width": 700,
+        "height": 1170
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

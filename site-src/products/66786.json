@@ -102,7 +102,66 @@
     "hasName": true,
     "petit": true,
     "seal": true,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": false,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "min-qty",
+      "food-no-return",
+      "bulk-100",
+      "spec-change",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/pb247disneyfbox.jpg",
+        "alt": "disney friends box PB クッキー 名入れシー… 商品写真1",
+        "width": 520,
+        "height": 520
+      },
+      {
+        "src": "images/product-details/66786/pb247disneyfbox-01.jpg",
+        "alt": "disney friends box PB クッキー 名入れシー… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/66786/pb247disneyfbox-02.jpg",
+        "alt": "disney friends box PB クッキー 名入れシー… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/66786/pb247disneyfbox-03.jpg",
+        "alt": "disney friends box PB クッキー 名入れシー… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/66786/dseal05-kyotu1.jpg",
+        "alt": "disney friends box PB クッキー 名入れシー… 商品写真5",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/66786/dseal05-kyotu2n.jpg",
+        "alt": "disney friends box PB クッキー 名入れシー… 商品写真6",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/66786/dseal05-tuika.jpg",
+        "alt": "disney friends box PB クッキー 名入れシー… 商品写真7",
+        "width": 700,
+        "height": 999
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

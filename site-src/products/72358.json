@@ -146,7 +146,44 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "no-cancel-after",
+      "bulk-100",
+      "no-noshi",
+      "free-ship-no-date",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb313rhythmbox.jpg",
+        "alt": "お名入れ対応プチギフト マーチングリズムボックス(金平糖・こんぺ… 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/72358/pb313rhythmbox-01.jpg",
+        "alt": "お名入れ対応プチギフト マーチングリズムボックス(金平糖・こんぺ… 商品写真2",
+        "width": 700,
+        "height": 703
+      },
+      {
+        "src": "images/product-details/72358/pb313rhythmbox-02.jpg",
+        "alt": "お名入れ対応プチギフト マーチングリズムボックス(金平糖・こんぺ… 商品写真3",
+        "width": 702,
+        "height": 704
+      }
+    ]
   },
   "listing": {
     "image": "images/pb313rhythmbox.jpg"

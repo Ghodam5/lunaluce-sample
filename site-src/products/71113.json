@@ -5,7 +5,7 @@
     "code": "a663",
     "title": "【引き出物】北海道 野菜ドレッシング＆スープ3種セット",
     "price": 3240,
-    "image": "",
+    "image": "images/products/71113.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/a663.html",
     "description": "北海道の息吹を感じる本格派ドレッシングとスープのセット。",
     "size": "商品サイズ:255×170×48mm",
@@ -37,7 +37,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 3,
+      "max": 5,
+      "made": false,
+      "source": "db",
+      "label": "3～5日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/71113.jpg",
+        "alt": "【引き出物】北海道 野菜ドレッシング＆スープ3種セット 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71113/a663_1.jpg",
+        "alt": "【引き出物】北海道 野菜ドレッシング＆スープ3種セット 商品写真2",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

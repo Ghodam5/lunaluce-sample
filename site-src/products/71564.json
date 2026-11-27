@@ -85,7 +85,45 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "notes": [
+      "order-mail",
+      "spec-change",
+      "no-noshi",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/fla510hahpair2nd.jpg",
+        "alt": "FLAVOR 母の日ラッピングシフォン ペアセット(メープル&ストロベリー) 地域別 ) マザーズデイ おかんも喜ぶ2種のシフォン 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71564/fla510hahpair2nd-01.jpg",
+        "alt": "FLAVOR 母の日ラッピングシフォン ペアセット(メープル&ストロベリー) 地域別 ) マザーズデイ おかんも喜ぶ2種のシフォン 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71564/fla510hahpair2nd-02.jpg",
+        "alt": "FLAVOR 母の日ラッピングシフォン ペアセット(メープル&ストロベリー) 地域別 ) マザーズデイ おかんも喜ぶ2種のシフォン 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/71564/flavor-img.jpg",
+        "alt": "FLAVOR 母の日ラッピングシフォン ペアセット(メープル&ストロベリー) 地域別 ) マザーズデイ おかんも喜ぶ2種のシフォン 商品写真4",
+        "width": 700,
+        "height": 470
+      },
+      {
+        "src": "images/product-details/71564/fla-hako202410.jpg",
+        "alt": "FLAVOR 母の日ラッピングシフォン ペアセット(メープル&ストロベリー) 地域別 ) マザーズデイ おかんも喜ぶ2種のシフォン 商品写真5",
+        "width": 700,
+        "height": 350
+      }
+    ]
   },
   "feature": {
     "id": "71564",

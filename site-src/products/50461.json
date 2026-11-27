@@ -5,7 +5,7 @@
     "code": "con1130",
     "title": "【20％OFF】ゲストブック（ネイビー）",
     "price": 2560,
-    "image": "",
+    "image": "images/products/50461.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/con1130.html",
     "description": "和洋どちらも使える高級なデザインの洗練されたゲストブックです。",
     "size": "サイズ:133×175×43mm、箱サイズ15×18.5×4.5cm",
@@ -36,7 +36,34 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 4,
+      "max": 6,
+      "made": false,
+      "source": "db",
+      "label": "4～6日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/50461.jpg",
+        "alt": "【20％OFF】ゲストブック（ネイビー） 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/50461/con1130-02.jpg",
+        "alt": "【20％OFF】ゲストブック（ネイビー） 商品写真2",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/50461/con1130-03.jpg",
+        "alt": "【20％OFF】ゲストブック（ネイビー） 商品写真3",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",

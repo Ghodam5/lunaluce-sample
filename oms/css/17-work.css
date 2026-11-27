@@ -1,0 +1,154 @@
+/* Luna Luce OMS 部品CSS: 17-work（js/51-fuzzy の候補・js/52-work-log の3つのボタン/スマホで作業開始/作業の記録・js/53-work-log-tab の作業ログタブ） */
+    /* 統合受注の検索の候補 */
+    .search-wrap { position: relative; }
+    .fz-suggest { position: absolute; z-index: 30; top: 100%; left: 0; right: 0; min-width: 280px; margin-top: 4px; background: var(--white); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; }
+    .fz-suggest button { display: grid; grid-template-columns: auto 1fr; gap: 0 10px; width: 100%; padding: 8px 12px; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
+    .fz-suggest button:hover, .fz-suggest button:focus { background: var(--champagne-soft); }
+    .fz-suggest b { font-size: 12px; color: var(--taupe); }
+    .fz-suggest span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fz-suggest small { grid-column: 1 / -1; color: var(--taupe-light); font-size: 12px; }
+
+    /* 受注明細: PDF保存・PDF印刷・スマホで作業開始 */
+    [data-part="drawer-actions"] .wk-out { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    [data-part="drawer-actions"] .wk-out button.wo-btn { margin-top: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 6px; }
+    [data-part="drawer-actions"] .wk-out button.wo-btn span:last-child { font-size: 11px; font-weight: 400; opacity: .85; }
+    [data-part="drawer-actions"] .wk-out button.is-phone { background: var(--sage); }
+    @media (max-width: 520px) { [data-part="drawer-actions"] .wk-out { grid-template-columns: 1fr; } }
+
+    /* スマホで作業開始（QRコード） */
+    .wk-modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 16px; background: rgba(20, 28, 26, .45); }
+    .wk-sheet { width: min(420px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: var(--white); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
+    .wk-sheet h3 { margin: 0 0 4px; }
+    .wk-lead { margin: 0 0 10px; color: var(--taupe); font-size: 13px; }
+    .wk-qr { width: 220px; max-width: 100%; margin: 0 auto 10px; }
+    .wk-qr svg { display: block; width: 100%; height: auto; }
+    .wk-how { margin: 0 0 10px; padding-left: 20px; font-size: 13px; }
+    .wk-link { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 13px; }
+    .wk-state { font-size: 13px; color: var(--sage); }
+    .wk-state.is-ng { color: var(--urgent); }
+    .wk-close { width: 100%; margin-top: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--ivory); font: inherit; cursor: pointer; }
+
+    /* 受注明細: 作業の記録 */
+    .wk-steps { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 4px; }
+    .wk-steps li { display: flex; justify-content: space-between; gap: 8px; padding: 6px 10px; border-radius: 8px; background: var(--ivory-warm); font-size: 13px; }
+    .wk-steps li.is-done { background: #e3f3ef; }
+    .wk-steps li span { color: var(--taupe); }
+    .wk-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .wk-table th, .wk-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .wk-table th { background: var(--champagne-soft); font-weight: 600; white-space: nowrap; }
+    .wk-table td small { display: block; color: var(--taupe-light); }
+    .wk-order { padding: 0; border: 0; background: none; color: var(--forest); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+    [data-part="drawer-worklog"] .wk-log { overflow-x: auto; }
+
+    /* 9 作業ログ */
+    .wk-tab { max-width: 1200px; margin: 0 auto; padding: 16px; }
+    .wk-tab h2 { margin: 0 0 4px; }
+    .wk-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin: 12px 0; padding: 14px; background: var(--white); border: 1px solid var(--line); border-radius: 12px; }
+    .wk-form label { display: grid; gap: 4px; font-size: 12px; color: var(--taupe); }
+    .wk-form label.is-wide { grid-column: 1 / -1; }
+    .wk-form input, .wk-form select { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; font-size: 14px; color: var(--ink); background: var(--white); }
+    .wk-btns { grid-column: 1 / -1; display: flex; gap: 8px; }
+    .wk-btns button { padding: 9px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--ivory); font: inherit; cursor: pointer; }
+    .wk-btns .wk-go { background: var(--forest); color: #fff; border-color: var(--forest); font-weight: 700; }
+    .wk-result { overflow-x: auto; background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
+    .wk-count { margin: 4px 4px 8px; font-weight: 600; }
+    .wk-ng { color: var(--urgent); }
+
+    /* 作業指示書のQRコード（印刷） */
+    #work-order-print .wo-qr { width: 22mm; text-align: center; font-size: 7pt; }
+    #work-order-print .wo-qr svg { display: block; width: 22mm; height: 22mm; }
+
+    /* 日付で作業QR表（js/54-day-sheet） */
+    .ds-sheet { width: min(640px, 100%); }
+    .ds-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+    .ds-form label { display: grid; gap: 4px; font-size: 12px; color: var(--taupe); }
+    .ds-form input[type="date"], .ds-form select { padding: 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+    .ds-form .ds-check { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink); }
+    .ds-count { font-weight: 700; margin: 6px 0; }
+    .ds-pre { margin: 0 0 10px; padding-left: 18px; font-size: 13px; color: var(--taupe); }
+    .ds-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .ds-btns .wo-btn { padding: 12px; border: 0; border-radius: 10px; background: var(--forest); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+    .ds-btns .wo-btn:disabled { opacity: .4; cursor: default; }
+    #day-sheet-print { display: none; }
+    @media print {
+      html.is-printing-day-sheet body > *:not(#day-sheet-print) { display: none !important; }
+      html.is-printing-day-sheet #day-sheet-print { display: block; color: #111; font-size: 9.5pt; line-height: 1.4; font-family: "Noto Sans JP", sans-serif; }
+      html.is-printing-day-sheet, html.is-printing-day-sheet body { background: #fff !important; }
+      @page { size: A4; margin: 10mm; }
+    }
+    #day-sheet-print .ds-head { display: flex; justify-content: space-between; align-items: end; border-bottom: 2px solid #111; padding-bottom: 4px; margin-bottom: 6px; }
+    #day-sheet-print .ds-title { margin: 0; font-size: 15pt; font-weight: 700; }
+    #day-sheet-print .ds-sub, #day-sheet-print .ds-made { margin: 0; font-size: 8.5pt; color: #555; }
+    #day-sheet-print .ds-table { width: 100%; border-collapse: collapse; }
+    #day-sheet-print .ds-table th { font-size: 8pt; text-align: left; border-bottom: 1px solid #111; padding: 2px 4px; }
+    #day-sheet-print .ds-table td { border-bottom: 1px solid #bbb; padding: 4px; vertical-align: top; }
+    #day-sheet-print .ds-table tr { break-inside: avoid; }
+    #day-sheet-print .ds-table small { display: block; color: #444; font-size: 8pt; }
+    #day-sheet-print .ds-table em { display: inline-block; margin-top: 2px; padding: 0 4px; background: #111; color: #fff; font-style: normal; font-size: 8pt; }
+    #day-sheet-print .ds-table tr.is-rush td:first-child { box-shadow: inset 3px 0 0 #111; }
+    #day-sheet-print .ds-qr { width: 25mm; }
+    #day-sheet-print .ds-qr svg { display: block; width: 23mm; height: 23mm; }
+    #day-sheet-print .ds-done { width: 12mm; }
+    #day-sheet-print .ds-done::before { content: ""; display: block; width: 9mm; height: 9mm; border: 1.5px solid #111; }
+    #day-sheet-print .ds-warn { font-weight: 700; }
+    #day-sheet-print .ds-table td:nth-child(5) { white-space: nowrap; }
+
+    /* 受注明細の工程の流れ（パソコンでも終わった・取り消し） */
+    [data-part="drawer-worklog"] .wk-steps li { align-items: center; }
+    [data-part="drawer-worklog"] .wk-steps li > div { display: grid; }
+    .wk-progress { margin: 0 0 6px; font-size: 13px; }
+    .wk-done, .wk-undo { flex: none; min-width: 96px; padding: 7px 12px; border-radius: 8px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .wk-done { border: 0; background: var(--forest); color: #fff; }
+    .wk-undo { border: 1px solid var(--line); background: var(--white); color: var(--taupe); }
+    .wk-undo.is-armed { background: var(--urgent); border-color: var(--urgent); color: #fff; }
+    .wk-cm { display: grid; grid-template-columns: 140px 1fr auto; gap: 6px; margin: 6px 0 10px; }
+    .wk-cm select, .wk-cm input { padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; font-size: 13px; min-width: 0; }
+    .wk-cm button { padding: 7px 14px; border: 0; border-radius: 8px; background: var(--forest); color: #fff; font: inherit; font-size: 13px; cursor: pointer; }
+    @media (max-width: 520px) { .wk-cm { grid-template-columns: 1fr; } }
+
+    /* 統合受注の「作業QR表（PDF印刷）」ボタン（選択注文のCSVボタンの右）: スマホ作業と同じ青緑 */
+    [data-part="order-list"] .batch.ds-open { background: var(--sage); border-color: var(--sage); color: #fff; }
+    [data-part="order-list"] .batch.ds-open:hover { background: #23867a; border-color: #23867a; }
+    .ds-btns { grid-template-columns: 1fr 1fr 1fr !important; }
+    .ds-btns .wo-btn.is-qr { background: var(--sage); }
+    .ds-btns .wo-btn.is-show { background: var(--champagne); }
+    a.wo-btn { display: flex; align-items: center; justify-content: center; text-align: center; text-decoration: none; line-height: 1.3; font-size: 14px; }
+    .ds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; max-height: 50vh; overflow: auto; }
+    .ds-grid figure { margin: 0; padding: 8px; border: 1px solid var(--line); border-radius: 10px; text-align: center; }
+    .ds-grid svg { display: block; width: 100%; height: auto; }
+    .ds-grid figcaption { font-size: 11px; color: var(--taupe); }
+    .ds-grid figcaption b { display: block; color: var(--ink); }
+    @media (max-width: 520px) { .ds-btns { grid-template-columns: 1fr !important; } }
+
+    /* 10 名入れの決まり（js/55-name-rules） */
+    .nr-tab { max-width: 980px; margin: 0 auto; padding: 16px; }
+    .nr-tab h2 { margin: 0 0 4px; }
+    .nr-note { padding: 8px 12px; border-radius: 8px; background: var(--champagne-soft); color: var(--taupe); font-size: 13px; }
+    .nr-sec { margin: 14px 0; padding: 14px; background: var(--white); border: 1px solid var(--line); border-radius: 12px; }
+    .nr-sec h3 { margin: 0 0 2px; }
+    .nr-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-top: 8px; }
+    .nr-form label { display: grid; gap: 4px; font-size: 12px; color: var(--taupe); }
+    .nr-form input[type="number"] { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+    .nr-form .nr-chk { display: flex; align-items: center; gap: 6px; color: var(--ink); font-size: 13px; }
+    .nr-eg { margin: 10px 0 0; padding: 8px 12px; background: var(--ivory-warm); border-radius: 8px; font-size: 13px; }
+    .nr-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+    .nr-table th { white-space: nowrap; text-align: left; font-size: 12px; color: var(--taupe); padding: 4px 6px; border-bottom: 1px solid var(--line); }
+    .nr-table td { padding: 4px 6px; border-bottom: 1px solid var(--line); }
+    .nr-table td input[type="text"] { width: 100%; min-width: 140px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+    .nr-table .nr-c { text-align: center; white-space: nowrap; width: 1%; }
+    .nr-table button { padding: 5px 9px; margin: 0 1px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); font: inherit; font-size: 12px; cursor: pointer; }
+    .nr-table button:disabled { opacity: .35; cursor: default; }
+    .nr-table .nr-del { color: var(--urgent); }
+    .nr-add { margin-top: 8px; padding: 8px 14px; border: 1px dashed var(--champagne); border-radius: 8px; background: var(--champagne-soft); font: inherit; cursor: pointer; }
+    /* 2.57 料金の決まり（商品・加工ごと） */
+    .nr-rule { margin-top: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--ivory); }
+    .nr-rule.is-off { opacity: .55; }
+    .nr-rule-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .nr-rule-head input[type="text"] { flex: 1; min-width: 160px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; font: inherit; font-weight: 600; }
+    .nr-rule-head button { padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--white); font: inherit; font-size: 12px; cursor: pointer; }
+    .nr-rule-head button:disabled { opacity: .35; cursor: default; }
+    .nr-rule-head .nr-del { color: var(--urgent); }
+    .nr-rule-head .nr-chk { display: flex; align-items: center; gap: 4px; font-size: 13px; }
+    .nr-form .nr-wide { grid-column: span 2; }
+    .nr-form input[type="text"], .nr-form select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; background: var(--white); }
+    @media (max-width: 520px) { .nr-form .nr-wide { grid-column: auto; } }

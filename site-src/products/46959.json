@@ -22,7 +22,6 @@
       "season"
     ],
     "subs": [
-      "wafu",
       "goods"
     ],
     "tags": [
@@ -138,7 +137,56 @@
     "hasName": true,
     "petit": true,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 14,
+      "max": 14,
+      "made": true,
+      "source": "db",
+      "label": "約2週間後"
+    },
+    "notes": [
+      "order-mail",
+      "made-to-order",
+      "cancel-if-late",
+      "min-qty",
+      "no-cancel-after",
+      "bulk-100",
+      "spec-change",
+      "season-delay"
+    ],
+    "photos": [
+      {
+        "src": "images/features/pb-252kairoretro.jpg",
+        "alt": "あったかプチギフト 招福カイロ(10個~名入れ対応) 招き猫 だ… 商品写真1",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/46959/pb-252kairoretro-1.jpg",
+        "alt": "あったかプチギフト 招福カイロ(10個~名入れ対応) 招き猫 だ… 商品写真2",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/46959/pb-252kairoretro-2.jpg",
+        "alt": "あったかプチギフト 招福カイロ(10個~名入れ対応) 招き猫 だ… 商品写真3",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/46959/pb-252kairoretro-3.jpg",
+        "alt": "あったかプチギフト 招福カイロ(10個~名入れ対応) 招き猫 だ… 商品写真4",
+        "width": 700,
+        "height": 700
+      },
+      {
+        "src": "images/product-details/46959/pb-252kairoretro-4.jpg",
+        "alt": "あったかプチギフト 招福カイロ(10個~名入れ対応) 招き猫 だ… 商品写真5",
+        "width": 700,
+        "height": 700
+      }
+    ]
   },
   "listing": {
     "image": "images/pb-252kairoretro.jpg"

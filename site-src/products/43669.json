@@ -5,7 +5,7 @@
     "code": "hf63005",
     "title": "天使の羽シャワー（ライスシャワー・リボンシャワー）",
     "price": 3850,
-    "image": "",
+    "image": "images/products/43669.jpg",
     "sourceUrl": "https://www.luna-luce.jp/item/hf63005.html",
     "description": "",
     "size": "",
@@ -36,7 +36,28 @@
     "hasName": false,
     "petit": false,
     "seal": false,
-    "pack": 1
+    "pack": 1,
+    "delivery": {
+      "min": 10,
+      "max": 10,
+      "made": false,
+      "source": "db",
+      "label": "10日後"
+    },
+    "photos": [
+      {
+        "src": "images/products/43669.jpg",
+        "alt": "天使の羽シャワー（ライスシャワー・リボンシャワー） 商品写真1",
+        "width": 650,
+        "height": 650
+      },
+      {
+        "src": "images/product-details/43669/HF63005-1.jpg",
+        "alt": "天使の羽シャワー（ライスシャワー・リボンシャワー） 商品写真2",
+        "width": 650,
+        "height": 650
+      }
+    ]
   },
   "commerce": {
     "sourceDate": "2026-11-12",
