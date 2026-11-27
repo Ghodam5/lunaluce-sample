@@ -59,6 +59,14 @@ class Luna_OMS_Mapper {
 	 * 1行を直す。戻り値: post（投稿）・item（Welcartの商品の項目）・skus・photos・meta・errors
 	 * $row = { active, product:{id, code, title, price, skus[{code,t,price}], ...}, photos[], stock{status,eta}, edit }
 	 */
+	/** 商品コードも商品名もない空の行（OMSで「新しい商品」を足したまま書いていない下書きなど） */
+	public static function is_blank_row( $row ) {
+		$p     = isset( $row['product'] ) && is_array( $row['product'] ) ? $row['product'] : array();
+		$code  = isset( $p['code'] ) ? trim( (string) $p['code'] ) : '';
+		$title = isset( $p['title'] ) ? trim( (string) $p['title'] ) : '';
+		return '' === $code && '' === $title;
+	}
+
 	public static function map_row( $row, $zaiko_labels ) {
 		$errors = array();
 		$p      = isset( $row['product'] ) && is_array( $row['product'] ) ? $row['product'] : array();

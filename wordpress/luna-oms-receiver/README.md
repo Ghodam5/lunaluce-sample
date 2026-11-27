@@ -20,6 +20,28 @@
 ## 確かめ方
 `php wordpress/luna-oms-receiver/tests/run.php`（WordPressなしで、代わりの関数を使って流れを確かめる）
 
+
+## 検証用サイトの閲覧制限（.htaccess）
+
+検証用サイト（https://renewal-test.luna-luce.info）は閲覧制限（Basic認証）がかかっています。OMSの反映（`POST /wp-json/luna-oms/v1/import`）だけは外し、ほかのページはそのまま守ります。`/wp-json/` 全体は外しません。
+
+XServer（Apache 2.4）では、`Order` / `Satisfy` や `SetEnvIf` + `Require env` では通りませんでした。動いた書き方は次のとおりです。
+
+- `AuthUserFile` / `AuthName` / `AuthType` はそのまま残す
+- `CGIPassAuth On` と、`SetEnvIf Authorization` および `RewriteRule` で `HTTP_AUTHORIZATION` を PHP に渡す（アプリケーションパスワードが読めるように）
+- その直後に:
+
+```
+<RequireAny>
+	Require expr "%{THE_REQUEST} =~ m#\s/wp-json/luna-oms/#"
+	Require valid-user
+</RequireAny>
+```
+
+- そのあと WordPress の塊（`# BEGIN WordPress`）を置く。消さない
+
+同じ断片を `renewal-test-wp-json.htaccess` に置いてあります。
+
 ## 注文の試験送信（初期オフ）
 
 検証用サイトから OMS の試験受け口（`https://oms.srv2050136.hstgr.cloud/intake-api/test-orders`）へ、注文が届くかを確かめるスイッチです。

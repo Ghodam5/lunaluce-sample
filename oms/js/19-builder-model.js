@@ -441,9 +441,9 @@
         // 企画（季節・イベント・セール）。members は書き出した時点の対象の商品
         plans: builderPlanExport(),
         // 新しく登録する商品（site-src/products/<id>.json と同じ形）。photos は写真の並び（1枚目がメイン）
-        products: b.newProducts.filter(function (p) { return !p.edit; }).map(builderProductRow),
+        products: b.newProducts.filter(function (p) { return !p.edit && !builderProductBlank(p); }).map(builderProductRow),
         // 登録済みの商品を直したもの（同じ形。商品番号は元のまま）
-        edits: b.newProducts.filter(function (p) { return p.edit; }).map(builderProductRow),
+        edits: b.newProducts.filter(function (p) { return p.edit && !builderProductBlank(p); }).map(builderProductRow),
         // 取り込んだ画像（カードで使っているものだけ）。反映ツールが path の場所に書き出す。
         uploads: builderUsedUploads().map(function (src) {
           const u = b.uploads[src];

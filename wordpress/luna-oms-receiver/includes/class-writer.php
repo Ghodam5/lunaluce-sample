@@ -72,6 +72,10 @@ class Luna_OMS_Writer {
 		$rows   = array_merge( isset( $draft['products'] ) && is_array( $draft['products'] ) ? $draft['products'] : array(), isset( $draft['edits'] ) && is_array( $draft['edits'] ) ? $draft['edits'] : array() );
 		$done   = array();
 		foreach ( $rows as $row ) {
+			if ( Luna_OMS_Mapper::is_blank_row( $row ) ) {
+				$report['items'][] = array( 'code' => '', 'title' => '', 'action' => 'skip', 'changes' => array( '空の行（商品コードも商品名もない）を飛ばしました' ) );
+				continue;
+			}
 			$m = Luna_OMS_Mapper::map_row( $row, $labels );
 			if ( $m['errors'] ) {
 				$report['items'][] = array( 'code' => $m['code'], 'title' => $m['post']['post_title'], 'action' => 'error', 'changes' => $m['errors'] );
