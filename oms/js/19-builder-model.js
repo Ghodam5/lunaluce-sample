@@ -362,7 +362,7 @@
     function builderAllErrors() {
       const out = builderTextsErrors().concat(builderNoticeErrors()).concat(builderStockErrors()).concat(builderDaysErrors()).concat(builderNewsErrors()).concat(builderSectionsErrors()).concat(builderListingErrors()).concat(builderPlanErrors()).concat(builderCatNamesErrors()).concat(builderNotesErrors()).concat(builderStoreErrors());
       state.builder.newProducts.forEach(function (p) {
-        builderProductErrors(p).forEach(function (e) { out.push((p.edit ? '編集中の商品 ' : '新しい商品 ') + (p.title || p.id) + ': ' + e); });
+        builderProductErrors(p).forEach(function (e) { out.push(builderProductLabel(p) + ': ' + e); });
       });
       state.builder.cards.forEach(function (card) {
         builderCardErrors(card).forEach(function (e) { out.push((card.title || '題名なしのカード') + ': ' + e); });

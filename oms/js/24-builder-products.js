@@ -331,23 +331,23 @@
         '<ol class="places">' + placeRows + '</ol>' + (p.places.length < 3 ? '<button type="button" class="add" data-b="place-add">＋ 別のカテゴリーにも並べる</button>' : '');
       return head +
         '<div class="row">' + builderSwitch('サイトに出す', 'active', p.active !== false) + '<span class="tools"><button type="button" data-b="product-remove">' + (p.edit ? 'この編集をやめる（元のまま）' : 'この登録をやめる') + '</button></span></div>' +
-        '<h3>基本</h3>' + builderField('商品名', 'title', p.title, { wide: true, max: 80 }) +
-        '<h3>カテゴリー（大・中・小）</h3><p class="muted">サイトのどのカテゴリーに並べるかを選びます。2つ以上に並べることもできます。ないカテゴリーは下の「新しいカテゴリーを作る」で作れます。</p>' + placeBlock + builderCatCreator(p) +
-        '<h3>商品コード</h3>' + builderCodeBlock(p) +
+        '<h3>基本</h3><div data-jump="title">' + builderField('商品名', 'title', p.title, { wide: true, max: 80 }) + '</div>' +
+        '<div data-jump="places"><h3>カテゴリー（大・中・小）</h3><p class="muted">サイトのどのカテゴリーに並べるかを選びます。2つ以上に並べることもできます。ないカテゴリーは下の「新しいカテゴリーを作る」で作れます。</p>' + placeBlock + builderCatCreator(p) + '</div>' +
+        '<div data-jump="code"><h3>商品コード</h3>' + builderCodeBlock(p) + '</div>' +
         '<div class="row">' + builderField('最低数量', 'minq', String(p.minq), { type: 'number' }) + '</div>' +
         '<p class="muted">' + (p.edit ? '商品番号 ' + escapeHtml(p.id) + '（変わりません）' : '商品番号は自動で ' + escapeHtml(p.id) + ' になります。') + '</p>' +
         '<h3>販売期間（いつから・いつまで出すか）</h3>' + builderSalePeriodBlock(p) +
-        '<h3>種類と価格（税込）</h3><ol class="skus">' + p.skus.map(function (s, i) {
+        '<div data-jump="price"><h3>種類と価格（税込）</h3><ol class="skus">' + p.skus.map(function (s, i) {
           return '<li class="row">' + builderField(p.skus.length > 1 ? '種類' + (i + 1) + 'の名前' : '種類の名前（1つだけなら空でよい）', 'skus.' + i + '.t', s.t, { placeholder: '例: Sサイズ / 白' }) + builderField('価格（円）', 'skus.' + i + '.price', String(s.price || ''), { type: 'number' }) + (p.skus.length > 1 ? '<span class="tools"><button type="button" data-b="sku-remove" data-index="' + i + '">外す</button></span>' : '') + '</li>';
         }).join('') + '</ol><button type="button" class="add" data-b="sku-add">＋ 種類を足す（サイズ・色など）</button>' +
-        '<h3>写真（' + p.photos.length + '枚・1枚目がメイン）</h3>' + builderPhotoList(p) +
+        '</div><div data-jump="photos"><h3>写真（' + p.photos.length + '枚・1枚目がメイン）</h3>' + builderPhotoList(p) +
         '<p class="muted">「＋ 写真を取り込む」で選んだ写真は、右にどんどん並びます（何枚でもまとめて選べます。20枚まで）。</p>' +
         builderSwitch('名入れできる商品にする（「名入れできる」の絞り込みに出ます）', 'hasName', !!p.hasName) +
         (p.spec && p.spec.fields && p.spec.fields.length ? '<p class="muted">名入れなどの入力欄 ' + p.spec.fields.length + '項目は、お手本から写しています。</p>' : '') +
-        '<h3>説明</h3>' + PRODUCT_TEXT_FIELDS.map(function (f) { return builderField(f[1], f[0], p[f[0]], { wide: true, area: f[2] }); }).join('') + builderDeliveryBlock(p) + builderLayoutBlock(p) +
+        '</div><div data-jump="description"><h3>説明</h3>' + PRODUCT_TEXT_FIELDS.map(function (f) { return builderField(f[1], f[0], p[f[0]], { wide: true, area: f[2] }); }).join('') + '</div>' + builderDeliveryBlock(p) + builderLayoutBlock(p) +
         (p.edit ? '<h3>在庫の状態</h3><p class="muted">いま: ' + escapeHtml(stockState(builderStockOf(p.id).status).short) + '。在庫の状態は「在庫の状態（欠品・入荷待ち）」の一覧で切り替えます。</p>' :
         '<h3>在庫の状態</h3><label class="fld"><span>いまの状態</span><select data-f="stock.status">' + STOCK_STATES.filter(function (s) { return s.id !== 'end'; }).map(function (s) { return '<option value="' + s.id + '"' + (s.id === st.status ? ' selected' : '') + '>' + escapeHtml(s.label) + '</option>'; }).join('') + '</select></label>' +
-        (st.status === 'wait' ? builderField('入荷予定日', 'stock.eta', st.eta || '', { type: 'date' }) : '')) +
+        (st.status === 'wait' ? '<div data-jump="eta">' + builderField('入荷予定日', 'stock.eta', st.eta || '', { type: 'date' }) + '</div>' : '')) +
         '<h3>楽天・Yahooへ</h3><p class="muted">左の一覧の「楽天・Yahoo用に書き出す」で、この下書きの商品（新しい商品と編集した商品）を各店の一括登録ファイル（CSV）にします。</p>';
     }
     // 登録する写真の並び: 1枚目がメイン。← → で並べ替え、★でメインに、外すで写真から外す（画像そのものは消えない）

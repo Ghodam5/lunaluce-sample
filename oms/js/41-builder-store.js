@@ -121,13 +121,13 @@
         '<h3>送料</h3><div class="row"><label class="fld"><span>送料無料になる金額</span><span class="unit-in"><input type="number" min="0" max="1000000" step="1000" data-store="shipping.freeThreshold" data-num="1" value="' + sh.freeThreshold + '">円以上</span></label>' +
         '<label class="fld"><span>金額の判定</span><select data-store="shipping.freeBasis"><option value="excl"' + (sh.freeBasis === 'excl' ? ' selected' : '') + '>税別（税抜）の合計で</option><option value="incl"' + (sh.freeBasis === 'incl' ? ' selected' : '') + '>税込の合計で</option></select></label></div>' +
         '<div class="store-tbl-wrap"><table class="store-tbl store-regions"><thead><tr><th>地域</th><th>送料</th><th>税</th><th>送料無料</th></tr></thead><tbody>' + regions + '</tbody></table></div>' +
-        '<h3>税率表</h3><p class="muted">切替日になると自動でその税率になります（「使う」の行だけ）。食品1%など、法律が決まったら「使う」にしてください。商品の価格は ' + escapeHtml(s.tax.priceBasisDate) + ' の税率で税込になっていて、食品の税率が変わった日から税込の価格をつけ直します（セットは変えません）。</p>' +
+        '<div data-jump="tax"><h3>税率表</h3><p class="muted">切替日になると自動でその税率になります（「使う」の行だけ）。食品1%など、法律が決まったら「使う」にしてください。商品の価格は ' + escapeHtml(s.tax.priceBasisDate) + ' の税率で税込になっていて、食品の税率が変わった日から税込の価格をつけ直します（セットは変えません）。</p>' +
         '<div class="store-tbl-wrap"><table class="store-tbl store-rates"><thead><tr><th>切替日</th><th>標準</th><th>食品</th><th>使う</th><th>メモ</th><th></th></tr></thead><tbody>' + rates + '</tbody></table></div><button type="button" class="add" data-b="store-rate-add">＋ 税率の行を足す</button>' +
-        '<h3>商品ごとの税の種類</h3>' + (sets ? '<p class="store-warn"><b>セット商品 ' + sets + '件は税理士さんに確認してください。</b>お菓子と雑貨などのセットは、税抜1万円以下で食品の割合が3分の2以上なら食品の税率、それ以外は10%です。確認したら食品か標準を選び、「確認した」にチェックします。確認するまで価格は自動で変えません。</p>' : '') +
+        '</div><div data-jump="tax"><h3>商品ごとの税の種類</h3>' + (sets ? '<p class="store-warn"><b>セット商品 ' + sets + '件は税理士さんに確認してください。</b>お菓子と雑貨などのセットは、税抜1万円以下で食品の割合が3分の2以上なら食品の税率、それ以外は10%です。確認したら食品か標準を選び、「確認した」にチェックします。確認するまで価格は自動で変えません。</p>' : '') +
         '<div class="row"><label class="fld"><span>見る商品</span><select data-store-filter="1">' + [['set', 'セット（' + count('set') + '）'], ['food', '食品（' + count('food') + '）'], ['standard', '標準（' + count('standard') + '）'], ['unchecked', 'まだ確認していない'], ['all', 'すべて']].map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === f ? ' selected' : '') + '>' + x[1] + '</option>'; }).join('') + '</select></label>' +
         '<label class="fld"><span>さがす</span><input type="search" data-store-query="1" value="' + escapeHtml(q) + '" placeholder="商品名・番号"></label></div>' +
         '<p class="muted">名前や原材料から自動で仮に分けています。違っていたら直してください。' + (rows.length > 80 ? '（' + rows.length + '件のうち80件を表示）' : '') + '</p><ul class="store-taxes">' + (taxList || '<li class="muted">該当する商品はありません。</li>') + '</ul>' +
-        (builderStoreChanged() ? '<div class="row"><button type="button" data-b="store-reset">全部サイトの今の設定に戻す</button></div>' : '');
+        (builderStoreChanged() ? '<div class="row"><button type="button" data-b="store-reset">全部サイトの今の設定に戻す</button></div>' : '') + '</div>';
     }
     function builderStorePreview() {
       const s = builderStore();

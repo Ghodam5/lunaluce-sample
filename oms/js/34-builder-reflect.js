@@ -150,7 +150,8 @@
         '<ol class="reflect-dests">' + cards + '</ol><button type="button" data-b="reflect-refresh">つながりと記録を読み直す</button>';
     }
     // プラグインは days.changes を {date, from, to} の配列で返す。文字列としてつなぐと [object Object] になる
-    function reflectDaysText(days) {
+    function reflectDaysText(days, daysText) {
+      if (daysText) return daysText;
       if (!days) return '';
       if (typeof days === 'string') return days;
       const changes = days.changes || [];
@@ -175,13 +176,17 @@
           (rep.applied.length ? '<p>入れるもの: ' + rep.applied.map(function (x) { return escapeHtml(x.label) + (x.files.length ? '（' + x.files.length + 'ファイル）' : '（変更なし）'); }).join('、') + '</p>' : '') +
           (res.files && res.files.length && !res.pr ? '<details><summary>変わるファイル ' + res.files.length + '件</summary><ul>' + res.files.slice(0, 40).map(function (f) { return '<li>' + escapeHtml(f) + '</li>'; }).join('') + '</ul></details>' : '') +
           (rep.later.length ? '<p class="muted">まだサイトに入れない部品: ' + rep.later.map(function (x) { return escapeHtml(x.label) + ' ' + x.count + '件'; }).join('、') + '（サイト側の受け口ができたら入ります）</p>' : '') +
-          (rep.errors.length ? '<p>入れられなかった部品（元のまま）: ' + rep.errors.map(function (x) { return escapeHtml(x.label + ': ' + x.error); }).join('、') + '</p>' : '') + '</div>';
+          (rep.errors.length ? '<p>入れられなかった部品（元のまま）:</p><ul>' + rep.errors.map(function (x) { return '<li class="fix-line"><span>' + escapeHtml(x.label + ': ' + x.error) + '</span>' + (typeof builderFixOtherTarget === 'function' && typeof builderFixJumpBtn === 'function' ? builderFixJumpBtn(builderFixOtherTarget(x.label + ': ' + x.error), builderFixField(x.error)) : '') + '</li>'; }).join('') + '</ul>' : '') + '</div>';
       }
       if (dest.id === 'welcart') {
         const items = (res.items || []).concat(res.stock || []);
         return '<div class="reflect-res' + (res.ok === false ? ' is-bad' : '') + '"><b>' + (res.dry ? '試しに見た結果（まだ何も変えていません）' : 'テスト環境に入れました') + '</b>' + (res.error ? '<p>' + escapeHtml(res.error) + '</p>' : '') +
-          (items.length ? '<ul>' + items.slice(0, 30).map(function (x) { return '<li>' + escapeHtml((x.code || '') + ' ' + (x.title || '') + ' … ' + (x.action || '') + (x.changes && x.changes.length ? '（' + x.changes.slice(0, 3).join('・') + '）' : '')) + '</li>'; }).join('') + '</ul>' : '<p class="muted">商品・在庫の変更はありません。</p>') +
-          (res.days ? '<p>営業日: ' + escapeHtml(reflectDaysText(res.days)) + '</p>' : '') + '</div>';
+          (items.length ? '<ul>' + items.slice(0, 30).map(function (x) {
+            const label = ((x.code || '') + ' ' + (x.title || '')).trim() || '（名前なしの新しい商品）';
+            const body = escapeHtml(label + ' … ' + (x.action || '') + (x.changes && x.changes.length ? '（' + x.changes.slice(0, 3).map(function (c) { return typeof c === 'string' ? c : String((c && c.date) || ''); }).filter(Boolean).join('・') + '）' : ''));
+            return '<li class="fix-line"><span>' + body + '</span>' + (typeof builderFixItemTools === 'function' ? builderFixItemTools(x) : '') + '</li>';
+          }).join('') + '</ul>' : '<p class="muted">商品・在庫の変更はありません。</p>') +
+          (res.days ? '<p class="fix-line">営業日: ' + escapeHtml(reflectDaysText(res.days, res.daysText)) + (typeof builderFixJumpBtn === 'function' ? builderFixJumpBtn({ type: 'days', index: 0 }) : '') + '</p>' : '') + '</div>';
       }
       return '<div class="reflect-res"><b>' + (res.downloaded ? 'ダウンロードしました' : '入れるもの') + '</b><p>' + escapeHtml(res.text || '') + '</p></div>';
     }
