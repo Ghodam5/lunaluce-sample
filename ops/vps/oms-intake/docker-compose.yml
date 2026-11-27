@@ -1,0 +1,43 @@
+# 部品: oms-intake（検証用サイト renewal-test.luna-luce.info からの試験注文の受け口）
+# 本番の受注DB（PostgreSQL の oms.orders）には接続しない。保存は専用ボリューム intake-data の oms_test/test_order_inbox.json だけ。
+# 初期状態はオフ。オンにするのは林さんの了承後（ORDER_INTAKE_ENABLED=1 と ORDER_INTAKE_TOKEN を環境欄へ。値はGitHub・記録に書かない）。
+# 外には Traefik 経由で /intake-api だけを出す（oms-app より優先度を高くする）。認証は試験用トークン。
+# 起動時に GitHub の Ghodam5/lunaluce-sample から ops/vps/oms-intake/server.js を取り込む。
+# 環境欄: 任意 INTAKE_REF（省略時 vps-oms-setup）/ ORDER_INTAKE_ENABLED（省略時 0）/ ORDER_INTAKE_TOKEN / OMS_HOST
+services:
+  app:
+    image: node:22-alpine
+    restart: unless-stopped
+    environment:
+      ORDER_INTAKE_ENABLED: ${ORDER_INTAKE_ENABLED:-0}
+      ORDER_INTAKE_TOKEN: ${ORDER_INTAKE_TOKEN:-}
+      INTAKE_REF: ${INTAKE_REF:-vps-oms-setup}
+      DATA_DIR: /data
+      PORT: 8091
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        mkdir -p /srv /data
+        wget -qO- "https://codeload.github.com/Ghodam5/lunaluce-sample/tar.gz/refs/heads/$${INTAKE_REF}" | tar -xz -C /tmp
+        cp /tmp/*/ops/vps/oms-intake/server.js /srv/server.js
+        exec node /srv/server.js
+    volumes:
+      - intake-data:/data
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=oms-net
+      - traefik.http.routers.oms-intake.rule=Host(`${OMS_HOST:-oms.srv2050136.hstgr.cloud}`) && PathPrefix(`/intake-api`)
+      - traefik.http.routers.oms-intake.priority=200
+      - traefik.http.routers.oms-intake.entrypoints=websecure
+      - traefik.http.routers.oms-intake.tls.certresolver=letsencrypt
+      - traefik.http.services.oms-intake.loadbalancer.server.port=8091
+    networks: [oms-net]
+    mem_limit: 128m
+
+volumes:
+  intake-data:
+
+networks:
+  oms-net:
+    external: true

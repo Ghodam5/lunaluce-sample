@@ -1,0 +1,46 @@
+# 部品: oms-backup（毎晩3時(日本時間)にデータベースの写しを取る）
+# 先に oms-db を作っておくこと（oms-net を使うため）。
+# 環境欄に入れるもの: POSTGRES_PASSWORD（oms-db と同じもの。林さんが入力）
+#                    KEEP_DAYS（写しを残す日数。省略時14日）
+# 写しは VPS 内の oms-backups に保存。VPSの外（Dropbox等）への持ち出しは次の段階で追加。
+services:
+  backup:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      PGHOST: oms-db
+      PGUSER: oms
+      PGDATABASE: oms
+      PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD を環境欄に入れてください}
+      KEEP_DAYS: ${KEEP_DAYS:-14}
+      TZ: Asia/Tokyo
+    volumes:
+      - oms-backups:/backups
+    networks: [oms-net]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "oms-backup 起動: 毎日03:00に写しを取ります（保存 $${KEEP_DAYS}日）"
+        while true; do
+          now=$$(date +%s)
+          next=$$(date -d "$$(date +%Y-%m-%d) 03:00:00" +%s)
+          [ "$$next" -le "$$now" ] && next=$$((next + 86400))
+          sleep $$((next - now))
+          f=/backups/oms-$$(date +%Y%m%d-%H%M).dump
+          if pg_dump -Fc -f "$$f"; then
+            echo "写しを保存: $$f"
+          else
+            echo "写しに失敗しました" >&2
+            rm -f "$$f"
+          fi
+          find /backups -name 'oms-*.dump' -mtime +$${KEEP_DAYS} -delete
+        done
+    mem_limit: 256m
+
+networks:
+  oms-net:
+    external: true
+
+volumes:
+  oms-backups:
+    name: oms-backups

@@ -1,0 +1,53 @@
+# 部品: oms-app（OMSの画面とログイン）
+# 起動時に GitHub の Ghodam5/lunaluce-sample から
+#   - OMSの画面（oms/ と images/。ブランチは OMS_REF）
+#   - ログインの仕組み（ops/vps/oms-app/ の start.sh・auth.js・auth-pages.js・Caddyfile。ブランチは OPS_REF）
+# を取り込んで動かす。動いている間も60秒ごとにGitHubを見て、ブランチが進んだら自動で入れ替える（start.sh）。
+#   OMS_REF が進んだら画面だけ入れ替え（止まらない）、OPS_REF が進んだら入れ物ごと起こし直す。hPanel での再起動は要らない。
+#   yaml（このファイル）を変えたときだけ、hPanel の yaml エディタで差し替えて展開する。
+# 住所: 当面は https://oms.srv2050136.hstgr.cloud
+#       luna-luce.jp のDNSが触れるようになったら OMS_HOST を oms.luna-luce.jp に変える。
+# 環境欄に入れるもの: OMS_PASSWORD（オーナーのパスワード。林さんが入力。記録・GitHubには書かない）
+#   任意: OMS_USER（オーナーのログイン名。省略時 lunaluce）/ OMS_HOST / OMS_REF（省略時 main）/ OPS_REF（省略時 vps-oms-setup。main に入れたら main に）/ OMS_POLL（見に行く間隔の秒。省略時 60、0 で自動入れ替えなし）
+# ほかの人のアカウントはOMSの「アカウント」画面で招待して作る。中身は oms-auth-data ボリュームに暗号化したパスワードで残る。
+# オーナーがパスワードを忘れたら、環境欄の OMS_PASSWORD を新しい値にして再起動すると、その値でログインできる。
+# /api/ は oms-reflect（反映ボタンの受け手）へ、ログインした人の名前をつけて渡す。
+services:
+  app:
+    image: node:22-alpine
+    restart: unless-stopped
+    environment:
+      OMS_USER: ${OMS_USER:-lunaluce}
+      OMS_PASSWORD: ${OMS_PASSWORD:?OMS_PASSWORD を環境欄に入れてください}
+      OMS_REF: ${OMS_REF:-main}
+      OPS_REF: ${OPS_REF:-vps-oms-setup}
+      OMS_POLL: ${OMS_POLL:-60}
+      AUTH_DIR: /auth
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        apk add --no-cache caddy >/dev/null
+        mkdir -p /tmp/ops-src /tmp/ops
+        wget -qO- "https://codeload.github.com/Ghodam5/lunaluce-sample/tar.gz/refs/heads/$${OPS_REF}" | tar -xz -C /tmp/ops-src
+        for f in start.sh auth.js auth-pages.js Caddyfile; do cp /tmp/ops-src/*/ops/vps/oms-app/$$f /tmp/ops/; done
+        exec sh /tmp/ops/start.sh
+    volumes:
+      - oms-auth-data:/auth
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=oms-net
+      - traefik.http.routers.oms-app.rule=Host(`${OMS_HOST:-oms.srv2050136.hstgr.cloud}`)
+      - traefik.http.routers.oms-app.entrypoints=websecure
+      - traefik.http.routers.oms-app.tls.certresolver=letsencrypt
+      - traefik.http.services.oms-app.loadbalancer.server.port=8080
+    networks: [oms-net]
+    mem_limit: 256m
+
+volumes:
+  oms-auth-data:
+    name: oms-auth-data
+
+networks:
+  oms-net:
+    external: true
