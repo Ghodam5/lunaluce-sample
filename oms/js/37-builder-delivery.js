@@ -56,7 +56,7 @@
       const d = p.delivery || { min: '', max: '', made: false };
       const notes = p.notes || [];
       const days = builderLeadText(d);
-      return '<h3>お届けまでの日数 <small class="req">必須</small></h3>' +
+      return '<div data-jump="delivery"><h3>お届けまでの日数 <small class="req">必須</small></h3>' +
         '<p class="muted">商品ページの価格の下に「ご注文からお届けまで ' + escapeHtml(days || '約◯日') + '」と出ます。決まった日数なら最短だけでかまいません。</p>' +
         '<div class="row lead-row"><label class="fld"><span>最短（日）</span><input type="number" min="1" max="120" data-dl="min" value="' + escapeHtml(String(d.min || '')) + '" placeholder="例: 14"></label>' +
         '<label class="fld"><span>最長（日・任意）</span><input type="number" min="1" max="120" data-dl="max" value="' + escapeHtml(String(d.max && d.max !== d.min ? d.max : '')) + '" placeholder="例: 21"></label></div>' +
@@ -65,7 +65,7 @@
         '<ul class="note-pick">' + builderNoteTemplates().map(function (t) {
           const on = notes.indexOf(t.id) >= 0;
           return '<li class="tone-' + escapeHtml(t.tone) + (on ? ' is-on' : '') + '"><label><input type="checkbox" data-note="' + escapeHtml(t.id) + '"' + (on ? ' checked' : '') + '><b>' + escapeHtml(t.label) + '</b></label><small>' + escapeHtml(t.text.replace(/\{days\}/g, days || '約◯日')) + '</small></li>';
-        }).join('') + '</ul>' + (d.made && notes.indexOf('made-to-order') < 0 ? '<p class="muted">受注生産の商品は「受注生産（お届け日数）」を選ぶのがおすすめです。</p>' : '');
+        }).join('') + '</ul>' + (d.made && notes.indexOf('made-to-order') < 0 ? '<p class="muted">受注生産の商品は「受注生産（お届け日数）」を選ぶのがおすすめです。</p>' : '') + '</div>';
     }
     // 右の見え方に足す
     function builderDeliveryPreview(p) {

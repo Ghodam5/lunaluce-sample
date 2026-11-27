@@ -115,7 +115,20 @@
       if (name === 'code-suggest' && b.sel.type === 'product') { const p = builderSelected(); p.code = el.dataset.code; p.codeAuto = el.dataset.code; builderChanged(true); return; }
       if (name === 'place-edit' && b.sel.type === 'product') { builderSelected().placesTouched = true; builderChanged(true); return; }
       if (name === 'channel-export') { builderChannelExport(); return; }
-      if (name === 'product-remove' && b.sel.type === 'product') { b.newProducts.splice(b.sel.index, 1); b.sel = { type: 'stock', index: 0 }; builderChanged(true); builderScrollToEditor(); return; }
+      if (name === 'product-remove' && b.sel.type === 'product') {
+        const p = builderSelected();
+        if (!p) return;
+        const ok = window.confirm(p.edit
+          ? builderProductLabel(p) + 'の編集を下書きからやめますか？本店に出ている商品そのものは消えません。「↶ 元に戻す」で戻せます。'
+          : '下書きの' + builderProductLabel(p) + 'を消しますか？まだ本店には出ていないので、この下書きからだけ消えます。「↶ 元に戻す」で戻せます。');
+        if (!ok) return;
+        b.newProducts.splice(b.sel.index, 1);
+        b.sel = { type: 'stock', index: 0 };
+        builderChanged(true);
+        builderScrollToEditor();
+        showToast(p.edit ? '下書きの編集をやめました。本店の商品はそのままです。' : '下書きの新しい商品を消しました。「↶ 元に戻す」で戻せます。');
+        return;
+      }
       if (name === 'sku-add' && b.sel.type === 'product') { builderSelected().skus.push({ t: '', price: 0 }); builderChanged(true); return; }
       if (name === 'sku-remove' && b.sel.type === 'product') { builderSelected().skus.splice(index, 1); builderChanged(true); return; }
       if (name === 'place-add' && b.sel.type === 'product') { builderSelected().places.push({ g: '', m: '', s: '' }); builderChanged(true); return; }

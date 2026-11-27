@@ -44,7 +44,7 @@
             item({ type: 'layout', index: 0 }, true, '商品ページの段組み', '写真の右 ' + builderPageLayout().side.length + '・写真の下 ' + builderPageLayout().below.length) +
             item({ type: 'texts', index: 0 }, true, '表示する文字（見出し・ボタン）', builderTextsChanged() ? builderTextsChanged() + '件を変更中' : builderTextsBase().length + '件') +
             item({ type: 'cats', index: 0 }, true, 'カテゴリー（大・中・小）', (function () { const n = builderCatRenameCount() + (state.builder.newCats || []).length + Object.keys(builderCatHidden()).length; return n ? n + '件を変更中' : '名前を変える・足す・消す'; })()) +
-            b.newProducts.map(function (p, i) { return item({ type: 'product', index: i }, p.active, p.title || '（商品名なし）', (p.edit ? '編集中' : '新しい商品') + '・' + stockState(builderProductStock(p).status).short); }).join('') + '</ul>' +
+            b.newProducts.map(function (p, i) { return item({ type: 'product', index: i }, p.active, builderProductShortName(p), (p.edit ? '編集中' : '新しい商品') + '・' + stockState(builderProductStock(p).status).short); }).join('') + '</ul>' +
             '<div class="adds"><button type="button" data-b="select" data-type="product-start" data-index="0">＋ 単品商品を登録</button>' + (b.newProducts.length ? '<button type="button" data-b="channel-export">楽天・Yahoo用に書き出す</button>' : '') + '</div>') +
           grp(['plan'], '企画（季節・イベント・セール）', '<ul>' + b.plans.map(function (p, i) { return item({ type: 'plan', index: i }, true, p.name || '（名前なし）', builderPlanKind(p.kind) + '・' + builderPeriodText(p.from, p.to) + '・' + builderPlanStatus(p, builderDaysToday())); }).join('') + '</ul>' +
             '<div class="adds">' + PLAN_KINDS.map(function (k) { return '<button type="button" data-b="plan-add" data-kind="' + k[0] + '">＋ ' + k[1] + '</button>'; }).join('') + '</div>') +
