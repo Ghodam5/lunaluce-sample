@@ -103,5 +103,55 @@ $r = Luna_OMS_Writer::run( array( 'products' => array( array( 'product' => array
 check( 'おかしな行は「登録できない」', ! $r['ok'] && 'error' === $r['items'][0]['action'] && 3 === count( $r['items'][0]['changes'] ) );
 check( 'Welcartの在庫状態の名前で番号を探す', 3 === Luna_OMS_Mapper::stock_index( 'wait', array( 9 => 'x', 3 => '入荷待ち' ) ) && 2 === Luna_OMS_Mapper::stock_index( 'out', array() ) );
 
+// 7. 注文の試験送信（初期オフ）
+$GLOBALS['hooks'] = array();
+$GLOBALS['http']  = array();
+if ( ! function_exists( 'add_action' ) ) {
+	function add_action( $h, $c, $p = 10, $n = 1 ) { $GLOBALS['hooks'][ $h ][] = $c; }
+}
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	function wp_json_encode( $v ) { return json_encode( $v, JSON_UNESCAPED_UNICODE ); }
+}
+if ( ! function_exists( 'wp_remote_post' ) ) {
+	function wp_remote_post( $url, $a = array() ) { $GLOBALS['http'][] = array( 'url' => $url, 'args' => $a ); return array( 'response' => array( 'code' => 200 ), 'body' => '{"ok":true}' ); }
+}
+if ( ! function_exists( 'wp_remote_retrieve_response_code' ) ) {
+	function wp_remote_retrieve_response_code( $r ) { return is_array( $r ) ? ( $r['response']['code'] ?? 0 ) : 0; }
+}
+if ( ! function_exists( 'esc_html' ) ) { function esc_html( $s ) { return htmlspecialchars( (string) $s, ENT_QUOTES, 'UTF-8' ); } }
+if ( ! function_exists( 'esc_url' ) ) { function esc_url( $s ) { return $s; } }
+if ( ! function_exists( 'admin_url' ) ) { function admin_url( $s ) { return 'https://renewal-test.luna-luce.info/wp-admin/' . $s; } }
+require __DIR__ . '/../includes/class-order-send.php';
+check( '試験送信は初期オフ', false === Luna_OMS_Order_Send::enabled() );
+check( '送り先は試験受け口に固定', true === Luna_OMS_Order_Send::destination_ok() && false !== strpos( Luna_OMS_Order_Send::PINNED_URL, 'oms.srv2050136.hstgr.cloud/intake-api/test-orders' ) );
+$GLOBALS['hooks'] = array();
+Luna_OMS_Order_Send::init();
+check( 'オフのときは Welcart の受注フックを登録しない', empty( $GLOBALS['hooks'][ Luna_OMS_Order_Send::HOOK ] ) );
+$payload = Luna_OMS_Order_Send::payload( array(
+	'order_id'  => 42,
+	'cart'      => array( array( 'sku' => 'LL-1', 'name' => '試験商品', 'quant' => 2, 'price' => 500, 'customer_email' => 'secret@example.com' ) ),
+	'entry'     => array( 'order' => array( 'total_full_price' => 1000, 'payment_name' => '銀行振込' ), 'customer' => array( 'tel' => '09000000000', 'mailaddress' => 'secret@example.com', 'address1' => '秘密の住所' ) ),
+	'payments'  => array( 'name' => '銀行振込' ),
+) );
+$enc = wp_json_encode( $payload );
+check( '送信本体に住所・電話・メールを含めない', false === strpos( $enc, 'secret@example.com' ) && false === strpos( $enc, '09000000000' ) && false === strpos( $enc, '秘密の住所' ) );
+check( '送信本体は検証用サイトと注文明細だけ', 'https://renewal-test.luna-luce.info' === $payload['source'] && '42' === $payload['order_id'] && 'LL-1' === $payload['items'][0]['code'] && 2 === $payload['items'][0]['qty'] );
+update_option( Luna_OMS_Order_Send::OPTION, 'on' );
+update_option( Luna_OMS_Order_Send::TOKEN_OPTION, 'intake-secret-123' );
+check( 'トークンとオンがあって初めて有効', true === Luna_OMS_Order_Send::enabled() );
+$GLOBALS['hooks'] = array();
+$GLOBALS['http']  = array();
+Luna_OMS_Order_Send::init();
+check( 'オンのときだけ usces_action_reg_orderdata を登録', ! empty( $GLOBALS['hooks'][ 'usces_action_reg_orderdata' ] ) );
+Luna_OMS_Order_Send::on_reg_order( array( 'order_id' => 42, 'cart' => array(), 'entry' => array() ) );
+check( 'オンなら試験受け口へだけ POST する', 1 === count( $GLOBALS['http'] ) && Luna_OMS_Order_Send::PINNED_URL === $GLOBALS['http'][0]['url'] );
+$hdr = $GLOBALS['http'][0]['args']['headers']['Authorization'];
+check( 'Authorization はあるが、ログにはトークンを残さない', 0 === strpos( $hdr, 'Bearer ' ) && false === strpos( wp_json_encode( get_option( Luna_OMS_Order_Send::LOG_OPTION, array() ) ), 'intake-secret-123' ) );
+update_option( Luna_OMS_Order_Send::OPTION, 'off' );
+$GLOBALS['http'] = array();
+Luna_OMS_Order_Send::on_reg_order( array( 'order_id' => 43, 'cart' => array(), 'entry' => array() ) );
+check( 'オフに戻すと送信しない', 0 === count( $GLOBALS['http'] ) );
+check( '確認文は決め打ち', '試験送信をオンにする' === Luna_OMS_Order_Send::CONFIRM );
+
 echo $fail ? "\n$fail 件失敗\n" : "\nすべて通りました\n";
 exit( $fail ? 1 : 0 );

@@ -99,7 +99,7 @@ class Luna_OMS_Admin {
 		if ( is_array( $opt ) && isset( $opt['tax_mode'] ) && 'exclude' === $opt['tax_mode'] ) {
 			echo '<div class="notice notice-warning"><p>Welcartの価格が「税抜」の設定です。OMSの価格は税込なので、登録前に設定を確かめてください。</p></div>';
 		}
-		$msgs = array( 'bad' => 'OMSの書き出しファイル（site-builder-draft.json）を選んでください。', 'expired' => '確認してから時間がたったので、もう一度ファイルを選んでください。', 'saved' => '設定を保存しました。' );
+		$msgs = array( 'bad' => 'OMSの書き出しファイル（site-builder-draft.json）を選んでください。', 'expired' => '確認してから時間がたったので、もう一度ファイルを選んでください。', 'saved' => '設定を保存しました。', 'confirm' => '注文の試験送信をオンにするには、確認文をそのまま入力してください。オフのままです。', 'token' => 'オンにするには試験用トークンが必要です。オフのままです。' );
 		if ( isset( $msgs[ $msg ] ) ) {
 			echo '<div class="notice notice-' . ( 'saved' === $msg ? 'success' : 'error' ) . '"><p>' . esc_html( $msgs[ $msg ] ) . '</p></div>';
 		}
@@ -134,6 +134,9 @@ class Luna_OMS_Admin {
 		echo '<p><label>商品写真の取り寄せ元（サイトの images/ がある場所）<br><input type="url" name="image_base" class="regular-text" value="' . esc_attr( self::image_base() ) . '"></label></p>';
 		submit_button( '保存', 'secondary', 'submit', false );
 		echo '</form>';
+		if ( class_exists( 'Luna_OMS_Order_Send' ) ) {
+			Luna_OMS_Order_Send::panel();
+		}
 		$log = get_option( 'luna_oms_receiver_log', array() );
 		if ( $log ) {
 			echo '<h2>これまでの登録</h2><table class="widefat striped"><thead><tr><th>日時</th><th>した人</th><th>商品</th><th>在庫</th><th>営業日</th></tr></thead><tbody>';
