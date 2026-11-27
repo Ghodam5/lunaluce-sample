@@ -26,13 +26,19 @@
  .hd .logo .brand-orbit{width:136px;height:46px}
  .hd-search .sbox{max-width:480px;margin-inline:auto}
 }
+@media (min-width:1024px){
+ .hd-pc .logo{min-width:max-content;flex-shrink:0}
+ .hd-pc .sbox{min-width:0;max-width:min(620px,100%)}
+ .hd-pc .icons{flex-shrink:0;min-width:max-content}
+}
 @media (hover:hover) and (pointer:fine) and (min-width:1024px){
- .hd-pc{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,620px) minmax(180px,1fr);gap:20px}
- .hd-pc .logo{justify-self:start;text-align:center}
+ /* ロゴ・アイコン列は中身の幅を確保し、足りない分は検索欄を縮めて重ねない。 */
+ .hd-pc{display:grid;grid-template-columns:minmax(max-content,1fr) minmax(0,620px) minmax(max-content,1fr);gap:20px}
+ .hd-pc .logo{justify-self:start;text-align:center;min-width:max-content}
  .hd-pc .logo b{font-size:34px}
  .hd-pc .logo .brand-orbit{width:150px;height:51px}
- .hd-pc .sbox{width:100%;min-width:0;margin:0}
- .hd-pc .icons{justify-self:end;margin-left:0}
+ .hd-pc .sbox{width:100%;min-width:0;max-width:100%;margin:0}
+ .hd-pc .icons{justify-self:end;margin-left:0;min-width:max-content}
 }
 /* v19：商品ページの購入と、以前の名入れカートをつなぐ。 */
 .sample-product-photo{border-radius:18px;overflow:hidden;background:#fff;display:grid;place-items:center;min-height:240px}
