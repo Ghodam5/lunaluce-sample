@@ -1,5 +1,5 @@
 'use strict';
-// oms-reflect の確かめ: 試しに見る（新サイト）で変わるファイルが分かる・本番のWelcartには送らない・鍵を出さない
+// oms-reflect の確かめ: 試しに見る（新サイト）で変わるファイルが分かる・送り先は renewal-test.luna-luce.info だけ・本番や旧環境には送らない・鍵を出さない
 // 使い方: SITE_REMOTE=サイトのgitの写し SITE_BASE_BRANCH=ブランチ node --test ops/vps/oms-reflect/server.test.js
 const test = require('node:test'), a = require('node:assert/strict'), fs = require('node:fs'), os = require('node:os'), path = require('node:path'), cp = require('node:child_process');
 const data = fs.mkdtempSync(path.join(os.tmpdir(), 'oms-reflect-data-'));
@@ -15,7 +15,7 @@ test('本番の住所のWelcartには送らず、鍵はどこにも出さない'
   try {
     const st = await fetch(s.url + '/api/reflect/status').then(r => r.json());
     a.equal(st.welcart.ready, false);
-    a.match(st.welcart.note, /本番/);
+    a.match(st.welcart.note, /renewal-test\.luna-luce\.info|送り先は/);
     const r = await post(s.url + '/api/reflect/welcart', { draft: { kind: 'luna-site-builder-draft', schemaVersion: 1 }, dry_run: true });
     a.equal(r.status, 502);
     a.ok(!JSON.stringify(r.body).includes('secret-pass-123'));
@@ -23,6 +23,37 @@ test('本番の住所のWelcartには送らず、鍵はどこにも出さない'
     const bad = await fetch(s.url + '/api/reflect/site', { method: 'POST', headers: { 'content-type': 'text/plain' }, body: '{}' });
     a.equal(bad.status, 415);
   } finally { s.p.kill(); }
+});
+
+test('送り先は renewal-test.luna-luce.info だけ ready になる', async () => {
+  const s = await start({ WELCART_TEST_URL: 'https://renewal-test.luna-luce.info', WELCART_TEST_USER: 'yoshi', WELCART_TEST_APP_PASSWORD: 'secret-pass-123', GITHUB_TOKEN: '' });
+  try {
+    const st = await fetch(s.url + '/api/reflect/status').then(r => r.json());
+    a.equal(st.welcart.ready, true);
+    a.equal(st.welcart.host, 'renewal-test.luna-luce.info');
+    a.equal(st.welcart.note, '');
+  } finally { s.p.kill(); }
+});
+
+test('旧コアサーバー・本番・http には送らない', async () => {
+  const blocked = [
+    'https://lunaluce.s196.coreserver.jp/wordpress',
+    'https://luna-luce.jp',
+    'https://www.luna-luce.jp',
+    'http://renewal-test.luna-luce.info',
+    'https://renewal-test.luna-luce.info/extra',
+  ];
+  for (const url of blocked) {
+    const s = await start({ WELCART_TEST_URL: url, WELCART_TEST_USER: 'u', WELCART_TEST_APP_PASSWORD: 'secret-pass-123', GITHUB_TOKEN: '' });
+    try {
+      const st = await fetch(s.url + '/api/reflect/status').then(r => r.json());
+      a.equal(st.welcart.ready, false, url);
+      a.match(st.welcart.note, /送り先は|https の住所|本番/, url);
+      const r = await post(s.url + '/api/reflect/welcart', { draft: { kind: 'luna-site-builder-draft', schemaVersion: 1 }, dry_run: true });
+      a.equal(r.status, 502, url);
+      a.ok(!JSON.stringify(r.body).includes('secret-pass-123'));
+    } finally { s.p.kill(); }
+  }
 });
 
 test('楽天・Yahooの手での記録と、反映済みの写し', async () => {

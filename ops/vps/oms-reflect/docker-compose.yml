@@ -3,7 +3,7 @@
 # 起動時に GitHub の Ghodam5/lunaluce-sample から ops/vps/oms-reflect/server.js を取り込んで動かす。
 # 環境欄に入れるもの（値はGitHub・記録に書かない。林さんが入力）:
 #   GITHUB_TOKEN               … lunaluce-sample だけに「Contents 読み書き」「Pull requests 読み書き」を付けた fine-grained トークン
-#   任意: WELCART_TEST_URL      … Welcartのテスト環境の住所（例 https://lunaluce.s196.coreserver.jp）。本番の住所は断る
+#   任意: WELCART_TEST_URL      … 固定の検証用サイト https://renewal-test.luna-luce.info と一致していること。それ以外（本番・旧コアサーバー）は断る
 #         WELCART_TEST_USER / WELCART_TEST_APP_PASSWORD … テスト環境のWordPressのユーザー名とアプリケーションパスワード
 #         REFLECT_REF          … 取り込むブランチ（省略時 main）
 services:

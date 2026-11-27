@@ -17,8 +17,9 @@ const TOKEN = process.env.GITHUB_TOKEN || '';
 const WP_URL = (process.env.WELCART_TEST_URL || '').replace(/\/+$/, '');
 const WP_USER = process.env.WELCART_TEST_USER || '';
 const WP_PASS = process.env.WELCART_TEST_APP_PASSWORD || '';
-// 本番の住所。テスト環境だけにつなぐ約束なので、ここに向いていたら送らない
-const PRODUCTION_HOSTS = ['luna-luce.jp', 'www.luna-luce.jp'];
+// 送り先は検証用サイトに固定。環境欄がこれ以外（本番・旧コアサーバーなど）なら送らない
+const PINNED_WELCART_URL = 'https://renewal-test.luna-luce.info';
+const ALLOWED_WELCART_HOSTS = ['renewal-test.luna-luce.info'];
 const MAX_BODY = 25 * 1024 * 1024;
 // テスト用: 手元の写し（git の住所）を使う。本番では空
 const SITE_REMOTE = process.env.SITE_REMOTE || '';
@@ -50,8 +51,10 @@ function welcartHost() {
 function welcartReady() {
   const host = welcartHost();
   if (!host || !WP_USER || !WP_PASS) return 'Welcartのテスト環境の住所・ユーザー名・アプリケーションパスワードが環境欄にありません';
-  if (PRODUCTION_HOSTS.includes(host)) return '本番の住所には送りません（テスト環境の住所を入れてください）';
   if (!/^https:/.test(WP_URL)) return 'https の住所だけにします';
+  if (!ALLOWED_WELCART_HOSTS.includes(host) || WP_URL !== PINNED_WELCART_URL) {
+    return '送り先は ' + PINNED_WELCART_URL + ' だけです（' + (WP_URL || host || '空') + ' には送りません）';
+  }
   return '';
 }
 
@@ -128,7 +131,7 @@ async function reflectSite(body, by) {
 async function reflectWelcart(body) {
   const bad = welcartReady();
   if (bad) throw Error(bad);
-  const res = await fetch(WP_URL + '/wp-json/luna-oms/v1/import', {
+  const res = await fetch(PINNED_WELCART_URL + '/wp-json/luna-oms/v1/import', {
     method: 'POST',
     headers: { authorization: 'Basic ' + Buffer.from(WP_USER + ':' + WP_PASS).toString('base64'), 'content-type': 'application/json', 'user-agent': 'luna-oms-reflect' },
     body: JSON.stringify({ draft: body.draft, dry_run: body.dry_run !== false })
@@ -190,4 +193,4 @@ const server = http.createServer(async (req, res) => {
 });
 
 if (require.main === module) server.listen(PORT, () => console.log('oms-reflect: ' + PORT + ' で待っています（新サイト ' + (TOKEN ? '用意あり' : '鍵なし') + '・Welcart ' + (welcartReady() || welcartHost()) + '）'));
-module.exports = { server, welcartReady, hide, record, readLog };
+module.exports = { server, welcartReady, hide, record, readLog, PINNED_WELCART_URL, ALLOWED_WELCART_HOSTS };
