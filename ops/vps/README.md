@@ -34,6 +34,7 @@ OMSは新サイトから切り分けた独立システムとして、ホステ�
 ## 反映ボタンの流れ
 - 新サイト: oms-reflect がサイトを写し、`tools/apply-oms-export.cjs` とビルドを動かして、変わったファイルをプルリクエストにする。マージは人が確かめてから（マージすると GitHub Pages に出る）。
 - Welcart: 固定の検証用サイト（`https://renewal-test.luna-luce.info`）の受け取りプラグイン `POST /wp-json/luna-oms/v1/import` へ送る。「試しに見る」は dry_run。本番・旧コアサーバーの住所は送らない。
+- 検証用サイトの閲覧制限（Basic認証）から、受け取り経路だけを外す。XServer（Apache 2.4）では `Order` / `Satisfy` や `SetEnvIf` + `Require env` では通らなかった。動いた書き方は、`AuthUserFile` / `AuthName` / `AuthType` はそのまま、`CGIPassAuth` と `HTTP_AUTHORIZATION` の受け渡しのあと、`<RequireAny>` で `Require expr "%{THE_REQUEST} =~ m#\s/wp-json/luna-oms/#"` と `Require valid-user`。断片は oms-split-builder 側の `wordpress/luna-oms-receiver/renewal-test-wp-json.htaccess`。`# BEGIN WordPress` は消さない。
 - 試験注文の受け口（oms-intake）は初期オフ。オンにしても保存先は専用ストアだけで、本番の `oms.orders` には書かない。
 - 楽天・Yahoo: API の申請がすむまではCSV・一覧をダウンロードして手で入れ、画面で「入れた」と記録する。
 - 記録は oms-reflect のボリューム（reflect-data）に残る。確かめ: `node --test ops/vps/oms-reflect/server.test.js`
