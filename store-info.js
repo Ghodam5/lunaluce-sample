@@ -26,9 +26,81 @@ function fill(t){return String(t).replace(/{free}/g,money(I.shipping.freeThresho
 function freeLeft(rows,date){var s=0;rows.forEach(function(x){var n=x.price*x.qty;s+=I.shipping.freeBasis==='excl'?excl(x.id,n,date):n});return Math.max(0,I.shipping.freeThreshold-s)}
 function applyCatalog(list){(list||[]).forEach(function(p){if(!p||p.basisPrice!=null)return;p.basisPrice=p.price;p.price=price(p.id,p.price);(p.skus||[]).forEach(function(s){if(s.basisPrice==null){s.basisPrice=s.price;s.price=price(p.id,s.price)}})})}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function startStoreBar(shell) {
+  const viewport = shell.querySelector('.store-bar-in');
+  const track = shell.querySelector('.store-bar-track');
+  const toggle = shell.querySelector('.store-bar-toggle');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let paused = reducedMotion.matches;
+  let frame = 0, last = 0, distance = 0, resumeAt = performance.now() + 1000;
+  let dragging = false;
+
+  function caption() {
+    toggle.textContent = paused ? '再生' : '停止';
+    toggle.setAttribute('aria-label', paused ? '送料案内の自動スクロールを再生' : '送料案内の自動スクロールを停止');
+  }
+
+  function tick(now) {
+    const end = viewport.scrollWidth - viewport.clientWidth;
+    if (!paused && !dragging && !viewport.matches(':focus-within') && now >= resumeAt) {
+      if (viewport.scrollLeft >= end - 1) {
+        viewport.scrollLeft = 0;
+        distance = 0;
+        resumeAt = now + 1000;
+      } else {
+        distance += Math.min(now - last, 50) * .036;
+        const step = Math.floor(distance);
+        if (step) {
+          viewport.scrollLeft += step;
+          distance -= step;
+          if (viewport.scrollLeft >= end - 1) resumeAt = now + 1500;
+        }
+      }
+    }
+    last = now;
+    frame = requestAnimationFrame(tick);
+  }
+
+  function measure() {
+    const available = viewport.clientWidth + toggle.offsetWidth;
+    const overflow = track.offsetWidth > available + 1;
+    shell.classList.toggle('store-bar-overflow', overflow);
+    toggle.hidden = !overflow;
+    if (overflow && !frame) {
+      last = performance.now();
+      frame = requestAnimationFrame(tick);
+    } else if (!overflow && frame) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      viewport.scrollLeft = 0;
+    }
+  }
+
+  toggle.addEventListener('click', () => {
+    paused = !paused;
+    resumeAt = performance.now() + 500;
+    caption();
+  });
+  viewport.addEventListener('pointerdown', () => { dragging = true; });
+  for (const type of ['pointerup', 'pointercancel']) {
+    window.addEventListener(type, () => {
+      if (!dragging) return;
+      dragging = false;
+      resumeAt = performance.now() + 2500;
+    });
+  }
+  viewport.addEventListener('wheel', () => { resumeAt = performance.now() + 2500; }, { passive: true });
+  reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; caption(); });
+  const observer = new ResizeObserver(measure);
+  observer.observe(shell);
+  observer.observe(track);
+  caption();
+  measure();
+}
 function draw(){
   document.querySelectorAll('[data-store-bar]').forEach(function(el){var on=I.bar.filter(function(b){return b.active});el.hidden=!on.length;
-    el.innerHTML='<div class="wrap store-bar-in">'+on.map(function(b){return '<a href="'+esc(b.href)+'"><b>'+esc(b.label)+'</b>'+esc(fill(b.text))+'</a>'}).join('')+'</div>'});
+    el.innerHTML='<div class="wrap store-bar-shell"><div class="store-bar-in"><div class="store-bar-track">'+on.map(function(b){return '<a href="'+esc(b.href)+'"><b>'+esc(b.label)+'</b>'+esc(fill(b.text))+'</a>'}).join('')+'</div></div><button class="store-bar-toggle" type="button" hidden></button></div>';
+    if (on.length) startStoreBar(el.firstElementChild);});
   document.querySelectorAll('[data-store-footer]').forEach(function(el){var on=I.footer.lines.filter(function(l){return l.active});el.hidden=!on.length;
     el.innerHTML='<h2>'+esc(I.footer.title)+'</h2><ul>'+on.map(function(l){return '<li>'+esc(fill(l.text))+'</li>'}).join('')+'</ul><p class="store-ft-links"><a href="shipping.html">送料・お届けのご案内 ›</a><a href="bulk-order.html">大口注文のご相談 ›</a><a href="overseas-shipping.html">海外発送について ›</a></p>'});
   document.querySelectorAll('[data-store-ship-table]').forEach(function(el){var s=I.shipping,bb=(s.freeBasis==='excl'?'税別':'税込')+money(s.freeThreshold)+'円',lo=bb+'未満',hi=bb+'以上・送料無料商品';
