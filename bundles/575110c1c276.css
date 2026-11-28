@@ -1091,13 +1091,19 @@ a.has-cico,.acc>button.has-cico{justify-content:flex-start;text-align:left}
  .hd .logo .brand-orbit{width:136px;height:46px}
  .hd-search .sbox{max-width:480px;margin-inline:auto}
 }
+@media (min-width:1024px){
+ .hd-pc .logo{min-width:max-content;flex-shrink:0}
+ .hd-pc .sbox{min-width:0;max-width:min(620px,100%)}
+ .hd-pc .icons{flex-shrink:0;min-width:max-content}
+}
 @media (hover:hover) and (pointer:fine) and (min-width:1024px){
- .hd-pc{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,620px) minmax(180px,1fr);gap:20px}
- .hd-pc .logo{justify-self:start;text-align:center}
+ /* ロゴ・アイコン列は中身の幅を確保し、足りない分は検索欄を縮めて重ねない。 */
+ .hd-pc{display:grid;grid-template-columns:minmax(max-content,1fr) minmax(0,620px) minmax(max-content,1fr);gap:20px}
+ .hd-pc .logo{justify-self:start;text-align:center;min-width:max-content}
  .hd-pc .logo b{font-size:34px}
  .hd-pc .logo .brand-orbit{width:150px;height:51px}
- .hd-pc .sbox{width:100%;min-width:0;margin:0}
- .hd-pc .icons{justify-self:end;margin-left:0}
+ .hd-pc .sbox{width:100%;min-width:0;max-width:100%;margin:0}
+ .hd-pc .icons{justify-self:end;margin-left:0;min-width:max-content}
 }
 /* v19：商品ページの購入と、以前の名入れカートをつなぐ。 */
 .sample-product-photo{border-radius:18px;overflow:hidden;background:#fff;display:grid;place-items:center;min-height:240px}
@@ -1226,6 +1232,19 @@ html{touch-action:manipulation}
 @media(hover:hover) and (pointer:fine){.hd .logo .brand-gif-frame.brand-banner{width:195px;height:78px}.hd .logo .brand-gif-frame.brand-banner .brand-gif{width:195px;height:195px;top:-58.5px}}
 @media(hover:hover) and (pointer:fine) and (min-width:1024px){.hd .hd-pc{height:98px}.hd .logo .brand-gif-frame.brand-banner{width:225px;height:90px}.hd .logo .brand-gif-frame.brand-banner .brand-gif{width:225px;height:225px;top:-67.5px}}
 .ft .logo .brand-gif-frame.brand-banner{margin-left:-21.5px}
+
+/* 2026-11-28 林さん指示：スマホ幅（〜1023px）でロゴの動き（ハートが散る・星が弾ける場面）が検索欄の上端まで届いて重なって見えた。
+   原因はロゴ枠（68〜78px）がロゴ段（72px固定）より高く、枠の下端が検索欄の上端にくっついていたこと。動きは枠いっぱいに描かれる。
+   ロゴ段の高さを枠に合わせて自動にし、上下に余白を取って、検索段との間を必ず空ける。PC（1024px〜）の並びは変えない。 */
+@media(max-width:1023px){
+ .hd .hd-in{height:auto;min-height:0;padding-top:6px;padding-bottom:12px;box-sizing:content-box;align-items:center}
+ .hd .hd-in .logo{flex:none}
+ .hd .hd-search{position:relative;z-index:1}
+}
+/* タッチのタブレット横向き（1024px〜・マウスなし）でも、ロゴ枠がPCの段からはみ出さないようにする。 */
+@media (min-width:1024px) and (hover:none),(min-width:1024px) and (pointer:coarse){
+ .hd .hd-pc{height:auto;min-height:64px;padding-top:6px;padding-bottom:6px}
+}
 
 /* features.css */
 /* v16：既存の大分類・配色を引き継ぐ特集とダミーカート */
@@ -1553,13 +1572,12 @@ textarea[data-example-placeholder]::placeholder{color:#b52632;opacity:1}
 /* 期間外・移動済みの掲載枠は、個別のdisplay指定より優先して隠す。 */
 [data-placement-id][hidden]{display:none!important}
 /* v69 ヘッダーの案内バー・フッターの「お届けと送料」・送料表（store-info.js が中身を描く） */
-.store-bar{background:#f6f1e8;border-bottom:1px solid #e6dccb;font-size:12.5px}
-.store-bar-in{display:flex;gap:6px 18px;align-items:center;justify-content:center;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;padding-top:6px;padding-bottom:6px;scrollbar-width:none}
-.store-bar-in::-webkit-scrollbar{display:none}
-.store-bar a{color:#5b4a3a;text-decoration:none;display:inline-flex;gap:6px;align-items:center;min-height:28px}
+.store-bar{background:#f6f1e8;border-bottom:1px solid #e6dccb;font-size:12.5px;width:100%}
+/* 案内はスクロール式ではない。幅が足りなければ折り返し、送料・お届け・大口・海外をすべて見えるようにする。 */
+.store-bar-in{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:center;width:100%;box-sizing:border-box;overflow:visible;white-space:normal;padding-top:6px;padding-bottom:6px}
+.store-bar a{color:#5b4a3a;text-decoration:none;display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:28px;max-width:100%;white-space:normal}
 .store-bar a:hover{text-decoration:underline}
-.store-bar b{background:#7a5c3e;color:#fff;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700}
-@media(max-width:700px){.store-bar-in{justify-content:flex-start}}
+.store-bar b{background:#7a5c3e;color:#fff;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700;flex:none}
 .store-ft{margin-top:22px;padding:14px 16px;border:1px solid #e6dccb;border-radius:10px;background:#fbf8f2}
 .store-ft h2,.store-ft h5{margin:0 0 6px}
 .store-ft ul{margin:0;padding-left:1.2em;font-size:13px;line-height:1.8}
@@ -1570,6 +1588,15 @@ textarea[data-example-placeholder]::placeholder{color:#b52632;opacity:1}
 .store-ship tbody th{text-align:left;background:#fbf8f2}
 .store-ship td b{color:#c2185b}
 @media(max-width:600px){.store-ship td[data-l]::before{content:attr(data-l)"：";display:block;font-size:12px;color:#7a6a5a}}
+/* 2026-11-28 林さん指示：スマホ幅（〜1023px）では、送料・お届け・大口・海外発送を折り返さず1行にして、指で横にスクロールして見せる。
+   入りきる幅では中央に置き、入りきらない幅では左から並べて左右どちらの端の案内も届くようにする。PC（1024px〜）は今のまま。 */
+@media(max-width:1023px){
+ .store-bar-in{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;white-space:nowrap;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y;scrollbar-width:none;padding-left:12px;padding-right:12px;gap:0 16px}
+ .store-bar-in::-webkit-scrollbar{display:none;height:0}
+ .store-bar-in>a{flex:none;flex-wrap:nowrap;white-space:nowrap;max-width:none}
+ .store-bar-in>a:first-child{margin-left:auto}
+ .store-bar-in>a:last-child{margin-right:auto}
+}
 
 /* rail-controls.css */
 /* 共通の円形矢印：ボタンの大きさ・位置とは独立した中央配置。 */

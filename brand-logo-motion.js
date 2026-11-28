@@ -137,13 +137,17 @@ function frame(ctx,t){
 // 動きを減らす設定の人には動かさない。終わったら最後の絵（静止画と同じ）で止まる。
 var DONE=T.dia+1.2;
 function run(cv){var fr=cv.parentNode,ctx=cv.getContext('2d'),t0=0,raf=0,visible=false,done=false,paused=0;
-  function size(){var d=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(cv.clientWidth*d);cv.height=Math.round(cv.clientHeight*d);}
-  function tick(now){raf=0;if(!t0)t0=now;var t=(now-t0)/1000;if(!ready){raf=requestAnimationFrame(tick);return;}
-    if(t>=DONE){frame(ctx,T.end);done=true;return;}fr.classList.add('is-playing');frame(ctx,t);if(visible&&!document.hidden)raf=requestAnimationFrame(tick);}
-  function go(){if(done||raf||!visible||document.hidden)return;if(paused){t0+=performance.now()-paused;paused=0;}raf=requestAnimationFrame(tick);}
+  function size(){var d=Math.min(2,window.devicePixelRatio||1);var w=Math.round(cv.clientWidth*d),h=Math.round(cv.clientHeight*d);if(!w||!h)return false;if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}return true;}
+  function nowT(){if(!t0)return 0;return ((paused||performance.now())-t0)/1000;}
+  function paint(){if(!size()||!ready){fr.classList.remove('is-playing');return false;}var t=nowT();if(done||t>=DONE){frame(ctx,T.end);done=true;fr.classList.add('is-playing');return true;}if(t>0){fr.classList.add('is-playing');frame(ctx,t);}return true;}
+  function tick(now){raf=0;if(!t0)t0=now;var t=(now-t0)/1000;if(!ready||!size()){if(!size())fr.classList.remove('is-playing');if(visible&&!document.hidden)raf=requestAnimationFrame(tick);return;}
+    if(t>=DONE){frame(ctx,T.end);done=true;fr.classList.add('is-playing');return;}fr.classList.add('is-playing');frame(ctx,t);if(visible&&!document.hidden)raf=requestAnimationFrame(tick);}
+  function go(){if(done){paint();return;}if(raf||!visible||document.hidden)return;if(paused){t0+=performance.now()-paused;paused=0;}raf=requestAnimationFrame(tick);}
   function stop(){if(raf){cancelAnimationFrame(raf);raf=0;paused=performance.now();}}
   size();
-  if('IntersectionObserver' in window)new IntersectionObserver(function(es){visible=es[0].isIntersecting;visible?go():stop();}).observe(cv);else{visible=true;go();}
+  if('ResizeObserver' in window)new ResizeObserver(function(){if(!visible)return;if(done)paint();else go();}).observe(fr);
+  addEventListener('resize',function(){if(visible){if(done)paint();else go();}});
+  if('IntersectionObserver' in window)new IntersectionObserver(function(es){visible=es[0].isIntersecting;visible?go():stop();}).observe(fr);else{visible=true;go();}
   document.addEventListener('visibilitychange',function(){document.hidden?stop():go();});}
 function start(){if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;[].forEach.call(document.querySelectorAll('canvas.brand-motion'),run);}
 function later(){var f=function(){setTimeout(start,300);};if('requestIdleCallback' in window)requestIdleCallback(f,{timeout:1500});else f();}

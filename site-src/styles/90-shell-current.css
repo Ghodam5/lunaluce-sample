@@ -26,13 +26,19 @@
  .hd .logo .brand-orbit{width:136px;height:46px}
  .hd-search .sbox{max-width:480px;margin-inline:auto}
 }
+@media (min-width:1024px){
+ .hd-pc .logo{min-width:max-content;flex-shrink:0}
+ .hd-pc .sbox{min-width:0;max-width:min(620px,100%)}
+ .hd-pc .icons{flex-shrink:0;min-width:max-content}
+}
 @media (hover:hover) and (pointer:fine) and (min-width:1024px){
- .hd-pc{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,620px) minmax(180px,1fr);gap:20px}
- .hd-pc .logo{justify-self:start;text-align:center}
+ /* ロゴ・アイコン列は中身の幅を確保し、足りない分は検索欄を縮めて重ねない。 */
+ .hd-pc{display:grid;grid-template-columns:minmax(max-content,1fr) minmax(0,620px) minmax(max-content,1fr);gap:20px}
+ .hd-pc .logo{justify-self:start;text-align:center;min-width:max-content}
  .hd-pc .logo b{font-size:34px}
  .hd-pc .logo .brand-orbit{width:150px;height:51px}
- .hd-pc .sbox{width:100%;min-width:0;margin:0}
- .hd-pc .icons{justify-self:end;margin-left:0}
+ .hd-pc .sbox{width:100%;min-width:0;max-width:100%;margin:0}
+ .hd-pc .icons{justify-self:end;margin-left:0;min-width:max-content}
 }
 /* v19：商品ページの購入と、以前の名入れカートをつなぐ。 */
 .sample-product-photo{border-radius:18px;overflow:hidden;background:#fff;display:grid;place-items:center;min-height:240px}
@@ -161,3 +167,16 @@ html{touch-action:manipulation}
 @media(hover:hover) and (pointer:fine){.hd .logo .brand-gif-frame.brand-banner{width:195px;height:78px}.hd .logo .brand-gif-frame.brand-banner .brand-gif{width:195px;height:195px;top:-58.5px}}
 @media(hover:hover) and (pointer:fine) and (min-width:1024px){.hd .hd-pc{height:98px}.hd .logo .brand-gif-frame.brand-banner{width:225px;height:90px}.hd .logo .brand-gif-frame.brand-banner .brand-gif{width:225px;height:225px;top:-67.5px}}
 .ft .logo .brand-gif-frame.brand-banner{margin-left:-21.5px}
+
+/* 2026-11-28 林さん指示：スマホ幅（〜1023px）でロゴの動き（ハートが散る・星が弾ける場面）が検索欄の上端まで届いて重なって見えた。
+   原因はロゴ枠（68〜78px）がロゴ段（72px固定）より高く、枠の下端が検索欄の上端にくっついていたこと。動きは枠いっぱいに描かれる。
+   ロゴ段の高さを枠に合わせて自動にし、上下に余白を取って、検索段との間を必ず空ける。PC（1024px〜）の並びは変えない。 */
+@media(max-width:1023px){
+ .hd .hd-in{height:auto;min-height:0;padding-top:6px;padding-bottom:12px;box-sizing:content-box;align-items:center}
+ .hd .hd-in .logo{flex:none}
+ .hd .hd-search{position:relative;z-index:1}
+}
+/* タッチのタブレット横向き（1024px〜・マウスなし）でも、ロゴ枠がPCの段からはみ出さないようにする。 */
+@media (min-width:1024px) and (hover:none),(min-width:1024px) and (pointer:coarse){
+ .hd .hd-pc{height:auto;min-height:64px;padding-top:6px;padding-bottom:6px}
+}
